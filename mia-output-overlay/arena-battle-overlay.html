@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html lang="cs">
+
+<head>
+
+<meta charset="UTF-8" />
+
+<title>MIA · Arena Battle</title>
+
+<link rel="stylesheet" href="/assets/mia-2d-fx.css?v=1" />
+
+<style>
+
+  html, body { margin: 0; width: 100%; height: 100%; background: transparent; overflow: hidden; font-family: "Segoe UI", Arial Black, sans-serif; color: #fff; }
+
+  #stage { position: absolute; inset: 0; display: none; background: transparent; }
+
+  #stage.active { display: block; }
+
+  #arenaBg { position: absolute; inset: 0; background: url("/assets/kojnozrout/arena/background.png?v=2") center bottom / cover no-repeat; opacity: .88; z-index: 0;
+    -webkit-mask-image: radial-gradient(ellipse 92% 88% at 50% 72%, #000 42%, transparent 88%);
+    mask-image: radial-gradient(ellipse 92% 88% at 50% 72%, #000 42%, transparent 88%);
+  }
+
+  #arenaFlash { position: absolute; inset: 0; pointer-events: none; opacity: 0; background: radial-gradient(circle at 50% 42%, rgba(255,255,255,.18), transparent 58%); transition: opacity .18s ease; z-index: 1; }
+
+  #arenaFlash.on { opacity: 1; }
+
+  #banner { position: absolute; left: 50%; top: 5%; transform: translateX(-50%); min-width: 54%; text-align: center; background: rgba(8,4,16,.92); border: 2px solid rgba(255,255,255,.2); border-radius: 16px; padding: 10px 16px; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; z-index: 8; box-shadow: 0 12px 36px rgba(0,0,0,.45); }
+
+  #banner .sub { display: block; margin-top: 4px; font-size: 12px; font-weight: 600; opacity: .85; text-transform: none; }
+
+  #moveLog { position: absolute; left: 50%; top: 15%; transform: translateX(-50%) scale(.96); background: rgba(0,0,0,.78); border: 2px solid gold; border-radius: 12px; padding: 8px 14px; font-size: 15px; font-weight: 800; z-index: 9; opacity: 0; transition: opacity .2s, transform .28s cubic-bezier(.18,.9,.2,1); }
+
+  #moveLog.show { opacity: 1; transform: translateX(-50%) scale(1); }
+
+  #moveLog .move-item { width: 28px; height: 28px; vertical-align: middle; margin-right: 8px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,.5)); }
+
+  #vs { position: absolute; left: 50%; top: 42%; transform: translate(-50%,-50%); z-index: 5; animation: vsPulse 1.8s ease-in-out infinite; width: min(180px, 28vw); height: auto; filter: drop-shadow(0 0 18px rgba(255,80,180,.75)); }
+
+  #vs img { width: 100%; height: auto; display: block; }
+
+  @keyframes vsPulse { 0%,100%{ transform: translate(-50%,-50%) scale(1);} 50%{ transform: translate(-50%,-50%) scale(1.06);} }
+
+  .fighter { position: absolute; width: 40%; max-width: 400px; text-align: center; transition: transform .15s ease, filter .2s ease; }
+
+  .fighter.left { left: 3%; bottom: 16%; }
+
+  .fighter.right { right: 3%; bottom: 16%; transform: scaleX(-1); }
+
+  .fighter.right .meta { transform: scaleX(-1); }
+
+  .fighter img { width: min(320px, 36vw); height: auto; transition: filter .25s ease; filter: drop-shadow(0 12px 18px rgba(0,0,0,.55)); }
+
+  .fighter.winner img { filter: drop-shadow(0 0 22px gold) drop-shadow(0 12px 18px rgba(0,0,0,.55)); }
+
+  .fighter.shake { animation: miaFxShake 0.34s ease; }
+
+  .fighter.battle-attack img { filter: drop-shadow(0 0 20px rgba(255,96,64,.55)) drop-shadow(0 12px 18px rgba(0,0,0,.55)); }
+
+  .fighter.battle-hit img { filter: drop-shadow(0 0 16px rgba(255,120,80,.45)) drop-shadow(0 12px 18px rgba(0,0,0,.55)); }
+
+  .meta { margin-top: 6px; background: rgba(8,6,16,.86); border: 2px solid rgba(255,255,255,.18); border-radius: 14px; padding: 8px 10px; }
+
+  .name { font-size: clamp(15px,2.3vw,21px); font-weight: 900; }
+
+  .title { font-size: 11px; opacity: .8; margin-top: 2px; }
+
+  .hp { margin-top: 8px; height: 14px; border-radius: 99px; background: rgba(255,255,255,.12); overflow: hidden; border: 1px solid rgba(255,255,255,.2); }
+
+  .hp > i { display: block; height: 100%; width: 0%; background: linear-gradient(90deg,#39ff14,#ffe600); transition: width .4s ease; }
+
+  .hp.low > i { background: linear-gradient(90deg,#ff3b3b,#ff9f1a); }
+
+  .pts { margin-top: 4px; font-size: 12px; font-weight: 800; }
+
+  #fx { position: absolute; inset: 0; pointer-events: none; z-index: 10; }
+
+  #bench { position: absolute; left: 8px; right: 8px; bottom: 6px; display: flex; gap: 8px; justify-content: center; z-index: 6; }
+
+  .bench-card { width: 74px; text-align: center; background: rgba(8,6,16,.82); border-radius: 10px; padding: 4px; border: 1px solid rgba(255,255,255,.12); opacity: .8; transition: opacity .2s, border-color .2s; }
+
+  .bench-card.active { opacity: 1; border-color: gold; box-shadow: 0 0 14px rgba(255,208,96,.25); }
+
+  .bench-card img { width: 54px; height: 54px; object-fit: contain; }
+
+  .bench-card .n { font-size: 10px; font-weight: 800; }
+
+</style>
+
+</head>
+
+<body>
+
+<div id="stage">
+
+  <div id="arenaBg"></div>
+
+  <div id="arenaFlash"></div>
+
+  <div id="banner">Arena Battle<div class="sub">Coin-žrouti · sladěné pohyby · MIA body</div></div>
+
+  <div id="moveLog"></div>
+
+  <div id="vs"><img src="/assets/kojnozrout/arena/vs-badge.png?v=3" alt="VS" /></div>
+
+  <div class="fighter left" id="left"><img id="leftImg" alt=""><div class="meta"><div class="name" id="leftName">—</div><div class="title" id="leftTitle"></div><div class="hp" id="leftHp"><i id="leftBar"></i></div><div class="pts" id="leftPts">0</div></div></div>
+
+  <div class="fighter right" id="right"><img id="rightImg" alt=""><div class="meta"><div class="name" id="rightName">—</div><div class="title" id="rightTitle"></div><div class="hp" id="rightHp"><i id="rightBar"></i></div><div class="pts" id="rightPts">0</div></div></div>
+
+  <div id="fx"></div>
+
+  <div id="bench"></div>
+
+</div>
+
+<script src="/assets/mia-2d-fx.js?v=1"></script>
+<script src="/assets/koj-battle-fx.js?v=1"></script>
+
+<script>
+
+const API = (location.origin && location.protocol.startsWith("http")) ? location.origin : "http://127.0.0.1:3000";
+
+const FX = typeof MIA_2D_FX !== "undefined" ? MIA_2D_FX : (typeof MIA_KOJ_BATTLE_FX !== "undefined" ? MIA_KOJ_BATTLE_FX : null);
+
+let lastActionId = 0;
+
+
+
+function setFighter(side, platform, sprites, ranking, maxPts, roles) {
+
+  const row = ranking.find((r) => r.platform === platform) || { points: 0, label: platform };
+
+  const spr = sprites[platform] || {};
+
+  const pts = Number(row.points || 0);
+
+  const pct = Math.max(4, Math.round((pts / Math.max(1, maxPts)) * 100));
+
+  const img = document.getElementById(side + "Img");
+
+  img.src = API + (spr.spriteUrl || spr.idleUrl || "");
+
+  document.getElementById(side + "Name").textContent = spr.name || row.label || platform;
+
+  document.getElementById(side + "Title").textContent = spr.title || "";
+
+  document.getElementById(side + "Bar").style.width = pct + "%";
+
+  document.getElementById(side + "Hp").classList.toggle("low", pct < 28);
+
+  document.getElementById(side + "Pts").textContent = Math.round(pts) + " MIA bodů";
+
+  const el = document.getElementById(side);
+
+  el.classList.toggle("right", side === "right");
+
+  const pose = spr.pose || "idle";
+
+  const role = roles?.[platform] || (side === "left" ? "attacker" : "target");
+
+  if (FX) FX.applyFighterPose(el, pose, role);
+
+  else {
+
+    el.classList.remove("lunge-left", "lunge-right", "shake", "winner");
+
+    if (pose === "attack" || pose === "item_box") el.classList.add(side === "left" ? "lunge-left" : "lunge-right");
+
+    if (pose === "hit") el.classList.add("shake");
+
+  }
+
+}
+
+
+
+function render(data) {
+
+  const arena = data.arena || {};
+
+  const battle = arena.battle || {};
+
+  const sprites = battle.sprites || {};
+
+  const duel = arena.duel || {};
+
+  const tournament = arena.tournament || {};
+
+  const active = Boolean(duel.active || tournament.active);
+
+  const stage = document.getElementById("stage");
+
+  stage.classList.toggle("active", active);
+
+  if (!active) return;
+
+
+
+  const ranking = (duel.active ? duel.ranking : tournament.ranking) || [];
+
+  const leftP = ranking[0]?.platform || "tiktok";
+
+  const rightP = ranking[1]?.platform || "kick";
+
+  const maxPts = Math.max(1, ...ranking.map((r) => Number(r.points) || 0));
+
+  const current = battle.current;
+
+  const roles = {};
+
+  if (current) {
+
+    roles[current.attacker] = "attacker";
+
+    for (const t of current.targets || []) roles[t] = "target";
+
+  }
+
+
+
+  setFighter("left", leftP, sprites, ranking, maxPts, roles);
+
+  setFighter("right", rightP, sprites, ranking, maxPts, roles);
+
+
+
+  const winner = duel.active ? duel.winner : tournament.champion;
+
+  if (winner === leftP) document.getElementById("left").classList.add("winner");
+
+  if (winner === rightP) document.getElementById("right").classList.add("winner");
+
+
+
+  const moveLog = document.getElementById("moveLog");
+
+  const flash = document.getElementById("arenaFlash");
+
+  if (current && current.id !== lastActionId) {
+
+    lastActionId = current.id;
+
+    const label = current.text || `${current.attackerName} · ${current.label}`;
+
+    const itemId = String(current.itemId || "").toLowerCase();
+
+    if (itemId) {
+
+      moveLog.innerHTML = `<img class="move-item" src="${API}/assets/kojnozrout/items/${itemId}.png?v=4" alt="" onerror="this.remove()" /> ${label}`;
+
+    } else {
+
+      moveLog.textContent = label;
+
+    }
+
+    moveLog.classList.add("show");
+
+    flash.classList.add("on");
+
+    setTimeout(() => flash.classList.remove("on"), 220);
+
+    setTimeout(() => moveLog.classList.remove("show"), 2400);
+
+
+
+    const fromSide = current.attacker === leftP ? "left" : current.attacker === rightP ? "right" : "left";
+
+    for (const t of current.targets || []) {
+
+      const toSide = t === leftP ? "left" : t === rightP ? "right" : null;
+
+      if (toSide && toSide !== fromSide && FX) {
+
+        FX.spawnProjectile(
+
+          document.getElementById("fx"),
+
+          document.getElementById(fromSide),
+
+          document.getElementById(toSide),
+
+          current.projectile || (FX.resolveProjectileKind ? FX.resolveProjectileKind(current) : "coin"),
+
+          sprites[current.attacker]?.accent,
+
+          API
+
+        );
+
+        if (current.effect === "damage" && FX.spawnDamageNumber) {
+
+          FX.spawnDamageNumber(
+
+            document.getElementById("fx"),
+
+            document.getElementById(toSide),
+
+            current.power || 12,
+
+            "#ff6b4a"
+
+          );
+
+        }
+
+      }
+
+    }
+
+  }
+
+
+
+  const phase = String(duel.phase || "").toLowerCase();
+  const phaseRemain = Math.max(0, Math.ceil((duel.phaseRemainingMs || 0) / 1000));
+  const remain = duel.active ? duel.remainingMs : tournament.remainingMs;
+  const sec = Math.max(0, Math.ceil((remain || 0) / 1000));
+  let bannerTitle = duel.active ? "DUEL" : "TURNAMENT";
+  let bannerSub = "Dárek z platformy = její Koj útočí · batoh/item = pohyb · token Pokémon";
+  if (phase === "announce") {
+    bannerTitle = "DUEL · OZNÁMENÍ";
+    bannerSub = `Připravte se · ${phaseRemain}s`;
+  } else if (phase === "countdown") {
+    bannerTitle = "DUEL · COUNTDOWN";
+    bannerSub = `${phaseRemain}`;
+  } else if (phase === "finished" || duel.winner) {
+    bannerTitle = `VÍTĚZ · ${duel.winnerLabel || duel.winner || "?"}`;
+    bannerSub = "Top přispěvatelé v aréně · jen miaPoints";
+  } else if (duel.active) {
+    bannerTitle = `DUEL · ${sec}s`;
+  }
+
+  document.getElementById("banner").innerHTML =
+    `${bannerTitle}` +
+    `<span class="sub">${bannerSub}</span>`;
+
+
+
+  document.getElementById("bench").innerHTML = ranking.map((r) => {
+
+    const spr = sprites[r.platform] || {};
+
+    const activeCls = (r.platform === leftP || r.platform === rightP) ? " active" : "";
+
+    return `<div class="bench-card${activeCls}"><img src="${API}${spr.spriteUrl || spr.idleUrl || ""}" alt=""><div class="n">${spr.name || r.label}</div></div>`;
+
+  }).join("");
+
+}
+
+
+
+async function tick() {
+
+  try {
+
+    const res = await fetch(API + "/arena/status");
+
+    const data = await res.json();
+
+    if (data?.ok) render(data);
+
+  } catch (_e) {
+
+    document.getElementById("stage").classList.remove("active");
+
+  }
+
+}
+
+tick();
+
+setInterval(tick, 850);
+
+</script>
+
+</body>
+
+</html>
+
+

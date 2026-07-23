@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "packs": {
+    "emotion_stress_kojnozout_general": {
+      "meta": {
+        "key": "emotion_stress_kojnozout_general",
+        "speaker": "kojnozout",
+        "intent": "stress_report"
+      },
+      "variants": [
+        "{name}, jo. To už zní dost napjatě. Já teď radši zůstanu víc v klidu.",
+        "{name}, slyším tě. Tohle je spíš na pomalejší tempo a méně rámusu.",
+        "{name}, vnímám tlak. Budu teď spíš potichu a hlídat klid."
+      ]
+    },
+    "emotion_frustration_kojnozout_general": {
+      "meta": {
+        "key": "emotion_frustration_kojnozout_general",
+        "speaker": "kojnozout",
+        "intent": "frustration_report"
+      },
+      "variants": [
+        "{name}, jo, tohle umí člověka vytočit. Já bych teď radši nic nelámal a chvíli počkal.",
+        "{name}, chápu. To je na nervy. Dneska spíš bez velkého kraválu.",
+        "{name}, slyším tě. Tohle je ten typ dne, kdy je lepší trochu zpomalit."
+      ]
+    },
+    "emotion_joy_kojnozout_general": {
+      "meta": {
+        "key": "emotion_joy_kojnozout_general",
+        "speaker": "kojnozout",
+        "intent": "joy_report"
+      },
+      "variants": [
+        "{name}, jo! To už zní líp. To se mi poslouchá hned jinak.",
+        "{name}, tohle má dobrý vibe. Já jsem pro radostnou verzi dneška.",
+        "{name}, no vidíš. Tak to už je řeč, která mi sedí."
+      ]
+    },
+    "emotion_relief_kojnozout_general": {
+      "meta": {
+        "key": "emotion_relief_kojnozout_general",
+        "speaker": "kojnozout",
+        "intent": "relief_report"
+      },
+      "variants": [
+        "{name}, tak to je aspoň úleva. To se dýchá hned líp.",
+        "{name}, no sláva. Tohle už zní o dost klidněji.",
+        "{name}, jo, dobrý. Tak teď už to může být o něco lehčí."
+      ]
+    }
+  }
+}

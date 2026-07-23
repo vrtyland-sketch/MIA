@@ -1,0 +1,32 @@
+{
+  "version": "1.0.0",
+  "streamTiers": ["T0", "T1", "T2", "T3", "T4", "T5", "T6"],
+  "coinThresholds": {
+    "T0": 0,
+    "T1": 1,
+    "T2": 100,
+    "T3": 1000,
+    "T4": 5000,
+    "T5": 10000,
+    "T6": 25000
+  },
+  "miaPointsPerCoin": 7.5,
+  "priorityByTier": {
+    "T0": 1,
+    "T1": 2,
+    "T2": 4,
+    "T3": 6,
+    "T4": 8,
+    "T5": 9,
+    "T6": 10
+  },
+  "labels": {
+    "T0": "mikro",
+    "T1": "běžné",
+    "T2": "lepší",
+    "T3": "velké",
+    "T4": "legendární",
+    "T5": "epické",
+    "T6": "mýtické"
+  }
+}

@@ -1,0 +1,1543 @@
+{
+  "version": 1,
+  "description": "Finální tier po vizuálním review (OBS pinned + intake)",
+  "updatedAt": "2026-07-04T20:11:21.847Z",
+  "assignments": [
+    {
+      "rel": "videos_2/2026-04-19-121304490.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "cyber_matrix",
+      "obsSlot": "T4_VIDEO_14",
+      "note": "CapCut — muž digital rain Matrix styl, 156 s vertikál, T4 cyber epic"
+    },
+    {
+      "rel": "videos_2/2026-06-21-201620647.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "community_duel_promo",
+      "obsSlot": "T5_VIDEO_21",
+      "note": "LAJKOVACÍ DUELY promo — Prstitel vs Tomino, VS grafika + auta; intro černé, obsah od ~90 s"
+    },
+    {
+      "rel": "videos_2/2026-06-25-152308764.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "wholesome_romance",
+      "obsSlot": "T3_VIDEO_10",
+      "note": "Pixar styl — berušky romance západ slunce, wholesome T3"
+    },
+    {
+      "rel": "videos_2/2026-06-30-170837281.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "action_sport",
+      "obsSlot": "T4_VIDEO_16",
+      "note": "CapCut vertikál — bike jump z rampy, 36 s akce, T2 ne epic"
+    },
+    {
+      "rel": "videos_2/2026-06-30-170940174.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "cinematic_sunset",
+      "obsSlot": null,
+      "note": "CapCut — zvonice + západ slunce nad náměstím, cinematic T4"
+    },
+    {
+      "rel": "videos_2/lv_0_20260411115550.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "vfx_abstract",
+      "obsSlot": "T4_VIDEO_13",
+      "note": "LV — fialový energy swirl abstraktní VFX, spíš T3 přechod než T4 boss"
+    },
+    {
+      "rel": "videos_2/lv_0_20260411115935.mp4",
+      "tier": "T5",
+      "contentKind": "story_legend",
+      "theme": "mia_koj_signature",
+      "obsSlot": "T5_VIDEO_19",
+      "note": "LV — Kojnožrout glitch mascot srdce, signature MIA T5 WOW"
+    },
+    {
+      "rel": "videos_2/lv_0_20260411120454.mp4",
+      "tier": "T5",
+      "contentKind": "story_legend",
+      "theme": "mia_koj_signature",
+      "obsSlot": "T5_VIDEO_20",
+      "note": "LV — Kojnožrout celebrate party, signature T5"
+    },
+    {
+      "rel": "videos_2/lv_0_20260411124814.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "czech_meme",
+      "obsSlot": "T2_VIDEO_10",
+      "note": "LV — ŠÉFKUCHAŘ CHAOSU český kuchyňský meme, 3 s, T2 hit"
+    },
+    {
+      "rel": "videos_2/lv_7574590375705480453_20260516152347 (1).mp4",
+      "tier": "T5",
+      "contentKind": "story_legend",
+      "theme": "mia_koj_signature",
+      "obsSlot": null,
+      "note": "LV — Koj FEED ME / DATA IS LOVE, kanon pet T5 signature"
+    },
+    {
+      "rel": "videos_2/VID-20260318-WA0328.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "prague_romance",
+      "obsSlot": "PROFILE_VIDEO_01",
+      "note": "PixVerse — pár na Karlův mostě 5 s, profilové video dárce"
+    },
+    {
+      "rel": "videos_2/VID-20260318-WA0333.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "prague_pixverse",
+      "obsSlot": "T3_VIDEO_09",
+      "note": "PixVerse Praha — gargoyle vs dívka na Karlův mostě, fantasy série, T3"
+    },
+    {
+      "rel": "videos_2/VID-20260419-WA0070.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "cyber_matrix",
+      "obsSlot": "T4_VIDEO_15",
+      "note": "DUPLICITNÍ kopie 2026-04-19-121304490 — stejný Matrix clip"
+    },
+    {
+      "rel": "videos_2/VID-20260419-WA0095.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "cute_profile",
+      "obsSlot": "PROFILE_VIDEO_02",
+      "note": "PixVerse — roztomilá koule ve dřezu splash, 5 s PROFILE"
+    },
+    {
+      "rel": "videos_2/VID-20260504-WA0001.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "pixverse_fairy",
+      "obsSlot": "T4_VIDEO_17",
+      "note": "PixVerse — dlouhá ladybug pohádka 198 s, cozy fantasy → T3 story (ne T4 boss)"
+    },
+    {
+      "rel": "videos/0b339c730024433bf38d0cd2b65f54b0.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "other",
+      "obsSlot": null,
+      "note": "Provisional tier z auto klasifikace (other)"
+    },
+    {
+      "rel": "videos/1881385661b61ddcca6ad525050419cf.mp4",
+      "tier": "T2",
+      "contentKind": "quote_clip",
+      "theme": "other",
+      "obsSlot": null,
+      "note": "Provisional tier z auto klasifikace (other)"
+    },
+    {
+      "rel": "videos/2026-01-31-192023817-3-concat-v.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "other",
+      "obsSlot": null,
+      "note": "Provisional tier z auto klasifikace (other)"
+    },
+    {
+      "rel": "videos/2026-01-31-192659197.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "capcut_story",
+      "obsSlot": null,
+      "note": "Photos export střední clip T3"
+    },
+    {
+      "rel": "videos/2026-01-31-193827429.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "capcut_story",
+      "obsSlot": null,
+      "note": "Photos export střední clip T3"
+    },
+    {
+      "rel": "videos/2026-01-31-195237673.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "capcut_short",
+      "obsSlot": null,
+      "note": "Photos export krátký clip T2"
+    },
+    {
+      "rel": "videos/2026-01-31-201314398.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "capcut_short",
+      "obsSlot": null,
+      "note": "Photos export krátký clip T2"
+    },
+    {
+      "rel": "videos/2026-01-31-202404755_175510.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "other",
+      "obsSlot": null,
+      "note": "Provisional tier z auto klasifikace (other)"
+    },
+    {
+      "rel": "videos/2026-01-31-202404755.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "capcut_story",
+      "obsSlot": null,
+      "note": "Photos export střední clip T3"
+    },
+    {
+      "rel": "videos/2026-01-31-203247520.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "capcut_short",
+      "obsSlot": null,
+      "note": "Photos export krátký clip T2"
+    },
+    {
+      "rel": "videos/2026-01-31-204306250.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "capcut_story",
+      "obsSlot": null,
+      "note": "Photos export střední clip T3"
+    },
+    {
+      "rel": "videos/2026-02-01-150809883.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "capcut_story",
+      "obsSlot": null,
+      "note": "Photos export střední clip T3"
+    },
+    {
+      "rel": "videos/2026-02-01-151007511.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "capcut_story",
+      "obsSlot": null,
+      "note": "Photos export střední clip T3"
+    },
+    {
+      "rel": "videos/2026-02-01-151959222.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "capcut_short",
+      "obsSlot": null,
+      "note": "Photos export krátký clip T2"
+    },
+    {
+      "rel": "videos/2026-02-01-161429084_175814.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "other",
+      "obsSlot": null,
+      "note": "Provisional tier z auto klasifikace (other)"
+    },
+    {
+      "rel": "videos/2026-02-01-161429084.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "capcut_epic",
+      "obsSlot": null,
+      "note": "Photos export dlouhý clip — cap T4 (vizuálně neověřeno na T5)"
+    },
+    {
+      "rel": "videos/2026-02-01-161834071.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "capcut_story",
+      "obsSlot": null,
+      "note": "Photos export střední clip T3"
+    },
+    {
+      "rel": "videos/2026-02-17-105329302.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "capcut_epic",
+      "obsSlot": null,
+      "note": "Photos export dlouhý clip — cap T4 (vizuálně neověřeno na T5)"
+    },
+    {
+      "rel": "videos/2026-02-17-112156879.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "capcut_story",
+      "obsSlot": null,
+      "note": "Photos export střední clip T3"
+    },
+    {
+      "rel": "videos/2026-02-17-114535340.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "capcut_story",
+      "obsSlot": null,
+      "note": "Photos export střední clip T3"
+    },
+    {
+      "rel": "videos/2026-02-17-121129193_180745.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "other",
+      "obsSlot": null,
+      "note": "Provisional tier z auto klasifikace (other)"
+    },
+    {
+      "rel": "videos/2026-02-17-121129193_181050.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "other",
+      "obsSlot": null,
+      "note": "Provisional tier z auto klasifikace (other)"
+    },
+    {
+      "rel": "videos/2026-02-17-121129193.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "capcut_story",
+      "obsSlot": null,
+      "note": "Photos export střední clip T3"
+    },
+    {
+      "rel": "videos/2026-02-18-112251261.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "capcut_epic",
+      "obsSlot": null,
+      "note": "Photos export dlouhý clip — cap T4 (vizuálně neověřeno na T5)"
+    },
+    {
+      "rel": "videos/2026-02-18-112856597.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "capcut_short",
+      "obsSlot": null,
+      "note": "Photos export krátký clip T2"
+    },
+    {
+      "rel": "videos/2026-02-20-202759670.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "capcut_story",
+      "obsSlot": null,
+      "note": "Photos export střední clip T3"
+    },
+    {
+      "rel": "videos/2026-02-21-054959231.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "capcut_epic",
+      "obsSlot": null,
+      "note": "Photos export dlouhý clip — cap T4 (vizuálně neověřeno na T5)"
+    },
+    {
+      "rel": "videos/2026-02-21-055701001.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "capcut_epic",
+      "obsSlot": null,
+      "note": "Photos export dlouhý clip — cap T4 (vizuálně neověřeno na T5)"
+    },
+    {
+      "rel": "videos/2026-02-21-061038743.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "capcut_story",
+      "obsSlot": null,
+      "note": "Photos export střední clip T3"
+    },
+    {
+      "rel": "videos/2026-02-24-211933870.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "capcut_short",
+      "obsSlot": null,
+      "note": "Photos export krátký clip T2"
+    },
+    {
+      "rel": "videos/2026-02-24-212116935.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "capcut_short",
+      "obsSlot": null,
+      "note": "Photos export krátký clip T2"
+    },
+    {
+      "rel": "videos/2026-02-25-115053628.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "capcut_story",
+      "obsSlot": null,
+      "note": "Photos export střední clip T3"
+    },
+    {
+      "rel": "videos/2026-03-05-184341058 (1).mp4",
+      "tier": "T2",
+      "contentKind": "quote_clip",
+      "theme": "other",
+      "obsSlot": null,
+      "note": "Provisional tier z auto klasifikace (other)"
+    },
+    {
+      "rel": "videos/2026-03-05-184341058.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "capcut_short",
+      "obsSlot": null,
+      "note": "Photos export krátký clip T2"
+    },
+    {
+      "rel": "videos/2026-03-06-113402431.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "capcut_epic",
+      "obsSlot": null,
+      "note": "Photos export dlouhý clip — cap T4 (vizuálně neověřeno na T5)"
+    },
+    {
+      "rel": "videos/20260309_140145.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "other",
+      "obsSlot": null,
+      "note": "Provisional tier z auto klasifikace (other)"
+    },
+    {
+      "rel": "videos/30e0f7d2ff2d8ae5170a71a570be9a0e.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "other",
+      "obsSlot": null,
+      "note": "Provisional tier z auto klasifikace (other)"
+    },
+    {
+      "rel": "videos/63a955601f94f8034538a37f0991d681.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "other",
+      "obsSlot": null,
+      "note": "Provisional tier z auto klasifikace (other)"
+    },
+    {
+      "rel": "videos/b6528f96f8330c4fc67a8d0d38db91a8.mp4",
+      "tier": "T2",
+      "contentKind": "quote_clip",
+      "theme": "other",
+      "obsSlot": null,
+      "note": "Provisional tier z auto klasifikace (other)"
+    },
+    {
+      "rel": "videos/hailuo_1769712635.mp4",
+      "tier": "T1",
+      "contentKind": "short_animation",
+      "theme": "cute_ai",
+      "obsSlot": "T1_VIDEO_01",
+      "note": "Hailuo AI — medvídek s galaxii v srdci, cute T1 animace"
+    },
+    {
+      "rel": "videos/hailuo_1769864687 (1).mp4",
+      "tier": "T1",
+      "contentKind": "short_animation",
+      "theme": "cute_ai",
+      "obsSlot": "T1_VIDEO_02",
+      "note": "Hailuo AI — krátká cute/fantasy animace, T1 slot"
+    },
+    {
+      "rel": "videos/hailuo_1769864687.mp4",
+      "tier": "T1",
+      "contentKind": "short_animation",
+      "theme": "cute_ai",
+      "obsSlot": "T1_VIDEO_03",
+      "note": "Hailuo AI — krátká cute animace, T1 slot"
+    },
+    {
+      "rel": "videos/hailuo_1769867013.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "fantasy_animal",
+      "obsSlot": "T1_VIDEO_04",
+      "note": "Hailuo AI — divoká prasata + fialový lightning, silnější než cute T1 → T2"
+    },
+    {
+      "rel": "videos/hailuo_1769867637.mp4",
+      "tier": "T1",
+      "contentKind": "short_animation",
+      "theme": "cute_ai",
+      "obsSlot": "T1_VIDEO_05",
+      "note": "Hailuo AI — krátká AI animace, T1 rotace"
+    },
+    {
+      "rel": "videos/hailuo_1769880564.mp4",
+      "tier": "T1",
+      "contentKind": "short_animation",
+      "theme": "cute_ai",
+      "obsSlot": "T1_VIDEO_06",
+      "note": "Hailuo AI — krátká AI animace, T1 rotace"
+    },
+    {
+      "rel": "videos/lv_0_20260129173032 (1).mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "lv_short",
+      "obsSlot": null,
+      "note": "LV krátký edit T2"
+    },
+    {
+      "rel": "videos/lv_0_20260129173032.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "lv_short",
+      "obsSlot": null,
+      "note": "LV krátký edit T2"
+    },
+    {
+      "rel": "videos/lv_0_20260129195540.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "lv_short",
+      "obsSlot": null,
+      "note": "LV krátký edit T2"
+    },
+    {
+      "rel": "videos/lv_0_20260131151957_175058.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "lv_short",
+      "obsSlot": null,
+      "note": "LV krátký edit T2"
+    },
+    {
+      "rel": "videos/lv_0_20260131151957.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "action_sport",
+      "obsSlot": "T2_VIDEO_09",
+      "note": "CapCut — BMX fialové kolo, akční sport clip, T2"
+    },
+    {
+      "rel": "videos/lv_0_20260213174259.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "lv_story",
+      "obsSlot": null,
+      "note": "LV příběhový edit T3"
+    },
+    {
+      "rel": "videos/lv_0_20260221054745.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "lv_epic",
+      "obsSlot": null,
+      "note": "LV dlouhý edit — cap T4 bez Koj signature"
+    },
+    {
+      "rel": "videos/lv_0_20260224143906.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "lv_short",
+      "obsSlot": null,
+      "note": "LV krátký edit T2"
+    },
+    {
+      "rel": "videos/lv_0_20260227201454.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "lv_epic",
+      "obsSlot": null,
+      "note": "LV dlouhý edit — cap T4 bez Koj signature"
+    },
+    {
+      "rel": "videos/lv_0_20260228122155.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "lv_epic",
+      "obsSlot": null,
+      "note": "LV dlouhý edit — cap T4 bez Koj signature"
+    },
+    {
+      "rel": "videos/lv_0_20260301164702.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "lv_short",
+      "obsSlot": null,
+      "note": "LV krátký edit T2"
+    },
+    {
+      "rel": "videos/lv_0_20260302104305.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "lv_story",
+      "obsSlot": null,
+      "note": "LV příběhový edit T3"
+    },
+    {
+      "rel": "videos/lv_0_20260302112329.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "lv_epic",
+      "obsSlot": null,
+      "note": "LV dlouhý edit — cap T4 bez Koj signature"
+    },
+    {
+      "rel": "videos/lv_0_20260302120551.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "lv_epic",
+      "obsSlot": null,
+      "note": "LV dlouhý edit — cap T4 bez Koj signature"
+    },
+    {
+      "rel": "videos/lv_0_20260302154839.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "lv_short",
+      "obsSlot": null,
+      "note": "LV krátký edit T2"
+    },
+    {
+      "rel": "videos/lv_0_20260305140654.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "lv_epic",
+      "obsSlot": null,
+      "note": "LV dlouhý edit — cap T4 bez Koj signature"
+    },
+    {
+      "rel": "videos/lv_0_20260305175040.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "lv_short",
+      "obsSlot": null,
+      "note": "LV krátký edit T2"
+    },
+    {
+      "rel": "videos/lv_0_20260305202118 (1).mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "lv_story",
+      "obsSlot": null,
+      "note": "LV příběhový edit T3"
+    },
+    {
+      "rel": "videos/lv_0_20260305202118 (2).mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "lv_story",
+      "obsSlot": null,
+      "note": "LV příběhový edit T3"
+    },
+    {
+      "rel": "videos/lv_0_20260305202118 (3).mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "lv_story",
+      "obsSlot": null,
+      "note": "LV příběhový edit T3"
+    },
+    {
+      "rel": "videos/lv_0_20260305202118_210842.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "lv_story",
+      "obsSlot": null,
+      "note": "LV příběhový edit T3"
+    },
+    {
+      "rel": "videos/lv_0_20260305202118.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "lv_story",
+      "obsSlot": null,
+      "note": "LV příběhový edit T3"
+    },
+    {
+      "rel": "videos/lv_0_20260306185113.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "lv_story",
+      "obsSlot": null,
+      "note": "LV příběhový edit T3"
+    },
+    {
+      "rel": "videos/lv_0_20260306191844.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "lv_story",
+      "obsSlot": null,
+      "note": "LV příběhový edit T3"
+    },
+    {
+      "rel": "videos/lv_0_20260307180457_211118.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "lv_story",
+      "obsSlot": null,
+      "note": "LV příběhový edit T3"
+    },
+    {
+      "rel": "videos/lv_0_20260307180457.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "lv_story",
+      "obsSlot": null,
+      "note": "LV příběhový edit T3"
+    },
+    {
+      "rel": "videos/lv_0_20260308095114.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "lv_story",
+      "obsSlot": null,
+      "note": "LV příběhový edit T3"
+    },
+    {
+      "rel": "videos/lv_0_20260308114846.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "lv_epic",
+      "obsSlot": null,
+      "note": "LV dlouhý edit — cap T4 bez Koj signature"
+    },
+    {
+      "rel": "videos/lv_0_20260308141249.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "lv_epic",
+      "obsSlot": null,
+      "note": "LV dlouhý edit — cap T4 bez Koj signature"
+    },
+    {
+      "rel": "videos/lv_0_20260309100507 (1).mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "lv_epic",
+      "obsSlot": null,
+      "note": "LV dlouhý edit — cap T4 bez Koj signature"
+    },
+    {
+      "rel": "videos/lv_0_20260309100507.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "lv_epic",
+      "obsSlot": null,
+      "note": "LV dlouhý edit — cap T4 bez Koj signature"
+    },
+    {
+      "rel": "videos/lv_7351466693492837650_20260302151200_183032.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "lv_short",
+      "obsSlot": null,
+      "note": "LV krátký edit T2"
+    },
+    {
+      "rel": "videos/lv_7351466693492837650_20260302151200.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "lv_short",
+      "obsSlot": null,
+      "note": "LV krátký edit T2"
+    },
+    {
+      "rel": "videos/lv_7412252754967547152_20260130143639 (1).mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "lv_short",
+      "obsSlot": null,
+      "note": "LV krátký edit T2"
+    },
+    {
+      "rel": "videos/lv_7412252754967547152_20260130143639.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "lv_short",
+      "obsSlot": null,
+      "note": "LV krátký edit T2"
+    },
+    {
+      "rel": "videos/lv_7492826773315439933_20260217114448.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "lv_story",
+      "obsSlot": null,
+      "note": "LV příběhový edit T3"
+    },
+    {
+      "rel": "videos/lv_7505688003600190773_20260130144313 (1).mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "lv_short",
+      "obsSlot": null,
+      "note": "LV krátký edit T2"
+    },
+    {
+      "rel": "videos/lv_7505688003600190773_20260130144313.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "lv_short",
+      "obsSlot": null,
+      "note": "LV krátký edit T2"
+    },
+    {
+      "rel": "videos/lv_7514556554960440637_20260217121550.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "lv_story",
+      "obsSlot": null,
+      "note": "LV příběhový edit T3"
+    },
+    {
+      "rel": "videos/lv_7518394866301209909_20260302101327.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "community_brand",
+      "obsSlot": "T3_VIDEO_11",
+      "note": "LV — PRSTITEL TEAM van u řeky, komunitní branding clip, T3"
+    },
+    {
+      "rel": "videos/lv_7518585147663322421_20260305173214.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "lv_story",
+      "obsSlot": "T3_VIDEO_12",
+      "note": "LV edit — příběhový komunitní clip, T3 rotace"
+    },
+    {
+      "rel": "videos/lv_7533169992972406077_20260302143625.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "lv_story",
+      "obsSlot": null,
+      "note": "LV příběhový edit T3"
+    },
+    {
+      "rel": "videos/lv_7539970412252335413_20260213231531.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "lv_story",
+      "obsSlot": null,
+      "note": "LV příběhový edit T3"
+    },
+    {
+      "rel": "videos/lv_7553995913039990077_20260218112106.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "lv_story",
+      "obsSlot": null,
+      "note": "LV příběhový edit T3"
+    },
+    {
+      "rel": "videos/lv_7560367310947618101_20260217105146.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "lv_story",
+      "obsSlot": null,
+      "note": "LV příběhový edit T3"
+    },
+    {
+      "rel": "videos/lv_7569904188230995253_20260217112138.mp4",
+      "tier": "T3",
+      "contentKind": "donator_moment",
+      "theme": "top_donator",
+      "obsSlot": "T4_VIDEO_18",
+      "note": "PixVerse — TOP DONATORS Martin279 personal tribute, komunitní T3"
+    },
+    {
+      "rel": "videos/lv_7570259947502456117_20260217104933.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "lv_story",
+      "obsSlot": null,
+      "note": "LV příběhový edit T3"
+    },
+    {
+      "rel": "videos/lv_7576401796365552901_20260214012849.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "lv_story",
+      "obsSlot": null,
+      "note": "LV příběhový edit T3"
+    },
+    {
+      "rel": "videos/lv_7577041004986027269_20260213234226.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "lv_story",
+      "obsSlot": null,
+      "note": "LV příběhový edit T3"
+    },
+    {
+      "rel": "videos/lv_7595021607240830261_20260221060458.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "lv_story",
+      "obsSlot": null,
+      "note": "LV příběhový edit T3"
+    },
+    {
+      "rel": "videos/VID-20260201-WA0009.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "community_clip",
+      "obsSlot": "T2_VIDEO_06",
+      "note": "WhatsApp komunitní clip — střední energie, T2"
+    },
+    {
+      "rel": "videos/VID-20260201-WA0011.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "pixverse_epic",
+      "obsSlot": "T2_VIDEO_05",
+      "note": "PixVerse — King Kong gorilla + blesky, krátký ale epic moment → T3"
+    },
+    {
+      "rel": "videos/VID-20260201-WA0015.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "rose_meme",
+      "obsSlot": "PROFILE_VIDEO_03",
+      "note": "PixVerse — Rose meme muž s růží, bláznivý PROFILE / T1 Rose reakce"
+    },
+    {
+      "rel": "videos/VID-20260201-WA0019.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": "PROFILE_VIDEO_04",
+      "note": "WhatsApp — krátké profilové video dárce, PROFILE slot"
+    },
+    {
+      "rel": "videos/VID-20260214-WA0025.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260228-WA0112.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "community_epic",
+      "obsSlot": null,
+      "note": "WhatsApp dlouhý epic clip T4"
+    },
+    {
+      "rel": "videos/VID-20260305-WA0016.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "community_story",
+      "obsSlot": null,
+      "note": "WhatsApp příběhový clip T3"
+    },
+    {
+      "rel": "videos/VID-20260305-WA0019.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "community_story",
+      "obsSlot": "T3_VIDEO_14",
+      "note": "WhatsApp — příběh + hudba, T3"
+    },
+    {
+      "rel": "videos/VID-20260305-WA0020.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "community_clip",
+      "obsSlot": "T2_VIDEO_07",
+      "note": "WhatsApp komunitní clip, T2"
+    },
+    {
+      "rel": "videos/VID-20260305-WA0028.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260305-WA0029.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260305-WA0031.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260305-WA0039.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260305-WA0040.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260315-WA0000.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "community_epic",
+      "obsSlot": null,
+      "note": "WhatsApp dlouhý epic clip T4"
+    },
+    {
+      "rel": "videos/VID-20260317-WA0051.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "community_epic",
+      "obsSlot": null,
+      "note": "WhatsApp dlouhý epic clip T4"
+    },
+    {
+      "rel": "videos/VID-20260317-WA0081.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "community_story",
+      "obsSlot": null,
+      "note": "WhatsApp příběhový clip T3"
+    },
+    {
+      "rel": "videos/VID-20260317-WA0083.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "community_story",
+      "obsSlot": null,
+      "note": "WhatsApp příběhový clip T3"
+    },
+    {
+      "rel": "videos/VID-20260317-WA0084.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260318-WA0022.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "community_epic",
+      "obsSlot": null,
+      "note": "WhatsApp dlouhý epic clip T4"
+    },
+    {
+      "rel": "videos/VID-20260318-WA0053.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260318-WA0054.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260318-WA0063.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260318-WA0084.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260318-WA0134.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260318-WA0138.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260318-WA0186.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "community_clip",
+      "obsSlot": "T2_VIDEO_08",
+      "note": "WhatsApp komunitní clip, T2"
+    },
+    {
+      "rel": "videos/VID-20260318-WA0235.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "community_clip",
+      "obsSlot": null,
+      "note": "WhatsApp komunitní clip T2"
+    },
+    {
+      "rel": "videos/VID-20260318-WA0237.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260318-WA0328.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260318-WA0333_211904.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "community_story",
+      "obsSlot": null,
+      "note": "WhatsApp příběhový clip T3"
+    },
+    {
+      "rel": "videos/VID-20260318-WA0333.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "community_story",
+      "obsSlot": null,
+      "note": "WhatsApp příběhový clip T3"
+    },
+    {
+      "rel": "videos/VID-20260319-WA0001_211251.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "community_epic",
+      "obsSlot": null,
+      "note": "WhatsApp dlouhý epic clip T4"
+    },
+    {
+      "rel": "videos/VID-20260319-WA0001.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "community_epic",
+      "obsSlot": null,
+      "note": "WhatsApp dlouhý epic clip T4"
+    },
+    {
+      "rel": "videos/VID-20260327-WA0077.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260327-WA0079.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260327-WA0081.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260401-WA0022.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "community_story",
+      "obsSlot": "T3_VIDEO_13",
+      "note": "WhatsApp — delší příběhový clip s hudbou, T3"
+    },
+    {
+      "rel": "videos/VID-20260411-WA0007.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260411-WA0008.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260411-WA0009.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260411-WA0018.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260417-WA0035.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "community_clip",
+      "obsSlot": null,
+      "note": "WhatsApp komunitní clip T2"
+    },
+    {
+      "rel": "videos/VID-20260417-WA0040.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "community_epic",
+      "obsSlot": null,
+      "note": "WhatsApp dlouhý epic clip T4"
+    },
+    {
+      "rel": "videos/VID-20260418-WA0003.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260418-WA0004.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0004.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0007.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0008.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0016.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0019.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0023.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0028 (1).mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0028_211222.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0028.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0034.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0036.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0037.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0038.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0039.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0040.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0041.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0046.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0052.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0055.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0059.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0061.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0062.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0064.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0065_205035.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0065.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0067.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0068.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0069.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "community_epic",
+      "obsSlot": null,
+      "note": "WhatsApp dlouhý epic clip T4"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0070.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "community_epic",
+      "obsSlot": null,
+      "note": "WhatsApp dlouhý epic clip T4"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0095_211904.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260419-WA0095.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    },
+    {
+      "rel": "videos/VID-20260504-WA0001_211904.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "community_epic",
+      "obsSlot": null,
+      "note": "WhatsApp dlouhý epic clip T4"
+    },
+    {
+      "rel": "videos/VID-20260504-WA0001.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "theme": "community_epic",
+      "obsSlot": null,
+      "note": "WhatsApp dlouhý epic clip T4"
+    },
+    {
+      "rel": "videos/VID-20260619-WA0102.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "theme": "community_clip",
+      "obsSlot": null,
+      "note": "WhatsApp komunitní clip T2"
+    },
+    {
+      "rel": "videos/VID-20260619-WA0103.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "theme": "community_story",
+      "obsSlot": null,
+      "note": "WhatsApp příběhový clip T3"
+    },
+    {
+      "rel": "videos/WhatsApp Video 2026-06-19 at 12.54.34.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "theme": "community_profile",
+      "obsSlot": null,
+      "note": "WhatsApp krátké profilové video"
+    }
+  ]
+}

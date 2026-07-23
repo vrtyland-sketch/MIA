@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "packs": {
+    "mia_vitals_sleepy_gift": {
+      "meta": { "key": "mia_vitals_sleepy_gift", "speaker": "mia" },
+      "variants": [
+        "{name}, Kojnožrout spí — ale slyší ten {gift}. Díky.",
+        "{name}, zdá se, že Kojnožrout odpočívá, ale {gift} ho hezky probudí.",
+        "{name}, i ve spánku to slyší. {gift} dorazil k našemu mazlíčkovi.",
+        "{name}, Kojnožrout zírá, ale {gift} určitě zaregistroval.",
+        "{name}, spí, ale ne úplně — {gift} ho dostal i do snu."
+      ]
+    },
+    "mia_vitals_sick_gift": {
+      "meta": { "key": "mia_vitals_sick_gift", "speaker": "mia" },
+      "variants": [
+        "{name}, Kojnožrout je nemocný — {gift} mu určitě pomůže.",
+        "{name}, není mu úplně dobře, ale {gift} je přesně ta péče, co potřebuje.",
+        "{name}, díky za {gift}. Kojnožrout teď potřebuje klid i krmení.",
+        "{name}, {gift} dorazil v dobrý moment — Kojnožrout je pod weather.",
+        "{name}, vidím, že mu je špatně. {gift} je od tebe hezký signál péče."
+      ]
+    },
+    "mia_vitals_sad_gift": {
+      "meta": { "key": "mia_vitals_sad_gift", "speaker": "mia" },
+      "variants": [
+        "{name}, Kojnožrout je teď smutný — {gift} mu zvedne náladu.",
+        "{name}, {gift} je přesně to, co smutnému Kojnožroutovi udělá den lepším.",
+        "{name}, díky. Když je mu smutno, taková podpora má velkou váhu.",
+        "{name}, {gift} dorazil v citlivý moment. Kojnožrout to vnímá.",
+        "{name}, smutek trochu poleví — {gift} od tebe je vidět."
+      ]
+    },
+    "mia_vitals_annoyed_gift": {
+      "meta": { "key": "mia_vitals_annoyed_gift", "speaker": "mia" },
+      "variants": [
+        "{name}, Kojnožrout je teď naštvaný z hladu — {gift} ho uklidní.",
+        "{name}, {gift} dorazil ve chvíli, kdy má Kojnožrout fakt hlad.",
+        "{name}, trochu se mrzí, ale {gift} je dobrá omluva.",
+        "{name}, díky za {gift}. Hladový Kojnožrout teď bude spokojenější.",
+        "{name}, {gift} — přesně to, co rozmrzelému Kojnožroutovi zvedne náladu."
+      ]
+    },
+    "mia_vitals_hungry_gift": {
+      "meta": { "key": "mia_vitals_hungry_gift", "speaker": "mia" },
+      "variants": [
+        "{name}, Kojnožrout má hlad — {gift} padá úplně správně.",
+        "{name}, {gift} dorazil přesně ve chvíli, kdy miska volala.",
+        "{name}, díky. Kojnožrout čekal a {gift} mu sedí.",
+        "{name}, hladový režim potvrzen — {gift} je vítaný.",
+        "{name}, {gift} je pro hladového Kojnožrouta vždycky dobrá zpráva."
+      ]
+    },
+    "mia_vitals_sleepy_status": {
+      "meta": { "key": "mia_vitals_sleepy_status", "speaker": "mia" },
+      "variants": [
+        "Kojnožrout teď spí v rohu, ale pořád slyší chat.",
+        "Spí, ale není mrtvej — stream pořád vnímá.",
+        "Zdá se unavený. Odpočívá, ale reaguje na podporu."
+      ]
+    },
+    "mia_vitals_sick_status": {
+      "meta": { "key": "mia_vitals_sick_status", "speaker": "mia" },
+      "variants": [
+        "Kojnožrout je nemocný — potřebuje péči a klidnej chat.",
+        "Není mu nejlíp. Pomohlo by krmení nebo CARE příkazy.",
+        "Je pod weather. Komunita může pomoct."
+      ]
+    }
+  }
+}

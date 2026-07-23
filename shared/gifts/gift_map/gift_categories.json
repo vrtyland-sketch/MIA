@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0",
+  "categories": {
+    "FLOWER": { "label": "Květiny", "care": "LOVE", "moodHint": "warm" },
+    "ANIMAL": { "label": "Zvířata", "care": "PET", "moodHint": "happy" },
+    "FOOD": { "label": "Jídlo", "care": "CARE", "moodHint": "hungry" },
+    "MAGIC": { "label": "Magie", "care": "SPECIAL", "moodHint": "excited" },
+    "LOVE": { "label": "Láska", "care": "LOVE", "moodHint": "love" },
+    "FUN": { "label": "Zábava", "care": "SUPPORT", "moodHint": "laugh" },
+    "LEGENDARY": { "label": "Legendární", "care": "SUPPORT", "moodHint": "epic" },
+    "SEASONAL": { "label": "Sezónní", "care": "SUPPORT", "moodHint": "party" },
+    "SPECIAL": { "label": "Speciální", "care": "HELP", "moodHint": "proud" },
+    "GENERIC": { "label": "Obecné", "care": "SUPPORT", "moodHint": "warm" }
+  }
+}

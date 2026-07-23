@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="Cache-Control" content="no-cache" />
+<title>MIA · Masters galerie</title>
+<style>
+  html, body { margin: 0; background: #07060c; color: #f4eefc; font-family: "Segoe UI", Arial, sans-serif; }
+  h1 { text-align: center; margin: 16px 12px 4px; font-size: 22px; }
+  p.lead { text-align: center; color: #a99bc0; margin: 0 16px 16px; font-size: 14px; }
+  h2 { max-width: 1100px; margin: 20px auto 10px; padding: 0 14px; font-size: 14px; color: #cbbfe0; text-transform: uppercase; letter-spacing: .06em; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; max-width: 1100px; margin: 0 auto 24px; padding: 0 14px; }
+  .card { background: #14101c; border: 1px solid rgba(255,255,255,.1); border-radius: 14px; overflow: hidden; }
+  .card img { display: block; width: 100%; aspect-ratio: 1; object-fit: contain; background: #000; }
+  .meta { padding: 10px 12px 12px; }
+  .meta h3 { margin: 0 0 4px; font-size: 15px; }
+  .meta .note { font-size: 12px; color: #d8d0e8; line-height: 1.35; }
+  .base { border-top: 4px solid #b07cff; }
+  .tok { border-top: 4px solid #00f2ea; }
+  .stack { border-top: 4px solid #53fc18; }
+  .bits { border-top: 4px solid #9146ff; }
+  .kiss { border-top: 4px solid #e6007e; }
+  .mia { border-top: 4px solid #00dcff; }
+</style>
+</head>
+<body>
+  <h1>Masters — stejný vesmír, různé barvy</h1>
+  <p class="lead">Základní Koj + 4 trojocí mimozemšťané (platformní barvy) + video MIA. Ctrl+F5 proti cache.</p>
+
+  <h2>Základní Kojnožrout (mood banka)</h2>
+  <div class="grid">
+    <div class="card base">
+      <img src="/assets/kojnozrout/moods/kojnozout-idle.png?v=4" alt="base" />
+      <div class="meta"><h3>Koj idle</h3><div class="note">Master nálad — happy, hungry, excited… v moods/</div></div>
+    </div>
+  </div>
+
+  <h2>4 platformní mimozemšťané (3 oči, různé barvy)</h2>
+  <div class="grid">
+    <div class="card tok">
+      <img src="/assets/kojnozrout/forms/tiktok/idle.png?v=4" alt="tok" />
+      <div class="meta"><h3>Tokžrout</h3><div class="note">TikTok · neon cyan/pink · moods: idle/happy/excited/attack/win</div></div>
+    </div>
+    <div class="card stack">
+      <img src="/assets/kojnozrout/forms/kick/idle.png?v=4" alt="stack" />
+      <div class="meta"><h3>Stackžrout</h3><div class="note">Kick · acid green · moods: idle/happy/excited/attack/win</div></div>
+    </div>
+    <div class="card bits">
+      <img src="/assets/kojnozrout/forms/twitch/idle.png?v=4" alt="bits" />
+      <div class="meta"><h3>Bitsžrout</h3><div class="note">Twitch · deep purple · moods: idle/happy/excited/attack/win</div></div>
+    </div>
+    <div class="card kiss">
+      <img src="/assets/kojnozrout/forms/youtube/idle.png?v=4" alt="kiss" />
+      <div class="meta"><h3>Kisstube</h3><div class="note">YouTube · Kiss pink + pusinka · jen YT motiv</div></div>
+    </div>
+  </div>
+
+  <h2>MIA — nálady (samostatné faces/*.png)</h2>
+  <div class="grid">
+    <div class="card mia"><img src="/assets/mia/masters/faces/idle.png?v=7" alt="idle" /><div class="meta"><h3>faces/idle</h3><div class="note">Klid</div></div></div>
+    <div class="card mia"><img src="/assets/mia/masters/faces/happy.png?v=7" alt="happy" /><div class="meta"><h3>faces/happy</h3><div class="note">Úsměv</div></div></div>
+    <div class="card mia"><img src="/assets/mia/masters/faces/gift.png?v=7" alt="gift" /><div class="meta"><h3>faces/gift</h3><div class="note">Dárek / vděk</div></div></div>
+    <div class="card mia"><img src="/assets/mia/masters/faces/duel.png?v=7" alt="duel" /><div class="meta"><h3>faces/duel</h3><div class="note">Soustředění</div></div></div>
+    <div class="card mia"><img src="/assets/mia/masters/faces/think.png?v=7" alt="think" /><div class="meta"><h3>faces/think</h3><div class="note">Combo / přemýšlí</div></div></div>
+    <div class="card mia"><img src="/assets/mia/masters/faces/wave.png?v=7" alt="wave" /><div class="meta"><h3>faces/wave</h3><div class="note">Mává</div></div></div>
+  </div>
+
+  <h2>MIA — řeč (samostatné speak/*.png — ústa)</h2>
+  <div class="grid">
+    <div class="card mia"><img src="/assets/mia/masters/speak/01.png?v=7" alt="s1" /><div class="meta"><h3>speak/01</h3></div></div>
+    <div class="card mia"><img src="/assets/mia/masters/speak/02.png?v=7" alt="s2" /><div class="meta"><h3>speak/02</h3></div></div>
+    <div class="card mia"><img src="/assets/mia/masters/speak/03.png?v=7" alt="s3" /><div class="meta"><h3>speak/03</h3></div></div>
+    <div class="card mia"><img src="/assets/mia/masters/speak/04.png?v=7" alt="s4" /><div class="meta"><h3>speak/04</h3></div></div>
+  </div>
+</body>
+</html>

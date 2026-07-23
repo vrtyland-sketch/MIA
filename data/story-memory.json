@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "updatedAt": 1783627047384,
+  "users": {
+    "test_user_123": {
+      "userLabel": "Test User 123",
+      "feedCount": 463,
+      "giftFeedCount": 463,
+      "careFeedCount": 0,
+      "lastFeedAt": 1783203112066,
+      "lastFeedType": "gift",
+      "storiesPlayed": {
+        "sock_rocket_saga": {
+          "count": 5,
+          "lastAt": 1781863490933
+        }
+      },
+      "milestonesHit": [
+        3,
+        8,
+        15,
+        25,
+        40
+      ]
+    },
+    "karel": {
+      "userLabel": "Karel",
+      "feedCount": 0,
+      "giftFeedCount": 0,
+      "careFeedCount": 0,
+      "lastFeedAt": 0,
+      "lastFeedType": "",
+      "storiesPlayed": {
+        "sock_rocket_saga": {
+          "count": 4,
+          "lastAt": 1781811760429
+        }
+      },
+      "milestonesHit": []
+    },
+    "test": {
+      "userLabel": "Test",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1781904818766,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "audittest": {
+      "userLabel": "AuditTest",
+      "feedCount": 2,
+      "giftFeedCount": 2,
+      "careFeedCount": 0,
+      "lastFeedAt": 1781905171302,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "liveaudit": {
+      "userLabel": "LiveAudit",
+      "feedCount": 49,
+      "giftFeedCount": 49,
+      "careFeedCount": 0,
+      "lastFeedAt": 1783627044281,
+      "lastFeedType": "gift",
+      "storiesPlayed": {
+        "sock_rocket_saga": {
+          "count": 5,
+          "lastAt": 1783157920491
+        }
+      },
+      "milestonesHit": [
+        3,
+        8,
+        15,
+        25,
+        40
+      ]
+    },
+    "t": {
+      "userLabel": "T",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1781906306877,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "audit_user": {
+      "userLabel": "Audit User",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1781995747820,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "t1_divák": {
+      "userLabel": "T1 Divák",
+      "feedCount": 2,
+      "giftFeedCount": 2,
+      "careFeedCount": 0,
+      "lastFeedAt": 1782836945749,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "t3_divák": {
+      "userLabel": "T3 Divák",
+      "feedCount": 2,
+      "giftFeedCount": 2,
+      "careFeedCount": 0,
+      "lastFeedAt": 1782836952225,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "t5_divák": {
+      "userLabel": "T5 Divák",
+      "feedCount": 2,
+      "giftFeedCount": 2,
+      "careFeedCount": 0,
+      "lastFeedAt": 1782836961630,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    }
+  }
+}

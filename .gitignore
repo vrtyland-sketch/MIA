@@ -1,0 +1,42 @@
+node_modules/
+logs/
+data/remote-dev/
+data/mia-ai-animations/
+.env
+secrets/local/
+generated/mia-fold-link.txt
+mia-output-overlay/generated/eyes/
+mia-output-overlay/generated/gift-animations/
+mia-output-overlay/generated/gift-moments/
+mia-output-overlay/generated/media-templates/
+mia-output-overlay/generated/story-moments/
+mia-output-overlay/audio-cache/
+# Local audit / status dumps (not source)
+.tmp-audit/
+.tmp-audit-inner.json
+.tmp-git-status-*.txt
+.tmp-preflight-out.txt
+.git-c2-status.txt
+test-write-tmp.txt
+tmp_canon_*.txt
+scripts/_tmp_*.js
+# Cold graphics backups (v33+) â€” not live mood hot path
+mia-output-overlay/assets/_offline_backup/
+mia-output-overlay/assets/kojnozrout/moods/*.pre-*.png
+mia-output-overlay/assets/kojnozrout/moods/_prenorm_backup/
+mia-output-overlay/assets/kojnozrout/_archive/
+tmp_13h*.png
+*.log
+.DS_Store
+Thumbs.db
+.cursor/
+downloads/
+incoming-images/photos/
+incoming-images/videos/
+incoming-images/other/
+
+# Large media banks — kept on disk, not in git (GitHub size limits)
+incoming-images/videos_2/
+mia-output-overlay/assets/animation-bank/
+mia-output-overlay/assets/kojnozrout/
+

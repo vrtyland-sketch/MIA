@@ -1,0 +1,278 @@
+=== MIA runtime ===
+cd C:\MIA
+npm run restart          ... spustí / restartuje server na http://127.0.0.1:3000
+npm run stop             ... zastaví MIA
+
+=== WhatsApp + Messenger (stahovani fotek/videi) ===
+WhatsApp: nainstalovan (Microsoft Store), zkratka na Plose
+Messenger: desktop app uz neni — zkratka otevre messenger.com v okne (Edge)
+
+PRIHLASENI:
+- WhatsApp: naskenuj QR kod telefonem (WhatsApp -> Nastaveni -> Zarizeni -> Propojit)
+- Messenger: prihlas se Facebook / telefon / Messenger ucet
+
+STAZENI OBRAZKU A VIDEI:
+- WhatsApp: otevri chat -> klik na foto/video -> Stahnout (sipka dolu) nebo Pravy klik -> Ulozit
+- Messenger: otevri chat -> klik na foto/video -> Stahnout / Ulozit
+- WhatsApp uklada do: C:\MIA\incoming-images (sorter -> photos/ nebo videos/)
+- Nastaveni znovu: powershell -ExecutionPolicy Bypass -File scripts\setup_whatsapp_inbox.ps1
+- Log: C:\MIA\logs\fold-inbox.log
+
+MEDIA ENGINE (katalog + OBS sloty):
+- npm run media:scan          ... projede photos/videos, roztridi, priradi T1-T5
+- npm run media:slots         ... CITELNY prehled slotu T1-T5 (pro streamera)
+- npm run media:status        ... JSON prehled kategorii a OBS mapovani
+- npm run media:apply-obs     ... aplikuje katalog do OBS ffmpeg zdroju
+- npm run media:preview       ... ukazka donator spotlight PNG
+- npm run media:preview-all   ... vygeneruje vsechny overlay sablony
+- npm run test:preflight      ... vsechny testy (~33 suites, ~3-4 min)
+- npm run test:preflight:fast ... rychla podmnozina (~14 suites, paralelne)
+- npm run test:stream-ready   ... full preflight + media katalog
+- Kontrolni slide po restartu: http://127.0.0.1:3000/startup-check.html
+  (bez testu — ukaze % pripravenosti 0-100 a jestli je MIA pripravena streamovat)
+- MIA_STARTUP_CHECK_MS=120000  ... jak dlouho slide v OBS zustane (default 2 min)
+- MIA_PREFLIGHT_ON_START=0      ... default OFF — testy se nespouští po restartu
+  (zapni=1 pokud chces preflight; jinak npm run test:preflight)
+- MIA_PREFLIGHT_MODE=fast       ... pri restartu rychly preflight (default); full = vsechny suites
+- GET http://127.0.0.1:3000/startup/check
+- MIA OBS ruce (MIA_OBS_HANDS): po připojení k OBS sama vytvoří chybějící browser overlay
+  Po každé opravě (ruce / media apply / audit --fix) se MIA sama restartuje (MIA_SELF_RESTART=on)
+- Vypni auto-setup: MIA_OBS_HANDS=0
+- Startup slide: MIA ho po restartu na ~6 min sama zobrazí (vytvoří MIA_STARTUP_CHECK pokud chybí)
+- Manual override slotu: config/stream-media-overrides.json
+- GET  http://127.0.0.1:3000/media/catalog/summary
+- GET  http://127.0.0.1:3000/media/catalog
+- POST http://127.0.0.1:3000/media/catalog/scan
+- POST http://127.0.0.1:3000/media/catalog/apply-obs
+- Katalog: config/stream-media-catalog.json
+- Sablony: config/media-templates.json
+- Story map: config/story-media-map.json
+- Gift overlay T2+: donator_spotlight (profilovka z knihovny)
+
+=== LIVE checklist (OBS + TikTok) ===
+- npm run obs:stream-ready       ... jedním příkazem: MIA % připravenosti + OBS verify (doporučeno před live)
+- npm run obs:stream-ready -- --human ... čitelný výstup (bez JSON)
+- npm run live:prep              ... restart + VC + voice + stream-ready (vše najednou)
+- npm run live:prep -- --human   ... live:prep s čitelným závěrem
+- npm run obs:stream-ready -- --fix --wait ... oprava chybějících overlay/slotů + restart + znovu kontrola
+- npm run obs:verify-stream-ready ... jen OBS diagnostika (VC, gift sloty, 13 browseru, voice, TikTok audio)
+- npm run obs:verify-stream-ready -- --fix --wait ... oprava + restart MIA + znovu verify
+- npm run obs:apply-hands       ... doplní chybějící OBS browser overlay + hybrid body sync URL + restart pokud něco změní
+- npm run test:graphics-body    ... Graphics Body pipeline (12g–12u, dedicated part assets)
+- npm run build:mia-body-parts  ... regeneruj assets/mia/parts z masters
+- npm run seed:animation-bank -- --force ... Animation Bank z produkčních Koj moods (ne blob)
+- npm run audit:canon         ... plny audit podle kanonu (tiery, spam, TTS, video)
+- npm run obs:prepare-tiktok  ... Virtual Camera ON, kamera vypnuta v OBS
+- npm run obs:ensure-voice    ... test TTS + Monitor and Output na MIA_VOICE
+- npm run obs:fix-gift-layers ... jen cesty videi (NEMENI layout v OBS)
+- MIA_OBS_LAYOUT_LOCKED=true  ... MIA nikdy neposouva tvoje OBS pozice
+- Koj PNG / KOJNOZROUT_RUNTIME: drz nad kamerou i gift videi (MIA pri prehrani automaticky zvedne vrstvu)
+- Vlastni jmeno PNG zdroje? MIA_OBS_PERSISTENT_LAYER_PATTERNS=MOJE_KOJ_PNG
+- MIA_OBS_VOICE_MONITOR=and_output ... slysis MIA v repro
+- TikTok divaci: OBS Virtual Camera NEPOSILA zvuk -> mikrofon v TikTok = VB-Audio Cable Output
+- Test hlasu: http://127.0.0.1:3000/tts/test
+- Test videa: http://127.0.0.1:3000/video/test?tier=T1
+- Test T3 (Elita): http://127.0.0.1:3000/video/test?tier=T3
+- T3 sloty v OBS: T3_VIDEO_09 az T3_VIDEO_14 (6 videi, ne 01-06)
+- T3+ videa: jen se zvukem (MIA neztlumi pri TTS, hraje cely klip)
+- Kapybara flow test: http://127.0.0.1:3000/capybara/test?user=Fan&away=1
+  (20s animace -> MIA vyzve chat -> COMMENT odpovi)
+- Stav kapybary: GET http://127.0.0.1:3000/overlay-state -> capybaraFlow
+- Gift economy: overlay-state -> giftEconomy (XP/level/streak), support.giftContext v ingestu
+- Legacy tier prahy: MIA_GIFT_ECONOMY_TIERS=legacy (jinak coin tier 100/1k/5k/10k/25k)
+- Streamer media (VasaSpinak): „MIA, přehraj písničku/video“ (>2 min) — jen šéf, kdekoliv (test)
+
+=== Vykon (rychlost / timing) ===
+- MIA_OVERLAY_STATE_CACHE_MS=450     ... cache /overlay-state (~10 browser overlay)
+- MIA_VOICE_HOLD_MIN_MS=3500         ... min. lock hlasu po TTS (driv 18s)
+- MIA_VOICE_HOLD_BUFFER_MS=1200      ... rezerva po skutecne delce TTS
+- MIA_VOICE_HOLD_FALLBACK_MS=8500      ... kdyz nezname delku audia
+- MIA_OBS_PERSISTENT_LAYERS_THROTTLE_MS=5000 ... mene OBS volani po skonceni videa
+- Preflight: npm run test:preflight (obsahuje runtime_perf)
+
+=== Sprint vylepseni (COMBO + dashboard) ===
+- Combo overlay OBS: http://127.0.0.1:3000/combo-overlay.html  (1920x1080, COMBO flash + spam bar)
+- Streamer dashboard: http://127.0.0.1:3000/mia-streamer-dashboard.html  (panel pro tebe, ne do OBS)
+- Gift repeat combo x10/x50/x100 + spam vlna + boss T4-T6 flash
+
+=== Sprint 2 (NEJSEM TU + Boss sjednoceni) ===
+- NEJSEM TU: voice „nejsem tu“ nebo GET /capybara/test?away=1
+- entity-overlay ukazuje MIA HOST / MIA SOLO / MIA LIVE podle režimu
+- overlay-state -> hostMode + worldMode
+- Boss T4: jen combo flash (bez duplicitni bubliny)
+- Boss T5/T6: combo flash + MIA interrupt (priorita hlasu)
+- Volitelne OBS away scena:
+  MIA_AWAY_SCENE=SPINAK_NEJSEM_TU
+  MIA_AWAY_OBS_SCENE_SWITCH=on
+- Solo stream (tichy chat) = jiny rezim nez NEJSEM TU — sceny SPINAK_AFK/LOBBY/MIA_HOST
+
+=== Sprint 3 (fotky divaku + venčení Koje) ===
+- T2+ gift -> story-moment-overlay (foto z knihovny / donator_spotlight)
+- Milestone pribeh (3/8/15 krmeni) ma prioritu pred spotlightem
+- MIA_VIEWER_STORY_MIN_TIER=2
+- Venčení: „venc koj“ / „procházka koj“ kdyz Koj ma malo energie
+- Koj chodi ~45s (behavior walking, mood excited)
+- Test: GET /story/test?user=Fan&tier=T3
+
+=== Sprint 4 (T0 engagement + gift auto-mapper) ===
+- Like/Follow/Share/Comment -> kumulativni XP v giftSupporterProfile (1-3 XP)
+- Follow/Share -> kratky community overlay (MIA_T0_OVERLAY=on)
+- Like milestone overlay kazdych N liku od uzivatele (MIA_T0_LIKE_ACK_EVERY=50, 0=vypnuto)
+- Nezname TikTok darky s jasnym coin budgetem -> auto-map coin_tier (100+ coins)
+- Audit log: gift-mapping (canonicalKey, mappingSource, confidence)
+- Env:
+  MIA_T0_OVERLAY=on
+  MIA_T0_LIKE_ACK_EVERY=50
+
+=== Sprint 5 (audit panel + host team split) ===
+- overlay-state -> runtimeAudit (T0 totals, top supporters, last gift mapping)
+- overlay-state -> hostTeamScore (local vs host body v NEJSEM TU)
+- Gift map schema: teamPoints + rewards na kazdem profilu
+- Host split: MIA_HOST_TEAM_SPLIT_PCT=50 (default 50/50 v host modu)
+- Dashboard: sekce Ekonomika & T0 + Gift mapping audit
+- Test T0: GET /t0/test?event=FOLLOW&user=Fan
+
+=== Sprint A (bezpečnost) ===
+- MIA_BIND_HOST=127.0.0.1     ... server jen localhost (default)
+- MIA_INGEST_SECRET=...       ... volitelný secret pro TikFinity (header X-MIA-Ingest-Secret)
+- MIA_DEBUG_ROUTES=off        ... /test /debug /capybara/test jen z localhost
+- POST /media/catalog/*       ... jen localhost (nebo ingest secret)
+- Preflight rozšířen o security + ingest contract suites
+
+=== Sprint B (gift orchestrator + overlay wiring) ===
+- Jeden orchestrator: combo flash / speech / visual / story (MIA_GIFT_PRESENTATION.js)
+- Boss T4 = combo flash bez duplicitní MIA bubliny; combo speech nenahrazuje Koj bublinu
+- OBS evolution toast: http://127.0.0.1:3000/evolution-toast-overlay.html
+- OBS Koj batoh:     http://127.0.0.1:3000/kojnozrout-backpack-overlay.html
+- Startup check manifest obsahuje evolution + backpack (16 OBS overlayů)
+
+=== Sprint C (resolver + tier konstanty) ===
+- MIA_SUPPORT_RESOLVER přesunut do scripts/ (legacy/ = shim)
+- MIA_GIFT_TIERS.js — coin prahy, bucket prahy, MIA_POINTS_PER_COIN=7.5
+- src/routes/ingestroute.js archivován (root index.js obsluhuje /ingest)
+- Preflight nyní 29 suites (+ sprint_c)
+
+=== Sprint D (dokumentace + .env) ===
+- KANON_MIA_ALIGNMENT.md — aktualizováno po Sprintech A–C (T0, host split, security, orchestrator)
+- .env.example — kompletní šablona (TTS, away, T0, security, OBS, preflight)
+- docs/MIA_GIFT_ECONOMY.md — cesty scripts/MIA_SUPPORT_RESOLVER + MIA_GIFT_TIERS
+- Preflight nyní 31 suites (+ mia_obs_hands)
+
+=== Sprint E (OBS verify one-button) ===
+- npm run obs:verify-stream-ready  ... read-only diagnostika před live
+- Kontroluje: MIA server, OBS Virtual Camera, program scénu, ffmpeg gift sloty T1–T5,
+  13 browser overlay (aliasy MIA_BUBBLE / KOJNOZROUT_RUNTIME OK), MIA_VOICE reroute + monitor
+- Výstup JSON + pole fixes (co spustit když něco chybí)
+- TikTok audio: .env.example sekce MIA_TIKTOK_MIC_DEVICE + VB-Audio Cable
+- Preflight nyní 32 suites (+ sprint_e)
+
+=== Sprint F (auto-restart po opravě) ===
+- MIA_SELF_RESTART=on (default) — po OBS rukou / media apply / audit --fix se MIA sama restartuje
+- POST http://127.0.0.1:3000/system/obs-hands  (localhost) — ruce + restart pokud něco změní
+- POST http://127.0.0.1:3000/system/restart
+- npm run audit:canon -- --fix  ... oprava media + OBS ruce + restart
+- Vypni auto-restart: MIA_SELF_RESTART=0
+- Preflight nyní 33 suites (+ sprint_f)
+
+=== Sprint G (rychlý preflight při startu) ===
+- Při restartu default: MIA_PREFLIGHT_MODE=fast (~14 suites, paralelně, bez video_timing/rotation)
+- Plný preflight: npm run test:preflight  (--full, 34 suites včetně sprint_g)
+- Rychlý ručně: npm run test:preflight:fast
+- Pomalé suites (video_timing ~140s, video_rotation ~40s) jen ve full / stream-ready
+- Startup slide ukáže preflight mode (fast/full) v souhrnu
+- Preflight nyní 34 suites (+ sprint_g)
+
+=== Startup slide (bez testů po restartu) ===
+- Po restartu: jen % připravenosti (0–100) + „Připravena streamovat“ / ne
+- Žádné preflight testy v HTML (default MIA_PREFLIGHT_ON_START=0)
+- Plné testy ručně: npm run test:preflight
+- Slide default 2 min (MIA_STARTUP_CHECK_MS=120000)
+
+=== Sprint H (spolehlivý restart + OBS ruce CLI) ===
+- npm run obs:apply-hands  ... doplní browser overlay ve OBS + hybrid body sync, restart pokud něco změní
+- npm run test:graphics-body ... Graphics Body (12g–12u): dedicated parts + OBS sync
+- npm run build:mia-body-parts ... extrakce head/eyes/hands/torso/feet PNG
+- npm run restart / stop   ... opraveno pro Windows (127.0.0.1:3000, netstat místo false „port free“)
+- obs:verify --fix fallback na přímé ruce když API selže
+- Preflight nyní 36 suites (+ sprint_h)
+
+=== Sprint I (go-live jedním příkazem) ===
+- npm run obs:stream-ready  ... MIA readiness % + OBS verify v jednom JSON reportu
+- npm run obs:stream-ready -- --human  ... stejné, čitelný výstup pro streamera
+- Stejné --fix --wait jako obs:verify-stream-ready (ruce, media apply, restart)
+- Extra browser zdroje mimo 13 rolí (např. CHAT_OVERLAY) MIA nepočítá — nevadí
+- Preflight nyní 37 suites (+ sprint_i)
+
+=== Sprint J (spolehlivý restart + health) ===
+- npm run restart  ... po spawnu čeká na GET /health (default 15 s, MIA_RESTART_HEALTH_MS)
+- Výstup: PID + Health OK · obsConnected: true/false
+- Při selhání jasný error (ne tichý „port free“)
+
+=== Sprint K (čitelný go-live report) ===
+- npm run obs:stream-ready -- --human  ... přehled STAV / MIA / OBS / co opravit
+
+=== Sprint L (příprava live jedním příkazem) ===
+- npm run live:prep  ... restart → obs:prepare-tiktok → obs:ensure-voice → obs:stream-ready
+- npm run live:prep -- --skip-restart  ... bez restartu MIA
+- npm run live:prep -- --human  ... závěrečný report česky
+- Preflight nyní 40 suites (+ sprint_j, sprint_k, sprint_l)
+
+=== Sprint M (OBS Vision — vidí scénu + auto-layout) ===
+- MIA_OBS_VISION=on (default) — každé ~2,5 s skenuje scénu + screenshot náhled
+- MIA_OBS_AUTO_LAYOUT=on — sama rozloží overlay podle režimu (idle / gift / combo / duel…)
+- MIA_STREAM_PLATFORM=auto — TikTok safe zone vs Kick (chat vpravo)
+- Dashboard: http://127.0.0.1:3000/mia-vision-dashboard.html
+- API: GET /mia/vision · POST /mia/vision/tick
+- Preflight nyní 42 suites (+ mia_obs_vision, sprint_m)
+
+=== Sprint N (vision v go-live + lepší screenshot) ===
+- obs:stream-ready kontroluje i Vision (běží / režim / náhled)
+- Screenshot zkouší gift video → Koj → bublina → scéna
+- Preflight nyní 43 suites (+ sprint_n)
+
+=== Sprint 6 (T0 flyby + duel power bar) ===
+- T0 follow/share/like milestone -> avatar flyby overlay (1920x1080)
+  OBS browser: http://127.0.0.1:3000/t0-flyby-overlay.html
+- MIA_T0_FLYBY=on (default)
+- Duel overlay ma animovany power bar + breakdown bodu
+  OBS browser: http://127.0.0.1:3000/kojnozrout-duel-overlay.html
+- Follow/share pridavaji body do aktivniho duelu (3 / 2 body)
+
+Spustit znovu: WhatsApp.lnk / Messenger.lnk na Plose
+
+=== Quick Share + Galaxy Fold (volitelne, nefungovalo) ===
+Aplikace: C:\Program Files\Google\NearbyShare\nearby_share.exe
+Prijem:   C:\MIA\incoming-images
+          (junction z Downloads\Quick Share — soubory chodi sem automaticky)
+          photos/  videos/  other/  — auto trideni (task MIA-GalaxyFoldInboxSort)
+
+Nastaveni znovu:  powershell -ExecutionPolicy Bypass -File scripts\setup_galaxy_fold_inbox.ps1
+Log prijmu:       C:\MIA\logs\fold-inbox.log
+
+JEDNORAZOVE NA PC (Quick Share okno):
+1. Prihlaseny Google ucet (stejny jako na Foldu)
+2. Device visibility: Your devices / Contacts
+3. Kdyz chce SLOZKU -> vyber:
+      C:\MIA\incoming-images
+   (nebo: Stahovani\Quick Share — je to stejne misto)
+   Settings -> Save received files to -> Change -> tuto slozku
+
+GALAXY FOLD:
+1. Nastaveni -> Google -> Zarizeni a sdileni -> Quick Share -> ZAP
+2. Viditelnost: Vlastni zarizeni (stejny Google ucet)
+3. Galerie -> vyber fotky/videa -> Sdilet -> Quick Share -> Vaclav Janota PC -> Accept na PC
+
+SDILENI:
+- Telefon -> PC: Quick Share (viz vyse)
+- PC -> telefon: pravý klik -> Send with Quick Share
+POZADAVKY: Wi-Fi + Bluetooth na obou zarizenich
+
+QR KOD:
+- V MIA / na disku QR kod NEMAME — generuje ho az aplikace Quick Share.
+- Google Quick Share na PC (nas, winget): QR pro parovani obvykle NENI —
+  Fold musi videt "Vaclav Janota PC" v seznamu (stejny Google ucet).
+- QR na GALAXY FOLD: Rychle nastaveni -> Quick Share (nebo panel sdileni)
+  -> "Pouzit QR kod" = telefon ukaze QR (spis pro pripojeni DRUHEHO telefonu).
+- QR z PC pro skenovani Foldem: ma Samsung Quick Share (Microsoft Store),
+  ne Google verze. Volitelne: winget install 9pctgdfxvzlj
+  (Samsung) — pak v appce tlacitko QR / sdileni pres odkaz.

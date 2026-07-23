@@ -1,0 +1,9 @@
+{
+  "id": "koj-factory-export",
+  "name": "Koj Factory Export",
+  "version": "1.0.0",
+  "description": "Export PNG do Koj asset pipeline (náhled cesty).",
+  "entry": "plugin.js",
+  "hooks": ["init"],
+  "permissions": ["menu", "export"]
+}

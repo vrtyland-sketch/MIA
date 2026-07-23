@@ -1,0 +1,138 @@
+{
+  "viewers": {
+    "tiktok:liveaudit": {
+      "key": "tiktok:liveaudit",
+      "displayName": "LiveAudit",
+      "platform": "tiktok",
+      "totalGifts": 8,
+      "totalCoins": 8,
+      "totalMiaPoints": 60,
+      "giftCounts": {
+        "ROSE": 8
+      },
+      "careCounts": {
+        "LOVE": 8
+      },
+      "bowlFillTotal": 64,
+      "xp": {
+        "viewer": 8,
+        "support": 8,
+        "care": 8
+      },
+      "favoriteGift": "ROSE",
+      "biggest": {
+        "giftKey": "ROSE",
+        "label": "Rose",
+        "totalCoins": 1,
+        "miaPoints": 7.5,
+        "tier": "T1"
+      },
+      "achievements": [
+        "first_gift"
+      ]
+    },
+    "tiktok:test user 123": {
+      "key": "tiktok:test user 123",
+      "displayName": "Test User 123",
+      "platform": "tiktok",
+      "totalGifts": 10,
+      "totalCoins": 10,
+      "totalMiaPoints": 75,
+      "giftCounts": {
+        "ROSE": 10
+      },
+      "careCounts": {
+        "LOVE": 10
+      },
+      "bowlFillTotal": 80,
+      "xp": {
+        "viewer": 10,
+        "support": 10,
+        "care": 10
+      },
+      "favoriteGift": "ROSE",
+      "biggest": {
+        "giftKey": "ROSE",
+        "label": "Rose",
+        "totalCoins": 1,
+        "miaPoints": 7.5,
+        "tier": "T1"
+      },
+      "achievements": [
+        "first_gift"
+      ]
+    },
+    "tiktok:gifter": {
+      "key": "tiktok:gifter",
+      "displayName": "Gifter",
+      "platform": "tiktok",
+      "totalGifts": 10,
+      "totalCoins": 50,
+      "totalMiaPoints": 375,
+      "giftCounts": {
+        "ROSE": 10
+      },
+      "careCounts": {
+        "LOVE": 10
+      },
+      "bowlFillTotal": 80,
+      "xp": {
+        "viewer": 50,
+        "support": 50,
+        "care": 30
+      },
+      "favoriteGift": "ROSE",
+      "biggest": {
+        "giftKey": "ROSE",
+        "label": "Rose",
+        "totalCoins": 5,
+        "miaPoints": 37.5,
+        "tier": "T1"
+      },
+      "achievements": [
+        "first_gift"
+      ]
+    }
+  },
+  "community": {
+    "totalGifts": 28,
+    "totalCoins": 68,
+    "totalMiaPoints": 510,
+    "giftCounts": {
+      "ROSE": 28
+    },
+    "biggest": {
+      "giftKey": "ROSE",
+      "label": "Rose",
+      "displayName": "Gifter",
+      "totalCoins": 5,
+      "miaPoints": 37.5,
+      "tier": "T1"
+    },
+    "xp": 10
+  },
+  "achievementsUnlocked": {
+    "tiktok:liveaudit:first_gift": {
+      "id": "first_gift",
+      "label": "První gift",
+      "viewer": "LiveAudit",
+      "at": 1783180756744,
+      "public": true
+    },
+    "tiktok:test user 123:first_gift": {
+      "id": "first_gift",
+      "label": "První gift",
+      "viewer": "Test User 123",
+      "at": 1783181355109,
+      "public": true
+    },
+    "tiktok:gifter:first_gift": {
+      "id": "first_gift",
+      "label": "První gift",
+      "viewer": "Gifter",
+      "at": 1783274575959,
+      "public": true
+    }
+  },
+  "updatedAt": 1783627044253
+}

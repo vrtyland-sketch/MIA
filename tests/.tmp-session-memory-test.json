@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "updatedAt": 1782548983785,
+  "recentMessages": [
+    {
+      "at": 1782548979776,
+      "userLabel": "Tester",
+      "userKey": "tester",
+      "message": "druhá zpráva",
+      "intentType": "statement"
+    },
+    {
+      "at": 1782548979776,
+      "userLabel": "Tester",
+      "userKey": "tester",
+      "message": "první zpráva",
+      "intentType": "greeting"
+    },
+    {
+      "at": 1782485016218,
+      "userLabel": "Tester",
+      "userKey": "tester",
+      "message": "druhá zpráva",
+      "intentType": "statement"
+    },
+    {
+      "at": 1782485016218,
+      "userLabel": "Tester",
+      "userKey": "tester",
+      "message": "první zpráva",
+      "intentType": "greeting"
+    },
+    {
+      "at": 1782484606070,
+      "userLabel": "Tester",
+      "userKey": "tester",
+      "message": "druhá zpráva",
+      "intentType": "statement"
+    },
+    {
+      "at": 1782484606069,
+      "userLabel": "Tester",
+      "userKey": "tester",
+      "message": "první zpráva",
+      "intentType": "greeting"
+    },
+    {
+      "at": 1782484385592,
+      "userLabel": "Tester",
+      "userKey": "tester",
+      "message": "druhá zpráva",
+      "intentType": "statement"
+    },
+    {
+      "at": 1782484385591,
+      "userLabel": "Tester",
+      "userKey": "tester",
+      "message": "první zpráva",
+      "intentType": "greeting"
+    },
+    {
+      "at": 1782483646009,
+      "userLabel": "Tester",
+      "userKey": "tester",
+      "message": "druhá zpráva",
+      "intentType": "statement"
+    },
+    {
+      "at": 1782483646009,
+      "userLabel": "Tester",
+      "userKey": "tester",
+      "message": "první zpráva",
+      "intentType": "greeting"
+    },
+    {
+      "at": 1782482966751,
+      "userLabel": "Tester",
+      "userKey": "tester",
+      "message": "druhá zpráva",
+      "intentType": "statement"
+    },
+    {
+      "at": 1782482966750,
+      "userLabel": "Tester",
+      "userKey": "tester",
+      "message": "první zpráva",
+      "intentType": "greeting"
+    }
+  ],
+  "users": {
+    "tester": {
+      "userLabel": "Tester",
+      "visitCount": 40,
+      "lastMessageAt": 1782548979776,
+      "lastIntentType": "statement",
+      "lastMessage": "druhá zpráva"
+    }
+  },
+  "recentBotReplies": []
+}

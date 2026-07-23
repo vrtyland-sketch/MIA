@@ -1,0 +1,360 @@
+{
+  "version": 1,
+  "updatedAt": "2026-07-04T19:59:41.009Z",
+  "purpose": "tiktok_panel_coin_reference",
+  "note": "Interní reference z TikTok LIVE panelu — overlay nikdy neukazuje coiny.",
+  "tierFromCoins": {
+    "T1": 1,
+    "T2": 100,
+    "T3": 1000,
+    "T4": 5000,
+    "T5": 10000,
+    "T6": 25000
+  },
+  "gifts": [
+    {
+      "label": "Růže",
+      "labelEn": "Rose",
+      "coins": 1,
+      "streamTier": "T1",
+      "catalogKey": "ROSE",
+      "note": null
+    },
+    {
+      "label": "Osrdíčkovat",
+      "labelEn": null,
+      "coins": 1,
+      "streamTier": "T1",
+      "catalogKey": "HEART",
+      "note": null
+    },
+    {
+      "label": "Sláva Fanklubu",
+      "labelEn": null,
+      "coins": 1,
+      "streamTier": "T1",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Srdce z prstů",
+      "labelEn": null,
+      "coins": 5,
+      "streamTier": "T1",
+      "catalogKey": "HEART",
+      "note": null
+    },
+    {
+      "label": "Síla fanklubu",
+      "labelEn": null,
+      "coins": 9,
+      "streamTier": "T1",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Náhrdelník přátelství",
+      "labelEn": null,
+      "coins": 10,
+      "streamTier": "T1",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Parfém",
+      "labelEn": null,
+      "coins": 20,
+      "streamTier": "T1",
+      "catalogKey": "HEART",
+      "note": null
+    },
+    {
+      "label": "Kobliha",
+      "labelEn": null,
+      "coins": 30,
+      "streamTier": "T1",
+      "catalogKey": "DONUT",
+      "note": null
+    },
+    {
+      "label": "Kaktusový mix",
+      "labelEn": null,
+      "coins": 399,
+      "streamTier": "T1",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Klaun Boogie",
+      "labelEn": null,
+      "coins": 449,
+      "streamTier": "T1",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Bubnový křeček",
+      "labelEn": null,
+      "coins": 449,
+      "streamTier": "T1",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Dobrý večer",
+      "labelEn": null,
+      "coins": 399,
+      "streamTier": "T1",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Srdce na dlani",
+      "labelEn": null,
+      "coins": 100,
+      "streamTier": "T2",
+      "catalogKey": "HEART",
+      "note": null
+    },
+    {
+      "label": "Vítězství fanklubu",
+      "labelEn": null,
+      "coins": 99,
+      "streamTier": "T1",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Úžasné konfety",
+      "labelEn": null,
+      "coins": 100,
+      "streamTier": "T2",
+      "catalogKey": null,
+      "note": "Lv.10 dárce"
+    },
+    {
+      "label": "Pistole na peníze",
+      "labelEn": null,
+      "coins": 500,
+      "streamTier": "T1",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Drahokamová pumpa",
+      "labelEn": null,
+      "coins": 500,
+      "streamTier": "T2",
+      "catalogKey": null,
+      "note": "Lv.15 dárce"
+    },
+    {
+      "label": "Labuť",
+      "labelEn": null,
+      "coins": 699,
+      "streamTier": "T2",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Vlak",
+      "labelEn": null,
+      "coins": 899,
+      "streamTier": "T2",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Ohňostroj",
+      "labelEn": null,
+      "coins": 1088,
+      "streamTier": "T3",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Lesklý horkovzdušný balón",
+      "labelEn": null,
+      "coins": 1000,
+      "streamTier": "T3",
+      "catalogKey": null,
+      "note": "Lv.20 dárce"
+    },
+    {
+      "label": "Raketa",
+      "labelEn": null,
+      "coins": 1500,
+      "streamTier": "T3",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Potápění s velrybami",
+      "labelEn": null,
+      "coins": 2150,
+      "streamTier": "T3",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Tančící kapybary",
+      "labelEn": null,
+      "coins": 2200,
+      "streamTier": "T3",
+      "catalogKey": "CAPYBARA",
+      "note": "gift chat loop animal"
+    },
+    {
+      "label": "Motorka",
+      "labelEn": null,
+      "coins": 2988,
+      "streamTier": "T3",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Rytmický medvěd",
+      "labelEn": null,
+      "coins": 2999,
+      "streamTier": "T3",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Meteorický déšť",
+      "labelEn": null,
+      "coins": 3000,
+      "streamTier": "T3",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Jarní vlak",
+      "labelEn": null,
+      "coins": 3999,
+      "streamTier": "T3",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Město budoucnosti",
+      "labelEn": null,
+      "coins": 6000,
+      "streamTier": "T4",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Leopard Lili",
+      "labelEn": null,
+      "coins": 6599,
+      "streamTier": "T4",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Sportovní auto",
+      "labelEn": null,
+      "coins": 7000,
+      "streamTier": "T4",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Leon a Lili",
+      "labelEn": null,
+      "coins": 9699,
+      "streamTier": "T4",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Lili a Sakura",
+      "labelEn": null,
+      "coins": 12000,
+      "streamTier": "T5",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Podpora komunity",
+      "labelEn": null,
+      "coins": 15000,
+      "streamTier": "T5",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Paříme naplno",
+      "labelEn": null,
+      "coins": 15000,
+      "streamTier": "T5",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Go Big hřebec",
+      "labelEn": null,
+      "coins": 15000,
+      "streamTier": "T5",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Rodinné chvíle",
+      "labelEn": null,
+      "coins": 15000,
+      "streamTier": "T5",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Černý vlk",
+      "labelEn": null,
+      "coins": 15000,
+      "streamTier": "T5",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Bílý tygr",
+      "labelEn": null,
+      "coins": 15999,
+      "streamTier": "T5",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Křišťálové srdce",
+      "labelEn": null,
+      "coins": 14999,
+      "streamTier": "T5",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Létající láska",
+      "labelEn": null,
+      "coins": 19999,
+      "streamTier": "T5",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Nekonečné moře",
+      "labelEn": null,
+      "coins": 23999,
+      "streamTier": "T6",
+      "catalogKey": null,
+      "note": null
+    },
+    {
+      "label": "Černý tygr",
+      "labelEn": null,
+      "coins": 22000,
+      "streamTier": "T6",
+      "catalogKey": null,
+      "note": null
+    }
+  ]
+}

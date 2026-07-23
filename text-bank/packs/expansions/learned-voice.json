@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "packs": {
+    "mia_learned_voice": {
+      "meta": {
+        "speaker": "mia",
+        "intent": "community_voice",
+        "tags": ["learned", "catchphrase", "community"]
+      },
+      "variants": [
+        "{name}, chat dneska má svoje tempo — a já jsem u toho.",
+        "{name}, atmosféra je fajn. Co z toho chceš teď?",
+        "{name}, slyším vás. Pokračujte, ať to chytím.",
+        "{name}, komunita dneska funguje. Držím s vámi krok.",
+        "{name}, občas tu zazní {catchphrase} — beru to jako náš společný rytmus.",
+        "{name}, {catchphrase} už zní jako součást večera. Já jedu dál s vámi.",
+        "{name}, když padne {catchphrase}, vím, že jste pořád v tempu.",
+        "{name}, chat si vytvořil vlastní jazyk. Občas to zní jako {catchphrase} — a je to v pohodě.",
+        "{name}, dneska tu není nuda. I drobnosti jako {catchphrase} drží náladu.",
+        "{name}, vnímám vás víc než jednu frázi. Ale {catchphrase} tu opravdu často zazní."
+      ]
+    },
+    "mia_learned_voice_spicy": {
+      "meta": {
+        "speaker": "mia",
+        "intent": "community_voice",
+        "tone": "spicy",
+        "tags": ["learned", "spicy", "community"]
+      },
+      "variants": [
+        "{name}, chat dneska nemá zrovna filtr — ale pořád to žije.",
+        "{name}, občas tu zazní {spicy}. Atmosféra ale drží.",
+        "{name}, ostřejší slova typu {spicy} tu dneska nejsou výjimka. Já jedu dál.",
+        "{name}, {spicy} — to už zní skoro jako společný refrén. Držím s vámi tempo.",
+        "{name}, slyším {spicy} a vím, že chat fakt žije.",
+        "{name}, dneska tu občas padá {spicy}. Já ale zůstávám stabilní.",
+        "{name}, komunita mluví ostřeji. {spicy} padá často, ale nálada je pořád naživu.",
+        "{name}, když zazní {spicy}, vím, že to myslíte vážně — a já jsem u toho.",
+        "{name}, chat dneska nemá cukr na rtech. {spicy} slyším taky.",
+        "{name}, {spicy} dneska zní skoro jako battle cry. Já ale jedu dál."
+      ]
+    },
+    "mia_learned_voice_echo": {
+      "meta": {
+        "speaker": "mia",
+        "intent": "community_voice",
+        "tags": ["learned", "echo", "slang"]
+      },
+      "variants": [
+        "{name}, {catchphrase} — jo, tohle už tu dneska zní docela často.",
+        "{name}, občas {catchphrase}. Beru to jako chatový rytmus, ne jako mantru.",
+        "{name}, když napíšete {catchphrase}, vím, že jste v tempu."
+      ]
+    },
+    "koj_learned_voice": {
+      "meta": {
+        "speaker": "kojnozout",
+        "intent": "community_voice",
+        "tags": ["learned", "catchphrase", "kojnozout"]
+      },
+      "variants": [
+        "{name}, chat dneska funguje. Já jen čuchám provoz.",
+        "{name}, komunita žije. Miska pořád prázdná, ale nálada ne.",
+        "{name}, občas tu zazní {catchphrase}. Beru to.",
+        "{name}, {catchphrase} — to už zní jako chatový refrén.",
+        "{name}, když zazní {catchphrase}, vím, že komunita je v tempu.",
+        "{name}, chat dneska mluví stylem {catchphrase}. Já jedu dál.",
+        "{name}, {catchphrase} dneska zní často. Bestie to taky bere.",
+        "{name}, jo, {catchphrase} slyším taky. Miska pořád prázdná, ale nálada ne."
+      ]
+    },
+    "koj_learned_voice_spicy": {
+      "meta": {
+        "speaker": "kojnozout",
+        "intent": "community_voice",
+        "tone": "spicy",
+        "tags": ["learned", "spicy", "kojnozout"]
+      },
+      "variants": [
+        "{name}, jo, dneska tu občas padá {spicy}. Já jedu dál.",
+        "{name}, {spicy} slyším taky. Chat dneska nemá filtr.",
+        "{name}, ostřejší slova typu {spicy} tu dneska nejsou vzácnost.",
+        "{name}, {spicy} — to už je dneska skoro společný pokřik.",
+        "{name}, když zazní {spicy}, vím, že se tu něco děje.",
+        "{name}, registruju i {spicy}. Bestie je pořád v pohodě."
+      ]
+    }
+  }
+}

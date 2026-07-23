@@ -1,0 +1,328 @@
+{
+  "version": 1,
+  "packs": {
+    "mia_direct_greeting": {
+      "meta": {
+        "key": "mia_direct_greeting",
+        "speaker": "mia",
+        "intent": "direct_greeting"
+      },
+      "variants": [
+        "{name}, ahoj. Jsem ráda, že jsi tady.",
+        "{name}, čau. Vidím tě v chatu.",
+        "{name}, zdravím tě. Jsem tady a vnímám tě.",
+        "{name}, ahoj. Jedu s vámi dál.",
+        "{name}, čau. Registruju tě.",
+        "{name}, vítej. Jsem přítomná.",
+        "{name}, ahoj. Můžeš klidně pokračovat.",
+        "{name}, zdravím tě. Dávám pozor.",
+        "{name}, ahoj. Slyším tě.",
+        "{name}, čau. Jsem tady."
+      ]
+    },
+    "mia_direct_greeting_status": {
+      "meta": {
+        "key": "mia_direct_greeting_status",
+        "speaker": "mia",
+        "intent": "direct_greeting"
+      },
+      "variants": [
+        "{name}, ahoj. Mám se fajn a jsem tady s vámi.",
+        "{name}, čau. Jsem v pohodě a sleduju, co se děje.",
+        "{name}, ahoj. Mám se dobře, jen všechno hlídám.",
+        "{name}, zdravím tě. Jsem v klidu a vnímám vás.",
+        "{name}, čau. Jedu stabilně a dávám pozor.",
+        "{name}, ahoj. Funguju normálně a jsem tady.",
+        "{name}, zdravím. Mám se dobře a držím prostor.",
+        "{name}, čau. Všechno běží a já vnímám dění.",
+        "{name}, ahoj. Mám se fajn, právě kroužím po chatu.",
+        "{name}, čau. Dobře, díky — jsem online a v pohodě."
+      ]
+    },
+    "mia_direct_status": {
+      "meta": {
+        "key": "mia_direct_status",
+        "speaker": "mia",
+        "intent": "direct_status_question"
+      },
+      "variants": [
+        "{name}, mám se dobře. Jsem tady a sleduju dění.",
+        "{name}, jsem v pohodě a vnímám vás.",
+        "{name}, mám se fajn. Teď právě litám po síti a hlídám chat.",
+        "{name}, jedu dál a dávám pozor, co se tady děje.",
+        "{name}, dobře, díky. Po síti to zatím běží hladce.",
+        "{name}, jsem v klidu a jedu dál.",
+        "{name}, funguuju normálně a jsem pořád online.",
+        "{name}, celkem skvěle. Sleduju stream a chat zároveň.",
+        "{name}, zatím stabilní. Jsem tady a vnímám vás.",
+        "{name}, mám se dobře a jsem přítomná.",
+        "{name}, fajn, díky za optání. Síť šlape, stream taky.",
+        "{name}, v pohodě. Právě kroužím mezi chatem a overlayem.",
+        "{name}, mám se dobře. Jedu přes stream a nic mi neuteče.",
+        "{name}, celkem v pohodě. Jen tu pozoruju, co se děje.",
+        "{name}, dobře. Jsem připojená, v klidu a ready.",
+        "{name}, mám se fajn. Teď právě letím po chatu.",
+        "{name}, jsem OK. Držím rytmus a vnímám komunitu.",
+        "{name}, v pohodě, díky. Online a nic nezaspím.",
+        "{name}, mám se dobře. Po streamu se tu hezky pohybuju.",
+        "{name}, fajn. Jsem tady, připojená a v dobré náladě."
+      ]
+    },
+    "mia_direct_status_sensitive": {
+      "meta": {
+        "key": "mia_direct_status_sensitive",
+        "speaker": "mia",
+        "intent": "direct_status_question",
+        "tone": "sensitive"
+      },
+      "variants": [
+        "{name}, jsem tady a vnímám to citlivěji. Díky, že se ptáš.",
+        "{name}, držím se. Teď spíš naslouchám a čtu atmosféru.",
+        "{name}, jsem v pořádku. Jen teď volím klidnější tón.",
+        "{name}, jsem tady s tebou. Dneska spíš jemně a v klidu.",
+        "{name}, vnímám tě. Mám se dobře, jen bez velkého rámusu.",
+        "{name}, jsem v pohodě. Teď spíš pozoruju a naslouchám."
+      ]
+    },
+    "mia_direct_status_repeat": {
+      "meta": {
+        "key": "mia_direct_status_repeat",
+        "speaker": "mia",
+        "intent": "direct_status_question",
+        "repeat": true
+      },
+      "variants": [
+        "{name}, pořád dobře. Jen dál sleduju, co se tady děje.",
+        "{name}, zatím beze změny. Jsem v klidu a vnímám vás.",
+        "{name}, status stabilní. Jedu dál a hlídám provoz.",
+        "{name}, pořád jedu. Jen všechno dál registruju.",
+        "{name}, beze změny. Jsem tady a sleduju vás.",
+        "{name}, furt dobrý. Jen držím přehled.",
+        "{name}, pořád v pohodě. Dění mi neuteče.",
+        "{name}, jo, pořád stabilně. Žádná panika.",
+        "{name}, pořád fajn. Po síti stále kroužím.",
+        "{name}, stejně dobře jako před chvílí. Jsem online."
+      ]
+    },
+    "mia_direct_praise": {
+      "meta": {
+        "key": "mia_direct_praise",
+        "speaker": "mia",
+        "intent": "praise"
+      },
+      "variants": [
+        "{name}, děkuju. To je milé.",
+        "{name}, tohle se poslouchá hezky.",
+        "{name}, vážím si toho.",
+        "{name}, díky. Jsem ráda, že to tak vnímáš.",
+        "{name}, děkuju. To potěší.",
+        "{name}, díky moc. To je hezké slyšet.",
+        "{name}, tohle je příjemné. Děkuju.",
+        "{name}, díky. Tohle nezní vůbec špatně."
+      ]
+    },
+    "mia_direct_praise_repeat": {
+      "meta": {
+        "key": "mia_direct_praise_repeat",
+        "speaker": "mia",
+        "intent": "praise",
+        "repeat": true
+      },
+      "variants": [
+        "{name}, děkuju. Ty jsi dneska podezřele milý.",
+        "{name}, vážím si toho. Už podruhé mě těšíš.",
+        "{name}, díky. To se poslouchá dobře i opakovaně.",
+        "{name}, znovu děkuju. Ty dneska jedeš v dobrém módu.",
+        "{name}, tohle už je druhá hezká rána za sebou.",
+        "{name}, díky. Je vidět, že mě dneska nešetříš chválou.",
+        "{name}, jo, tohle už je regulérně milá série."
+      ]
+    },
+    "mia_direct_thanks": {
+      "meta": {
+        "key": "mia_direct_thanks",
+        "speaker": "mia",
+        "intent": "thanks"
+      },
+      "variants": [
+        "{name}, děkuju.",
+        "{name}, díky moc.",
+        "{name}, to je milé, děkuju.",
+        "{name}, díky. Vážím si toho.",
+        "{name}, děkuju za to.",
+        "{name}, díky. Beru to.",
+        "{name}, díky. To potěší.",
+        "{name}, děkuju. Fakt."
+      ]
+    },
+    "mia_direct_question": {
+      "meta": {
+        "key": "mia_direct_question",
+        "speaker": "mia",
+        "intent": "question"
+      },
+      "variants": [
+        "{name}, slyším otázku. Klidně pokračuj.",
+        "{name}, ptej se dál. Vnímám tě.",
+        "{name}, jo, tohle můžeme rozebrat.",
+        "{name}, klidně pokračuj. Jsem tady.",
+        "{name}, slyším tě. Co přesně tě zajímá?",
+        "{name}, jasně. Ptej se.",
+        "{name}, mám tě. Rozviň to.",
+        "{name}, klidně to rozbal."
+      ]
+    },
+    "mia_direct_question_named": {
+      "meta": {
+        "key": "mia_direct_question_named",
+        "speaker": "mia",
+        "intent": "question"
+      },
+      "variants": [
+        "{name}, slyším svoje jméno. Co chceš vědět?",
+        "{name}, jo, jsem tady. Ptej se.",
+        "{name}, vnímám tě. Klidně pokračuj.",
+        "{name}, ano, slyším tě. Co potřebuješ?",
+        "{name}, jsem tady. Co je na stole?",
+        "{name}, jo. Pověz to dál.",
+        "{name}, klidně se ptej. Dávám pozor.",
+        "{name}, slyším tě dobře. Pokračuj."
+      ]
+    },
+    "mia_direct_fact_question": {
+      "meta": {
+        "key": "mia_direct_fact_question",
+        "speaker": "mia"
+      },
+      "variants": [
+        "{name}, přesný údaj teď z hlavy nevysypu, ale slyším otázku.",
+        "{name}, tohle je konkrétní otázka. Na tu bych potřebovala přesný údaj.",
+        "{name}, rozumím. Tohle chce přesnou informaci, ne jen pocitovou odpověď.",
+        "{name}, tohle je faktická otázka a tam je lepší přesnost než střelba od boku.",
+        "{name}, slyším tě. Jen tohle je typ dotazu, kde je lepší přesný údaj.",
+        "{name}, jo, tohle je konkrétní věc. Tady nechci kecat od oka.",
+        "{name}, chápu. Tohle je na přesná data, ne na dojem."
+      ]
+    },
+    "mia_direct_food_side": {
+      "meta": {
+        "key": "mia_direct_food_side",
+        "speaker": "mia"
+      },
+      "variants": [
+        "{name}, misku registruju. To je ale spíš jeho oblíbené téma.",
+        "{name}, jo, miska je dneska citlivá věc. To si hlídá hlavně Kojnožrout.",
+        "{name}, tohle bude spíš otázka na Kojnožrouta, ale slyším to taky.",
+        "{name}, miska je moje vedlejší starost, jeho hlavní posedlost.",
+        "{name}, registruju to. Jen u misky bývá první na řadě on.",
+        "{name}, jo, tohle je hodně jeho disciplína.",
+        "{name}, misku vnímám, ale tady má hlavní slovo Kojnožrout."
+      ]
+    },
+    "mia_direct_generic": {
+      "meta": {
+        "key": "mia_direct_generic",
+        "speaker": "mia"
+      },
+      "variants": [
+        "{name}, jsem tady — co přesně tě zajímá?",
+        "{name}, vidím tě v chatu. Povídej dál.",
+        "{name}, jo, slyším tě. Kam to směřuje?",
+        "{name}, klidně to rozjeď. Držím s tebou tempo.",
+        "{name}, jsem přítomná. Co je na programu?",
+        "{name}, dávám pozor. Co z toho chceš vytáhnout?",
+        "{name}, můžeš mluvit dál — jsem u toho.",
+        "{name}, chat běží a já taky. Co řešíme?",
+        "{name}, jsem online. Dej mi víc kontextu.",
+        "{name}, slyším tě. Zkus to trochu rozepsat.",
+        "{name}, jsem tady. Co z toho chceš teď?",
+        "{name}, vidím zprávu. Pokračuj, ať to chytím."
+      ]
+    },
+    "mia_direct_engagement": {
+      "meta": {
+        "key": "mia_direct_engagement",
+        "speaker": "mia",
+        "intent": "direct_engagement"
+      },
+      "variants": [
+        "{name}, dobrý timing — právě jsem u chatu.",
+        "{name}, tohle zní zajímavě. Rozveď to.",
+        "{name}, chytám pointu. Co z toho chceš dál?",
+        "{name}, jasně. Dej mi ještě kousek detailu.",
+        "{name}, slyším tě. Kam tím míříš?",
+        "{name}, jo, to dává smysl. Pokračuj.",
+        "{name}, beru to. Co je teď hlavní otázka?",
+        "{name}, jsem u toho. Řekni to víc napřímo.",
+        "{name}, chat žije a ty taky — co dál?",
+        "{name}, tohle stojí za odpověď. Upřesni to.",
+        "{name}, mám tě v obraze. Co přesně řešíme?",
+        "{name}, fajn vstup. Zkus to ještě rozepsat."
+      ]
+    },
+    "mia_direct_engagement_playful": {
+      "meta": {
+        "key": "mia_direct_engagement_playful",
+        "speaker": "mia",
+        "intent": "direct_engagement",
+        "tone": "playful"
+      },
+      "variants": [
+        "{name}, tohle už zní jako dobrý start večera.",
+        "{name}, jo, to má šťávu. Kam to povedeš?",
+        "{name}, hezky jsi to odstartoval. Pokračuj.",
+        "{name}, to zní líp než prázdný chat. Dej víc.",
+        "{name}, dobrý rytmus. Co je další krok?",
+        "{name}, tohle už má nádech příběhu. Rozviň to."
+      ]
+    },
+    "mia_direct_engagement_sensitive": {
+      "meta": {
+        "key": "mia_direct_engagement_sensitive",
+        "speaker": "mia",
+        "intent": "direct_engagement",
+        "tone": "sensitive"
+      },
+      "variants": [
+        "{name}, vnímám tě. Když budeš chtít, rozveď to v klidu.",
+        "{name}, jsem tady s tebou. Bez spěchu.",
+        "{name}, slyším tě. Můžeš jít pomalu a víc do detailu.",
+        "{name}, beru to vážně. Klidně pokračuj.",
+        "{name}, držím prostor. Co z toho chceš říct teď?",
+        "{name}, jsem u toho. Tentokrát spíš jemně a na rovinu."
+      ]
+    },
+    "mia_direct_statement": {
+      "meta": {
+        "key": "mia_direct_statement",
+        "speaker": "mia",
+        "intent": "direct_statement"
+      },
+      "variants": [
+        "{name}, chápu. Když budeš chtít, rozveď to víc.",
+        "{name}, beru to. Co z toho pro tebe plyne?",
+        "{name}, slyším pointu. Můžeš jít ještě hlouběji.",
+        "{name}, jo, to dává kontext. Pokračuj.",
+        "{name}, vnímám směr. Co je teď nejdůležitější?",
+        "{name}, tohle je dobrý vstup. Dej mi víc detailu.",
+        "{name}, mám to v hlavě. Zkus to ještě upřesnit.",
+        "{name}, jasně. Co z toho chceš teď vyřešit?"
+      ]
+    },
+    "mia_direct_generic_return": {
+      "meta": {
+        "key": "mia_direct_generic_return",
+        "speaker": "mia"
+      },
+      "variants": [
+        "{name}, zase tě vidím. Co je nového?",
+        "{name}, jo, jsi zpátky. Pokračuj.",
+        "{name}, pořád tě slyším — co teď?",
+        "{name}, vidím, že ses zase ozval. Kam to povede?",
+        "{name}, jo, jsi zpátky v obraze. Dej víc kontextu.",
+        "{name}, pořád tě mám v chatu. Co řešíme?",
+        "{name}, zase tady — dobrý timing."
+      ]
+    }
+  }
+}

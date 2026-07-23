@@ -1,0 +1,16 @@
+{
+  "version": 25,
+  "characterId": "mia",
+  "artId": "mia-soft-neon-v1",
+  "idleAsset": "assets/mia/cyber/lip/01.png",
+  "note": "Soft neon guardian — head clip matches speech-overlay interim mask.",
+  "anchors": {
+    "belly": { "cx": 0.5, "cy": 0.62, "w": 0.28, "h": 0.22 },
+    "head": { "cx": 0.5, "cy": 0.23, "w": 0.76, "h": 0.46 },
+    "neck": { "x": 0.5, "y": 0.46 },
+    "eye": { "cx": 0.5, "cy": 0.2, "w": 0.18, "h": 0.1 },
+    "root": { "x": 0.5, "y": 1.0 },
+    "body": { "x": 0.5, "y": 0.7 },
+    "hand": { "cx": 0.72, "cy": 0.55, "w": 0.12, "h": 0.1 }
+  }
+}

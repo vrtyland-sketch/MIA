@@ -1,0 +1,91 @@
+"use strict";
+
+const { resolveRuntimeGetter } = require("./MIA_RUNTIME_GETTER");
+
+/**
+ * Flatten grouped event-pipeline host bindings for createEventPipeline.
+ */
+
+function buildEventPipelineCtx(host = {}) {
+  const { core = {}, modules = {}, handlers = {}, media = {}, state = {} } = host;
+
+  return {
+    normalizeIncomingEvent: core.normalizeIncomingEvent,
+    upper: core.upper,
+    streamSessionModule: modules.streamSessionModule,
+    ingestDeduper: resolveRuntimeGetter(modules.getIngestDeduper, modules.ingestDeduper),
+    writeLog: core.writeLog,
+    safeString: core.safeString,
+    recordIngestSummary: core.recordIngestSummary,
+    t0EngagementModule: modules.t0EngagementModule,
+    executeOverlay: handlers.executeOverlay,
+    activateT0Flyby: handlers.activateT0Flyby,
+    getUserLabel: handlers.getUserLabel,
+    pushRecentParticipant: handlers.pushRecentParticipant,
+    pushChatFeed: handlers.pushChatFeed,
+    proactiveHostModule: modules.proactiveHostModule,
+    handleSoloStreamChatActivity: handlers.handleSoloStreamChatActivity,
+    chatLexiconModule: modules.chatLexiconModule,
+    sessionMemoryModule: modules.sessionMemoryModule,
+    chatBrain: modules.chatBrain,
+    runtimeConfig: core.runtimeConfig,
+    immersiveSceneModule: modules.immersiveSceneModule,
+    applyCareQuestProgress: handlers.applyCareQuestProgress,
+    deliverQuestCompleteMoment: handlers.deliverQuestCompleteMoment,
+    tryHandleKojnozoutCommands: handlers.tryHandleKojnozoutCommands,
+    tryHandleKojStateShowcaseCommand: handlers.tryHandleKojStateShowcaseCommand,
+    tryHandleStreamerShowcaseCommand: handlers.tryHandleStreamerShowcaseCommand,
+    tryHandleStreamerMediaCommand: handlers.tryHandleStreamerMediaCommand,
+    tryHandleCapybaraWaitingComment: handlers.tryHandleCapybaraWaitingComment,
+    supportResolver: modules.supportResolver,
+    enrichGiftEconomyContext: handlers.enrichGiftEconomyContext,
+    nowIso: core.nowIso,
+    giftUserLedgerModule: modules.giftUserLedgerModule,
+    applyRuntimeStateImpact: handlers.applyRuntimeStateImpact,
+    applyWorldLayer: handlers.applyWorldLayer,
+    streamAudienceModule: modules.streamAudienceModule,
+    shadowRuntime: modules.shadowRuntime,
+    recordShadowPipelineSummary: core.recordShadowPipelineSummary,
+    buildSupportAction: handlers.buildSupportAction,
+    buildDirectChatAction: handlers.buildDirectChatAction,
+    normalizeActionResult: handlers.normalizeActionResult,
+    prepareGiftEconomyPresentation: handlers.prepareGiftEconomyPresentation,
+    kojnozoutVitalsModule: modules.kojnozoutVitalsModule,
+    kojnozoutPersistenceModule: modules.kojnozoutPersistenceModule,
+    deliverChatTranslation: handlers.deliverChatTranslation,
+    responseEngine: modules.responseEngine,
+    llmAdapterModule: modules.llmAdapterModule,
+    attachGiftVideoPlan: handlers.attachGiftVideoPlan,
+    speakerRoutingModule: modules.speakerRoutingModule,
+    videoEngine: resolveRuntimeGetter(media.getVideoEngine, media.videoEngine),
+    getObsSourceAudioMap: media.getObsSourceAudioMap,
+    executeGiftPresentationOverlays: handlers.executeGiftPresentationOverlays,
+    deliverActionVoice: handlers.deliverActionVoice,
+    animationTraceModule: modules.animationTraceModule,
+    runtimeExecution: modules.runtimeExecution,
+    executeVideo: handlers.executeVideo,
+    schedulePostGiftMediaExperiences: handlers.schedulePostGiftMediaExperiences,
+    capybaraFlowModule: modules.capybaraFlowModule,
+    giftMapModule: modules.giftMapModule,
+    giftAnimationContextModule: modules.giftAnimationContextModule,
+    scheduleDeferredMiaVoice: handlers.scheduleDeferredMiaVoice,
+    maybeDeliverMiaVoice: handlers.maybeDeliverMiaVoice,
+    deliverEvolutionMoment: handlers.deliverEvolutionMoment,
+    getStreamSession: state.getStreamSession,
+    setStreamSession: state.setStreamSession,
+    getGiftSupporterProfile: state.getGiftSupporterProfile,
+    setGiftSupporterProfile: state.setGiftSupporterProfile,
+    getGiftUserLedger: state.getGiftUserLedger,
+    setGiftUserLedger: state.setGiftUserLedger,
+    getLastGiftMapping: state.getLastGiftMapping,
+    setLastGiftMapping: state.setLastGiftMapping,
+    getStreamState: state.getStreamState,
+    setStreamState: state.setStreamState,
+    getOutputState: state.getOutputState,
+    getOverlayState: state.getOverlayState,
+    getKojnozoutState: state.getKojnozoutState,
+    getEcosystemState: state.getEcosystemState
+  };
+}
+
+module.exports = { buildEventPipelineCtx };

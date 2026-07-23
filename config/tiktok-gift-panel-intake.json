@@ -1,0 +1,386 @@
+{
+  "version": 1,
+  "updatedAt": "2026-07-04T19:52:17.297Z",
+  "purpose": "gift_map_reference",
+  "note": "Screenshoty nejsou OBS video — jen panel TikTok dárků (název + coiny). Overlay nikdy neukazuje coiny ve streamu.",
+  "screenshotDir": "incoming-images/gift-map-screenshots",
+  "screenshots": [
+    "gift-map-screenshots/Screenshot_20260413-190502_TikTok.png",
+    "gift-map-screenshots/Screenshot_20260413-190508_TikTok.png",
+    "gift-map-screenshots/Screenshot_20260413-190516_TikTok.png",
+    "gift-map-screenshots/Screenshot_20260413-190520_TikTok.png",
+    "gift-map-screenshots/Screenshot_20260413-190526_TikTok.png",
+    "gift-map-screenshots/Screenshot_20260413-190533_TikTok.png",
+    "gift-map-screenshots/Screenshot_20260413-190538_TikTok.png",
+    "gift-map-screenshots/Screenshot_20260413-190543_TikTok.png",
+    "gift-map-screenshots/Screenshot_20260413-190547_TikTok.png",
+    "gift-map-screenshots/Screenshot_20260413-190552_TikTok.png",
+    "gift-map-screenshots/Screenshot_20260413-190557_TikTok.png",
+    "gift-map-screenshots/Screenshot_20260413-190603_TikTok.png",
+    "gift-map-screenshots/Screenshot_20260413-190611_TikTok.png",
+    "gift-map-screenshots/Screenshot_20260413-190616_TikTok.png",
+    "gift-map-screenshots/Screenshot_20260413-190621_TikTok.png",
+    "gift-map-screenshots/Screenshot_20260413-190626_TikTok.png",
+    "gift-map-screenshots/Screenshot_20260413-190636_TikTok.png",
+    "gift-map-screenshots/Screenshot_20260413-190645_TikTok.png"
+  ],
+  "gifts": [
+    {
+      "label": "Růže",
+      "labelEn": "Rose",
+      "coins": 1,
+      "streamTier": "T1",
+      "catalogKey": "ROSE",
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Osrdíčkovat",
+      "coins": 1,
+      "streamTier": "T1",
+      "catalogKey": "HEART",
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Sláva Fanklubu",
+      "coins": 1,
+      "streamTier": "T1",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Srdce z prstů",
+      "coins": 5,
+      "streamTier": "T1",
+      "catalogKey": "HEART",
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Síla fanklubu",
+      "coins": 9,
+      "streamTier": "T1",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Náhrdelník přátelství",
+      "coins": 10,
+      "streamTier": "T1",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Parfém",
+      "coins": 20,
+      "streamTier": "T1",
+      "catalogKey": "HEART",
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Kobliha",
+      "coins": 30,
+      "streamTier": "T1",
+      "catalogKey": "DONUT",
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Kaktusový mix",
+      "coins": 399,
+      "streamTier": "T1",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Klaun Boogie",
+      "coins": 449,
+      "streamTier": "T1",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Bubnový křeček",
+      "coins": 449,
+      "streamTier": "T1",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Dobrý večer",
+      "coins": 399,
+      "streamTier": "T1",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Srdce na dlani",
+      "coins": 100,
+      "streamTier": "T2",
+      "catalogKey": "HEART",
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Vítězství fanklubu",
+      "coins": 99,
+      "streamTier": "T1",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Úžasné konfety",
+      "coins": 100,
+      "streamTier": "T2",
+      "catalogKey": null,
+      "note": "Lv.10 dárce",
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Pistole na peníze",
+      "coins": 500,
+      "streamTier": "T1",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Drahokamová pumpa",
+      "coins": 500,
+      "streamTier": "T2",
+      "catalogKey": null,
+      "note": "Lv.15 dárce",
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Labuť",
+      "coins": 699,
+      "streamTier": "T2",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Vlak",
+      "coins": 899,
+      "streamTier": "T2",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Ohňostroj",
+      "coins": 1088,
+      "streamTier": "T3",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Lesklý horkovzdušný balón",
+      "coins": 1000,
+      "streamTier": "T3",
+      "catalogKey": null,
+      "note": "Lv.20 dárce",
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Raketa",
+      "coins": 1500,
+      "streamTier": "T3",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Potápění s velrybami",
+      "coins": 2150,
+      "streamTier": "T3",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Tančící kapybary",
+      "coins": 2200,
+      "streamTier": "T3",
+      "catalogKey": "CAPYBARA",
+      "note": "gift chat loop animal",
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Motorka",
+      "coins": 2988,
+      "streamTier": "T3",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Rytmický medvěd",
+      "coins": 2999,
+      "streamTier": "T3",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Meteorický déšť",
+      "coins": 3000,
+      "streamTier": "T3",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Jarní vlak",
+      "coins": 3999,
+      "streamTier": "T3",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Město budoucnosti",
+      "coins": 6000,
+      "streamTier": "T4",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Leopard Lili",
+      "coins": 6599,
+      "streamTier": "T4",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Sportovní auto",
+      "coins": 7000,
+      "streamTier": "T4",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Leon a Lili",
+      "coins": 9699,
+      "streamTier": "T4",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Lili a Sakura",
+      "coins": 12000,
+      "streamTier": "T5",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Podpora komunity",
+      "coins": 15000,
+      "streamTier": "T5",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Paříme naplno",
+      "coins": 15000,
+      "streamTier": "T5",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Go Big hřebec",
+      "coins": 15000,
+      "streamTier": "T5",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Rodinné chvíle",
+      "coins": 15000,
+      "streamTier": "T5",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Černý vlk",
+      "coins": 15000,
+      "streamTier": "T5",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Bílý tygr",
+      "coins": 15999,
+      "streamTier": "T5",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Křišťálové srdce",
+      "coins": 14999,
+      "streamTier": "T5",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Létající láska",
+      "coins": 19999,
+      "streamTier": "T5",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Nekonečné moře",
+      "coins": 23999,
+      "streamTier": "T6",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    },
+    {
+      "label": "Černý tygr",
+      "coins": 22000,
+      "streamTier": "T6",
+      "catalogKey": null,
+      "source": "tiktok_live_panel_screenshot",
+      "capturedAt": "2026-04-13"
+    }
+  ],
+  "tierFromCoins": {
+    "T1": 1,
+    "T2": 100,
+    "T3": 1000,
+    "T4": 5000,
+    "T5": 10000,
+    "T6": 25000
+  }
+}

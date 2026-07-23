@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "groups": {
+    "CARE": { "label": "Péče", "bowlBias": "food", "bondMul": 1.1 },
+    "SUPPORT": { "label": "Podpora", "bowlBias": "food", "bondMul": 1 },
+    "LOVE": { "label": "Láska", "bowlBias": "none", "bondMul": 1.4 },
+    "HELP": { "label": "Pomoc", "bowlBias": "water", "bondMul": 1.2 },
+    "PET": { "label": "Mazlení", "bowlBias": "none", "bondMul": 1.5 },
+    "HEAL": { "label": "Léčení", "bowlBias": "water", "bondMul": 1.2 },
+    "SPECIAL": { "label": "Speciál", "bowlBias": "special", "bondMul": 1.6 }
+  }
+}

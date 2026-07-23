@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<title>MIA · Item ikony</title>
+<style>
+  html, body { margin: 0; background: #07060c; color: #f2ebff; font-family: "Segoe UI", Arial, sans-serif; }
+  h1 { text-align: center; margin: 16px; font-size: 20px; }
+  p { text-align: center; color: #9a8fb0; font-size: 12px; margin: 0 0 12px; }
+  .row { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; padding: 0 12px 20px; max-width: 900px; margin: 0 auto; }
+  .cell { background: #120e1a; border: 1px solid rgba(255,255,255,.08); border-radius: 10px; text-align: center; padding: 8px 4px; }
+  .cell img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    background: repeating-conic-gradient(#1a1428 0% 25%, #0e0a16 0% 50%) 50% / 14px 14px;
+    border-radius: 8px;
+  }
+  .cell span { display: block; font-size: 10px; color: #cbbfe0; margin-top: 4px; }
+</style>
+</head>
+<body>
+<h1>Batoh / battle item ikony</h1>
+<p>Šachovnice = průhlednost · 23 malovaných ikon</p>
+<div class="row" id="root"></div>
+<script>
+const API = location.origin.startsWith("http") ? location.origin : "http://127.0.0.1:3000";
+const items = ["snack","jablko","granule","feast","cheer","micek","kartac","spark","boost","utok","posileni","shield","lektvar","obvaz","ryba","kolac","energie","koruna","prapor","balzam","hvezda","talisman","box"];
+document.getElementById("root").innerHTML = items.map((id) =>
+    `<div class="cell"><img src="${API}/assets/kojnozrout/items/${id}.png?v=4" alt="${id}" loading="lazy" /><span>${id}</span></div>`
+).join("");
+</script>
+</body>
+</html>

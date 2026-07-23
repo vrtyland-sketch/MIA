@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<title>MIA Status</title>
+<link rel="stylesheet" href="/tiktok-viewer-zones.css" />
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+}
+
+#wrap {
+  position: absolute;
+  top: var(--tt-safe-top, 0);
+  left: var(--tt-safe-left, 0);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  max-width: calc(100% - var(--tt-safe-left, 0px) - var(--tt-safe-right, 0px));
+}
+
+#badge {
+  box-sizing: border-box;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#badge.ok {
+  background: rgba(0, 140, 75, 0.9);
+  border-color: rgba(138, 255, 157, 0.35);
+}
+
+#badge.err {
+  background: rgba(170, 35, 35, 0.92);
+}
+
+#hostTeamBar {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  min-width: min(280px, 88vw);
+  padding: 10px 12px;
+  border-radius: 16px;
+  background: rgba(8, 12, 24, 0.88);
+  border: 1px solid rgba(176, 124, 255, 0.35);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+#hostTeamBar.visible {
+  display: flex;
+}
+
+#hostTeamTitle {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+#hostTeamTrack {
+  display: flex;
+  height: 12px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#hostTeamLocal {
+  background: linear-gradient(90deg, #38d976, #00eaff);
+  transition: width 320ms ease;
+}
+
+#hostTeamHost {
+  background: linear-gradient(90deg, #b07cff, #ffd86f);
+  transition: width 320ms ease;
+}
+
+#hostTeamMeta {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.88);
+}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div id="badge" class="ok">MIA …</div>
+  <div id="hostTeamBar">
+    <div id="hostTeamTitle">Týmové body</div>
+    <div id="hostTeamTrack">
+      <div id="hostTeamLocal" style="width:50%"></div>
+      <div id="hostTeamHost" style="width:50%"></div>
+    </div>
+    <div id="hostTeamMeta">
+      <span id="hostTeamLocalLabel">Spinák 0</span>
+      <span id="hostTeamHostLabel">Host 0</span>
+    </div>
+  </div>
+</div>
+<script src="/assets/host-team-ui.js"></script>
+<script>
+const API_BASE = (window.location.origin && window.location.protocol.startsWith("http"))
+  ? window.location.origin
+  : "http://127.0.0.1:3000";
+
+const POLL_MS = 1200;
+const badge = document.getElementById("badge");
+const hostTeamBar = document.getElementById("hostTeamBar");
+const hostTeamLocal = document.getElementById("hostTeamLocal");
+const hostTeamHost = document.getElementById("hostTeamHost");
+const hostTeamLocalLabel = document.getElementById("hostTeamLocalLabel");
+const hostTeamHostLabel = document.getElementById("hostTeamHostLabel");
+const hostTeamTitle = document.getElementById("hostTeamTitle");
+
+function safe(v, fb = "") {
+  return typeof v === "string" && v.trim() ? v.trim() : fb;
+}
+
+function renderHostTeamBar(model) {
+  if (!model?.visible) {
+    hostTeamBar.classList.remove("visible");
+    return;
+  }
+  hostTeamBar.classList.add("visible");
+  hostTeamTitle.textContent = model.label || "Týmové body";
+  hostTeamLocal.style.width = `${model.localPct}%`;
+  hostTeamHost.style.width = `${model.hostPct}%`;
+  hostTeamLocalLabel.textContent = `Spinák ${model.localPoints}`;
+  hostTeamHostLabel.textContent = `Host ${model.hostPoints}`;
+}
+
+async function tick() {
+  try {
+    const res = await fetch(`${API_BASE}/overlay-state?_=${Date.now()}`, { cache: "no-store" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const data = await res.json();
+    const host = data?.hostMode || {};
+    const bowl = Math.round(Number(data?.kojnozoutState?.bowlPercent || 0));
+    const mood = safe(data?.kojnozoutState?.mood, "idle");
+    const vitals = safe(data?.vitalsSummary);
+    const teamModel =
+      typeof window.MIA_HOST_TEAM_UI?.buildHostTeamBarModel === "function"
+        ? window.MIA_HOST_TEAM_UI.buildHostTeamBarModel(host, data?.hostTeamScore || {})
+        : { visible: false };
+
+    renderHostTeamBar(teamModel);
+    badge.className = "ok";
+
+    if (host.awayActive) {
+      badge.style.background = "rgba(120, 60, 200, 0.92)";
+      badge.style.borderColor = "rgba(176, 124, 255, 0.45)";
+      badge.textContent = `MIA HOST · ${host.label || "NEJSEM TU"}`;
+      return;
+    }
+    if (host.hostMode === "solo_stream") {
+      badge.style.background = "rgba(0, 110, 150, 0.92)";
+      badge.textContent = `MIA SOLO · miska ${bowl}%`;
+      return;
+    }
+    badge.style.background = "rgba(0, 140, 75, 0.9)";
+    badge.textContent = vitals
+      ? `MIA LIVE · miska ${bowl}% · ${vitals}`
+      : `MIA LIVE · ${mood} · miska ${bowl}%`;
+  } catch {
+    badge.className = "err";
+    badge.textContent = "MIA OFFLINE";
+    hostTeamBar.classList.remove("visible");
+  }
+}
+
+tick();
+setInterval(tick, POLL_MS);
+</script>
+</body>
+</html>

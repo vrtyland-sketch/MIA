@@ -1,0 +1,116 @@
+{
+  "phase1": {
+    "actionQueue": {
+      "enabled": false,
+      "fullRouting": false,
+      "coalesceWindowMs": 2500,
+      "note": "Default OFF (not soak-default). Enable: admin AQ ON / MIA_ACTION_QUEUE=1 / enabled:true. Kill: MIA_ACTION_QUEUE=0"
+    },
+    "eventLog": {
+      "enabled": true
+    },
+    "runtimeState": {
+      "persistIntervalMs": 8000,
+      "path": "data/runtime-state.json",
+      "kojRef": "data/kojnozout-state.json"
+    },
+    "watchdog": {
+      "enabled": true,
+      "intervalMs": 15000,
+      "ingestStaleMs": 120000,
+      "reconnectCooldownMs": 45000,
+      "note": "Light OBS/ingest health + safe reconnect hooks. Disable: MIA_STREAM_WATCHDOG=0"
+    },
+    "director": {
+      "status": "phase_2_shipped",
+      "note": "See phase2.director — MIA Director shipped in Phase 2."
+    }
+  },
+  "phase2": {
+    "director": {
+      "enabled": true,
+      "note": "Default ON. Disable: MIA_DIRECTOR=0"
+    },
+    "comboMoments": {
+      "enabled": true,
+      "note": "solo_combo, community_burst, first_support, bowl_rush. Disable: MIA_COMBO_MOMENTS=0"
+    },
+    "viewerMemory": {
+      "enabled": true,
+      "path": "data/viewer-memory.json",
+      "note": "Stream stats only — no private chat. Disable: MIA_VIEWER_MEMORY=0"
+    },
+    "controlCenter": {
+      "enabled": true,
+      "paths": ["/admin", "/mia-admin"]
+    },
+    "giftStoryboard": {
+      "enabled": true,
+      "note": "Lion / Universe / Galaxy / Rose: intro → avatar → react → koj → outro"
+    },
+    "themeManager": {
+      "enabled": false,
+      "note": "Default OFF. Enable: MIA_THEME_MANAGER=1. Themes: cyber / purple_robot / arena"
+    }
+  },
+  "postDod": {
+    "themeManager": {
+      "enabled": false,
+      "note": "Thin MVP — admin toggle + overlay-state.theme.cssVars"
+    },
+    "giftAnimBust": "37-stream-polish",
+    "actionQueueProduction": {
+      "status": "hardened",
+      "defaultEnabled": false,
+      "adminToggle": "/api/mia-admin/action-queue",
+      "killSwitch": "MIA_ACTION_QUEUE=0",
+      "note": "See docs/MIA_AQ_PRODUCTION.md — gift_thanks coalesce + gift_present cues"
+    }
+  },
+  "phase3": {
+    "kojLongTermNeeds": {
+      "enabled": true,
+      "note": "fatigue + techCharge persist with hunger/energy/mood"
+    },
+    "techForms": {
+      "enabled": false,
+      "note": "Default OFF. Enable: MIA_TECH_FORMS=1"
+    },
+    "battleMvp": {
+      "enabled": true,
+      "note": "announce→countdown→active. Legacy instant: MIA_BATTLE_MVP=0"
+    },
+    "inventory": {
+      "enabled": true,
+      "path": "data/viewer-inventory.json",
+      "note": "Thin cosmetic/key stubs. Disable: MIA_VIEWER_INVENTORY=0"
+    },
+    "viewerLevels": {
+      "enabled": true,
+      "note": "level from totalMiaPoints thresholds in viewer-memory"
+    }
+  },
+  "phase4": {
+    "streamerProfiles": {
+      "enabled": true,
+      "path": "data/streamer-profiles",
+      "note": "Named runtime snapshots via /api/mia-admin/profiles"
+    },
+    "settingsExport": {
+      "enabled": true,
+      "note": "GET /api/mia-admin/export · POST /api/mia-admin/import"
+    },
+    "userMode": {
+      "enabled": false,
+      "note": "Stub only. Default OFF. Enable: MIA_USER_MODE=1"
+    },
+    "multiTenant": {
+      "status": "deferred",
+      "note": "Explicitly deferred — not in Phase 4 MVP"
+    },
+    "installer": {
+      "status": "docs_plus_setup_script",
+      "note": "docs/MIA_INSTALLER.md + npm run setup:mia"
+    }
+  }
+}

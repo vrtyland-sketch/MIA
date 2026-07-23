@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<title>MIA · Evoluce Koje</title>
+<style>
+  html, body { margin: 0; background: #07060c; color: #f2ebff; font-family: "Segoe UI", Arial, sans-serif; }
+  h1 { text-align: center; margin: 16px; font-size: 20px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; padding: 12px; }
+  .cell { width: 180px; text-align: center; background: #120e1a; border-radius: 12px; border: 1px solid rgba(255,255,255,.1); overflow: hidden; }
+  .cell img { width: 100%; aspect-ratio: 1; object-fit: contain; background: #000; }
+  .cell span { display: block; padding: 8px; font-size: 12px; font-weight: 800; }
+</style>
+</head>
+<body>
+<h1>Evoluce tier PNG</h1>
+<div class="row" id="root"></div>
+<script>
+const API = location.origin.startsWith("http") ? location.origin : "http://127.0.0.1:3000";
+const tiers = [
+  { id: "egg", label: "Vejíčko" },
+  { id: "hatchling", label: "Mládě" },
+  { id: "sprout", label: "Pučící" },
+  { id: "guardian", label: "Ochránce" },
+  { id: "legend", label: "Legenda" }
+];
+document.getElementById("root").innerHTML = tiers.map((t) =>
+  `<div class="cell"><img src="${API}/assets/kojnozrout/evolution/${t.id}.png?v=2" alt="${t.id}" /><span>${t.label}</span></div>`
+).join("");
+</script>
+</body>
+</html>

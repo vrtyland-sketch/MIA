@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "packs": {
+    "community_ping_mia": {
+      "meta": {
+        "key": "community_ping_mia",
+        "speaker": "mia",
+        "intent": "community"
+      },
+      "variants": [
+        "Komunita se hýbe. To mám ráda.",
+        "Jo, přesně takhle to tu má žít.",
+        "Chat se probouzí. Pokračujte.",
+        "Tady už to začíná mít tep.",
+        "Vnímám vás. Jede to správným směrem.",
+        "Tohle není mrtvo. Tohle už dýchá.",
+        "Komunita se rozjíždí a je to vidět.",
+        "Jsem tu s vámi. Jen nepolevujte.",
+        "Tohle tempo se mi začíná líbit.",
+        "Chat drží proud. Jen tak dál.",
+        "Jo. Tohle už je slušný pohyb.",
+        "Pěkně. Tady už se něco děje.",
+        "Tohle má energii. Nenechte to spadnout.",
+        "Komunita je vzhůru. A to je dobře.",
+        "Je vidět, že ten chat žije.",
+        "Tady už je slušná provozní teplota.",
+        "Tohle už není náhoda. Tohle je rytmus.",
+        "Jo, tahle energie je správná.",
+        "Když se komunita rozhýbe, je to hned znát.",
+        "Tenhle prostor má náladu. To beru."
+      ]
+    },
+    "community_ping_kojnozout": {
+      "meta": {
+        "key": "community_ping_kojnozout",
+        "speaker": "kojnozout",
+        "intent": "community"
+      },
+      "variants": [
+        "Tady to začíná žít. To se mi líbí.",
+        "Jo, komunita se hýbe. To já poznám hned.",
+        "Chat se probouzí. A já s ním.",
+        "Tohle už má pěkný tep. Jen tak dál.",
+        "Vnímám vás. Tohle už je slušný ruch.",
+        "Tady už to není mrtvé. Tady to funí.",
+        "Komunita se rozjíždí a já jsem u toho.",
+        "Jsem tu s vámi. Tak to držte.",
+        "Tohle tempo už mi voní líp než prázdná miska.",
+        "Chat drží proud. To je správně.",
+        "Jo. Tohle už je pěkný pohyb.",
+        "Pěkně. Tady už se fakt něco děje.",
+        "Tohle má energii. A já to žeru.",
+        "Komunita je vzhůru. Tak to má být.",
+        "Tohle už šustí životem.",
+        "Jo, takhle zní slušnej večer.",
+        "Tahle parta už má puls.",
+        "Tohle už je slušnej šrumec.",
+        "Já jen že tohle už mě baví sledovat.",
+        "Jo, tohle už není ticho. Tohle je provoz."
+      ]
+    },
+    "milestone_chat_mia": {
+      "meta": {
+        "key": "milestone_chat_mia",
+        "speaker": "mia"
+      },
+      "variants": [
+        "Komunita se rozjíždí. Přesně takhle to má vypadat.",
+        "Tohle už není náhoda. Tohle je flow.",
+        "Jo. Tohle je ten moment, kdy to začne žít.",
+        "Přesně. Komunita drží tempo.",
+        "Tohle už má rytmus a váhu.",
+        "Tak jo. Tady už to jede jak má.",
+        "Tahle vlna je správná. Udržte ji.",
+        "Výborně. Tohle je přesně ten druh pohybu, co chceme.",
+        "Tohle už je komunita v provozní teplotě.",
+        "Pěkně. Tohle je milestone, co je fakt vidět.",
+        "Jo, teď už to drží tah.",
+        "Tohle už je slušná přítomnost komunity.",
+        "Tak tohle je přesně ten okamžik, kdy se stream probudí.",
+        "Tady už se opřela energie o energii.",
+        "Výborně. Tohle už má hlavu i sílu."
+      ]
+    },
+    "milestone_chat_kojnozout": {
+      "meta": {
+        "key": "milestone_chat_kojnozout",
+        "speaker": "kojnozout"
+      },
+      "variants": [
+        "Komunita se rozjíždí. A já to cítím až ve fousech.",
+        "Tohle už není náhoda. Tohle je slušná vlna.",
+        "Jo. Tohle je ten moment, kdy to začne šlapat.",
+        "Přesně. Komunita drží tempo a mně se to líbí.",
+        "Tohle už má rytmus a váhu.",
+        "Tak jo. Tady už to valí jak má.",
+        "Tahle vlna je správná. Jen ji nezabijte.",
+        "Výborně. Tohle už je fakt vidět.",
+        "Tohle už je komunita v dobré teplotě.",
+        "Pěkně. Tohle je moment, co stojí za to.",
+        "Jo, tahle vlna už má zuby.",
+        "Tohle už je rachot, co mi sedí.",
+        "Teď už to fakt běží.",
+        "Tak jo. Tohle už je jízda.",
+        "Takhle má vypadat živá parta."
+      ]
+    }
+  }
+}

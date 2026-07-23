@@ -1,0 +1,586 @@
+{
+  "startedAt": "2026-06-30T16:20:32.981Z",
+  "finishedAt": "2026-06-30T16:21:26.753Z",
+  "base": "http://127.0.0.1:3000",
+  "scene": "SPINAK_ENGINE_GIFTS",
+  "steps": [
+    {
+      "id": "idle",
+      "label": "Klid (idle) — základní scéna",
+      "viewer": "LIVE badge, miska, Koj, prázdná bublina",
+      "status": "OK",
+      "triggerStatus": "ok",
+      "programScene": {
+        "source": "SPINAK_ENGINE_GIFTS",
+        "ok": true,
+        "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-SPINAK_ENGINE_GIFTS-1782836434043.png",
+        "publicUrl": "/generated/eyes/eyes-SPINAK_ENGINE_GIFTS-1782836434043.png",
+        "coverage": 0.05310763888888889,
+        "blank": false,
+        "bbox": {
+          "x": 9,
+          "y": 26,
+          "w": 622,
+          "h": 290
+        }
+      },
+      "sources": [
+        {
+          "source": "KOJNOZROUT_RUNTIME",
+          "ok": true,
+          "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-KOJNOZROUT_RUNTIME-1782836434144.png",
+          "publicUrl": "/generated/eyes/eyes-KOJNOZROUT_RUNTIME-1782836434144.png",
+          "coverage": 0.054140625,
+          "blank": false,
+          "bbox": {
+            "x": 151,
+            "y": 268,
+            "w": 298,
+            "h": 83
+          }
+        },
+        {
+          "source": "MIA_ENTITY",
+          "ok": true,
+          "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-MIA_ENTITY-1782836434213.png",
+          "publicUrl": "/generated/eyes/eyes-MIA_ENTITY-1782836434213.png",
+          "coverage": 0.6023828125,
+          "blank": false,
+          "bbox": {
+            "x": 29,
+            "y": 49,
+            "w": 499,
+            "h": 288
+          }
+        }
+      ],
+      "displayVerdict": "OK",
+      "notes": [
+        "Zdroj KOJNOZROUT_RUNTIME: vidím obsah, pokrytí 5.4 %.",
+        "Zdroj MIA_ENTITY: vidím obsah, pokrytí 60.2 %."
+      ]
+    },
+    {
+      "id": "tts_mia",
+      "label": "MIA mluví (TTS) — bublina + hologram",
+      "viewer": "Bublina MIA s textem, hologram se rozzáří",
+      "status": "OK",
+      "triggerStatus": 200,
+      "programScene": {
+        "source": "SPINAK_ENGINE_GIFTS",
+        "ok": true,
+        "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-SPINAK_ENGINE_GIFTS-1782836439898.png",
+        "publicUrl": "/generated/eyes/eyes-SPINAK_ENGINE_GIFTS-1782836439898.png",
+        "coverage": 0.05018663194444444,
+        "blank": false,
+        "bbox": {
+          "x": 9,
+          "y": 26,
+          "w": 622,
+          "h": 290
+        }
+      },
+      "sources": [
+        {
+          "source": "MIA_SPEECH",
+          "ok": false,
+          "reason": "obs_call_failed"
+        }
+      ],
+      "displayVerdict": "OK",
+      "notes": [
+        "Zdroj MIA_SPEECH: zrak selhal (obs_call_failed)."
+      ]
+    },
+    {
+      "id": "tts_koj",
+      "label": "Kojnožrout mluví (TTS)",
+      "viewer": "Bublina Koje (fialová) + hlas",
+      "status": "OK",
+      "triggerStatus": 200,
+      "programScene": {
+        "source": "SPINAK_ENGINE_GIFTS",
+        "ok": true,
+        "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-SPINAK_ENGINE_GIFTS-1782836444535.png",
+        "publicUrl": "/generated/eyes/eyes-SPINAK_ENGINE_GIFTS-1782836444535.png",
+        "coverage": 0.050034722222222223,
+        "blank": false,
+        "bbox": {
+          "x": 9,
+          "y": 26,
+          "w": 622,
+          "h": 290
+        }
+      },
+      "sources": [
+        {
+          "source": "MIA_SPEECH",
+          "ok": false,
+          "reason": "obs_call_failed"
+        },
+        {
+          "source": "KOJNOZROUT_RUNTIME",
+          "ok": true,
+          "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-KOJNOZROUT_RUNTIME-1782836444611.png",
+          "publicUrl": "/generated/eyes/eyes-KOJNOZROUT_RUNTIME-1782836444611.png",
+          "coverage": 0.08506510416666667,
+          "blank": false,
+          "bbox": {
+            "x": 149,
+            "y": 222,
+            "w": 298,
+            "h": 136
+          }
+        }
+      ],
+      "displayVerdict": "OK",
+      "notes": [
+        "Zdroj MIA_SPEECH: zrak selhal (obs_call_failed).",
+        "Zdroj KOJNOZROUT_RUNTIME: vidím obsah, pokrytí 8.5 %."
+      ]
+    },
+    {
+      "id": "chat",
+      "label": "Chat zpráva → MIA odpoví",
+      "viewer": "Bublina s odpovědí MIA",
+      "status": "OK",
+      "triggerStatus": 200,
+      "programScene": {
+        "source": "SPINAK_ENGINE_GIFTS",
+        "ok": true,
+        "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-SPINAK_ENGINE_GIFTS-1782836447835.png",
+        "publicUrl": "/generated/eyes/eyes-SPINAK_ENGINE_GIFTS-1782836447835.png",
+        "coverage": 0.06033420138888889,
+        "blank": false,
+        "bbox": {
+          "x": 9,
+          "y": 26,
+          "w": 622,
+          "h": 290
+        }
+      },
+      "sources": [
+        {
+          "source": "MIA_SPEECH",
+          "ok": false,
+          "reason": "obs_call_failed"
+        }
+      ],
+      "displayVerdict": "OK",
+      "notes": [
+        "Zdroj MIA_SPEECH: zrak selhal (obs_call_failed)."
+      ]
+    },
+    {
+      "id": "gift_t1",
+      "label": "Dárek T1 (Rose) → video + reakce",
+      "viewer": "T1 gift video, Koj reaguje, body +",
+      "status": "OK",
+      "triggerStatus": 200,
+      "programScene": {
+        "source": "SPINAK_ENGINE_GIFTS",
+        "ok": true,
+        "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-SPINAK_ENGINE_GIFTS-1782836452099.png",
+        "publicUrl": "/generated/eyes/eyes-SPINAK_ENGINE_GIFTS-1782836452099.png",
+        "coverage": 0.18769097222222222,
+        "blank": false,
+        "bbox": {
+          "x": 9,
+          "y": 26,
+          "w": 622,
+          "h": 290
+        }
+      },
+      "sources": [
+        {
+          "source": "KOJNOZROUT_RUNTIME",
+          "ok": true,
+          "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-KOJNOZROUT_RUNTIME-1782836452198.png",
+          "publicUrl": "/generated/eyes/eyes-KOJNOZROUT_RUNTIME-1782836452198.png",
+          "coverage": 0.10834635416666667,
+          "blank": false,
+          "bbox": {
+            "x": 203,
+            "y": 137,
+            "w": 232,
+            "h": 215
+          }
+        }
+      ],
+      "displayVerdict": "OK",
+      "notes": [
+        "Zdroj KOJNOZROUT_RUNTIME: vidím obsah, pokrytí 10.8 %."
+      ]
+    },
+    {
+      "id": "gift_t3",
+      "label": "Dárek T3 (Galaxy) → video + story",
+      "viewer": "T3 video, příběhový moment",
+      "status": "OK",
+      "triggerStatus": 200,
+      "programScene": {
+        "source": "SPINAK_ENGINE_GIFTS",
+        "ok": true,
+        "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-SPINAK_ENGINE_GIFTS-1782836456585.png",
+        "publicUrl": "/generated/eyes/eyes-SPINAK_ENGINE_GIFTS-1782836456585.png",
+        "coverage": 0.5482682291666666,
+        "blank": false,
+        "bbox": {
+          "x": 0,
+          "y": 7,
+          "w": 640,
+          "h": 309
+        }
+      },
+      "sources": [
+        {
+          "source": "KOJNOZROUT_RUNTIME",
+          "ok": true,
+          "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-KOJNOZROUT_RUNTIME-1782836456757.png",
+          "publicUrl": "/generated/eyes/eyes-KOJNOZROUT_RUNTIME-1782836456757.png",
+          "coverage": 0.09715277777777778,
+          "blank": false,
+          "bbox": {
+            "x": 214,
+            "y": 137,
+            "w": 211,
+            "h": 223
+          }
+        }
+      ],
+      "displayVerdict": "OK",
+      "notes": [
+        "Zdroj KOJNOZROUT_RUNTIME: vidím obsah, pokrytí 9.7 %."
+      ]
+    },
+    {
+      "id": "gift_t5",
+      "label": "Dárek T5 (Universe) → boss video + combo",
+      "viewer": "T5 video, velký combo flash",
+      "status": "OK",
+      "triggerStatus": 200,
+      "programScene": {
+        "source": "SPINAK_ENGINE_GIFTS",
+        "ok": true,
+        "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-SPINAK_ENGINE_GIFTS-1782836461097.png",
+        "publicUrl": "/generated/eyes/eyes-SPINAK_ENGINE_GIFTS-1782836461097.png",
+        "coverage": 0.5242013888888889,
+        "blank": false,
+        "bbox": {
+          "x": 0,
+          "y": 7,
+          "w": 640,
+          "h": 309
+        }
+      },
+      "sources": [
+        {
+          "source": "KOJNOZROUT_RUNTIME",
+          "ok": true,
+          "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-KOJNOZROUT_RUNTIME-1782836461176.png",
+          "publicUrl": "/generated/eyes/eyes-KOJNOZROUT_RUNTIME-1782836461176.png",
+          "coverage": 0.10473090277777777,
+          "blank": false,
+          "bbox": {
+            "x": 210,
+            "y": 137,
+            "w": 226,
+            "h": 217
+          }
+        }
+      ],
+      "displayVerdict": "OK",
+      "notes": [
+        "Zdroj KOJNOZROUT_RUNTIME: vidím obsah, pokrytí 10.5 %."
+      ]
+    },
+    {
+      "id": "combo",
+      "label": "Combo moment (showcase)",
+      "viewer": "Velký COMBO flash přes obraz",
+      "status": "OK",
+      "triggerStatus": 200,
+      "programScene": {
+        "source": "SPINAK_ENGINE_GIFTS",
+        "ok": true,
+        "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-SPINAK_ENGINE_GIFTS-1782836464569.png",
+        "publicUrl": "/generated/eyes/eyes-SPINAK_ENGINE_GIFTS-1782836464569.png",
+        "coverage": 0.5516666666666666,
+        "blank": false,
+        "bbox": {
+          "x": 0,
+          "y": 7,
+          "w": 640,
+          "h": 309
+        }
+      },
+      "sources": [
+        {
+          "source": "MIA_COMBO",
+          "ok": true,
+          "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-MIA_COMBO-1782836464717.png",
+          "publicUrl": "/generated/eyes/eyes-MIA_COMBO-1782836464717.png",
+          "coverage": 0.5160677083333334,
+          "blank": false,
+          "bbox": {
+            "x": 0,
+            "y": 7,
+            "w": 640,
+            "h": 265
+          }
+        }
+      ],
+      "displayVerdict": "OK",
+      "notes": [
+        "Zdroj MIA_COMBO: vidím obsah, pokrytí 51.6 %."
+      ]
+    },
+    {
+      "id": "t0_flyby",
+      "label": "T0 flyby (nový follower)",
+      "viewer": "Přelet ikonky/jména přes obraz",
+      "status": "WARN",
+      "triggerStatus": 200,
+      "programScene": {
+        "source": "SPINAK_ENGINE_GIFTS",
+        "ok": true,
+        "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-SPINAK_ENGINE_GIFTS-1782836467979.png",
+        "publicUrl": "/generated/eyes/eyes-SPINAK_ENGINE_GIFTS-1782836467979.png",
+        "coverage": 0.2961545138888889,
+        "blank": false,
+        "bbox": {
+          "x": 42,
+          "y": 26,
+          "w": 469,
+          "h": 242
+        }
+      },
+      "sources": [
+        {
+          "source": "MIA_T0_FLYBY",
+          "ok": true,
+          "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-MIA_T0_FLYBY-1782836468043.png",
+          "publicUrl": "/generated/eyes/eyes-MIA_T0_FLYBY-1782836468043.png",
+          "coverage": 0.004388020833333333,
+          "blank": true,
+          "bbox": {
+            "x": 267,
+            "y": 137,
+            "w": 170,
+            "h": 16
+          }
+        }
+      ],
+      "displayVerdict": "FAIL",
+      "notes": [
+        "Zdroj MIA_T0_FLYBY: prázdný — divák tu nic nevidí (chybí PNG/efekt?).",
+        "Kompozice: Trvalý overlay \"MIA/Koj bublina + hologram\" (MIA_BUBBLE) je ve scéně VYPNUTÝ — divák ho nevidí.",
+        "Kompozice: Trvalý overlay \"Koj miska / hlad\" (KOJNOZROUT_BOWL_V2) je ve scéně VYPNUTÝ — divák ho nevidí.",
+        "Kompozice: Trvalý overlay \"Koj sprite / nálada\" (KOJNOZROUT_RUNTIME) je ve scéně VYPNUTÝ — divák ho nevidí."
+      ]
+    },
+    {
+      "id": "story",
+      "label": "Story moment",
+      "viewer": "Příběhová karta diváka",
+      "status": "WARN",
+      "triggerStatus": 200,
+      "programScene": {
+        "source": "SPINAK_ENGINE_GIFTS",
+        "ok": true,
+        "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-SPINAK_ENGINE_GIFTS-1782836472247.png",
+        "publicUrl": "/generated/eyes/eyes-SPINAK_ENGINE_GIFTS-1782836472247.png",
+        "coverage": 0.2436111111111111,
+        "blank": false,
+        "bbox": {
+          "x": 42,
+          "y": 26,
+          "w": 469,
+          "h": 225
+        }
+      },
+      "sources": [
+        {
+          "source": "MIA_STORY",
+          "ok": true,
+          "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-MIA_STORY-1782836472309.png",
+          "publicUrl": "/generated/eyes/eyes-MIA_STORY-1782836472309.png",
+          "coverage": 0.004934895833333334,
+          "blank": true,
+          "bbox": {
+            "x": 35,
+            "y": 298,
+            "w": 105,
+            "h": 32
+          }
+        }
+      ],
+      "displayVerdict": "FAIL",
+      "notes": [
+        "Zdroj MIA_STORY: prázdný — divák tu nic nevidí (chybí PNG/efekt?).",
+        "Kompozice: Trvalý overlay \"MIA/Koj bublina + hologram\" (MIA_BUBBLE) je ve scéně VYPNUTÝ — divák ho nevidí.",
+        "Kompozice: Trvalý overlay \"Koj miska / hlad\" (KOJNOZROUT_BOWL_V2) je ve scéně VYPNUTÝ — divák ho nevidí."
+      ]
+    },
+    {
+      "id": "gift_visual",
+      "label": "Gift visual karta",
+      "viewer": "Karta dárku s avatarem",
+      "status": "WARN",
+      "triggerStatus": 200,
+      "programScene": {
+        "source": "SPINAK_ENGINE_GIFTS",
+        "ok": true,
+        "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-SPINAK_ENGINE_GIFTS-1782836475885.png",
+        "publicUrl": "/generated/eyes/eyes-SPINAK_ENGINE_GIFTS-1782836475885.png",
+        "coverage": 0.41053385416666666,
+        "blank": false,
+        "bbox": {
+          "x": 42,
+          "y": 26,
+          "w": 553,
+          "h": 260
+        }
+      },
+      "sources": [
+        {
+          "source": "MIA_GIFT_MOMENT",
+          "ok": true,
+          "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-MIA_GIFT_MOMENT-1782836475920.png",
+          "publicUrl": "/generated/eyes/eyes-MIA_GIFT_MOMENT-1782836475920.png",
+          "coverage": 0,
+          "blank": true,
+          "bbox": null
+        }
+      ],
+      "displayVerdict": "FAIL",
+      "notes": [
+        "Zdroj MIA_GIFT_MOMENT: prázdný — divák tu nic nevidí (chybí PNG/efekt?).",
+        "Kompozice: Trvalý overlay \"MIA/Koj bublina + hologram\" (MIA_BUBBLE) je ve scéně VYPNUTÝ — divák ho nevidí.",
+        "Kompozice: Trvalý overlay \"Koj miska / hlad\" (KOJNOZROUT_BOWL_V2) je ve scéně VYPNUTÝ — divák ho nevidí."
+      ]
+    },
+    {
+      "id": "duel",
+      "label": "Duel start → scoreboard",
+      "viewer": "Souboj týmů, ukazatel skóre dole",
+      "status": "WARN",
+      "triggerStatus": 200,
+      "programScene": {
+        "source": "SPINAK_ENGINE_GIFTS",
+        "ok": true,
+        "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-SPINAK_ENGINE_GIFTS-1782836479107.png",
+        "publicUrl": "/generated/eyes/eyes-SPINAK_ENGINE_GIFTS-1782836479107.png",
+        "coverage": 0.4031032986111111,
+        "blank": false,
+        "bbox": {
+          "x": 42,
+          "y": 26,
+          "w": 553,
+          "h": 256
+        }
+      },
+      "sources": [
+        {
+          "source": "MIA_DUEL",
+          "ok": true,
+          "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-MIA_DUEL-1782836479160.png",
+          "publicUrl": "/generated/eyes/eyes-MIA_DUEL-1782836479160.png",
+          "coverage": 0,
+          "blank": true,
+          "bbox": null
+        }
+      ],
+      "displayVerdict": "FAIL",
+      "notes": [
+        "Zdroj MIA_DUEL: prázdný — divák tu nic nevidí (chybí PNG/efekt?).",
+        "Kompozice: Trvalý overlay \"MIA/Koj bublina + hologram\" (MIA_BUBBLE) je ve scéně VYPNUTÝ — divák ho nevidí.",
+        "Kompozice: Trvalý overlay \"Koj miska / hlad\" (KOJNOZROUT_BOWL_V2) je ve scéně VYPNUTÝ — divák ho nevidí."
+      ]
+    },
+    {
+      "id": "backpack",
+      "label": "Batoh / inventář",
+      "viewer": "Panel s předměty",
+      "status": "WARN",
+      "triggerStatus": 200,
+      "programScene": {
+        "source": "SPINAK_ENGINE_GIFTS",
+        "ok": true,
+        "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-SPINAK_ENGINE_GIFTS-1782836482336.png",
+        "publicUrl": "/generated/eyes/eyes-SPINAK_ENGINE_GIFTS-1782836482336.png",
+        "coverage": 0.2721397569444444,
+        "blank": false,
+        "bbox": {
+          "x": 9,
+          "y": 26,
+          "w": 622,
+          "h": 290
+        }
+      },
+      "sources": [
+        {
+          "source": "MIA_BACKPACK",
+          "ok": true,
+          "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-MIA_BACKPACK-1782836482371.png",
+          "publicUrl": "/generated/eyes/eyes-MIA_BACKPACK-1782836482371.png",
+          "coverage": 0,
+          "blank": true,
+          "bbox": null
+        }
+      ],
+      "displayVerdict": "OK",
+      "notes": [
+        "Zdroj MIA_BACKPACK: prázdný — divák tu nic nevidí (chybí PNG/efekt?)."
+      ]
+    },
+    {
+      "id": "koj_moods",
+      "label": "Koj nálady (showcase všech)",
+      "viewer": "Koj prochází nálady (happy, dance, …)",
+      "status": "FAIL",
+      "triggerStatus": 200,
+      "programScene": {
+        "source": "SPINAK_ENGINE_GIFTS",
+        "ok": true,
+        "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-SPINAK_ENGINE_GIFTS-1782836486042.png",
+        "publicUrl": "/generated/eyes/eyes-SPINAK_ENGINE_GIFTS-1782836486042.png",
+        "coverage": 0.23831163194444444,
+        "blank": false,
+        "bbox": {
+          "x": 42,
+          "y": 26,
+          "w": 549,
+          "h": 260
+        }
+      },
+      "sources": [
+        {
+          "source": "KOJNOZROUT_RUNTIME",
+          "ok": true,
+          "savedPath": "C:\\MIA\\mia-output-overlay\\generated\\eyes\\eyes-KOJNOZROUT_RUNTIME-1782836486113.png",
+          "publicUrl": "/generated/eyes/eyes-KOJNOZROUT_RUNTIME-1782836486113.png",
+          "coverage": 0.1801736111111111,
+          "blank": false,
+          "bbox": {
+            "x": 177,
+            "y": 137,
+            "w": 282,
+            "h": 223
+          }
+        }
+      ],
+      "displayVerdict": "FAIL",
+      "notes": [
+        "Zdroj KOJNOZROUT_RUNTIME: vidím obsah, pokrytí 18.0 %.",
+        "Kompozice: Trvalý overlay \"MIA/Koj bublina + hologram\" (MIA_BUBBLE) je ve scéně VYPNUTÝ — divák ho nevidí.",
+        "Kompozice: Trvalý overlay \"Koj miska / hlad\" (KOJNOZROUT_BOWL_V2) je ve scéně VYPNUTÝ — divák ho nevidí."
+      ]
+    }
+  ],
+  "counts": {
+    "ok": 8,
+    "warn": 5,
+    "fail": 1
+  }
+}

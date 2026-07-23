@@ -1,0 +1,219 @@
+{
+  "version": 1,
+  "platforms": {
+    "tiktok": {
+      "id": "tiktok",
+      "label": "Tokžrout",
+      "mascot": "Tokžrout",
+      "styleRef": "tok_neon",
+      "theme": {
+        "accent": "#00f2ea",
+        "accent2": "#ff0050",
+        "accent3": "#ff0050",
+        "mood": "neon_combat",
+        "note": "Žrout clipů a coinů — boj + hravost. Neon."
+      },
+      "miaPoints": 947,
+      "giftPoints": 583,
+      "activityPoints": 364,
+      "events": 145,
+      "gifts": 54,
+      "wins": 0,
+      "losses": 0,
+      "reigns": 0,
+      "contributors": {
+        "liveaudit": {
+          "userLabel": "LiveAudit",
+          "points": 121
+        },
+        "test user 123": {
+          "userLabel": "Test User 123",
+          "points": 738
+        },
+        "tester": {
+          "userLabel": "Tester",
+          "points": 20
+        },
+        "gifter": {
+          "userLabel": "Gifter",
+          "points": 68
+        }
+      }
+    },
+    "kick": {
+      "id": "kick",
+      "label": "Stackžrout",
+      "mascot": "Stackžrout",
+      "styleRef": "stack_acid",
+      "theme": {
+        "accent": "#53fc18",
+        "accent2": "#0b0b0b",
+        "accent3": "#0b0b0b",
+        "mood": "acid_stack",
+        "note": "Žrout stacků — duel a tlak. Acid green."
+      },
+      "miaPoints": 8,
+      "giftPoints": 0,
+      "activityPoints": 8,
+      "events": 2,
+      "gifts": 0,
+      "wins": 0,
+      "losses": 0,
+      "reigns": 0,
+      "contributors": {
+        "vasaspinak": {
+          "userLabel": "VasaSpinak",
+          "points": 8
+        }
+      }
+    },
+    "twitch": {
+      "id": "twitch",
+      "label": "Bitsžrout",
+      "mascot": "Bitsžrout",
+      "styleRef": "bits_purple",
+      "theme": {
+        "accent": "#9146ff",
+        "accent2": "#efeff1",
+        "accent3": "#efeff1",
+        "mood": "bond_purple",
+        "note": "Žrout bitů a vazby — láska/bond + obrana. Purple."
+      },
+      "miaPoints": 0,
+      "giftPoints": 0,
+      "activityPoints": 0,
+      "events": 0,
+      "gifts": 0,
+      "wins": 0,
+      "losses": 0,
+      "reigns": 0,
+      "contributors": {}
+    },
+    "youtube": {
+      "id": "youtube",
+      "label": "Kisstube",
+      "mascot": "Kisstube",
+      "styleRef": "kiss_radio",
+      "theme": {
+        "accent": "#e6007e",
+        "accent2": "#ff8dc7",
+        "accent3": "#ffd6ec",
+        "mood": "kiss_radio",
+        "note": "POUZE YouTube: motiv Radio Kiss. Koj = Patrik Hezucký, MIA = Barbora Tlučhořová. Pořád coin-žrout."
+      },
+      "miaPoints": 0,
+      "giftPoints": 0,
+      "activityPoints": 0,
+      "events": 0,
+      "gifts": 0,
+      "wins": 0,
+      "losses": 0,
+      "reigns": 0,
+      "contributors": {}
+    }
+  },
+  "duel": {
+    "active": false,
+    "phase": "finished",
+    "startedAt": 1783131524953,
+    "endsAt": 1783131824953,
+    "durationMs": 300000,
+    "scores": {
+      "tiktok": 0,
+      "kick": 0,
+      "twitch": 0,
+      "youtube": 0
+    },
+    "winner": null
+  },
+  "tournament": {
+    "active": false,
+    "startedAt": 1783131524953,
+    "endsAt": 1783133324953,
+    "durationMs": 1800000,
+    "scores": {
+      "tiktok": 0,
+      "kick": 0,
+      "twitch": 0,
+      "youtube": 0
+    },
+    "champion": null,
+    "history": [
+      {
+        "at": 1783162647328,
+        "champion": null,
+        "previous": null,
+        "scores": {
+          "tiktok": 0,
+          "kick": 0,
+          "twitch": 0,
+          "youtube": 0
+        },
+        "ranking": [
+          {
+            "platform": "tiktok",
+            "label": "Tokžrout",
+            "points": 0
+          },
+          {
+            "platform": "kick",
+            "label": "Stackžrout",
+            "points": 0
+          },
+          {
+            "platform": "twitch",
+            "label": "Bitsžrout",
+            "points": 0
+          },
+          {
+            "platform": "youtube",
+            "label": "Kisstube",
+            "points": 0
+          }
+        ]
+      }
+    ]
+  },
+  "users": {
+    "tiktok:liveaudit": {
+      "userLabel": "LiveAudit",
+      "platform": "tiktok",
+      "miaPoints": 121,
+      "gifts": 12,
+      "events": 12
+    },
+    "tiktok:test user 123": {
+      "userLabel": "Test User 123",
+      "platform": "tiktok",
+      "miaPoints": 738,
+      "gifts": 32,
+      "events": 118
+    },
+    "kick:vasaspinak": {
+      "userLabel": "VasaSpinak",
+      "platform": "kick",
+      "miaPoints": 8,
+      "gifts": 0,
+      "events": 2
+    },
+    "tiktok:tester": {
+      "userLabel": "Tester",
+      "platform": "tiktok",
+      "miaPoints": 20,
+      "gifts": 0,
+      "events": 5
+    },
+    "tiktok:gifter": {
+      "userLabel": "Gifter",
+      "platform": "tiktok",
+      "miaPoints": 68,
+      "gifts": 10,
+      "events": 10
+    }
+  },
+  "battle": {
+    "actions": [],
+    "lastActionId": 0
+  },
+  "updatedAt": 1783627044178
+}

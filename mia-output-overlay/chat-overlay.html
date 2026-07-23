@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chat Overlay</title>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: transparent;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    #chat {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .msg {
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: rgba(8, 10, 18, 0.82);
+      color: #fff;
+      font-size: 17px;
+      line-height: 1.35;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      word-break: break-word;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-left: 5px solid rgba(255, 255, 255, 0.28);
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      animation: chatIn 0.28s ease-out;
+    }
+
+    @keyframes chatIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      flex: 0 0 auto;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(0, 234, 255, 0.75), rgba(155, 92, 255, 0.75));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 900;
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .body {
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+
+    .msg.kick {
+      border-left-color: #00ff66;
+      box-shadow: 0 8px 24px rgba(0, 255, 102, 0.12);
+    }
+
+    .msg.tiktok,
+    .msg.tikfinity {
+      border-left-color: #ff2d55;
+      box-shadow: 0 8px 24px rgba(255, 45, 85, 0.12);
+    }
+
+    .msg.debug {
+      border-left-color: #00eaff;
+    }
+
+    .meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      opacity: 0.92;
+      margin-bottom: 4px;
+      font-weight: 900;
+      letter-spacing: 0.2px;
+    }
+
+    .platform {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .msg.kick .platform {
+      color: #00ff66;
+      background: rgba(0, 255, 102, 0.14);
+    }
+
+    .msg.tiktok .platform,
+    .msg.tikfinity .platform {
+      color: #ff6b86;
+      background: rgba(255, 45, 85, 0.14);
+    }
+
+    .text {
+      display: block;
+      font-size: 17px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="chat"></div>
+
+  <script>
+    const chatRoot = document.getElementById("chat");
+    const MIN_HOLD_MS = 28000;
+    let lastRenderSignature = "";
+    let displayFeed = [];
+    let lastNonEmptyAt = 0;
+
+    function safeText(value, fallback = "") {
+      return typeof value === "string" && value.trim() ? value.trim() : fallback;
+    }
+
+    function normalizeFeed(feed) {
+      if (!Array.isArray(feed)) return [];
+
+      return feed
+        .filter(Boolean)
+        .map((item) => ({
+          platform: safeText(item.platform, "unknown").toLowerCase(),
+          user: safeText(item.user || item.userLabel, "Chat"),
+          avatarUrl: safeText(item.avatarUrl),
+          text: safeText(item.text || item.message || item.content),
+          ts: Number(item.ts || item.updatedAt || 0)
+        }))
+        .filter((item) => item.text)
+        .slice(0, 4);
+    }
+
+    function buildSignature(feed) {
+      return JSON.stringify(
+        feed.map((item) => ({
+          p: item.platform,
+          u: item.user,
+          t: item.text,
+          ts: item.ts
+        }))
+      );
+    }
+
+    function initials(name) {
+      const parts = safeText(name, "?").split(/\s+/).filter(Boolean);
+      if (parts.length === 0) return "?";
+      if (parts.length === 1) return parts[0].slice(0, 2);
+      return `${parts[0][0] || ""}${parts[1][0] || ""}`;
+    }
+
+    function platformLabel(platform) {
+      if (platform === "kick") return "Kick";
+      if (platform === "tiktok" || platform === "tikfinity") return "TikTok";
+      return platform;
+    }
+
+    function render(feed) {
+      chatRoot.innerHTML = "";
+
+      for (const item of feed) {
+        const msg = document.createElement("div");
+        msg.className = `msg ${item.platform}`;
+
+        const avatar = document.createElement("div");
+        avatar.className = "avatar";
+
+        if (item.avatarUrl) {
+          const img = document.createElement("img");
+          img.src = item.avatarUrl;
+          img.alt = item.user;
+          img.referrerPolicy = "no-referrer";
+          img.onerror = () => {
+            img.remove();
+            avatar.textContent = initials(item.user);
+          };
+          avatar.appendChild(img);
+        } else {
+          avatar.textContent = initials(item.user);
+        }
+
+        const body = document.createElement("div");
+        body.className = "body";
+
+        const meta = document.createElement("span");
+        meta.className = "meta";
+
+        const user = document.createElement("span");
+        user.textContent = item.user;
+
+        const badge = document.createElement("span");
+        badge.className = "platform";
+        badge.textContent = platformLabel(item.platform);
+
+        meta.appendChild(user);
+        meta.appendChild(badge);
+
+        const text = document.createElement("span");
+        text.className = "text";
+        text.textContent = item.text;
+
+        body.appendChild(meta);
+        body.appendChild(text);
+        msg.appendChild(avatar);
+        msg.appendChild(body);
+        chatRoot.appendChild(msg);
+      }
+    }
+
+    function resolveDisplayFeed(feed) {
+      const now = Date.now();
+      if (feed.length > 0) {
+        displayFeed = feed;
+        lastNonEmptyAt = now;
+        return feed;
+      }
+
+      if (displayFeed.length > 0 && now - lastNonEmptyAt <= MIN_HOLD_MS) {
+        return displayFeed;
+      }
+
+      displayFeed = [];
+      return [];
+    }
+
+    async function update() {
+      try {
+        const res = await fetch("/overlay-state?_=" + Date.now(), {
+          cache: "no-store"
+        });
+
+        if (!res.ok) throw new Error("overlay-state " + res.status);
+
+        const data = await res.json();
+        const feed = resolveDisplayFeed(normalizeFeed(data?.chatFeed || data?.chat || []));
+        const signature = buildSignature(feed);
+
+        if (signature !== lastRenderSignature) {
+          lastRenderSignature = signature;
+          render(feed);
+        }
+      } catch (_err) {
+      }
+    }
+
+    update();
+    setInterval(update, 350);
+  </script>
+</body>
+</html>

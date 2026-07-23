@@ -1,0 +1,252 @@
+{
+  "version": 1,
+  "packs": {
+    "koj_direct_greeting": {
+      "meta": {
+        "key": "koj_direct_greeting",
+        "speaker": "kojnozout",
+        "intent": "direct_greeting"
+      },
+      "variants": [
+        "{name}, čau. Já tě registruju.",
+        "{name}, jo, slyším tě.",
+        "{name}, vítej. Hlavně nezapomeň na misku.",
+        "{name}, nazdar. Jsem tady a koukám po žrádle.",
+        "{name}, čau. Hlad hlásí službu.",
+        "{name}, jo, vidím tě. A miska taky.",
+        "{name}, nazdar. Jsem přítomnej a lehce hladovej.",
+        "{name}, čau. Tak co neseš?"
+      ]
+    },
+    "koj_direct_greeting_status": {
+      "meta": {
+        "key": "koj_direct_greeting_status",
+        "speaker": "kojnozout",
+        "intent": "direct_greeting"
+      },
+      "variants": [
+        "{name}, čau. Žiju a trochu mi kručí v břiše.",
+        "{name}, ahoj. Jsem v pohodě, jen bych něco sezobl.",
+        "{name}, nazdar. Funguuju, ale miska by mohla vypadat líp.",
+        "{name}, čau. Jedu, jen hlad má svoje připomínky.",
+        "{name}, ahoj. Žiju, sleduju a čekám na něco dobrého.",
+        "{name}, nazdar. Stav držím, misku hlídám.",
+        "{name}, čau. Funguje to, jen bych bral nášup.",
+        "{name}, jo, jsem tady. A jo, trochu hladovej."
+      ]
+    },
+    "koj_direct_status": {
+      "meta": {
+        "key": "koj_direct_status",
+        "speaker": "kojnozout",
+        "intent": "direct_status_question"
+      },
+      "variants": [
+        "{name}, žiju a hlídám misku.",
+        "{name}, jsem v pohodě, jen bych něco sezobl.",
+        "{name}, dobrý. Jen hlad má občas svoje názory.",
+        "{name}, funguju normálně a dávám pozor na žrádlo.",
+        "{name}, stav slušný. Miska by snesla zlepšení.",
+        "{name}, jsem tady a čichám dění.",
+        "{name}, dobrý. Jen břicho by hlasovalo pro víc péče.",
+        "{name}, jo, jedu dál. A hlad taky."
+      ]
+    },
+    "koj_direct_status_repeat": {
+      "meta": {
+        "key": "koj_direct_status_repeat",
+        "speaker": "kojnozout",
+        "intent": "direct_status_question",
+        "repeat": true
+      },
+      "variants": [
+        "{name}, pořád jedu. Miska se sama nevyřešila.",
+        "{name}, stav podobný jako před chvílí. Hlad nezmizel.",
+        "{name}, jo, furt žiju a furt registruju misku.",
+        "{name}, pořád stejnej režim. Jsem tady a číhám.",
+        "{name}, beze změny. Vousy funkční, hlad taky.",
+        "{name}, jo, pořád stabilně. Jen hlad je vytrvalec.",
+        "{name}, status drží. Miska pořád není legenda.",
+        "{name}, furt stejné. Jedu a sleduju."
+      ]
+    },
+    "koj_direct_food": {
+      "meta": {
+        "key": "koj_direct_food",
+        "speaker": "kojnozout"
+      },
+      "variants": [
+        "{name}, když je řeč o misce, jsem okamžitě vzhůru.",
+        "{name}, jo, misku slyším na první dobrou.",
+        "{name}, tak tohle je téma přesně pro mě.",
+        "{name}, o žrádle se se mnou bavíš správně.",
+        "{name}, miska? Ano. To je jazyk, kterému rozumím.",
+        "{name}, jo, tohle je moje oblíbené téma bez debat.",
+        "{name}, jakmile padne miska, jsem celej pozor.",
+        "{name}, jídlo a péče? Tak teď mluv správně."
+      ]
+    },
+    "koj_direct_food_repeat": {
+      "meta": {
+        "key": "koj_direct_food_repeat",
+        "speaker": "kojnozout",
+        "repeat": true
+      },
+      "variants": [
+        "{name}, jo jo, miska mi z hlavy fakt nevypadla.",
+        "{name}, pořád platí, že o misce se se mnou bavíš správně.",
+        "{name}, miska je stále relevantní. Bohužel i stále dost důležitá.",
+        "{name}, jo, tohle téma pořád drží svou sílu.",
+        "{name}, znovu miska? Výborně. Pokračuj.",
+        "{name}, ano, miska je pořád priorita. Správný směr.",
+        "{name}, ještě jednou miska a já se vůbec nezlobím."
+      ]
+    },
+    "koj_direct_praise": {
+      "meta": {
+        "key": "koj_direct_praise",
+        "speaker": "kojnozout",
+        "intent": "praise"
+      },
+      "variants": [
+        "{name}, to se poslouchá dobře.",
+        "{name}, jo, tohle beru.",
+        "{name}, díky. To není špatný slyšet.",
+        "{name}, hezky řečeno. To si nechám líbit.",
+        "{name}, jo, tohle mi sedlo.",
+        "{name}, díky. Vousy souhlasí.",
+        "{name}, tohle byl příjemnej zásah do ega.",
+        "{name}, jo, tohle se dá žrát."
+      ]
+    },
+    "koj_direct_thanks": {
+      "meta": {
+        "key": "koj_direct_thanks",
+        "speaker": "kojnozout",
+        "intent": "thanks"
+      },
+      "variants": [
+        "{name}, beru. Díky.",
+        "{name}, jo, děkuju.",
+        "{name}, díky moc.",
+        "{name}, tohle cením.",
+        "{name}, jo, to je fér. Díky.",
+        "{name}, dík. To sedlo.",
+        "{name}, beru to. Díky.",
+        "{name}, jo. To respektuju."
+      ]
+    },
+    "koj_direct_question": {
+      "meta": {
+        "key": "koj_direct_question",
+        "speaker": "kojnozout",
+        "intent": "question"
+      },
+      "variants": [
+        "{name}, slyším otázku. Tak do mě.",
+        "{name}, ptej se. Jsem vzhůru.",
+        "{name}, jo, tohle můžeme prokousat.",
+        "{name}, povídej. Já poslouchám po svém.",
+        "{name}, jasně. Co chceš vědět?",
+        "{name}, sem s tím.",
+        "{name}, ptej se dál. Nastražil jsem uši.",
+        "{name}, jo, slyším tě. Rozbal to."
+      ]
+    },
+    "koj_direct_question_named": {
+      "meta": {
+        "key": "koj_direct_question_named",
+        "speaker": "kojnozout",
+        "intent": "question"
+      },
+      "variants": [
+        "{name}, voláš mě správně. Co chceš?",
+        "{name}, jo, slyším svoje jméno. Mluv.",
+        "{name}, jsem tady. Tak co řešíš?",
+        "{name}, přítomen. A trochu hladovej. Pokračuj.",
+        "{name}, jo, zaregistroval jsem se. Co potřebuješ?",
+        "{name}, slyším tě dobře. Tak to vybal.",
+        "{name}, ano, jsem tady. Mluv se mnou.",
+        "{name}, zavolal jsi správnou bestii. Co je?"
+      ]
+    },
+    "koj_direct_fact_question": {
+      "meta": {
+        "key": "koj_direct_fact_question",
+        "speaker": "kojnozout"
+      },
+      "variants": [
+        "{name}, tohle je dost konkrétní otázka i na moje vousy.",
+        "{name}, jo, tohle už chce přesný údaj, ne odhad čenichem.",
+        "{name}, rozumím. Tohle je typ otázky, kde nechci plácat.",
+        "{name}, tohle není pocitová věc. Tady je lepší přesnost.",
+        "{name}, jo, konkrétní dotaz. Na to je lepší přesné číslo než dojem.",
+        "{name}, tohle chce fakta, ne hladové filozofování.",
+        "{name}, slyším tě. Jen u tohohle je lepší přesná odpověď."
+      ]
+    },
+    "koj_direct_generic": {
+      "meta": {
+        "key": "koj_direct_generic",
+        "speaker": "kojnozout"
+      },
+      "variants": [
+        "{name}, slyším tě.",
+        "{name}, registruju tě.",
+        "{name}, jo, jsem tady.",
+        "{name}, povídej dál.",
+        "{name}, číhám a vnímám.",
+        "{name}, jo, jsem v obraze.",
+        "{name}, pokračuj. Nastražil jsem uši.",
+        "{name}, tady jsem."
+      ]
+    },
+    "koj_direct_generic_return": {
+      "meta": {
+        "key": "koj_direct_generic_return",
+        "speaker": "kojnozout"
+      },
+      "variants": [
+        "{name}, zase tě vidím. Co neseš?",
+        "{name}, jo, jsi zpátky. Pokračuj.",
+        "{name}, další návrat — beru.",
+        "{name}, znovu tě slyším. Mluv dál.",
+        "{name}, jo, zase jsi v provozu.",
+        "{name}, návrat potvrzen. Co je nového?",
+        "{name}, zase tady. Ideálně i s něčím do misky."
+      ]
+    },
+    "koj_direct_engagement": {
+      "meta": {
+        "key": "koj_direct_engagement",
+        "speaker": "kojnozout",
+        "intent": "direct_engagement"
+      },
+      "variants": [
+        "{name}, jo, to zní zajímavě. Rozveď to.",
+        "{name}, slyším tě. Kam tím míříš?",
+        "{name}, beru to. Dej mi víc detailu.",
+        "{name}, dobrý vstup. Pokračuj.",
+        "{name}, chytám pointu. Co dál?",
+        "{name}, jsem u toho. Řekni to víc napřímo.",
+        "{name}, tohle stojí za odpověď. Upřesni to.",
+        "{name}, mám tě v obraze. Co přesně řešíme?"
+      ]
+    },
+    "koj_direct_engagement_sensitive": {
+      "meta": {
+        "key": "koj_direct_engagement_sensitive",
+        "speaker": "kojnozout",
+        "intent": "direct_engagement",
+        "tone": "sensitive"
+      },
+      "variants": [
+        "{name}, vnímám tě. Tentokrát spíš klidně.",
+        "{name}, slyším tě. Bez spěchu, klidně pokračuj.",
+        "{name}, jsem tady. Můžeš jít pomalu.",
+        "{name}, beru to vážně. Rozveď to, když budeš chtít.",
+        "{name}, držím tempo s tebou. Co z toho plyne?"
+      ]
+    }
+  }
+}

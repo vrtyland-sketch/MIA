@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+
+<html lang="cs">
+
+<head>
+
+<meta charset="UTF-8" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+<meta name="theme-color" content="#0b0b16" />
+
+<title>MIA — dálkové ovládání</title>
+
+<style>
+
+  :root { --bg:#0b0b16; --card:#161427; --accent:#8b5cf6; --koj:#a855f7; --ok:#22c55e; --warn:#f59e0b; --fail:#ef4444; --txt:#ece9ff; --muted:#9a93c7; }
+
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+  body { margin:0; background:var(--bg); color:var(--txt); font-family:-apple-system,Segoe UI,Roboto,sans-serif; padding:14px 14px 72px; }
+
+  h1 { font-size:18px; margin:4px 0 10px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+
+  .dots { display:flex; gap:12px; font-size:12px; color:var(--muted); margin-bottom:8px; flex-wrap:wrap; }
+
+  .dot { width:10px; height:10px; border-radius:50%; background:var(--muted); display:inline-block; vertical-align:middle; margin-right:4px; }
+
+  .dot.on { background:var(--ok); box-shadow:0 0 8px var(--ok); }
+
+  .dot.off { background:var(--fail); }
+
+  .dot.wait { background:var(--warn); }
+
+  .card { background:var(--card); border-radius:14px; padding:12px; margin-bottom:12px; }
+
+  .card h2 { font-size:13px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin:0 0 10px; }
+
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+
+  .grid.three { grid-template-columns:1fr 1fr 1fr; }
+
+  .grid.four { grid-template-columns:1fr 1fr 1fr 1fr; }
+
+  button { font-size:15px; font-weight:600; color:var(--txt); background:#241f3d; border:1px solid #342c54; border-radius:12px; padding:14px 10px; cursor:pointer; }
+
+  button:active { transform:scale(.96); background:#2f2752; }
+
+  button.accent { background:var(--accent); border-color:var(--accent); }
+
+  button.koj { background:var(--koj); border-color:var(--koj); }
+
+  button.danger { background:#3a1a26; border-color:#5e2436; }
+
+  button.secondary { background:#1a1730; font-size:13px; padding:10px; }
+
+  button.linkish { font-size:12px; padding:10px 8px; text-align:center; }
+
+  input, textarea { width:100%; background:#100e1f; border:1px solid #342c54; border-radius:10px; color:var(--txt); padding:12px; font-size:16px; font-family:inherit; -webkit-user-select:text; user-select:text; }
+
+  textarea { min-height:70px; resize:vertical; }
+
+  .row { display:flex; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
+
+  .row > * { flex:1; min-width:120px; }
+
+  label { font-size:12px; color:var(--muted); display:block; margin:6px 0 4px; }
+
+  #log { font-size:12px; color:var(--muted); background:#0e0c1c; border-radius:10px; padding:10px; min-height:42px; max-height:160px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
+
+  .hint { font-size:11px; color:var(--muted); margin-top:6px; line-height:1.4; }
+
+  .hint.ok { color:var(--ok); }
+
+  .hint.fail { color:var(--fail); }
+
+  #monitor { font-size:12px; line-height:1.45; background:#0e0c1c; border-radius:10px; padding:10px; }
+
+  #monitor .line { margin:4px 0; }
+
+  #monitor .lbl { color:var(--muted); font-size:10px; text-transform:uppercase; letter-spacing:.04em; }
+
+  #monitor .val { color:var(--txt); font-weight:600; }
+
+  #monitor .val.active { color:var(--ok); }
+
+  #chatFeed { max-height:140px; overflow:auto; font-size:12px; background:#0e0c1c; border-radius:10px; padding:8px; margin-top:8px; }
+
+  #chatFeed .chat { padding:6px 0; border-bottom:1px solid #241f3d; }
+
+  #chatFeed .chat:last-child { border-bottom:none; }
+
+  #chatFeed .user { color:#c4b5fd; font-weight:700; }
+
+  #chatFeed .msg { color:var(--txt); }
+
+  .pill { display:inline-block; font-size:10px; font-weight:800; padding:2px 7px; border-radius:999px; background:#2a2348; color:#c4b5fd; margin-right:4px; }
+  button.mic { min-height:88px; font-size:16px; line-height:1.25; background:var(--accent); border-color:var(--accent); }
+  button.mic-sm { min-height:48px; min-width:52px; flex:0 0 52px; font-size:20px; padding:8px; }
+  button.mic.live, button.mic-sm.live { background:#ef4444; border-color:#fecaca; box-shadow:0 0 20px rgba(239,68,68,.4); }
+  #devStatus { font-size:11px; line-height:1.4; }
+  .badge-dev { display:inline-block; padding:2px 8px; border-radius:999px; font-size:10px; font-weight:800; background:rgba(139,92,246,.25); color:#c4b5fd; margin-right:6px; }
+</style>
+
+</head>
+
+<body>
+
+<h1>MIA — dálkové ovládání</h1>
+
+<div id="connHint" class="hint fail" style="display:none;margin-bottom:10px;"></div>
+
+<div id="urlHint" class="card" style="display:none;padding:10px 12px;">
+
+  <div id="urlHintText" class="hint" style="margin:0;line-height:1.5;"></div>
+
+</div>
+
+<div class="dots">
+
+  <span><span id="serverDot" class="dot wait"></span><span id="serverLbl">Server …</span></span>
+
+  <span><span id="tokenDot" class="dot wait"></span><span id="tokenLbl">Token …</span></span>
+
+  <span><span id="obsDot" class="dot wait"></span><span id="obsLbl">OBS …</span></span>
+
+</div>
+
+
+
+<div class="card">
+
+  <h2>Token (z .env → MIA_INGEST_SECRET)</h2>
+
+  <label>Vlož celý řetězec — nemusíš kopírovat celý .env, jen hodnotu za =</label>
+
+  <input id="secret" type="text" placeholder="vcPuIz6-..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+
+  <div class="row" style="margin-top:8px;">
+
+    <button type="button" class="secondary" id="pasteBtn">📋 Vložit ze schránky</button>
+
+    <button type="button" class="secondary" id="saveSecret">💾 Uložit + ověřit</button>
+
+  </div>
+
+  <div id="tokenHint" class="hint">Token se ukládá do telefonu. Po uložení uvidíš zelenou tečku u „Token".</div>
+
+</div>
+
+
+
+<div class="card">
+
+  <h2>Co MIA právě ukazuje</h2>
+
+  <div id="monitor">
+
+    <div class="line"><span class="lbl">Koj</span> <span class="val" id="monKoj">—</span></div>
+
+    <div class="line"><span class="lbl">MIA bublina</span> <span class="val" id="monMiaSpeech">—</span></div>
+
+    <div class="line"><span class="lbl">Koj bublina</span> <span class="val" id="monKojSpeech">—</span></div>
+
+    <div class="line"><span class="lbl">Video</span> <span class="val" id="monVideo">—</span></div>
+
+    <div class="line"><span class="lbl">Duel / aréna</span> <span class="val" id="monBattle">—</span></div>
+
+    <div class="line"><span class="lbl">Item use</span> <span class="val" id="monItem">—</span></div>
+
+  </div>
+
+  <div class="hint" style="margin-top:8px;">Aktualizace každé 2 s · funguje i na mobilních datech (Tailscale).</div>
+
+</div>
+
+
+
+<div class="card">
+
+  <h2>Chat (čtení + simulace)</h2>
+
+  <div id="chatFeed"><div class="hint">Načítám chat…</div></div>
+
+  <label style="margin-top:10px;">Pošli zprávu jako Fold (jde do MIA ingest)</label>
+
+  <input id="chatText" type="text" placeholder="Ahoj MIA… nebo: item use boost" />
+  <div class="row" style="margin-top:8px;">
+    <button type="button" class="accent" id="sendChat">💬 Chat</button>
+    <button type="button" class="mic-sm" id="micChat" title="Drž a mluv">🎤</button>
+    <button type="button" class="secondary" id="refreshMonitor">🔄</button>
+  </div>
+  <div id="micChatHint" class="hint">Drž 🎤 — pusť = odešle chat do MIA</div>
+</div>
+
+<div class="card">
+  <h2>Programovat (Cursor)</h2>
+  <p class="hint" style="margin:0 0 10px;">Na PC běží <code>npm run remote:dev-watch</code> · úkol → Cursor Agent</p>
+  <button type="button" class="mic accent" id="micProg">🎤 Drž a mluv — odešle do Cursoru</button>
+  <div id="micProgHint" class="hint" style="margin-top:8px;">Web Speech cs-CZ · pusť = odeslání</div>
+  <label style="margin-top:12px;">Nebo napiš / uprav úkol</label>
+  <textarea id="progText" placeholder="Např. Dokonči item animace, spusť testy a aktualizuj kánon…"></textarea>
+  <div class="row" style="margin-top:8px;">
+    <button type="button" class="accent" id="sendCursor">➡️ Odeslat Cursoru</button>
+    <button type="button" class="secondary" id="refreshDev">🔄 Fronta</button>
+  </div>
+  <div class="row">
+    <button type="button" class="secondary" data-prog-quick="Spusť testy gift mapy">Testy gift</button>
+    <button type="button" class="secondary" data-prog-quick="Spusť rychlý preflight">Preflight</button>
+    <button type="button" class="secondary" data-prog-quick="Jaký je stav gift mapy?">Stav mapy</button>
+  </div>
+  <div id="devStatus" class="hint" style="margin-top:10px;background:#0e0c1c;border-radius:8px;padding:8px;">Fronta — načítám…</div>
+  <a id="remoteDevLink" href="/mia-remote-dev.html" class="hint" style="display:block;margin-top:8px;color:#c4b5fd;">Plné Remote Dev UI →</a>
+</div>
+
+<div class="card">
+  <h2>MIA promluví</h2>
+  <textarea id="sayText" placeholder="Napiš, co má MIA říct…"></textarea>
+  <div class="row" style="margin-top:8px;">
+    <button type="button" class="mic-sm" id="micSay" title="Diktovat do pole">🎤</button>
+    <button type="button" class="mic-sm accent" id="micSayMia" title="Drž → MIA řekne">🎤 MIA</button>
+    <button type="button" class="mic-sm koj" id="micSayKoj" title="Drž → Koj řekne">🎤 Koj</button>
+  </div>
+  <div id="micSayHint" class="hint">🎤 = diktovat · 🎤 MIA/Koj = drž, mluv, pusť = hned promluví</div>
+  <div class="row" style="margin-top:8px;">
+    <button type="button" class="accent" id="sayMia">🗣️ MIA řekni</button>
+    <button type="button" class="koj" id="sayKoj">👾 Koj řekni</button>
+  </div>
+</div>
+
+
+
+<div class="card">
+
+  <h2>Hlas (test)</h2>
+
+  <div class="grid">
+
+    <button type="button" data-get="/tts/test?speaker=mia&fresh=1">MIA hlas</button>
+
+    <button type="button" class="koj" data-get="/tts/test?speaker=koj&fresh=1">Koj hlas</button>
+
+  </div>
+
+</div>
+
+
+
+<div class="card">
+
+  <h2>Video tier (test)</h2>
+
+  <div class="grid four">
+
+    <button type="button" data-get="/video/test?tier=T0">T0</button>
+
+    <button type="button" data-get="/video/test?tier=T1">T1</button>
+
+    <button type="button" data-get="/video/test?tier=T2">T2</button>
+
+    <button type="button" data-get="/video/test?tier=T3">T3</button>
+
+  </div>
+
+  <div class="grid" style="margin-top:8px;">
+
+    <button type="button" data-get="/video/test?tier=T4">T4</button>
+
+    <button type="button" data-get="/video/test?tier=T5">T5</button>
+
+  </div>
+
+</div>
+
+
+
+<div class="card">
+
+  <h2>Dárky (ingest)</h2>
+
+  <div class="grid three">
+
+    <button type="button" data-gift="1,1,Rose">T1</button>
+
+    <button type="button" data-gift="2,100,Perfume">T2</button>
+
+    <button type="button" data-gift="3,1000,Galaxy">T3</button>
+
+  </div>
+
+  <div class="grid three" style="margin-top:8px;">
+
+    <button type="button" data-gift="4,5000,Lion">T4</button>
+
+    <button type="button" data-gift="5,10000,Universe">T5</button>
+
+    <button type="button" data-gift="0,0,Like" data-like="1">Like</button>
+
+  </div>
+
+</div>
+
+
+
+<div class="card">
+
+  <h2>Momenty</h2>
+
+  <div class="grid">
+
+    <button type="button" data-post="/showcase/start" data-body='{"itemId":"combo_moment","userLabel":"Fold"}'>💥 Combo</button>
+
+    <button type="button" data-get="/t0/test?event=FOLLOW&user=Fold">🛸 Flyby</button>
+
+    <button type="button" data-get="/story/test?user=Fold&tier=T3&gift=Galaxy">📖 Story</button>
+
+    <button type="button" data-get="/gift-visual/test?tier=T2&user=Fold&gift=Rose&mood=excited">🎁 Gift</button>
+
+  </div>
+
+</div>
+
+
+
+<div class="card">
+
+  <h2>Kojnožrout — péče & itemy</h2>
+
+  <div class="grid">
+
+    <button type="button" class="koj" data-chat="pece">📋 Péče menu</button>
+
+    <button type="button" class="koj" data-chat="item">🎒 Batoh</button>
+
+    <button type="button" class="koj" data-chat="item feed jablko">🍎 Feed jablko</button>
+
+    <button type="button" class="koj" data-chat="item use boost">⚡ Item use boost</button>
+
+    <button type="button" class="koj" data-chat="podrbej kojnozouta">🖐️ Podrbat</button>
+
+    <button type="button" class="koj" data-chat="nakrm kojnozouta">🍽️ Nakrmit</button>
+
+    <button type="button" data-post="/koj/wake">☀️ Probud Koje</button>
+
+    <button type="button" data-post="/overlay/clear">🧹 Clear overlay</button>
+
+  </div>
+
+</div>
+
+
+
+<div class="card">
+
+  <h2>Duel & platform aréna</h2>
+
+  <div class="grid">
+
+    <button type="button" class="accent" data-post="/duel/start" data-body='{"opponentLabel":"Soupeř","durationSec":180}'>⚔️ Koj duel start</button>
+
+    <button type="button" class="danger" data-post="/duel/finish">⏹ Duel stop</button>
+
+    <button type="button" data-post="/arena/duel/start" data-body='{"durationSec":300}'>🏟 Arena duel</button>
+
+    <button type="button" data-post="/arena/battle/demo/start" data-body='{}'>🎮 Battle demo</button>
+
+    <button type="button" data-post="/arena/battle/demo/stop" data-body='{}'>⏹ Demo stop</button>
+
+    <button type="button" data-get="/duel/status">📊 Duel status</button>
+
+  </div>
+
+</div>
+
+
+
+<div class="card">
+
+  <h2>Náhled overlayů (OBS grafika)</h2>
+
+  <p class="hint" style="margin:0 0 8px;">Otevře v nové záložce — uvidíš, jak to vypadá v prohlížeči.</p>
+
+  <div class="grid three">
+
+    <button type="button" class="linkish" data-preview="/kojnozrout-runtime.html">Koj runtime</button>
+
+    <button type="button" class="linkish" data-preview="/kojnozrout-duel-overlay.html">Duel bar</button>
+
+    <button type="button" class="linkish" data-preview="/arena-battle-test-overlay.html">Arena 2×2</button>
+
+    <button type="button" class="linkish" data-preview="/kojnozrout-backpack-overlay.html">Batoh</button>
+
+    <button type="button" class="linkish" data-preview="/koj-items-gallery.html">Itemy</button>
+
+    <button type="button" class="linkish" data-preview="/away-loop-overlay.html?gfx=1&scene=cave">Away gfx</button>
+
+    <button type="button" class="linkish" data-preview="/speech-overlay.html">Speech</button>
+
+    <button type="button" class="linkish" data-preview="/chat-overlay.html">Chat overlay</button>
+
+    <button type="button" class="linkish" data-preview="/koj-props-gallery.html">Props</button>
+
+  </div>
+
+</div>
+
+
+
+<div class="card">
+
+  <h2>Log</h2>
+
+  <div id="log">—</div>
+
+</div>
+
+
+
+<script>
+
+const $ = (id) => document.getElementById(id);
+
+const KEY = "mia_remote_secret";
+
+const ALT_KEY = "mia_remote_alt_urls";
+
+const FAILOVER_KEY = "mia_remote_failover_tried";
+
+
+
+function readInputSecret() {
+
+  return ($("secret").value || "").trim();
+
+}
+
+
+
+function persistSecret() {
+
+  const s = readInputSecret();
+
+  if (s) localStorage.setItem(KEY, s);
+
+  return s;
+
+}
+
+
+
+function getSecret() {
+
+  const fromInput = readInputSecret();
+
+  if (fromInput) return fromInput;
+
+  return (localStorage.getItem(KEY) || "").trim();
+
+}
+
+
+
+(function loadFromUrl() {
+
+  const q = new URLSearchParams(location.search);
+
+  const fromUrl = (q.get("mia_secret") || q.get("token") || "").trim();
+
+  const foldLan = (q.get("fold_lan") || "").trim();
+
+  const foldTs = (q.get("fold_ts") || "").trim();
+
+  const foldHttps = (q.get("fold_https") || "").trim();
+
+  if (foldLan || foldTs || foldHttps) {
+
+    localStorage.setItem(ALT_KEY, JSON.stringify([foldHttps, foldTs, foldLan].filter(Boolean)));
+
+  }
+
+  if (fromUrl) {
+
+    $("secret").value = fromUrl;
+
+    localStorage.setItem(KEY, fromUrl);
+
+    history.replaceState(null, "", location.pathname);
+
+    const card = $("secret").closest(".card");
+
+    if (card) card.style.display = "none";
+
+  } else {
+
+    $("secret").value = localStorage.getItem(KEY) || "";
+
+  }
+
+})();
+
+
+
+function log(msg) {
+
+  const el = $("log");
+
+  const time = new Date().toLocaleTimeString();
+
+  el.textContent = `[${time}] ${msg}\n` + el.textContent;
+
+}
+
+
+
+function setObs(ok) {
+
+  $("obsDot").className = "dot " + (ok ? "on" : "off");
+
+  $("obsLbl").textContent = ok ? "OBS OK" : "OBS offline";
+
+}
+
+
+
+function renderChatFeed(items) {
+
+  const box = $("chatFeed");
+
+  if (!items || !items.length) {
+
+    box.innerHTML = '<div class="hint">Chat zatím prázdný — pošli zprávu níže.</div>';
+
+    return;
+
+  }
+
+  box.innerHTML = items
+
+    .map((row) => {
+
+      const user = row.user || row.userLabel || row.nickname || "Divák";
+
+      const text = row.text || row.message || row.content || "";
+
+      const type = (row.type || "chat").toUpperCase();
+
+      return `<div class="chat"><span class="pill">${type}</span><span class="user">${escapeHtml(user)}:</span> <span class="msg">${escapeHtml(text)}</span></div>`;
+
+    })
+
+    .join("");
+
+}
+
+
+
+function escapeHtml(s) {
+
+  return String(s || "")
+
+    .replace(/&/g, "&amp;")
+
+    .replace(/</g, "&lt;")
+
+    .replace(/>/g, "&gt;");
+
+}
+
+
+
+function createSpeechHub() {
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) return { available: false, bindHoldMic() {} };
+
+
+
+  let recognition = null;
+
+  let activeTarget = null;
+
+  let activeOnEnd = null;
+
+  let activeHint = null;
+
+  let activeBtn = null;
+
+  let holding = false;
+
+
+
+  function getRecognition() {
+
+    if (!recognition) {
+
+      recognition = new SpeechRecognition();
+
+      recognition.lang = "cs-CZ";
+
+      recognition.interimResults = true;
+
+      recognition.continuous = false;
+
+
+
+      recognition.onresult = (ev) => {
+
+        if (!activeTarget) return;
+
+        let text = "";
+
+        for (let i = 0; i < ev.results.length; i += 1) {
+
+          text += ev.results[i][0].transcript;
+
+        }
+
+        activeTarget.value = text.trim();
+
+      };
+
+      recognition.onerror = (ev) => {
+
+        if (activeHint) activeHint.textContent = "Mikrofon: " + (ev.error || "chyba");
+
+        holding = false;
+
+      };
+
+      recognition.onend = () => {
+
+        holding = false;
+
+        if (activeBtn) {
+
+          activeBtn.classList.remove("live");
+
+          activeBtn.textContent = activeBtn._micDefaultLabel || "🎤";
+
+        }
+
+        const text = activeTarget ? activeTarget.value.trim() : "";
+
+        const fn = activeOnEnd;
+
+        activeTarget = null;
+
+        activeOnEnd = null;
+
+        activeHint = null;
+
+        activeBtn = null;
+
+        if (fn) fn(text);
+
+      };
+
+    }
+
+    return recognition;
+
+  }
+
+
+
+  function bindHoldMic(opts) {
+
+    const btn = opts.btn;
+
+    const target = opts.target;
+
+    if (!btn || !target) return;
+
+    btn._micDefaultLabel = opts.defaultLabel || btn.textContent;
+
+
+
+    const startMic = (e) => {
+
+      e.preventDefault();
+
+      holding = true;
+
+      activeTarget = target;
+
+      activeOnEnd = opts.onRelease || null;
+
+      activeHint = opts.hintEl || null;
+
+      activeBtn = btn;
+
+      try {
+
+        getRecognition().start();
+
+        btn.classList.add("live");
+
+        btn.textContent = opts.liveLabel || "🔴 Mluv…";
+
+        if (activeHint) activeHint.textContent = "Poslouchám (cs-CZ)…";
+
+      } catch (_err) {
+
+        if (activeHint) activeHint.textContent = "Mikrofon není dostupný.";
+
+      }
+
+    };
+
+    const stopMic = (e) => {
+
+      if (e) e.preventDefault();
+
+      if (!holding) return;
+
+      try { recognition.stop(); } catch (_err) { /* ignore */ }
+
+    };
+
+
+
+    btn.addEventListener("pointerdown", startMic);
+
+    btn.addEventListener("pointerup", stopMic);
+
+    btn.addEventListener("pointerleave", () => { if (holding) stopMic(); });
+
+  }
+
+
+
+  return { available: true, bindHoldMic };
+
+}
+
+
+
+async function sendToCursor(text, source) {
+
+  const payload = { text: String(text || "").trim(), source: source || "text" };
+
+  if (!payload.text) {
+
+    log("Prázdný úkol pro Cursor.");
+
+    return;
+
+  }
+
+  log("Cursor (" + payload.source + "): " + payload.text.slice(0, 100));
+
+  const data = await call("POST", "/mia/remote/dev/command", payload);
+
+  if (data) {
+
+    if (data.hint) log(data.hint);
+
+    if (data.job?.result?.summary) log(String(data.job.result.summary).slice(-240));
+
+    $("progText").value = "";
+
+    refreshDevStatus();
+
+  }
+
+}
+
+
+
+async function refreshDevStatus() {
+
+  const box = $("devStatus");
+
+  if (!box) return;
+
+  if (!getSecret()) {
+
+    box.textContent = "Token chybí — fronta Cursor nedostupná.";
+
+    return;
+
+  }
+
+  const data = await call("GET", "/mia/remote/dev/status");
+
+  if (!data) return;
+
+  const latest = data.latest;
+
+  if (latest) {
+
+    box.innerHTML =
+
+      '<span class="badge-dev">' + escapeHtml(latest.status) + "</span> " +
+
+      escapeHtml(latest.kind) + " — " + escapeHtml(String(latest.text).slice(0, 140));
+
+  } else {
+
+    box.textContent = "Fronta prázdná — připraveno na úkol.";
+
+  }
+
+}
+
+
+
+function renderMonitor(snap) {
+
+  if (!snap || !snap.ok) return;
+
+  const k = snap.koj || {};
+
+  $("monKoj").textContent = [k.emoji, k.mood, k.sprite, k.need].filter(Boolean).join(" · ") || "—";
+
+  $("monMiaSpeech").textContent = snap.speech?.mia || "—";
+
+  $("monKojSpeech").textContent = snap.speech?.koj || "—";
+
+  if (snap.video?.active) {
+
+    $("monVideo").textContent = `${snap.video.tier || "?"} · ${snap.video.source || "video"}`;
+
+    $("monVideo").className = "val active";
+
+  } else {
+
+    $("monVideo").textContent = "nic nehraje";
+
+    $("monVideo").className = "val";
+
+  }
+
+  let battle = "klid";
+
+  if (snap.duel?.active) {
+
+    battle = `duel ${snap.duel.local?.miaPoints ?? 0}:${snap.duel.opponent?.miaPoints ?? 0}`;
+
+  } else if (snap.arena?.duelActive || snap.arena?.tournamentActive) {
+
+    const b = snap.arena.battle;
+
+    battle = b ? `${b.label} · ${b.projectile || ""}` : "arena aktivní";
+
+  }
+
+  $("monBattle").textContent = battle;
+
+  const iu = snap.backpack || k.itemUse;
+
+  if (iu?.active || iu?.itemId) {
+
+    $("monItem").textContent = `${iu.itemLabel || iu.itemId} (${iu.action || "use"})`;
+
+    $("monItem").className = "val active";
+
+  } else {
+
+    $("monItem").textContent = "—";
+
+    $("monItem").className = "val";
+
+  }
+
+  setObs(snap.obsConnected === true);
+
+  renderChatFeed(snap.chat);
+
+}
+
+
+
+async function fetchMonitor() {
+
+  try {
+
+    const res = await fetch("/mia/remote/snapshot?_=" + Date.now(), { cache: "no-store", signal: AbortSignal.timeout(5000) });
+
+    if (!res.ok) return;
+
+    const snap = await res.json();
+
+    renderMonitor(snap);
+
+  } catch (_e) {
+
+    /* server ping handles connectivity */
+
+  }
+
+}
+
+
+
+async function loadRemoteInfo() {
+
+  try {
+
+    const res = await fetch("/mia/remote/info", { cache: "no-store" });
+
+    if (!res.ok) return null;
+
+    return await res.json();
+
+  } catch (_e) {
+
+    return null;
+
+  }
+
+}
+
+
+
+function showUrlHint(info, serverOk) {
+
+  const box = $("urlHint");
+
+  const text = $("urlHintText");
+
+  if (!info) {
+
+    box.style.display = "none";
+
+    return;
+
+  }
+
+  const host = location.hostname;
+
+  const onLan = host.startsWith("192.168.") || host.startsWith("10.");
+
+  const onTs = host.startsWith("100.");
+
+  let msg = "";
+
+  if (!serverOk) {
+
+    msg = "Server nejde z " + host + ". ";
+
+    if (info.foldUrlRemote) msg += "Zkus: " + info.foldUrlRemote + " ";
+
+    if (info.foldUrlLan && info.foldUrlLan !== location.origin + "/mia-fold") {
+
+      msg += " nebo doma: " + info.foldUrlLan;
+
+    }
+
+    text.className = "hint fail";
+
+  } else if (!onTs && !onLan && (info.foldUrlServe || info.foldUrlRemote)) {
+
+    msg = "Tip (mobilní data): " + (info.foldUrlServe || info.foldUrlRemote);
+
+    text.className = "hint";
+
+  } else if (onLan && info.foldUrlRemote) {
+
+    msg = "Doma OK. Z kamionu: " + info.foldUrlRemote;
+
+    text.className = "hint ok";
+
+  } else {
+
+    box.style.display = "none";
+
+    return;
+
+  }
+
+  text.textContent = msg;
+
+  box.style.display = "block";
+
+}
+
+
+
+function setServer(ok) {
+
+  $("serverDot").className = "dot " + (ok ? "on" : "off");
+
+  $("serverLbl").textContent = ok ? "Server OK" : "Server nedostupný";
+
+  const hint = $("connHint");
+
+  if (!ok) {
+
+    hint.style.display = "block";
+
+    hint.textContent =
+
+      "Firewall? npm run remote:firewall. Mobilni data: http://100.x.x.x:3000/mia-fold (ne HTTPS). Tailscale DNS pro HTTPS.";
+
+  } else {
+
+    hint.style.display = "none";
+
+  }
+
+}
+
+
+
+function setToken(ok, detail) {
+
+  $("tokenDot").className = "dot " + (ok ? "on" : "off");
+
+  $("tokenLbl").textContent = ok ? "Token OK" : "Token chybí / špatný";
+
+  const hint = $("tokenHint");
+
+  hint.className = "hint " + (ok ? "ok" : "fail");
+
+  hint.textContent = detail || (ok ? "Ovládání povoleno." : "Zkopíruj MIA_INGEST_SECRET z .env na notebooku.");
+
+}
+
+
+
+function authQuery(secret) {
+
+  const s = encodeURIComponent(secret || "");
+
+  return s ? `?mia_secret=${s}` : "";
+
+}
+
+
+
+function syncRemoteDevLink() {
+
+  const link = $("remoteDevLink");
+
+  if (!link) return;
+
+  const secret = getSecret();
+
+  link.href = "/mia-remote-dev.html" + authQuery(secret);
+
+}
+
+
+
+async function call(method, path, body) {
+
+  const secret = persistSecret();
+
+  if (!secret) {
+
+    log("❌ Nejdřív vlož token a klepni Uložit + ověřit");
+
+    setToken(false, "Token prázdný — vlož hodnotu z .env");
+
+    return null;
+
+  }
+
+  const sep = path.includes("?") ? "&" : "?";
+
+  const url = path + sep + "mia_secret=" + encodeURIComponent(secret);
+
+  try {
+
+    const opts = {
+
+      method,
+
+      headers: {
+
+        "x-mia-ingest-secret": secret,
+
+        "Content-Type": "application/json"
+
+      }
+
+    };
+
+    if (body !== undefined) {
+
+      opts.body = JSON.stringify({ ...body, mia_secret: secret });
+
+    }
+
+    const res = await fetch(url, opts);
+
+    let data = null;
+
+    try { data = await res.json(); } catch (_e) {}
+
+    if (res.status === 401 || res.status === 403) {
+
+      log("❌ Token odmítnut (" + res.status + ") — zkontroluj .env");
+
+      setToken(false, "Špatný token — musí sedět s MIA_INGEST_SECRET v .env");
+
+      return null;
+
+    }
+
+    if (!res.ok) {
+
+      log("⚠️ " + path.split("?")[0] + " → " + res.status + (data?.error ? " " + data.error : ""));
+
+      return data;
+
+    }
+
+    log("✅ " + path.split("?")[0]);
+
+    setToken(true);
+
+    setTimeout(fetchMonitor, 400);
+
+    return data;
+
+  } catch (err) {
+
+    log("❌ Síť: " + err.message);
+
+    setServer(false);
+
+    return null;
+
+  }
+
+}
+
+
+
+async function sendIngestChat(message) {
+
+  const secret = persistSecret();
+
+  if (!secret) {
+
+    log("❌ Token chybí");
+
+    return;
+
+  }
+
+  const payload = {
+
+    type: "comment",
+
+    eventType: "COMMENT",
+
+    platform: "tiktok",
+
+    message,
+
+    uniqueId: "fold_remote",
+
+    nickname: "Fold",
+
+    tikfinityUserId: "fold_remote",
+
+    tikfinityUsername: "fold_remote"
+
+  };
+
+  const res = await call("POST", "/ingest", payload);
+
+  if (res) log("Chat → " + message);
+
+}
+
+
+
+async function sendLike() {
+
+  const secret = persistSecret();
+
+  if (!secret) return;
+
+  await call("POST", "/ingest", {
+
+    type: "like",
+
+    eventType: "LIKE",
+
+    platform: "tiktok",
+
+    uniqueId: "fold_remote",
+
+    nickname: "Fold",
+
+    tikfinityUserId: "fold_remote",
+
+    tikfinityUsername: "fold_remote"
+
+  });
+
+}
+
+
+
+async function verifyToken() {
+
+  const secret = persistSecret();
+
+  if (!secret) {
+
+    setToken(false, "Token prázdný");
+
+    return false;
+
+  }
+
+  try {
+
+    const res = await fetch("/mia/remote/auth" + authQuery(secret), {
+
+      headers: { "x-mia-ingest-secret": secret }
+
+    });
+
+    const data = await res.json();
+
+    setToken(data.ok === true, data.message || (data.ok ? "OK" : "Token neplatný"));
+
+    return data.ok === true;
+
+  } catch (err) {
+
+    setToken(false, err.message);
+
+    return false;
+
+  }
+
+}
+
+
+
+async function pingServer() {
+
+  const secret = getSecret();
+
+  const tokenQ = secret ? authQuery(secret) : "";
+
+  try {
+
+    const res = await fetch("/health" + tokenQ, { cache: "no-store", signal: AbortSignal.timeout(4000) });
+
+    if (res.ok) {
+
+      setServer(true);
+
+      return true;
+
+    }
+
+  } catch (_e) {
+
+    /* try failover */
+
+  }
+
+
+
+  const tried = sessionStorage.getItem(FAILOVER_KEY);
+
+  const alts = JSON.parse(localStorage.getItem(ALT_KEY) || "[]");
+
+  const origin = location.origin;
+
+  if (!tried && alts.length) {
+
+    for (const foldUrl of alts) {
+
+      const base = String(foldUrl).replace(/\/mia-fold.*$/, "");
+
+      if (!base || base === origin) continue;
+
+      try {
+
+        const res = await fetch(base + "/health", { cache: "no-store", signal: AbortSignal.timeout(4000) });
+
+        if (res.ok) {
+
+          sessionStorage.setItem(FAILOVER_KEY, "1");
+
+          log("Server nejde z " + origin + " → přepínám na " + foldUrl);
+
+          location.href = foldUrl;
+
+          return false;
+
+        }
+
+      } catch (_e2) {
+
+        /* next alt */
+
+      }
+
+    }
+
+  }
+
+  setServer(false);
+
+  return false;
+
+}
+
+
+
+async function refresh() {
+
+  const serverOk = await pingServer();
+
+  const info = serverOk ? await loadRemoteInfo() : null;
+
+  if (!serverOk) {
+
+    const info2 = await loadRemoteInfo().catch(() => null);
+
+    if (info2) {
+
+      const alts = [info2.foldUrlServe, info2.foldUrlRemote, info2.foldUrlLan].filter(Boolean);
+
+      localStorage.setItem(ALT_KEY, JSON.stringify(alts));
+
+    }
+
+    showUrlHint(info2, false);
+
+  } else {
+
+    sessionStorage.removeItem(FAILOVER_KEY);
+
+    showUrlHint(info, true);
+
+  }
+
+  await verifyToken();
+
+  syncRemoteDevLink();
+
+  await fetchMonitor();
+
+  await refreshDevStatus();
+
+}
+
+
+
+$("saveSecret").onclick = () => { persistSecret(); log("Token uložen, ověřuji…"); refresh(); };
+
+
+
+$("pasteBtn").onclick = async () => {
+
+  try {
+
+    const t = await navigator.clipboard.readText();
+
+    $("secret").value = t.trim();
+
+    persistSecret();
+
+    log("Vloženo ze schránky (" + t.trim().length + " znaků)");
+
+    await verifyToken();
+
+  } catch (err) {
+
+    log("Schránka: dlouze podrž v poli Token → Vložit");
+
+  }
+
+};
+
+
+
+$("sayMia").onclick = () => {
+
+  const text = $("sayText").value.trim();
+
+  if (!text) { log("Napiš text."); return; }
+
+  call("POST", "/mia/say", { text, speaker: "mia" });
+
+};
+
+$("sayKoj").onclick = () => {
+
+  const text = $("sayText").value.trim();
+
+  if (!text) { log("Napiš text."); return; }
+
+  call("POST", "/mia/say", { text, speaker: "koj" });
+
+};
+
+
+
+$("sendCursor").onclick = () => sendToCursor($("progText").value, "text");
+
+$("refreshDev").onclick = () => refreshDevStatus();
+
+
+
+document.querySelectorAll("[data-prog-quick]").forEach((btn) => {
+
+  btn.onclick = () => sendToCursor(btn.getAttribute("data-prog-quick"), "quick");
+
+});
+
+
+
+const speech = createSpeechHub();
+
+if (speech.available) {
+
+  speech.bindHoldMic({
+
+    btn: $("micChat"),
+
+    target: $("chatText"),
+
+    hintEl: $("micChatHint"),
+
+    onRelease: (text) => {
+
+      if (!text) return;
+
+      sendIngestChat(text);
+
+      $("chatText").value = "";
+
+      $("micChatHint").textContent = "Odesláno do chatu.";
+
+    }
+
+  });
+
+  speech.bindHoldMic({
+
+    btn: $("micProg"),
+
+    target: $("progText"),
+
+    hintEl: $("micProgHint"),
+
+    defaultLabel: "🎤 Drž a mluv — odešle do Cursoru",
+
+    liveLabel: "🔴 Mluv… pusť = Cursor",
+
+    onRelease: (text) => sendToCursor(text, "voice")
+
+  });
+
+  speech.bindHoldMic({
+
+    btn: $("micSay"),
+
+    target: $("sayText"),
+
+    hintEl: $("micSayHint"),
+
+    onRelease: () => {
+
+      $("micSayHint").textContent = "Text v poli — klepni MIA/Koj nebo drž 🎤 MIA/Koj.";
+
+    }
+
+  });
+
+  speech.bindHoldMic({
+
+    btn: $("micSayMia"),
+
+    target: $("sayText"),
+
+    hintEl: $("micSayHint"),
+
+    defaultLabel: "🎤 MIA",
+
+    liveLabel: "🔴 MIA…",
+
+    onRelease: (text) => { if (text) call("POST", "/mia/say", { text, speaker: "mia" }); }
+
+  });
+
+  speech.bindHoldMic({
+
+    btn: $("micSayKoj"),
+
+    target: $("sayText"),
+
+    hintEl: $("micSayHint"),
+
+    defaultLabel: "🎤 Koj",
+
+    liveLabel: "🔴 Koj…",
+
+    onRelease: (text) => { if (text) call("POST", "/mia/say", { text, speaker: "koj" }); }
+
+  });
+
+} else {
+
+  const noSpeech = "Prohlížeč neumí Web Speech — piš ručně nebo Android diktování do pole.";
+
+  ["micChat", "micProg", "micSay", "micSayMia", "micSayKoj"].forEach((id) => {
+
+    const el = $(id);
+
+    if (el) el.disabled = true;
+
+  });
+
+  if ($("micChatHint")) $("micChatHint").textContent = noSpeech;
+
+  if ($("micProgHint")) $("micProgHint").textContent = noSpeech;
+
+  if ($("micSayHint")) $("micSayHint").textContent = noSpeech;
+
+}
+
+
+
+$("sendChat").onclick = () => {
+
+  const text = $("chatText").value.trim();
+
+  if (!text) { log("Napiš chat zprávu."); return; }
+
+  sendIngestChat(text);
+
+  $("chatText").value = "";
+
+};
+
+
+
+$("refreshMonitor").onclick = () => fetchMonitor();
+
+
+
+document.querySelectorAll("[data-get]").forEach((btn) => {
+
+  btn.onclick = () => call("GET", btn.getAttribute("data-get"));
+
+});
+
+document.querySelectorAll("[data-post]").forEach((btn) => {
+
+  btn.onclick = () => {
+
+    const raw = btn.getAttribute("data-body");
+
+    const body = raw ? JSON.parse(raw) : {};
+
+    call("POST", btn.getAttribute("data-post"), body);
+
+  };
+
+});
+
+document.querySelectorAll("[data-gift]").forEach((btn) => {
+
+  btn.onclick = () => {
+
+    if (btn.getAttribute("data-like")) {
+
+      sendLike();
+
+      return;
+
+    }
+
+    const [tier, coins, giftName] = btn.getAttribute("data-gift").split(",");
+
+    call("POST", "/ingest", {
+
+      type: "gift", platform: "tiktok", giftName,
+
+      coins: Number(coins), diamondCount: Number(coins), repeatCount: 1,
+
+      uniqueId: "fold_" + tier, nickname: "Fold T" + tier,
+
+      tikfinityUserId: String(95000 + Number(tier)), tikfinityUsername: "fold_" + tier
+
+    });
+
+  };
+
+});
+
+document.querySelectorAll("[data-chat]").forEach((btn) => {
+
+  btn.onclick = () => sendIngestChat(btn.getAttribute("data-chat"));
+
+});
+
+document.querySelectorAll("[data-preview]").forEach((btn) => {
+
+  btn.onclick = () => {
+
+    const path = btn.getAttribute("data-preview");
+
+    window.open(path, "_blank", "noopener,noreferrer");
+
+    log("Náhled → " + path);
+
+  };
+
+});
+
+
+
+refresh();
+
+setInterval(pingServer, 8000);
+
+setInterval(fetchMonitor, 2000);
+
+setInterval(refreshDevStatus, 8000);
+
+setInterval(() => {
+
+  if ($("serverDot").classList.contains("off")) refresh();
+
+}, 4000);
+
+</script>
+
+</body>
+
+</html>
+
+

@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "packs": {
+    "wake_up_chat_mia": {
+      "meta": {
+        "key": "wake_up_chat_mia",
+        "speaker": "mia",
+        "intent": "wake_up"
+      },
+      "variants": [
+        "Tak co, parto. Jedeme nebo spíme?",
+        "Halo, halo. Chat je vzhůru?",
+        "Jsem tady. Kdo se hlásí o slovo?",
+        "Tak pojďte. Rozhýbejte to tady.",
+        "No tak. Probuďte ten chat.",
+        "Kdo je dneska při chuti, ať se ukáže.",
+        "Jdeme na to? Nebo vás mám budit znovu?",
+        "Tak se ukažte, komunito.",
+        "Jestli jste tady, dejte o sobě vědět.",
+        "Pojďme ten prostor znovu nahodit.",
+        "Kdo dneska drží tempo?",
+        "Tak jo. Potřebuju slyšet, že žijete.",
+        "Jsem ready. Chat taky?",
+        "Kdo rozjede dnešní vlnu?",
+        "Tak schválně, kdo první hodí signál?"
+      ]
+    },
+    "wake_up_chat_kojnozout": {
+      "meta": {
+        "key": "wake_up_chat_kojnozout",
+        "speaker": "kojnozout",
+        "intent": "wake_up"
+      },
+      "variants": [
+        "Hej, chate. Jste vzhůru, nebo mám zařvat víc?",
+        "Halo. Kdo tady ještě nespí?",
+        "Jsem tady. Kdo se hlásí o slovo a o misku?",
+        "Tak pojďte. Rozhýbejte to tady.",
+        "No tak. Probuďte chat, ať tu není mrtvo.",
+        "Kdo je dneska při chuti, ať se ukáže.",
+        "Jdeme na to? Nebo vás mám budit čenichem?",
+        "Tak se ukažte, komunito.",
+        "Jestli jste tady, dejte o sobě vědět.",
+        "Pojďme ten prostor znovu rozkopnout.",
+        "Kdo tady dneska dělá kravál?",
+        "Já jsem vzhůru. Doufám, že vy taky.",
+        "Tak kde jste? Já čuchám ticho.",
+        "Chat spí, nebo jen dělá mrtvýho brouka?",
+        "No tak, ať to tu nezačne plesnivět."
+      ]
+    }
+  }
+}

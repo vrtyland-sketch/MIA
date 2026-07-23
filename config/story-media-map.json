@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "description": "Story beat → katalog kategorie (media:scan naplní OBS sloty)",
+  "stories": {
+    "sock_rocket_saga": {
+      "beats": {
+        "arrival": { "category": "cute_clip", "tier": "T1" },
+        "feeding": { "category": "donator_moment", "tier": "T2" },
+        "sock_snatch": { "category": "donator_moment", "tier": "T2" },
+        "rocket_board": { "category": "story_music", "tier": "T3" },
+        "space_fly": { "category": "story_epic", "tier": "T4" }
+      }
+    }
+  }
+}

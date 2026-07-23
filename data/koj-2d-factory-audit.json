@@ -1,0 +1,265 @@
+{
+  "generatedAt": "2026-07-05T18:07:53.655Z",
+  "moods": {
+    "canon": [
+      {
+        "mood": "idle",
+        "bytes": 729929,
+        "handPainted": true
+      },
+      {
+        "mood": "warm",
+        "bytes": 711888,
+        "handPainted": true
+      },
+      {
+        "mood": "happy",
+        "bytes": 912730,
+        "handPainted": true
+      },
+      {
+        "mood": "hungry",
+        "bytes": 929743,
+        "handPainted": true
+      },
+      {
+        "mood": "excited",
+        "bytes": 778124,
+        "handPainted": true
+      },
+      {
+        "mood": "eating",
+        "bytes": 823229,
+        "handPainted": true
+      },
+      {
+        "mood": "full",
+        "bytes": 1435586,
+        "handPainted": true
+      },
+      {
+        "mood": "sleepy",
+        "bytes": 713107,
+        "handPainted": true
+      },
+      {
+        "mood": "sick",
+        "bytes": 818583,
+        "handPainted": true
+      },
+      {
+        "mood": "sad",
+        "bytes": 878373,
+        "handPainted": true
+      },
+      {
+        "mood": "annoyed",
+        "bytes": 948509,
+        "handPainted": true
+      },
+      {
+        "mood": "laugh",
+        "bytes": 912730,
+        "handPainted": true
+      },
+      {
+        "mood": "stressed",
+        "bytes": 948509,
+        "handPainted": true
+      }
+    ],
+    "derivedOk": 90,
+    "derivedMissing": [],
+    "derivedTotal": 90
+  },
+  "poses": {
+    "poseFramesPresent": 248,
+    "poseFramesMissing": [],
+    "pairedAiBriefs": 122,
+    "pairedAiPresent": 122,
+    "pairedAiMissing": [],
+    "pairedAiMissingCount": 0
+  },
+  "platforms": {
+    "platforms": {
+      "tiktok": {
+        "ok": true,
+        "missing": []
+      },
+      "kick": {
+        "ok": true,
+        "missing": []
+      },
+      "twitch": {
+        "ok": true,
+        "missing": []
+      },
+      "youtube": {
+        "ok": true,
+        "missing": []
+      }
+    },
+    "masters": [
+      {
+        "name": "tokzrout",
+        "ok": true
+      },
+      {
+        "name": "stackzrout",
+        "ok": true
+      },
+      {
+        "name": "bitszrout",
+        "ok": true
+      },
+      {
+        "name": "kisstube",
+        "ok": true
+      }
+    ],
+    "animCount": 30
+  },
+  "battle": {
+    "mirrorOk": true,
+    "gaps": []
+  },
+  "factory": {
+    "projectiles": [
+      "coin",
+      "box",
+      "orb",
+      "heart",
+      "food",
+      "star",
+      "spark",
+      "particle-sheet",
+      "particle-sheet-anim",
+      "burst-impact-sheet"
+    ],
+    "arena": [
+      "background",
+      "vs-badge"
+    ],
+    "evolution": [
+      "egg",
+      "hatchling",
+      "sprout",
+      "guardian",
+      "legend"
+    ],
+    "itemCount": 23,
+    "battleFrames": 20,
+    "battleFramesExpected": 20,
+    "props": [
+      "bowl",
+      "ball",
+      "mic",
+      "hand"
+    ],
+    "scenes": [
+      "den",
+      "cave",
+      "cozy",
+      "feast",
+      "party",
+      "night"
+    ]
+  },
+  "pipelines": {
+    "restoreCanon": "npm run restore:koj-sprites",
+    "deriveMoods": "npm run generate:koj-moods",
+    "poseFrames": "npm run generate:koj-poses",
+    "platformForms": "npm run generate:platform-forms",
+    "factoryGfx": "npm run generate:koj-2d-factory",
+    "battleBundle": "npm run generate:koj-battle-assets",
+    "normalize": "npm run normalize:frames",
+    "obsDemo": "npm run battle:demo"
+  },
+  "gaps": [
+    {
+      "area": "Kánonové master nálady (malované)",
+      "status": "🟢",
+      "done": "13/13 PNG",
+      "remains": "13 master nálad — základ továrny"
+    },
+    {
+      "area": "Derived nálady (transform z masterů)",
+      "status": "🟢",
+      "done": "90/90",
+      "remains": "Automaticky odvozené"
+    },
+    {
+      "area": "Pose snímky (248 cyklů)",
+      "status": "🟢",
+      "done": "248 snímků",
+      "remains": "Kompletní — npm run generate:koj-poses"
+    },
+    {
+      "area": "Párové AI snímky (walk/hop/dance…)",
+      "status": "🟢",
+      "done": "122/122 párů",
+      "remains": "Všechny páry na disku"
+    },
+    {
+      "area": "Platform coin-žrouti (4 mastery + formy)",
+      "status": "🟢",
+      "done": "4 mastery · 30 animací × 4 platformy",
+      "remains": "npm run generate:platform-forms"
+    },
+    {
+      "area": "Battle mirror + choreografie",
+      "status": "🟢",
+      "done": "44 battle PNG + overlay FX",
+      "remains": "OBS test: npm run battle:demo"
+    },
+    {
+      "area": "Unikátní battle animace per platforma",
+      "status": "🟢",
+      "done": "20/20 multi-frame PNG",
+      "remains": "attack_01…03 + hit_01…02 per platforma"
+    },
+    {
+      "area": "Projectile / FX sprite PNG",
+      "status": "🟢",
+      "done": "10/8 projectile PNG",
+      "remains": "PNG v arena overlay + particle sheet"
+    },
+    {
+      "area": "Arena pozadí + UI chrome",
+      "status": "🟢",
+      "done": "2/2 arena PNG + damage float CSS",
+      "remains": "background.png + vs-badge.png v overlay"
+    },
+    {
+      "area": "Evoluce / tier formy Koje",
+      "status": "🟢",
+      "done": "5/5 tier PNG",
+      "remains": "egg → legend v assets/kojnozrout/evolution/"
+    },
+    {
+      "area": "Props (miska, batoh, itemy ve scéně)",
+      "status": "🟢",
+      "done": "4/4 scene prop PNG",
+      "remains": "bowl · ball · mic · hand v runtime propLayer"
+    },
+    {
+      "area": "Scény za Kojem (den/cave/cozy/feast/party/night)",
+      "status": "🟢",
+      "done": "6/6 scene PNG",
+      "remains": "runtime = tint + accent fragmenty · celoplošné = away-loop?gfx=1"
+    },
+    {
+      "area": "Item ikony batohu",
+      "status": "🟢",
+      "done": "23 item ikon PNG",
+      "remains": "assets/kojnozrout/items/{id}.png"
+    },
+    {
+      "area": "Normalizace nohou / baseline",
+      "status": "🟢",
+      "done": "npm run normalize:frames",
+      "remains": "Po nových AI snímcích vždy znovu normalizovat"
+    }
+  ],
+  "completionPct": 100
+}

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MIA Gift Moment</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: transparent;
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+    #root {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      pointer-events: none;
+      padding: 24px;
+    }
+    #card {
+      width: min(920px, 96vw);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+      opacity: 0;
+      transform: translateY(28px) scale(0.96);
+      transition: opacity 420ms ease, transform 520ms cubic-bezier(0.2, 0.9, 0.2, 1);
+    }
+    #card.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    #card img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    #fallback {
+      display: none;
+      padding: 24px 28px;
+      background: linear-gradient(135deg, rgba(18,28,48,0.92), rgba(40,70,120,0.88));
+      color: #fff;
+    }
+    #fallback .line1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+    #fallback .line2 { font-size: 18px; opacity: 0.85; }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <div id="card">
+      <img id="visual" alt="" />
+      <div id="fallback">
+        <div class="line1" id="line1"></div>
+        <div class="line2" id="line2"></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const POLL_MS = 500;
+    const card = document.getElementById("card");
+    const visual = document.getElementById("visual");
+    const fallback = document.getElementById("fallback");
+    const line1 = document.getElementById("line1");
+    const line2 = document.getElementById("line2");
+    let activeUrl = "";
+    let hideTimer = null;
+
+    function showGiftVisual(giftVisual) {
+      if (!giftVisual || !giftVisual.imageUrl) return;
+      const url = giftVisual.imageUrl + (giftVisual.imageUrl.includes("?") ? "&" : "?") + "t=" + giftVisual.updatedAt;
+      if (url === activeUrl) return;
+      activeUrl = url;
+
+      visual.style.display = "block";
+      fallback.style.display = "none";
+      visual.src = url;
+      visual.onerror = () => {
+        visual.style.display = "none";
+        fallback.style.display = "block";
+        line1.textContent = giftVisual.text || "";
+        line2.textContent = giftVisual.subtext || "";
+      };
+
+      card.classList.add("visible");
+      if (hideTimer) clearTimeout(hideTimer);
+      const holdMs = Math.max(6000, (giftVisual.holdUntilTs || 0) - Date.now());
+      hideTimer = setTimeout(() => {
+        card.classList.remove("visible");
+        activeUrl = "";
+      }, holdMs);
+    }
+
+    async function poll() {
+      try {
+        const res = await fetch("/overlay-state", { cache: "no-store" });
+        const data = await res.json();
+        if (data?.giftVisual?.imageUrl) {
+          showGiftVisual(data.giftVisual);
+        }
+      } catch (_err) {
+        /* ignore */
+      }
+    }
+
+    setInterval(poll, POLL_MS);
+    poll();
+  </script>
+</body>
+</html>

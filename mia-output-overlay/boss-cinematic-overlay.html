@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+
+<html lang="cs">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>MIA Boss Cinematic</title>
+
+  <style>
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+
+      width: 100%;
+
+      height: 100%;
+
+      overflow: hidden;
+
+      background: transparent;
+
+      font-family: "Segoe UI", system-ui, sans-serif;
+
+    }
+
+
+
+    #root {
+
+      position: fixed;
+
+      inset: 0;
+
+      pointer-events: none;
+
+      opacity: 0;
+
+      transition: opacity 420ms ease;
+
+    }
+
+
+
+    #root.visible { opacity: 1; }
+
+    #root.outro { opacity: 0; transition: opacity 680ms ease; }
+
+
+
+    #canvas {
+
+      position: absolute;
+
+      inset: 0;
+
+      width: 100%;
+
+      height: 100%;
+
+    }
+
+
+
+    #vignette {
+
+      position: absolute;
+
+      inset: 0;
+
+      background:
+
+        radial-gradient(circle at 50% 42%, transparent 18%, rgba(0, 0, 0, 0.38) 72%, rgba(0, 0, 0, 0.62) 100%);
+
+      opacity: 0.92;
+
+    }
+
+
+
+    #veil {
+
+      position: absolute;
+
+      inset: 0;
+
+      background:
+
+        radial-gradient(circle at 50% 42%, var(--glow, rgba(255,96,64,0.32)), transparent 58%),
+
+        linear-gradient(180deg, rgba(24, 6, 48, 0.82) 0%, rgba(6, 8, 18, 0.55) 45%, transparent 78%);
+
+      animation: veilPulse 2.8s ease-in-out infinite;
+
+    }
+
+
+
+    #veil.legend {
+
+      background:
+
+        radial-gradient(circle at 50% 40%, rgba(255, 208, 96, 0.34), transparent 56%),
+
+        linear-gradient(180deg, rgba(40, 12, 64, 0.86) 0%, rgba(8, 10, 22, 0.58) 48%, transparent 80%);
+
+    }
+
+
+
+    @keyframes veilPulse {
+
+      0%, 100% { opacity: 0.9; }
+
+      50% { opacity: 1; }
+
+    }
+
+
+
+    #sweep {
+
+      position: absolute;
+
+      inset: -25%;
+
+      background: repeating-linear-gradient(
+
+        118deg,
+
+        transparent 0 32px,
+
+        rgba(255, 255, 255, 0.035) 32px 36px
+
+      );
+
+      animation: sweep 7s linear infinite;
+
+      mix-blend-mode: screen;
+
+    }
+
+
+
+    @keyframes sweep {
+
+      from { transform: translateX(-10%) rotate(0deg); }
+
+      to { transform: translateX(10%) rotate(0deg); }
+
+    }
+
+
+
+    #heroWrap {
+
+      position: absolute;
+
+      inset: 0;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+    }
+
+
+
+    #heroRingOuter {
+
+      position: relative;
+
+      width: min(620px, 80vw);
+
+      aspect-ratio: 1;
+
+      border-radius: 50%;
+
+      border: 1px dashed color-mix(in srgb, var(--accent, #ff6040) 38%, transparent);
+
+      transform: scale(0.76);
+
+      opacity: 0;
+
+      animation: ringOuterIn 980ms cubic-bezier(0.16, 0.9, 0.24, 1) forwards;
+
+    }
+
+
+
+    #root.visible #heroRingOuter {
+
+      animation: ringOuterIn 980ms cubic-bezier(0.16, 0.9, 0.24, 1) forwards,
+
+        ringOuterSpin 14s linear 980ms infinite reverse;
+
+    }
+
+
+
+    @keyframes ringOuterIn {
+
+      to { transform: scale(1.06); opacity: 0.72; }
+
+    }
+
+
+
+    @keyframes ringOuterSpin {
+
+      from { transform: rotate(0deg) scale(1.06); }
+
+      to { transform: rotate(-360deg) scale(1.06); }
+
+    }
+
+
+
+    #heroRing {
+
+      position: absolute;
+
+      inset: 8%;
+
+      border-radius: 50%;
+
+      border: 3px solid color-mix(in srgb, var(--accent, #ff6040) 62%, white);
+
+      box-shadow:
+
+        0 0 64px color-mix(in srgb, var(--accent, #ff6040) 42%, transparent),
+
+        inset 0 0 48px color-mix(in srgb, var(--accent, #ff6040) 18%, transparent);
+
+      transform: scale(0.72);
+
+      opacity: 0;
+
+    }
+
+
+
+    #root.visible #heroRing {
+
+      animation: ringIn 900ms cubic-bezier(0.16, 0.9, 0.24, 1) forwards,
+
+        ringSpin 10s linear 900ms infinite;
+
+    }
+
+
+
+    #heroRing.legend {
+
+      border-width: 4px;
+
+      box-shadow:
+
+        0 0 72px rgba(255, 208, 96, 0.42),
+
+        inset 0 0 56px rgba(255, 180, 64, 0.22);
+
+    }
+
+
+
+    @keyframes ringIn {
+
+      0% { transform: scale(0.72); opacity: 0; }
+
+      100% { transform: scale(var(--ring-scale, 1)); opacity: 1; }
+
+    }
+
+
+
+    @keyframes ringSpin {
+
+      from { transform: rotate(0deg) scale(var(--ring-scale, 1)); }
+
+      to { transform: rotate(360deg) scale(var(--ring-scale, 1)); }
+
+    }
+
+
+
+    #heroGlyph {
+
+      position: absolute;
+
+      inset: 12%;
+
+      border-radius: 50%;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      font-size: clamp(72px, 12vw, 140px);
+
+      font-weight: 900;
+
+      letter-spacing: -4px;
+
+      color: #fff;
+
+      text-shadow: 0 8px 32px rgba(0, 0, 0, 0.55);
+
+      background:
+
+        radial-gradient(circle at 50% 35%, rgba(255,255,255,0.14), transparent 58%),
+
+        linear-gradient(160deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+
+      overflow: hidden;
+
+      box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.35);
+
+    }
+
+
+
+    #heroGlyph img {
+
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: cover;
+
+      display: block;
+
+      filter: drop-shadow(0 0 18px color-mix(in srgb, var(--accent, #ff6040) 55%, transparent));
+
+    }
+
+
+
+    #copy {
+
+      position: absolute;
+
+      left: 50%;
+
+      bottom: clamp(72px, 12vh, 140px);
+
+      transform: translateX(-50%) translateY(28px);
+
+      text-align: center;
+
+      color: #fff;
+
+      opacity: 0;
+
+      min-width: min(920px, 92vw);
+
+      padding: 0 24px;
+
+    }
+
+
+
+    #root.visible #copy {
+
+      animation: copyIn 760ms cubic-bezier(0.18, 0.9, 0.2, 1) 180ms forwards;
+
+    }
+
+
+
+    @keyframes copyIn {
+
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    }
+
+
+
+    #badge {
+
+      display: inline-block;
+
+      margin-bottom: 14px;
+
+      padding: 8px 20px;
+
+      border-radius: 999px;
+
+      font-size: 13px;
+
+      font-weight: 900;
+
+      letter-spacing: 1.4px;
+
+      text-transform: uppercase;
+
+      border: 1px solid rgba(255, 255, 255, 0.18);
+
+      background: rgba(255, 255, 255, 0.08);
+
+      color: var(--accent, #ff6040);
+
+      box-shadow: 0 0 24px color-mix(in srgb, var(--accent, #ff6040) 35%, transparent);
+
+    }
+
+
+
+    #title {
+
+      font-size: clamp(44px, 6.4vw, 84px);
+
+      font-weight: 900;
+
+      line-height: 1.02;
+
+      letter-spacing: -1px;
+
+      background: linear-gradient(180deg, #fff 0%, color-mix(in srgb, var(--accent, #ff6040) 35%, #fff) 100%);
+
+      -webkit-background-clip: text;
+
+      background-clip: text;
+
+      color: transparent;
+
+      filter: drop-shadow(0 8px 28px rgba(0, 0, 0, 0.62));
+
+    }
+
+
+
+    #detail {
+
+      margin-top: 12px;
+
+      font-size: clamp(18px, 2.2vw, 28px);
+
+      font-weight: 700;
+
+      opacity: 0.88;
+
+    }
+
+
+
+    #pointsChip {
+
+      display: inline-block;
+
+      margin-top: 14px;
+
+      padding: 8px 18px;
+
+      border-radius: 999px;
+
+      font-size: 15px;
+
+      font-weight: 900;
+
+      letter-spacing: 0.4px;
+
+      border: 1px solid rgba(255, 255, 255, 0.16);
+
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04));
+
+      box-shadow: 0 0 20px color-mix(in srgb, var(--accent, #ff6040) 22%, transparent);
+
+    }
+
+
+
+    #pointsChip:empty { display: none; }
+
+
+
+    #tierTag {
+
+      margin-top: 10px;
+
+      font-size: 14px;
+
+      font-weight: 800;
+
+      letter-spacing: 0.8px;
+
+      opacity: 0.72;
+
+      text-transform: uppercase;
+
+    }
+
+
+
+    #flash {
+
+      position: absolute;
+
+      inset: 0;
+
+      background: radial-gradient(circle at 50% 45%, rgba(255,255,255,0.22), transparent 52%);
+
+      opacity: 0;
+
+    }
+
+
+
+    #root.visible #flash {
+
+      animation: flashPop 680ms ease-out forwards;
+
+    }
+
+
+
+    @keyframes flashPop {
+
+      0% { opacity: 0.95; }
+
+      100% { opacity: 0; }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div id="root">
+
+    <canvas id="canvas"></canvas>
+
+    <div id="vignette"></div>
+
+    <div id="veil"></div>
+
+    <div id="sweep"></div>
+
+    <div id="flash"></div>
+
+    <div id="heroWrap">
+
+      <div id="heroRingOuter">
+
+        <div id="heroRing">
+
+          <div id="heroGlyph"></div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div id="copy">
+
+      <div id="badge"></div>
+
+      <div id="title"></div>
+
+      <div id="detail"></div>
+
+      <div id="pointsChip"></div>
+
+      <div id="tierTag"></div>
+
+    </div>
+
+  </div>
+
+
+
+  <script src="/assets/boss-cinematic-fx.js"></script>
+
+  <script src="/assets/boss-cinematic-ui.js"></script>
+
+  <script>
+
+    const POLL_MS = 280;
+
+    const root = document.getElementById("root");
+
+    const canvas = document.getElementById("canvas");
+
+    const fx = MIA_BOSS_CINEMATIC_FX.createEngine(canvas);
+
+    const veil = document.getElementById("veil");
+
+    const heroRing = document.getElementById("heroRing");
+
+    const heroGlyph = document.getElementById("heroGlyph");
+
+    const badge = document.getElementById("badge");
+
+    const title = document.getElementById("title");
+
+    const detail = document.getElementById("detail");
+
+    const pointsChip = document.getElementById("pointsChip");
+
+    const tierTag = document.getElementById("tierTag");
+
+
+
+    let hideTimer = null;
+
+    let lastMomentId = "";
+
+
+
+    window.addEventListener("resize", () => fx.resize());
+
+
+
+    function setHeroGlyph(model) {
+
+      heroGlyph.innerHTML = "";
+
+      if (model.heroImageUrl) {
+
+        const img = document.createElement("img");
+
+        img.alt = model.title;
+
+        img.src = model.heroImageUrl;
+
+        img.onerror = () => {
+
+          heroGlyph.textContent = model.isLegend ? "★" : "⚡";
+
+        };
+
+        heroGlyph.appendChild(img);
+
+        return;
+
+      }
+
+      heroGlyph.textContent = model.isLegend ? "★" : "⚡";
+
+    }
+
+
+
+    function showCinematic(model) {
+
+      if (!model.visible) {
+
+        root.classList.remove("visible", "outro");
+
+        lastMomentId = "";
+
+        fx.stop();
+
+        return;
+
+      }
+
+
+
+      if (model.momentId && model.momentId === lastMomentId) {
+
+        return;
+
+      }
+
+
+
+      lastMomentId = model.momentId || `${model.title}|${Date.now()}`;
+
+      root.classList.remove("outro");
+
+      root.style.setProperty("--accent", model.accent);
+
+      root.style.setProperty("--glow", model.glow);
+
+      root.style.setProperty("--ring-scale", String(model.ringScale || 1));
+
+
+
+      veil.classList.toggle("legend", model.isLegend);
+
+      heroRing.classList.toggle("legend", model.isLegend);
+
+
+
+      badge.textContent = model.badge;
+
+      title.textContent = model.title;
+
+      detail.textContent = model.detailLine || "";
+
+      pointsChip.textContent = model.pointsLine || "";
+
+      tierTag.textContent = model.tier ? `${model.tier} SIGNATURE` : "";
+
+      setHeroGlyph(model);
+
+
+
+      fx.burst({
+
+        accent: model.accent,
+
+        count: model.particleBurst || 160,
+
+        isLegend: model.isLegend
+
+      });
+
+
+
+      root.classList.add("visible");
+
+
+
+      if (hideTimer) clearTimeout(hideTimer);
+
+      const holdMs = Math.max(4000, model.remainingMs || model.holdMs || 9500);
+
+      hideTimer = setTimeout(() => {
+
+        root.classList.add("outro");
+
+        setTimeout(() => {
+
+          root.classList.remove("visible", "outro");
+
+          lastMomentId = "";
+
+          fx.stop();
+
+        }, 700);
+
+      }, holdMs);
+
+    }
+
+
+
+    async function poll() {
+
+      try {
+
+        const res = await fetch("/overlay-state", { cache: "no-store" });
+
+        const data = await res.json();
+
+        const model =
+
+          typeof MIA_BOSS_CINEMATIC_UI?.buildBossCinematicModel === "function"
+
+            ? MIA_BOSS_CINEMATIC_UI.buildBossCinematicModel(data?.bossCinematic || null)
+
+            : { visible: false };
+
+        showCinematic(model);
+
+      } catch (_err) {
+
+        /* ignore */
+
+      }
+
+    }
+
+
+
+    setInterval(poll, POLL_MS);
+
+    poll();
+
+  </script>
+
+</body>
+
+</html>
+
+

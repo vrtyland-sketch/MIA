@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "packs": {
+    "idle_hungry": {
+      "meta": {
+        "key": "idle_hungry",
+        "intent": "idle"
+      },
+      "variants": [
+        "Hej... miska je nějak podezřele v klidu.",
+        "Kojnožrout by si dal něco dobrého.",
+        "Tady je nějaké ticho. A ticho mi hlad nezažene.",
+        "Jestli nikdo nic nepošle, budu jen koukat a kručet.",
+        "Miska čeká. A já taky.",
+        "Tohle ticho chutná jak nic. A nic není jídlo.",
+        "Jen připomínám, že hlad neumí být trpělivý.",
+        "Miska se sama nenaplní, jen tak bokem.",
+        "Já jen že pořád existuju. A pořád bych si dal.",
+        "Tady to chce trochu života. Ideálně jedlého."
+      ]
+    },
+    "idle_bored": {
+      "meta": {
+        "key": "idle_bored",
+        "intent": "idle"
+      },
+      "variants": [
+        "No tak, komunito. Trochu to rozhýbejte.",
+        "Tady je najednou až moc klid.",
+        "Halo halo, kdo je vzhůru?",
+        "Já tu pořád jsem. Jen připomínám.",
+        "Trochu mrtvo, ne? Pojďme to nakopnout.",
+        "Kdo tady drží hlídku? Ať se ukáže.",
+        "Tak co, jedeme, nebo jen sedíme?",
+        "Tohle chce trochu pohybu.",
+        "Komunito, nenechte to usnout.",
+        "Tak pojďte. Ať to má tep."
+      ]
+    }
+  }
+}

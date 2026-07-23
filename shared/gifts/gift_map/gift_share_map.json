@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "note": "SHARE domain stays separate (shared/next*). Gift map only emits share hints.",
+  "byTier": {
+    "T3": { "shareHint": "highlight" },
+    "T4": { "shareHint": "feature" },
+    "T5": { "shareHint": "feature" },
+    "T6": { "shareHint": "headline" }
+  },
+  "byKey": {
+    "GALAXY": { "shareHint": "headline" },
+    "LION": { "shareHint": "feature" }
+  }
+}

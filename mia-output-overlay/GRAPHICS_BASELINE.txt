@@ -1,0 +1,6 @@
+Graphics Whole — baseline pointer
+freeze:   32-gfx-whole (2026-07-20) — docs/GRAPHICS_CHECKPOINT_v32.md
+active:   34-asset-control
+query:    ?v=34-asset-control
+prior:    33-gfx-harden (docs/GRAPHICS_v33_NOTES.md)
+control:  docs/GRAPHICS_v34_ASSET_CONTROL.md

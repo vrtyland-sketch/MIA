@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0",
+  "defaults": {
+    "position": "bottom-center",
+    "displayMs": 4500,
+    "animation": "fade_up",
+    "showCoins": false,
+    "showMiaPoints": true
+  },
+  "byTier": {
+    "T0": { "displayMs": 2800, "animation": "soft_pop" },
+    "T1": { "displayMs": 4000, "animation": "fade_up" },
+    "T2": { "displayMs": 5000, "animation": "gift_in" },
+    "T3": { "displayMs": 6500, "animation": "burst" },
+    "T4": { "displayMs": 8000, "animation": "legend" },
+    "T5": { "displayMs": 9500, "animation": "legend_burst" },
+    "T6": { "displayMs": 12000, "animation": "mythic" }
+  },
+  "waveTemplate": "{user} · {gift} Wave ×{count}",
+  "comboTemplate": "{user} · combo {gift} ×{count}"
+}

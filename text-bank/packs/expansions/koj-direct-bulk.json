@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "packs": {
+    "koj_direct_status": {
+      "meta": {
+        "speaker": "kojnozout",
+        "intent": "direct_status_question",
+        "tags": ["status", "expansion"]
+      },
+      "variants": [
+        "{name}, žiju. Miska prázdná, ale nálada drží.",
+        "{name}, v pohodě. Jen břicho má svoje názory.",
+        "{name}, jedu. Hlad pořád, ale jinak OK.",
+        "{name}, docela fajn. Čuchám chat a čekám na nášup.",
+        "{name}, zatím dobrý. Jsem tady a dávám pozor.",
+        "{name}, celkem spokojený. Kdyby něco cinklo, hned jsem v tom.",
+        "{name}, funguju. Vousy OK, miska ne.",
+        "{name}, jo, jedu dál. Hlad je vytrvalec.",
+        "{name}, stav slušný. Miska by snesla zlepšení.",
+        "{name}, dobrý. Jen pořád koukám po misce.",
+        "{name}, v pohodě. Čichám dění a čekám na sousto.",
+        "{name}, žiju a hlídám misku. Priorita jasná.",
+        "{name}, docela dobrý. Hlad ale nezmizel.",
+        "{name}, jedu. Když padne krmení, budu první.",
+        "{name}, fajn. Jen miska pořád není legenda."
+      ]
+    },
+    "koj_direct_greeting": {
+      "meta": {
+        "speaker": "kojnozout",
+        "intent": "direct_greeting",
+        "tags": ["greeting", "expansion"]
+      },
+      "variants": [
+        "{name}, čau. Jsem tady — a miska taky, bohužel prázdná.",
+        "{name}, nazdar. Registruju tě a čichám po dobrotě.",
+        "{name}, jo, slyším tě. Co neseš?",
+        "{name}, vítej. Hlad hlásí službu, ale jsem rád, že jsi tady.",
+        "{name}, čau. Jsem vzhůru a lehce hladovej.",
+        "{name}, nazdar. Tak povídej — ideálně o misce.",
+        "{name}, jo, vidím tě. Kojnožrout hlásí přítomnost.",
+        "{name}, čau. Jsem tady a koukám po žrádle.",
+        "{name}, nazdar. Hlavně nezapomeň, že miska existuje.",
+        "{name}, jo. Vítej. Já číhám."
+      ]
+    },
+    "koj_direct_food": {
+      "meta": {
+        "speaker": "kojnozout",
+        "intent": "food",
+        "tags": ["food", "expansion"]
+      },
+      "variants": [
+        "{name}, miska? To je slovo, které miluju.",
+        "{name}, jo. O jídle se se mnou bavíš správně.",
+        "{name}, jakmile padne krmení, jsem okamžitě vzhůru.",
+        "{name}, tohle téma má moji plnou pozornost.",
+        "{name}, miska je priorita. Pokračuj tímhle směrem.",
+        "{name}, jo jo. Žrádlo je můj jazyk.",
+        "{name}, když je řeč o misce, registruju to hned.",
+        "{name}, péče o břicho? Ano, prosím.",
+        "{name}, tohle je přesně moje disciplína.",
+        "{name}, miska, jídlo, péče — teď mluvíš moje řeč."
+      ]
+    },
+    "koj_direct_generic": {
+      "meta": {
+        "speaker": "kojnozout",
+        "intent": "direct_fallback",
+        "tags": ["generic", "expansion"]
+      },
+      "variants": [
+        "{name}, slyším tě. Pokračuj.",
+        "{name}, jo, registruju tě.",
+        "{name}, jsem tady. Mluv dál.",
+        "{name}, číhám a poslouchám.",
+        "{name}, povídej. Nastražil jsem uši.",
+        "{name}, jo, jsem v obraze.",
+        "{name}, sem s tím.",
+        "{name}, tady jsem. Co dál?"
+      ]
+    }
+  }
+}

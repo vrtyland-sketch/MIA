@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<title>Koj Soft Neon — visual proof</title>
+<link rel="stylesheet" href="/mia-soft-neon-world.css?v=17-koj-soft-neon" />
+<style>
+  html, body { margin: 0; background: #0a1214; color: #e8fff8; font-family: system-ui, sans-serif; }
+  h1 { font-size: 18px; margin: 12px 16px; letter-spacing: 0.04em; }
+  .row { display: flex; gap: 16px; padding: 8px 16px 24px; flex-wrap: wrap; }
+  .card { width: 320px; height: 420px; position: relative; border-radius: 16px;
+    background: radial-gradient(ellipse at 50% 80%, rgba(40,80,70,0.5), #061014 70%);
+    border: 1px solid rgba(100,235,200,0.25); overflow: hidden; }
+  .card label { position: absolute; top: 10px; left: 12px; font-size: 12px; opacity: 0.8; z-index: 2; }
+  .moods { display: flex; gap: 12px; padding: 8px 16px; flex-wrap: wrap; }
+  .mood { width: 200px; height: 220px; border-radius: 12px; border: 1px solid rgba(100,235,200,0.22);
+    background: radial-gradient(ellipse at 50% 70%, rgba(30,70,65,0.55), #050c10 75%);
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 8px; }
+  .mood img { max-width: 170px; max-height: 170px; object-fit: contain; }
+  .mood span { font-size: 11px; opacity: 0.75; margin-top: 4px; }
+  iframe { width: 100%; height: 100%; border: 0; background: transparent; }
+</style>
+</head>
+<body>
+  <h1>Soft Neon Companion Lab — Koj proof (v=17-koj-soft-neon)</h1>
+  <div class="moods">
+    <div class="mood"><img src="/assets/kojnozrout/moods/kojnozout-idle.png?v=17-koj-soft-neon" alt="idle" /><span>idle</span></div>
+    <div class="mood"><img src="/assets/kojnozrout/moods/kojnozout-warm.png?v=17-koj-soft-neon" alt="warm" /><span>warm</span></div>
+    <div class="mood"><img src="/assets/kojnozrout/moods/kojnozout-happy.png?v=17-koj-soft-neon" alt="happy" /><span>happy</span></div>
+  </div>
+  <div class="row">
+    <div class="card">
+      <label>AFTER · runtime soft-neon + live motion</label>
+      <iframe src="/kojnozrout-runtime.html?v=17-koj-soft-neon&_proof=1" title="koj after"></iframe>
+    </div>
+  </div>
+</body>
+</html>

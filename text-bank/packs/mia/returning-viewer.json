@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "packs": {
+    "mia_returning_ack": {
+      "meta": {
+        "key": "mia_returning_ack",
+        "speaker": "mia",
+        "intent": "returning_viewer"
+      },
+      "variants": [
+        "Ráda tě zase vidím.",
+        "Jsem ráda, že jsi zpátky v chatu.",
+        "Zase tady — to je fajn.",
+        "Vítám tě znovu.",
+        "Ráda tě zase registruju tady."
+      ]
+    }
+  }
+}

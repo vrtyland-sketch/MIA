@@ -1,0 +1,18 @@
+{
+  "version": "1.0.0",
+  "byTier": {
+    "T0": { "speak": false, "owner": "none" },
+    "T1": { "speak": true, "owner": "kojnozout", "style": "short_thanks" },
+    "T2": { "speak": true, "owner": "kojnozout", "style": "thanks" },
+    "T3": { "speak": true, "owner": "kojnozout", "style": "celebrate" },
+    "T4": { "speak": true, "owner": "kojnozout", "style": "epic" },
+    "T5": { "speak": true, "owner": "kojnozout", "style": "legend" },
+    "T6": { "speak": true, "owner": "kojnozout", "style": "mythic" }
+  },
+  "byCare": {
+    "LOVE": { "ownerBias": "mia" },
+    "CARE": { "ownerBias": "kojnozout" },
+    "PET": { "ownerBias": "kojnozout" },
+    "SUPPORT": { "ownerBias": "kojnozout" }
+  }
+}

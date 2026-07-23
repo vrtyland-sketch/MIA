@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MIA Control Center</title>
+  <style>
+    :root {
+      --bg: #0a0e14;
+      --panel: #121820;
+      --line: rgba(255,255,255,0.1);
+      --text: #e8eef6;
+      --muted: rgba(232,238,246,0.62);
+      --ok: #3dd68c;
+      --warn: #f5a524;
+      --bad: #f76b6b;
+      --accent: #5b9fd4;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: radial-gradient(1200px 600px at 10% -10%, #152033 0%, var(--bg) 55%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(0,0,0,0.28);
+    }
+    h1 { margin: 0; font-size: 20px; letter-spacing: 0.02em; }
+    .meta { color: var(--muted); font-size: 13px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      padding: 20px 24px 32px;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+    .panel h2 {
+      margin: 0 0 10px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+    .row { display: flex; justify-content: space-between; gap: 8px; margin: 6px 0; font-size: 14px; }
+    .val { font-variant-numeric: tabular-nums; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+    .dot.ok { background: var(--ok); }
+    .dot.warn { background: var(--warn); }
+    .dot.bad { background: var(--bad); }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    button {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: #1a2330;
+      color: var(--text);
+      border-radius: 8px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    button:hover { border-color: var(--accent); }
+    button.primary { background: #1e3a55; border-color: var(--accent); }
+    pre {
+      margin: 10px 0 0;
+      padding: 10px;
+      background: #0b1018;
+      border-radius: 8px;
+      font-size: 12px;
+      overflow: auto;
+      max-height: 220px;
+      color: var(--muted);
+    }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>MIA Control Center</h1>
+      <div class="meta">Phase 4 · lokální admin · coins jen interně</div>
+    </div>
+    <div class="meta">
+      <a href="/health" target="_blank">/health</a> ·
+      <a href="/status" target="_blank">/status</a> ·
+      <a href="/mia-streamer-dashboard.html" target="_blank">dashboard</a>
+    </div>
+  </header>
+
+  <div class="grid">
+    <section class="panel">
+      <h2>Runtime</h2>
+      <div class="row"><span>Director</span><span class="val" id="dir">—</span></div>
+      <div class="row"><span>Action Queue</span><span class="val" id="aq">—</span></div>
+      <div class="row"><span>Queue depth</span><span class="val" id="aqSize">—</span></div>
+      <div class="row"><span>Viewer memory</span><span class="val" id="vm">—</span></div>
+      <div class="actions" style="margin-top:10px;">
+        <button class="primary" data-action="aq-on">AQ ON</button>
+        <button data-action="aq-off">AQ OFF</button>
+        <button data-action="aq-flush">Flush</button>
+      </div>
+      <div class="meta" style="margin-top:8px;">Default OFF. Kill switch <code>MIA_ACTION_QUEUE=0</code>. Toggle bez restartu.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Health</h2>
+      <div class="row"><span>Payload</span><span class="val" id="healthOk">—</span></div>
+      <div class="row"><span>Phase</span><span class="val" id="phase">—</span></div>
+      <div class="row"><span>User Mode</span><span class="val" id="userMode">—</span></div>
+      <div class="row"><span>Updated</span><span class="val" id="updated">—</span></div>
+    </section>
+
+    <section class="panel" style="grid-column: 1 / -1;">
+      <h2>Profiles &amp; settings</h2>
+      <div class="actions" style="margin-bottom: 10px;">
+        <input id="profileName" type="text" placeholder="název profilu" value="default"
+          style="background:#0b1018;border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px 12px;min-width:140px;" />
+        <button class="primary" data-action="profile-save">Uložit profil</button>
+        <button data-action="profile-load">Načíst profil</button>
+        <button data-action="profile-list">Seznam</button>
+        <button data-action="export">Export JSON</button>
+        <button data-action="import">Import JSON</button>
+        <input id="importFile" type="file" accept="application/json,.json" style="display:none" />
+      </div>
+      <div class="row"><span>Aktivní profil</span><span class="val" id="activeProfile">—</span></div>
+      <div class="meta" style="margin-top:6px;">Export defaultně bez viewer-memory. Po importu / načtení profilu restartuj MIA.</div>
+    </section>
+
+    <section class="panel">
+      <h2>Theme Manager</h2>
+      <div class="row"><span>Flag</span><span class="val" id="themeFlag">—</span></div>
+      <div class="row"><span>Aktivní</span><span class="val" id="themeActive">—</span></div>
+      <div class="actions" style="margin-top:10px;">
+        <button data-theme="cyber">Cyber</button>
+        <button data-theme="purple_robot">Purple Robot</button>
+        <button data-theme="arena">Arena</button>
+      </div>
+      <div class="meta" style="margin-top:8px;">Default OFF. Zapni <code>MIA_THEME_MANAGER=1</code> — overlay čte <code>/overlay-state.theme</code>.</div>
+    </section>
+
+    <section class="panel" style="grid-column: 1 / -1;">
+      <h2>Test events</h2>
+      <div class="actions">
+        <button class="primary" data-tier="T1">T1 Rose</button>
+        <button class="primary" data-tier="T2">T2</button>
+        <button class="primary" data-tier="T3">T3 Universe</button>
+        <button class="primary" data-tier="T4">T4 Lion</button>
+        <button data-action="bowl">Bowl stub</button>
+        <button data-action="chat">Test chat</button>
+        <button data-action="refresh">Refresh status</button>
+      </div>
+      <pre id="log">Připraveno.</pre>
+    </section>
+  </div>
+
+  <script>
+    const logEl = document.getElementById("log");
+    function log(obj) {
+      logEl.textContent = typeof obj === "string" ? obj : JSON.stringify(obj, null, 2);
+    }
+
+    async function refresh() {
+      try {
+        const res = await fetch("/api/mia-admin/status", { cache: "no-store" });
+        const data = await res.json();
+        document.getElementById("dir").innerHTML =
+          (data.director?.enabled ? '<span class="dot ok"></span>ON' : '<span class="dot warn"></span>OFF');
+        document.getElementById("aq").innerHTML =
+          (data.actionQueue?.enabled ? '<span class="dot ok"></span>ON' : '<span class="dot warn"></span>OFF');
+        document.getElementById("aqSize").textContent =
+          data.actionQueue?.depth ?? data.actionQueue?.snapshot?.size ?? "—";
+        document.getElementById("vm").textContent =
+          data.viewerMemory?.count != null ? data.viewerMemory.count + " viewers" : "—";
+        document.getElementById("healthOk").innerHTML =
+          data.health ? '<span class="dot ok"></span>ok' : '<span class="dot warn"></span>n/a';
+        document.getElementById("phase").textContent = data.phase != null ? data.phase : "—";
+        document.getElementById("userMode").innerHTML = data.userMode?.enabled
+          ? '<span class="dot warn"></span>stub ON'
+          : '<span class="dot ok"></span>OFF';
+        document.getElementById("activeProfile").textContent =
+          data.profiles?.active || "(žádný)";
+        document.getElementById("themeFlag").innerHTML = data.themeManager?.enabled
+          ? '<span class="dot ok"></span>ON'
+          : '<span class="dot warn"></span>OFF';
+        document.getElementById("themeActive").textContent =
+          data.themeManager?.label || data.themeManager?.active || "—";
+        document.getElementById("updated").textContent = new Date().toLocaleTimeString();
+        return data;
+      } catch (err) {
+        log(String(err));
+      }
+    }
+
+    async function setTheme(themeId) {
+      const res = await fetch("/api/mia-admin/theme", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ themeId })
+      });
+      log(await res.json());
+      refresh();
+    }
+
+    async function setActionQueue(enabled) {
+      const res = await fetch("/api/mia-admin/action-queue", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ enabled: !!enabled })
+      });
+      log(await res.json());
+      refresh();
+    }
+
+    async function flushActionQueue() {
+      const res = await fetch("/api/mia-admin/action-queue", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ flush: true })
+      });
+      log(await res.json());
+      refresh();
+    }
+
+    async function fireGift(tier) {
+      const res = await fetch("/api/mia-admin/test/gift", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tier, userLabel: "Admin " + tier })
+      });
+      log(await res.json());
+      refresh();
+    }
+
+    async function fireBowl() {
+      const res = await fetch("/api/mia-admin/test/bowl", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({})
+      });
+      log(await res.json());
+      refresh();
+    }
+
+    async function fireChat() {
+      const res = await fetch("/api/mia-admin/test/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: "ahoj z Control Center" })
+      });
+      log(await res.json());
+      refresh();
+    }
+
+    function profileName() {
+      return (document.getElementById("profileName").value || "default").trim();
+    }
+
+    async function saveProfile() {
+      const res = await fetch("/api/mia-admin/profiles", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: profileName() })
+      });
+      log(await res.json());
+      refresh();
+    }
+
+    async function loadProfile() {
+      const res = await fetch("/api/mia-admin/profiles/load", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: profileName() })
+      });
+      log(await res.json());
+      refresh();
+    }
+
+    async function listProfiles() {
+      const res = await fetch("/api/mia-admin/profiles", { cache: "no-store" });
+      log(await res.json());
+      refresh();
+    }
+
+    function exportSettings() {
+      window.open("/api/mia-admin/export", "_blank");
+      log("Export spuštěn (stažení JSON).");
+    }
+
+    function importSettings() {
+      document.getElementById("importFile").click();
+    }
+
+    document.getElementById("importFile").addEventListener("change", async (ev) => {
+      const file = ev.target.files && ev.target.files[0];
+      if (!file) return;
+      try {
+        const text = await file.text();
+        const bundle = JSON.parse(text);
+        const res = await fetch("/api/mia-admin/import", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ bundle, includeViewerMemory: false })
+        });
+        log(await res.json());
+        refresh();
+      } catch (err) {
+        log(String(err));
+      }
+      ev.target.value = "";
+    });
+
+    document.querySelectorAll("button[data-tier]").forEach((btn) => {
+      btn.addEventListener("click", () => fireGift(btn.getAttribute("data-tier")));
+    });
+    document.querySelectorAll("button[data-theme]").forEach((btn) => {
+      btn.addEventListener("click", () => setTheme(btn.getAttribute("data-theme")));
+    });
+    document.querySelector('[data-action="bowl"]').addEventListener("click", fireBowl);
+    document.querySelector('[data-action="chat"]').addEventListener("click", fireChat);
+    document.querySelector('[data-action="refresh"]').addEventListener("click", refresh);
+    document.querySelector('[data-action="aq-on"]').addEventListener("click", () => setActionQueue(true));
+    document.querySelector('[data-action="aq-off"]').addEventListener("click", () => setActionQueue(false));
+    document.querySelector('[data-action="aq-flush"]').addEventListener("click", flushActionQueue);
+    document.querySelector('[data-action="profile-save"]').addEventListener("click", saveProfile);
+    document.querySelector('[data-action="profile-load"]').addEventListener("click", loadProfile);
+    document.querySelector('[data-action="profile-list"]').addEventListener("click", listProfiles);
+    document.querySelector('[data-action="export"]').addEventListener("click", exportSettings);
+    document.querySelector('[data-action="import"]').addEventListener("click", importSettings);
+    refresh();
+    setInterval(refresh, 8000);
+  </script>
+</body>
+</html>

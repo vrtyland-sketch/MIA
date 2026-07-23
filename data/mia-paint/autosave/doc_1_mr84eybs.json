@@ -1,0 +1,97 @@
+{
+  "savedAt": "2026-07-05T18:24:38.735Z",
+  "session": {
+    "ok": true,
+    "connected": false,
+    "clientId": null,
+    "theme": "dark",
+    "activeTool": "move",
+    "dirty": false,
+    "document": {
+      "id": "doc_1_mr84eybs",
+      "name": "Nový projekt",
+      "width": 1920,
+      "height": 1080,
+      "layerCount": 1,
+      "activeLayerId": "layer_1_mr84eybs",
+      "layers": [
+        {
+          "id": "layer_1_mr84eybs",
+          "name": "Pozadí",
+          "visible": true,
+          "locked": false,
+          "opacity": 1,
+          "kind": "raster"
+        }
+      ]
+    },
+    "viewport": {
+      "panX": 0,
+      "panY": 0,
+      "zoom": 1,
+      "width": 800,
+      "height": 600
+    },
+    "gpu": {
+      "backend": "none",
+      "webgpuAvailable": false,
+      "tileSize": 512,
+      "painted": 0,
+      "tiles": 0
+    },
+    "lastAutosaveAt": null
+  },
+  "document": {
+    "id": "doc_1_mr84eybs",
+    "name": "Nový projekt",
+    "version": 1,
+    "width": 1920,
+    "height": 1080,
+    "dpi": 72,
+    "background": null,
+    "layers": [
+      {
+        "id": "layer_1_mr84eybs",
+        "name": "Pozadí",
+        "visible": true,
+        "locked": false,
+        "opacity": 1,
+        "blendMode": "normal",
+        "kind": "raster",
+        "transform": {
+          "x": 0,
+          "y": 0,
+          "scale": 1,
+          "rotation": 0
+        },
+        "tiles": {},
+        "tileSize": 512,
+        "mask": null
+      }
+    ],
+    "activeLayerId": "layer_1_mr84eybs",
+    "selection": null,
+    "timeline": {
+      "id": "timeline_1_mr84eybt",
+      "fps": 12,
+      "frames": [
+        {
+          "id": "frame_1_mr84eybs",
+          "label": "1",
+          "durationMs": 83,
+          "layerSnapshots": {}
+        }
+      ],
+      "activeFrameIndex": 0,
+      "onionBefore": 1,
+      "onionAfter": 1,
+      "playing": false
+    },
+    "meta": {
+      "author": "",
+      "createdAt": "2026-07-05T18:24:38.729Z",
+      "modifiedAt": "2026-07-05T18:24:38.729Z"
+    }
+  },
+  "miapaintPath": "C:\\MIA\\data\\mia-paint\\autosave\\doc_1_mr84eybs.miapaint"
+}

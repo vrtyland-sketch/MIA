@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<title>Kojnožrout Runtime</title>
+<script src="/assets/kojnozrout/mood-emoji.js"></script>
+<script src="/assets/kojnozrout/pose-catalog.js"></script>
+<script src="/mia-svg-primitives.js"></script>
+<script src="/koj-vector.js"></script>
+<link rel="stylesheet" href="/tiktok-viewer-zones.css?v=42-koj-split" />
+<link rel="stylesheet" href="/mia-soft-neon-world.css?v=42-koj-split" />
+<link rel="stylesheet" href="/assets/mia-2d-fx.css?v=42-koj-split" />
+<script src="/assets/mia-2d-fx.js?v=42-koj-split"></script>
+<script src="/assets/mia-animation-player.js?v=42-koj-split"></script>
+<script src="/assets/mia-sound-cues.js?v=42-koj-split"></script>
+<script src="/lib/koj-body-anchors.js?v=42-koj-split"></script>
+<script src="/lib/mia-rig-anchors.js?v=42-koj-split"></script>
+<script src="/lib/mia-part-rig.js?v=42-koj-split"></script>
+<script src="/lib/koj-live-motion.js?v=42-koj-split"></script>
+<script src="/lib/mia-tech-energy.js?v=42-koj-split"></script>
+<script src="/lib/koj-runtime-walk.js?v=42-koj-split"></script>
+<script src="/lib/overlay-poll.js?v=42-koj-split"></script>
+<script src="/lib/koj-runtime-sprite.js?v=42-koj-split"></script>
+<script src="/lib/koj-runtime-belly.js?v=42-koj-split"></script>
+<script src="/lib/koj-runtime-scene.js?v=42-koj-split"></script>
+<script src="/lib/koj-runtime-pose.js?v=42-koj-split"></script>
+<script src="/lib/koj-runtime-stage.js?v=42-koj-split"></script>
+<link rel="stylesheet" href="/assets/kojnozrout/koj-runtime.css?v=42-koj-split" />
+</head>
+<body>
+
+<div id="stage" aria-hidden="true" class="soft-neon-lab tech-energy-lab">
+  <div id="sceneLayer">
+    <img id="sceneBgA" class="scene-bg" alt="" aria-hidden="true" />
+    <img id="sceneBgB" class="scene-bg" alt="" aria-hidden="true" />
+    <div id="sceneBackdrop"></div>
+    <div id="sceneFloor"></div>
+    <div id="sceneAccents" aria-hidden="true"></div>
+  </div>
+  <div id="viewerStrip"></div>
+  <div id="spriteDock">
+    <div id="vectorHost"></div>
+    <div id="spriteLayer">
+      <div id="kojBodyMount">
+        <div id="walkShadow" aria-hidden="true"></div>
+        <img id="spriteA" class="sprite-slot" alt="" />
+        <img id="spriteB" class="sprite-slot" alt="" />
+        <div id="propLayer" aria-hidden="true">
+          <img id="propBowl" class="koj-prop" src="/assets/kojnozrout/props/bowl.png?v=42-koj-split" alt="" onerror="this.classList.remove('on')" />
+          <img id="propBall" class="koj-prop" src="/assets/kojnozrout/props/ball.png?v=42-koj-split" alt="" onerror="this.classList.remove('on')" />
+          <img id="propMic" class="koj-prop" src="/assets/kojnozrout/props/mic.png?v=42-koj-split" alt="" onerror="this.classList.remove('on')" />
+          <img id="propHand" class="koj-prop" src="/assets/kojnozrout/props/hand.png?v=42-koj-split" alt="" onerror="this.classList.remove('on')" />
+        </div>
+        <div id="kojProjectorHost" aria-hidden="true">
+          <div id="kojBellyScreen">
+            <div class="belly-scale">
+              <img id="kojBellyImg" alt="" />
+              <div id="kojBellyIdle" class="belly-idle" aria-hidden="true">
+                <div class="belly-idle-main" id="kojBellyIdleMain"></div>
+                <div class="belly-idle-sub" id="kojBellyIdleSub"></div>
+              </div>
+              <div class="belly-glass" aria-hidden="true"></div>
+              <div class="belly-scan"></div>
+            </div>
+          </div>
+          <div id="kojEyeBeam"></div>
+          <div id="kojHoloPlate">
+            <img id="kojHoloImg" alt="" />
+            <div class="holo-grid"></div>
+          </div>
+        </div>
+        <canvas id="kojTechFx" class="tech-fx-canvas" aria-hidden="true"></canvas>
+        <div id="kojHeadLayer" aria-hidden="true">
+          <img id="kojHeadImg" alt="" decoding="async" draggable="false" />
+        </div>
+      </div>
+    </div>
+    <div id="itemFxLayer" aria-hidden="true"></div>
+    <div id="animFxLayer" aria-hidden="true"></div>
+    <div id="blinkLid"></div>
+    <div id="cssMascot">🐣</div>
+  </div>
+</div>
+
+<script>
+const API_BASE = (window.location.origin && window.location.protocol.startsWith("http"))
+  ? window.location.origin
+  : "http://127.0.0.1:3000";
+
+const POLL_MS = 450;
+const POLL_BACKOFF_MS = 2000;
+const CROSSFADE_MS = 820;
+const CROSSFADE_POSE_MS = 280;
+const CROSSFADE_POSE_WALK_MS = 150;
+const MIN_SWAP_MS = 1100;
+const MIN_SWAP_EATING_MS = 650;
+const MIN_SWAP_SLEEPY_MS = 3200;
+const BOOT_SPRITE_KEY = "idle";
+const BOOT_SPRITE_PATH = "assets/kojnozrout/moods/kojnozout-idle.png";
+const ASSET_CACHE_V = "42-koj-split";
+
+const spriteA = document.getElementById("spriteA");
+const spriteB = document.getElementById("spriteB");
+const spriteSlots = [spriteA, spriteB];
+const cssMascot = document.getElementById("cssMascot");
+const stageEl = document.getElementById("stage");
+const spriteDock = document.getElementById("spriteDock");
+
+let activeSlotIndex = 0;
+let currentAssetKey = "";
+let currentImgUrl = "";
+let lastSwapAt = 0;
+
+const HUB_EVOLUTION_SCALE = {
+  egg: 0.24,
+  hatchling: 0.28,
+  sprout: 0.32,
+  guardian: 0.38,
+  legend: 0.44
+};
+const MOOD_EMOJI = {
+  idle: "🐣", warm: "😊", happy: "😄", hungry: "🍽️", excited: "🤩", eating: "😋", full: "🫃",
+  sleepy: "😴", sick: "🤢", sad: "😢", annoyed: "😤", laugh: "😂", stressed: "😰",
+  watch: "👀", groove: "🕺", dance: "💃", party: "🥳", curious: "🧐", love: "💚",
+  celebrate: "🎉", cheer: "📣", hype: "🔥", wave: "👋", proud: "🏆", shy: "😳",
+  surprised: "😲", thinking: "🤔", calm: "😌", cozy: "☕", gift: "🎁", thanks: "🙏",
+  combo: "⚡", duel: "⚔️", story: "📖", flyby: "🚀", feeding: "🍽️"
+};
+const MOOD_FB = {
+  warm: "warm",
+  eating: "eating",
+  sleepy: "sleepy",
+  sick: "sick",
+  sad: "sad",
+  annoyed: "annoyed",
+  stressed: "stressed",
+  laugh: "laugh"
+};
+
+const STAGE_MOOD_CLASSES =
+  (typeof window.KojRuntimeStage?.STAGE_MOOD_CLASSES === "object" &&
+   Array.isArray(window.KojRuntimeStage.STAGE_MOOD_CLASSES))
+    ? window.KojRuntimeStage.STAGE_MOOD_CLASSES
+    : [
+        "sleepy", "sick", "sad", "annoyed", "stressed", "full",
+        "celebrate", "gift", "combo", "duel", "eating",
+        "item-use-active", "item-use-food", "item-use-heal", "item-use-care", "item-use-comfort", "item-use-duel"
+      ];
+const CORE = ["idle", "warm", "happy", "hungry", "excited", "eating", "full"];
+
+let lastSpriteKey = "";
+let hasLoadedPng = false;
+let pendingSwapToken = 0;
+let pendingSprite = null;
+
+const spriteState = {};
+Object.defineProperties(spriteState, {
+  activeSlotIndex: {
+    get() { return activeSlotIndex; },
+    set(v) { activeSlotIndex = v; },
+    enumerable: true
+  },
+  currentAssetKey: {
+    get() { return currentAssetKey; },
+    set(v) { currentAssetKey = v; },
+    enumerable: true
+  },
+  currentImgUrl: {
+    get() { return currentImgUrl; },
+    set(v) { currentImgUrl = v; },
+    enumerable: true
+  },
+  lastSwapAt: {
+    get() { return lastSwapAt; },
+    set(v) { lastSwapAt = v; },
+    enumerable: true
+  },
+  lastSpriteKey: {
+    get() { return lastSpriteKey; },
+    set(v) { lastSpriteKey = v; },
+    enumerable: true
+  },
+  hasLoadedPng: {
+    get() { return hasLoadedPng; },
+    set(v) { hasLoadedPng = Boolean(v); },
+    enumerable: true
+  },
+  pendingSwapToken: {
+    get() { return pendingSwapToken; },
+    set(v) { pendingSwapToken = v; },
+    enumerable: true
+  },
+  pendingSprite: {
+    get() { return pendingSprite; },
+    set(v) { pendingSprite = v; },
+    enumerable: true
+  }
+});
+
+const spriteEngine =
+  typeof window.KojRuntimeSprite?.create === "function"
+    ? window.KojRuntimeSprite.create({
+        spriteA,
+        spriteB,
+        cssMascot,
+        spriteDock,
+        stageEl,
+        apiBase: API_BASE,
+        cacheV: ASSET_CACHE_V,
+        bootSpriteKey: BOOT_SPRITE_KEY,
+        bootSpritePath: BOOT_SPRITE_PATH,
+        evolutionScale: HUB_EVOLUTION_SCALE,
+        crossfadeMs: CROSSFADE_MS,
+        minSwapMs: MIN_SWAP_MS,
+        minSwapEatingMs: MIN_SWAP_EATING_MS,
+        minSwapSleepyMs: MIN_SWAP_SLEEPY_MS,
+        sharedState: spriteState
+      })
+    : null;
+
+if (!spriteEngine) {
+  console.error("[KOJ_RUNTIME] KojRuntimeSprite missing — sprite I/O will fail");
+}
+
+function minSwapMs(mood = "", spriteAsset = "") {
+  return spriteEngine ? spriteEngine.minSwapMs(mood, spriteAsset) : MIN_SWAP_MS;
+}
+function crossfadeReveal(nextSlot, prevSlot, fadeMs = CROSSFADE_MS) {
+  if (spriteEngine) spriteEngine.crossfadeReveal(nextSlot, prevSlot, fadeMs);
+}
+
+const PRELOAD_MOOD_KEYS = [
+  "idle", "idle-f2", "sleepy", "warm", "happy", "hungry", "eating", "full",
+  "dance", "react-video", "celebrate", "sick", "sad",
+  "walk-a", "walk-b", "hop-a", "hop-b", "dance-a", "dance-b", "wave-a", "wave-b",
+  "sit-a", "sit-b", "curl-a", "curl-b", "play-a", "play-b",
+  "munch-a", "munch-b", "stretch-a", "stretch-b", "guard-a", "guard-b",
+  "love-a", "love-b", "excited-a", "excited-b",
+  "sad-a", "sad-b", "sleepy-a", "sleepy-b", "hungry-a", "hungry-b",
+  "warm-a", "warm-b", "full-a", "full-b", "annoyed-a", "annoyed-b", "laugh-a", "laugh-b",
+  "celebrate-a", "celebrate-b", "gift-a", "gift-b", "duel-a", "duel-b",
+  "combo-a", "combo-b", "watch-a", "watch-b", "sick-a", "sick-b",
+  "happy-a", "happy-b", "dance-c",
+  "thinking-a", "thinking-b", "proud-a", "proud-b",
+  "curious-a", "curious-b", "shy-a", "shy-b",
+  "peek-a", "peek-b", "wink-a", "wink-b", "calm-a", "calm-b",
+  "comfort-a", "comfort-b", "surprised-a", "surprised-b",
+  "react-gift-a", "react-gift-b", "react-video-a", "react-video-b",
+  "thanks-bow-a", "thanks-bow-b", "hatch-wiggle-a", "hatch-wiggle-b",
+  "neglect-droop-a", "neglect-droop-b",
+  "party-pop-a", "party-pop-b", "hype-jump-a", "hype-jump-b",
+  "heal-glow-a", "heal-glow-b",
+  "react-chat-a", "react-chat-b", "duel-ready-a", "duel-ready-b",
+  "combo-fire-a", "combo-fire-b", "cozy-a", "cozy-b", "yawn-a", "yawn-b",
+  "love-hug-a", "love-hug-b", "bond-warm-a", "bond-warm-b",
+  "groove-a", "groove-b", "party-a", "party-b",
+  "snack-a", "snack-b", "sip-a", "sip-b",
+  "alert-a", "alert-b", "proud-stand-a", "proud-stand-b",
+  "cozy-blanket-a", "cozy-blanket-b", "shy-hide-a", "shy-hide-b",
+  "calm-deep-a", "calm-deep-b", "egg-rest-a", "egg-rest-b",
+  "stressed-a", "stressed-b", "rest-a", "rest-b"
+];
+
+// Vícesnímkové cykly — jediný zdroj: assets/kojnozrout/pose-catalog.js (npm run generate:koj-poses)
+const KOJ_POSE = globalThis.KOJ_POSE || {};
+const POSE_CYCLES = KOJ_POSE.POSE_CYCLES || [];
+// Soft Neon cyborg: rest/sleep/cozy banks must stay on idle/warm/happy — never purple curl.
+if (typeof window.KojRuntimePose?.forceCyborgRestFrames === "function") {
+  window.KojRuntimePose.forceCyborgRestFrames(POSE_CYCLES);
+}
+const CALM_WANDER_MOODS = KOJ_POSE.CALM_WANDER_MOODS || new Set(["idle"]);
+const resolvePoseCycle = KOJ_POSE.resolvePoseCycle || (() => null);
+let lastStepDurMs = 780;
+
+const poseEngine =
+  typeof window.KojRuntimePose?.create === "function"
+    ? window.KojRuntimePose.create({
+        stageEl,
+        assetUrl: (p) => assetUrl(p),
+        moodAsset: (m) => moodAsset(m),
+        preloadTexture: (u) => preloadTexture(u),
+        applySpriteHeight: (n) => applySpriteHeight(n),
+        activeSpriteEl: () => activeSpriteEl(),
+        idleSpriteEl: () => idleSpriteEl(),
+        crossfadeReveal: (next, prev, ms) => crossfadeReveal(next, prev, ms),
+        getLastStepDurMs: () => lastStepDurMs,
+        onPoseFrameShown: (url, assetKey) => {
+          activeSlotIndex = activeSlotIndex === 0 ? 1 : 0;
+          currentImgUrl = url;
+          currentAssetKey = assetKey;
+        },
+        onPoseStopped: () => {
+          currentAssetKey = "";
+          currentImgUrl = "";
+        },
+        crossfadePoseMs: CROSSFADE_POSE_MS,
+        crossfadePoseWalkMs: CROSSFADE_POSE_WALK_MS,
+        getPropBall: () => propBall,
+        getPropMic: () => propMic,
+        getPropHand: () => propHand,
+        getPropBowl: () => propBowl,
+        isKojSpeaking: (data, now) => isKojSpeaking(data, now)
+      })
+    : null;
+
+if (!poseEngine) {
+  console.error("[KOJ_RUNTIME] KojRuntimePose missing — pose/props will fail");
+}
+
+const poseFramePlayer = poseEngine ? poseEngine.poseFramePlayer : {
+  active: false,
+  cycleId: null,
+  frames: [],
+  frameIndex: 0,
+  currentFrameKey: "",
+  start() {},
+  stop() {}
+};
+
+function resolvePropKey(data = {}) {
+  return poseEngine
+    ? poseEngine.resolvePropKey(data)
+    : safe(data?.kojDisplay?.spriteAsset).toLowerCase() || safe(data?.kojDisplay?.mood).toLowerCase();
+}
+function resolvePropDisplayMood(data = {}) {
+  return poseEngine
+    ? poseEngine.resolvePropDisplayMood(data)
+    : safe(data?.kojDisplay?.mood).toLowerCase();
+}
+function wantsBallProp(key, displayMood) {
+  return poseEngine
+    ? poseEngine.wantsBallProp(key, displayMood)
+    : (typeof window.KojRuntimePose?.wantsBallProp === "function"
+        ? window.KojRuntimePose.wantsBallProp(key, displayMood)
+        : false);
+}
+function wantsMicProp(key, displayMood) {
+  return poseEngine
+    ? poseEngine.wantsMicProp(key, displayMood)
+    : (typeof window.KojRuntimePose?.wantsMicProp === "function"
+        ? window.KojRuntimePose.wantsMicProp(key, displayMood)
+        : false);
+}
+function playsWithProp(key, displayMood) {
+  return poseEngine
+    ? poseEngine.playsWithProp(key, displayMood)
+    : wantsBallProp(key, displayMood) || wantsMicProp(key, displayMood);
+}
+const stageEngine =
+  typeof window.KojRuntimeStage?.create === "function"
+    ? window.KojRuntimeStage.create({
+        stageEl,
+        resolvePropKey: (data) => resolvePropKey(data),
+        playsWithProp: (key, mood) => playsWithProp(key, mood),
+        isCalmWanderMood: (key) => CALM_WANDER_MOODS.has(key),
+        shouldForceWander: (data) =>
+          typeof window.KojRuntimeWalk?.shouldForceWander === "function"
+            ? window.KojRuntimeWalk.shouldForceWander(data)
+            : (data?.kojDisplay?.walk?.active === true && data?.kojDisplay?.walk?.kind === "care"),
+        setLastStepDurMs: (ms) => { lastStepDurMs = ms; },
+        getLiveMotion: () => kojLiveMotion
+      })
+    : null;
+
+if (!stageEngine) {
+  console.error("[KOJ_RUNTIME] KojRuntimeStage missing — stage mood/wander will fail");
+}
+
+function activeSpriteEl() {
+  return spriteEngine ? spriteEngine.activeSpriteEl() : spriteSlots[activeSlotIndex];
+}
+
+function idleSpriteEl() {
+  return spriteEngine ? spriteEngine.idleSpriteEl() : spriteSlots[activeSlotIndex === 0 ? 1 : 0];
+}
+
+function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
+function safe(v) { return typeof v === "string" && v.trim() ? v.trim() : ""; }
+
+function assetUrl(path) {
+  return spriteEngine ? spriteEngine.assetUrl(path) : "";
+}
+
+function stageSize() {
+  return spriteEngine ? spriteEngine.stageSize() : { w: 300, h: 400 };
+}
+
+function moodEmojiForKey(key, serverEmoji) {
+  if (serverEmoji) return serverEmoji;
+  if (typeof window.resolveKojMoodEmoji === "function") {
+    return window.resolveKojMoodEmoji(key, "🐣");
+  }
+  return MOOD_EMOJI[key] || "🐣";
+}
+
+function moodKey(mood, bowl, spriteAsset) {
+  return spriteEngine
+    ? spriteEngine.moodKey(mood, bowl, spriteAsset)
+    : (safe(spriteAsset).toLowerCase() || safe(mood).toLowerCase() || "idle");
+}
+
+function resolveDisplayMood(state, care) {
+  return stageEngine
+    ? stageEngine.resolveDisplayMood(state, care)
+    : (typeof window.KojRuntimeStage?.resolveDisplayMood === "function"
+        ? window.KojRuntimeStage.resolveDisplayMood(state, care)
+        : "idle");
+}
+
+function applyStageMood(mood, data) {
+  if (stageEngine) stageEngine.applyStageMood(mood, data);
+}
+
+function startWanderVariation() {
+  if (stageEngine) stageEngine.startWanderVariation();
+}
+function stopWanderVariation() {
+  if (stageEngine) stageEngine.stopWanderVariation();
+}
+
+function moodAsset(m) {
+  return spriteEngine
+    ? spriteEngine.moodAsset(m)
+    : `assets/kojnozrout/moods/kojnozout-${safe(m).toLowerCase() || "idle"}.png`;
+}
+
+function resolveSpriteHeightFraction(state, tier) {
+  return spriteEngine ? spriteEngine.resolveSpriteHeightFraction(state, tier) : 0.55;
+}
+
+function preloadTexture(url) {
+  return spriteEngine ? spriteEngine.preloadTexture(url) : Promise.resolve(false);
+}
+
+async function resolveTexture(assetKey, displayMood, bowl, spriteUrl) {
+  return spriteEngine ? spriteEngine.resolveTexture(assetKey, displayMood, bowl, spriteUrl) : "";
+}
+
+function showCssMascot(mood, bowl, spriteAsset, serverEmoji, heightFraction) {
+  return spriteEngine
+    ? spriteEngine.showCssMascot(mood, bowl, spriteAsset, serverEmoji, heightFraction)
+    : Promise.resolve(false);
+}
+
+function applySpriteHeight(heightFraction) {
+  if (spriteEngine) spriteEngine.applySpriteHeight(heightFraction);
+}
+
+function revealSpriteSlot(slot) {
+  if (spriteEngine) spriteEngine.revealSpriteSlot(slot);
+}
+
+async function crossfadeToTexture(url, heightFraction, mood = "", spriteAsset = "") {
+  return spriteEngine
+    ? spriteEngine.crossfadeToTexture(url, heightFraction, mood, spriteAsset)
+    : false;
+}
+
+async function showImgTexture(url, heightFraction, mood, bowl, spriteAsset, serverEmoji) {
+  return spriteEngine
+    ? spriteEngine.showImgTexture(url, heightFraction, mood, bowl, spriteAsset, serverEmoji)
+    : false;
+}
+
+function isKojSpeaking(data, now) {
+  return stageEngine
+    ? stageEngine.isKojSpeaking(data, now)
+    : (typeof window.KojRuntimeStage?.isKojSpeaking === "function"
+        ? window.KojRuntimeStage.isKojSpeaking(data, now)
+        : false);
+}
+
+function syncSpeakingVisual(data, now) {
+  if (stageEngine) stageEngine.syncSpeakingVisual(data, now);
+}
+
+const spriteLayerEl = document.getElementById("spriteLayer");
+const kojBodyMount = document.getElementById("kojBodyMount");
+const kojHeadLayer = document.getElementById("kojHeadLayer");
+const kojHeadImg = document.getElementById("kojHeadImg");
+let KOJ_ANCHORS = window.KojBodyAnchors || null;
+let kojPartRig = null;
+let kojLiveMotion = null;
+let lastHeadSpriteUrl = "";
+let kojAnchorsReady = !window.MiaRigAnchors;
+
+/** Load /anchors/koj.json (cache-bust) → mutate KOJ_ANCHORS; fallback = koj-body-anchors.js */
+async function loadKojAnchorsJson() {
+  if (!window.MiaRigAnchors) {
+    kojAnchorsReady = true;
+    return KOJ_ANCHORS;
+  }
+  const doc = await window.MiaRigAnchors.load("koj", {
+    bust: window.MiaRigAnchors.CACHE_BUST || "36-koj-unify"
+  });
+  if (!KOJ_ANCHORS) {
+    KOJ_ANCHORS = window.MiaRigAnchors.toRuntimeApi(doc);
+  } else {
+    window.MiaRigAnchors.applyDoc(KOJ_ANCHORS, doc);
+  }
+  if (kojPartRig && KOJ_ANCHORS) {
+    const bodyPivot = KOJ_ANCHORS.body || { x: 0.5, y: 0.72 };
+    const rootPivot = KOJ_ANCHORS.root || { x: 0.5, y: 1 };
+    kojPartRig.setPivot("root", rootPivot);
+    kojPartRig.setPivot("body", bodyPivot);
+  }
+  kojAnchorsReady = true;
+  try {
+    syncProjectorLayout();
+  } catch (_err) {
+    /* layout may not be ready yet */
+  }
+  return KOJ_ANCHORS;
+}
+loadKojAnchorsJson();
+
+const kojTechEnergy =
+  window.MiaTechEnergy &&
+  window.MiaTechEnergy.create({
+    host: kojBodyMount || document.getElementById("kojBodyMount"),
+    canvas: document.getElementById("kojTechFx"),
+    density: 1.08,
+    isSpeaking: () => !!(stageEl && stageEl.classList.contains("speaking")),
+    hotspots: [
+      { x: 0.58, y: 0.2, w: 0.16, h: 0.12 },
+      { x: 0.5, y: 0.57, w: 0.28, h: 0.2 }
+    ]
+  });
+
+function kojLiveMotionEnabled() {
+  if (!stageEl) return false;
+  if (stageEl.classList.contains("wander")) return false;
+  if (stageEl.classList.contains("corner-rest")) return false;
+  if (stageEl.classList.contains("battle-active")) return false;
+  if (stageEl.classList.contains("battle-attack-stage")) return false;
+  if (stageEl.classList.contains("battle-hit-stage")) return false;
+  if (stageEl.classList.contains("pose-frames-active")) return false;
+  if (stageEl.classList.contains("vector-mode")) return false;
+  if (stageEl.classList.contains("sleepy")) return false;
+  return stageEl.classList.contains("calm-idle") || stageEl.classList.contains("full");
+}
+
+function ensureKojPartRig() {
+  if (kojPartRig || !window.MiaPartRig || !spriteLayerEl) return kojPartRig;
+  const bodyPivot = (KOJ_ANCHORS && KOJ_ANCHORS.body) || { x: 0.5, y: 0.72 };
+  const rootPivot = (KOJ_ANCHORS && KOJ_ANCHORS.root) || { x: 0.5, y: 1 };
+  // Whole-sprite: no interim head clip (seam / “rozpůlený”). Life = root+body.
+  kojPartRig = window.MiaPartRig.createStandardHumanoid({
+    torsoId: "body",
+    rootEl: spriteLayerEl,
+    torsoEl: kojBodyMount,
+    headEl: null,
+    includeHead: false,
+    rootPivot,
+    torsoPivot: bodyPivot
+  });
+  stageEl.classList.add("koj-part-rig");
+  stageEl.classList.add("koj-whole-sprite");
+  if (kojHeadLayer) {
+    kojHeadLayer.classList.remove("ready");
+    kojHeadLayer.setAttribute("aria-hidden", "true");
+  }
+  return kojPartRig;
+}
+
+function ensureKojLiveMotion() {
+  if (kojLiveMotion || !window.KojLiveMotion || !spriteLayerEl) return kojLiveMotion;
+  const rig = ensureKojPartRig();
+  kojLiveMotion = window.KojLiveMotion.create({
+    el: spriteLayerEl,
+    rig,
+    isSpeaking: () => stageEl.classList.contains("speaking"),
+    isEnabled: kojLiveMotionEnabled,
+    onTick: () => {
+      syncProjectorLayout();
+    }
+  });
+  stageEl.classList.add("koj-live-motion");
+  kojLiveMotion.start();
+  return kojLiveMotion;
+}
+
+const propBall = document.getElementById("propBall");
+const propMic = document.getElementById("propMic");
+const propHand = document.getElementById("propHand");
+const propBowl = document.getElementById("propBowl");
+const itemFxLayer = document.getElementById("itemFxLayer");
+const animFxLayer = document.getElementById("animFxLayer");
+let lastItemUseToken = "";
+let animPlayer = null;
+let lastAnimationToken = "";
+let animationBusy = false;
+
+function ensureAnimPlayer() {
+  const API = globalThis.MIA_ANIMATION_PLAYER;
+  if (!API?.MiaAnimationPlayer || !spriteDock) return null;
+  if (!animPlayer) {
+    animPlayer = new API.MiaAnimationPlayer(spriteDock, { apiBase: API_BASE });
+  }
+  return animPlayer;
+}
+
+function syncAnimationReaction(data, now) {
+  const reaction = data?.animationReaction;
+  const active = reaction?.active && Number(reaction.holdUntilTs || 0) > now;
+  if (!active) {
+    if (lastAnimationToken) {
+      lastAnimationToken = "";
+      animationBusy = false;
+      stageEl.classList.remove("anim-sheet-active", "gift");
+      if (animPlayer) animPlayer.hide();
+    }
+    return false;
+  }
+
+  const token = `${reaction.updatedAt || 0}:${reaction.animationId}:${reaction.giftKey || ""}`;
+  const forceSheet =
+    new URLSearchParams(location.search).get("animBank") === "1" ||
+    reaction.studioPreview === true ||
+    String(reaction.bankQuality || "").toLowerCase() === "production";
+  const canPlaySheet =
+    forceSheet &&
+    reaction.preferProductionSprite !== true &&
+    reaction.manifestUrl &&
+    reaction.sheetUrl;
+
+  // Particles + SFX always — even when we keep production Koj sprite visible.
+  if (token !== lastAnimationToken) {
+    const FX = globalThis.MIA_ANIMATION_PLAYER;
+    if (FX?.spawnParticles && reaction.particles && animFxLayer) {
+      FX.spawnParticles(animFxLayer, reaction.particles, { apiBase: API_BASE });
+    }
+    const SFX = globalThis.MIA_SOUND_CUES;
+    if (SFX?.playSoundCue && reaction.soundCue) {
+      SFX.playSoundCue(reaction.soundCue);
+    }
+  }
+
+  if (!canPlaySheet) {
+    lastAnimationToken = token;
+    animationBusy = false;
+    stageEl.classList.remove("anim-sheet-active");
+    if (reaction.overlay?.stageClass) {
+      stageEl.classList.add(reaction.overlay.stageClass);
+    } else {
+      stageEl.classList.add("gift");
+    }
+    return false;
+  }
+
+  if (token === lastAnimationToken && animationBusy) {
+    stageEl.classList.add("anim-sheet-active");
+    return true;
+  }
+
+  const player = ensureAnimPlayer();
+  if (!player) return false;
+
+  lastAnimationToken = token;
+  animationBusy = true;
+  stageEl.classList.add("anim-sheet-active");
+  if (reaction.overlay?.stageClass) {
+    stageEl.classList.add(reaction.overlay.stageClass);
+  } else {
+    stageEl.classList.add("gift");
+  }
+
+  void player
+    .loadClip({
+      manifestUrl: reaction.manifestUrl,
+      sheetUrl: reaction.sheetUrl
+    })
+    .then(() => {
+      player.play({
+        motion: reaction.motion,
+        loop: false,
+        onComplete: () => {
+          animationBusy = false;
+          stageEl.classList.remove("anim-sheet-active");
+        }
+      });
+    })
+    .catch((err) => {
+      console.error("[MIA_ANIM]", err);
+      animationBusy = false;
+      stageEl.classList.remove("anim-sheet-active");
+    });
+
+  return true;
+}
+
+function isEatingAtBowlKey(key = "") {
+  return poseEngine
+    ? poseEngine.isEatingAtBowlKey(key)
+    : (typeof window.KojRuntimePose?.isEatingAtBowlKey === "function"
+        ? window.KojRuntimePose.isEatingAtBowlKey(key)
+        : false);
+}
+
+
+function spawnItemFx(itemId, opts = {}) {
+  const FX = window.MIA_2D_FX;
+  if (!FX?.playItemUse || !itemFxLayer) return;
+  FX.init({ apiBase: API_BASE }).then(() => {
+    FX.playItemUse(itemFxLayer, {
+      itemId,
+      apiBase: API_BASE,
+      duelProjectile: opts.duelProjectile,
+      projectile: opts.projectile,
+      accent: opts.accent || "#b46cff"
+    });
+  });
+}
+
+function syncItemUse(data, now) {
+  const itemUse = data?.kojDisplay?.itemUse;
+  const summary = data?.backpack?.display?.lastUseSummary;
+  const active = itemUse?.active || (summary?.holdUntil && summary.holdUntil > now);
+  const source = itemUse?.active ? itemUse : summary;
+  if (!active || !source?.itemId) {
+    lastItemUseToken = "";
+    return;
+  }
+  const token = `${source.at || 0}:${source.itemId}:${source.action || "use"}`;
+  if (token !== lastItemUseToken) {
+    lastItemUseToken = token;
+    const role = safe(source.role || source.effect?.role).toLowerCase();
+    const duelProjectile =
+      role === "duel" || source.duelActive
+        ? source.projectile || source.effect?.projectile || "orb"
+        : null;
+    spawnItemFx(source.itemId, {
+      duelProjectile,
+      projectile: source.projectile || source.effect?.projectile
+    });
+  }
+}
+
+function syncProps(data, now) {
+  if (poseEngine) poseEngine.syncProps(data, now);
+}
+function syncVideoReactionVisual(data, now) {
+  if (stageEngine) stageEngine.syncVideoReactionVisual(data, now);
+}
+
+const kojProjectorHost = document.getElementById("kojProjectorHost");
+const kojBellyScreen = document.getElementById("kojBellyScreen");
+const kojBellyImg = document.getElementById("kojBellyImg");
+const kojBellyIdle = document.getElementById("kojBellyIdle");
+const kojBellyIdleMain = document.getElementById("kojBellyIdleMain");
+const kojBellyIdleSub = document.getElementById("kojBellyIdleSub");
+const kojEyeBeam = document.getElementById("kojEyeBeam");
+const kojHoloPlate = document.getElementById("kojHoloPlate");
+const kojHoloImg = document.getElementById("kojHoloImg");
+
+const bellyEngine =
+  typeof window.KojRuntimeBelly?.create === "function"
+    ? window.KojRuntimeBelly.create({
+        stageEl,
+        spriteLayerEl,
+        kojBodyMount,
+        kojHeadLayer,
+        kojProjectorHost,
+        kojBellyScreen,
+        kojBellyImg,
+        kojBellyIdleMain,
+        kojBellyIdleSub,
+        kojEyeBeam,
+        kojHoloPlate,
+        kojHoloImg,
+        apiBase: API_BASE,
+        getSpriteSlots: () => spriteSlots,
+        getActiveSlotIndex: () => activeSlotIndex,
+        getSpriteA: () => spriteA,
+        getAnchors: () => KOJ_ANCHORS,
+        getSearch: () => location.search,
+        getWeatherConfig: () => window.__MIA_WEATHER__ || {}
+      })
+    : null;
+
+if (!bellyEngine) {
+  console.error("[KOJ_RUNTIME] KojRuntimeBelly missing — projector/belly HUD will fail");
+}
+
+function resolveMediaUrl(raw) {
+  return bellyEngine
+    ? bellyEngine.resolveMediaUrl(raw)
+    : (typeof window.KojRuntimeBelly?.resolveMediaUrl === "function"
+        ? window.KojRuntimeBelly.resolveMediaUrl(raw, API_BASE)
+        : "");
+}
+function resolveProjectorMedia(data, now) {
+  return bellyEngine
+    ? bellyEngine.resolveProjectorMedia(data, now)
+    : { bellyUrl: "", holoUrl: "", project: false, reason: "" };
+}
+async function refreshBellyWeather(force = false) {
+  return bellyEngine ? bellyEngine.refreshBellyWeather(force) : null;
+}
+function syncProjectorLayout() {
+  if (bellyEngine) bellyEngine.syncProjectorLayout();
+}
+function syncKojProjector(data, now) {
+  if (bellyEngine) bellyEngine.syncKojProjector(data, now);
+}
+const SCENE_CLASSES = ["scene-den", "scene-cave", "scene-cozy", "scene-feast", "scene-party", "scene-night"];
+const sceneLayer = document.getElementById("sceneLayer");
+const sceneAccentsEl = document.getElementById("sceneAccents");
+const viewerStrip = document.getElementById("viewerStrip");
+let currentScene = "";
+
+const sceneEngine =
+  typeof window.KojRuntimeScene?.create === "function"
+    ? window.KojRuntimeScene.create({
+        stageEl,
+        sceneLayer,
+        sceneAccentsEl,
+        viewerStrip,
+        assetUrl: (p) => assetUrl(p),
+        getSearch: () => location.search
+      })
+    : null;
+
+if (!sceneEngine) {
+  console.error("[KOJ_RUNTIME] KojRuntimeScene missing — scene/viewers will fail");
+}
+
+function resolveScene(displayMood, data, now) {
+  void now;
+  return sceneEngine
+    ? sceneEngine.resolveScene(displayMood, data)
+    : (typeof window.KojRuntimeScene?.resolveScene === "function"
+        ? window.KojRuntimeScene.resolveScene(displayMood, data)
+        : "den");
+}
+function syncScene(displayMood, data, now) {
+  if (sceneEngine) {
+    sceneEngine.syncScene(displayMood, data, now);
+    currentScene = sceneEngine.getCurrentScene();
+  }
+}
+function renderViewers(data) {
+  if (sceneEngine) sceneEngine.renderViewers(data);
+}
+
+// Vektor = experimentální; default = malované PNG (fialový Koj).
+const VECTOR_ENABLED = new URLSearchParams(window.location.search).get("vector") === "1";
+let kojVector = null;
+function initVector() {
+  if (!VECTOR_ENABLED || typeof window.KojVector !== "function") return;
+  const host = document.getElementById("vectorHost");
+  if (!host) return;
+  try {
+    kojVector = new window.KojVector(host);
+    kojVector.start();
+    stageEl.classList.add("vector-mode");
+  } catch (e) {
+    kojVector = null;
+    stageEl.classList.remove("vector-mode");
+    console.error("[KOJ_VECTOR] init fail", e);
+  }
+}
+
+async function renderSprite(state, care, kojDisplay, data) {
+  const displayMood = safe(kojDisplay?.mood) || resolveDisplayMood(state, care);
+  const assetKey = safe(kojDisplay?.spriteAsset) || displayMood;
+  const moodEmoji = safe(kojDisplay?.moodEmoji);
+  applyStageMood(displayMood, data);
+  const bowl = Number(state?.bowlPercent ?? state?.bowl?.percent ?? 0) || 0;
+  const tier = (safe(state?.evolutionTier || state?.evolution?.tier) || "egg").toLowerCase();
+  const heightFraction = resolveSpriteHeightFraction(state, tier);
+
+  const poseCycle =
+    safe(kojDisplay?.battleCycleId)
+      ? POSE_CYCLES.find((c) => c.id === kojDisplay.battleCycleId)
+      : resolvePoseCycle({
+          wandering: stageEl.classList.contains("wander"),
+          assetKey,
+          displayMood
+        });
+  if (poseCycle) {
+    poseFramePlayer.start(poseCycle, heightFraction);
+    pendingSprite = null;
+    return;
+  }
+  poseFramePlayer.stop();
+
+  const stageKey = `${displayMood}|${data?.kojVideoReaction?.phase || kojDisplay?.videoReaction?.phase || "idle"}`;
+  if (stageKey !== lastSpriteKey) {
+    lastSpriteKey = stageKey;
+  }
+
+  if (assetKey === currentAssetKey && hasLoadedPng) {
+    pendingSprite = null;
+    return;
+  }
+
+  const url = await resolveTexture(assetKey, displayMood, bowl, kojDisplay?.spriteUrl);
+
+  const applied = await showImgTexture(url, heightFraction, displayMood, bowl, assetKey, moodEmoji);
+  if (applied === true) {
+    currentAssetKey = assetKey;
+    pendingSprite = null;
+    return;
+  }
+  if (applied === "throttled" || url) {
+    pendingSprite = { state, care, kojDisplay, data, assetKey, displayMood, bowl, tier, moodEmoji };
+  }
+}
+
+async function flushPendingSprite() {
+  if (!pendingSprite || kojVector) return;
+  const p = pendingSprite;
+  const heightFraction = resolveSpriteHeightFraction(p.state, p.tier);
+  const url = await resolveTexture(
+    p.assetKey,
+    p.displayMood,
+    p.bowl,
+    p.kojDisplay?.spriteUrl
+  );
+  if (!url) return;
+  const applied = await showImgTexture(
+    url,
+    heightFraction,
+    p.displayMood,
+    p.bowl,
+    p.assetKey,
+    p.moodEmoji
+  );
+  if (applied === true) {
+    currentAssetKey = p.assetKey;
+    pendingSprite = null;
+  }
+}
+
+// ===== Propriocepce: overlay hlásí, co REÁLNĚ renderuje =====
+// MIA tak „cítí své tělo" — porovná zamýšlenou náladu (kojDisplay) s tím, co
+// se na slotu skutečně zobrazuje, a pozná rozbitý obrázek (naturalWidth === 0).
+let lastRenderReportAt = 0;
+const RENDER_REPORT_MS = 2000;
+
+function buildRenderReport(data, now) {
+  const kd = data?.kojDisplay || {};
+  const slot = activeSpriteEl();
+  const slotVisible = !!slot && slot.classList.contains("visible");
+  const naturalW = slot ? (slot.naturalWidth || 0) : 0;
+  const naturalH = slot ? (slot.naturalHeight || 0) : 0;
+  const slotComplete = slot ? !!slot.complete : false;
+  const slotSrc = slot ? safe(slot.getAttribute("src")) : "";
+  // Rozbitý obrázek = slot má src, je viditelný, načítání skončilo, ale pixely chybí.
+  const brokenImage = slotVisible && !!slotSrc && slotComplete && naturalW === 0;
+  return {
+    ts: now,
+    intent: {
+      mood: safe(kd.mood),
+      spriteAsset: safe(kd.spriteAsset),
+      spriteUrl: safe(kd.spriteUrl)
+    },
+    actual: {
+      poseCycle: poseFramePlayer.active ? poseFramePlayer.cycleId : null,
+      frameKey: safe(poseFramePlayer.currentFrameKey),
+      assetKey: safe(currentAssetKey),
+      slotSrc,
+      naturalW,
+      naturalH,
+      slotVisible,
+      slotComplete,
+      hasLoadedPng,
+      usingCssFallback: !hasLoadedPng,
+      brokenImage
+    },
+    stage: {
+      wander: stageEl.classList.contains("wander"),
+      cornerRest: stageEl.classList.contains("corner-rest"),
+      speaking: stageEl.classList.contains("speaking"),
+      poseFramesActive: stageEl.classList.contains("pose-frames-active"),
+      propBall: stageEl.classList.contains("prop-ball"),
+      propMic: stageEl.classList.contains("prop-mic"),
+      propHand: stageEl.classList.contains("prop-hand"),
+      sceneAccents: stageEl.classList.contains("scene-accents"),
+      scene: currentScene
+    },
+    vector: !!kojVector
+  };
+}
+
+function reportRender(data, now) {
+  if (now - lastRenderReportAt < RENDER_REPORT_MS) return;
+  lastRenderReportAt = now;
+  try {
+    const report = buildRenderReport(data, now);
+    void fetch(`${API_BASE}/mia/koj/render-report`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(report),
+      keepalive: true
+    }).catch(() => {});
+  } catch (_err) {
+    /* report je best-effort, nikdy nesmí shodit render */
+  }
+}
+
+async function tick() {
+  const now = Date.now();
+  try {
+    const res = await fetch(`${API_BASE}/overlay-state?_=${now}`, { cache: "no-store" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const data = await res.json();
+    const state = data.kojnozoutState || data.kojnozroutState || {};
+    syncSpeakingVisual(data, now);
+    syncVideoReactionVisual(data, now);
+    syncKojProjector(data, now);
+    syncItemUse(data, now);
+    syncProps(data, now);
+    const animActive = syncAnimationReaction(data, now);
+    const sceneMood = safe(data?.kojDisplay?.mood) || resolveDisplayMood(state, data.careOpportunities);
+    syncScene(sceneMood, data, now);
+    renderViewers(data);
+    if (kojVector) {
+      const speaking = isKojSpeaking(data, now);
+      const vmood = safe(data?.kojDisplay?.spriteAsset) || sceneMood;
+      kojVector.setMood(vmood, speaking);
+      kojVector.setGlow(speaking ? 1 : 0);
+    } else if (!animActive) {
+      await renderSprite(state, data.careOpportunities, data.kojDisplay, data);
+      await flushPendingSprite();
+    }
+    reportRender(data, now);
+  } catch (err) {
+    lastSpriteKey = "";
+    if (!hasLoadedPng) showCssMascot("idle", 0, BOOT_SPRITE_KEY);
+    console.error("[KOJ_RUNTIME]", err);
+    throw err;
+  }
+}
+
+const overlayPoll =
+  typeof window.MiaOverlayPoll?.createOverlayPollScheduler === "function"
+    ? window.MiaOverlayPoll.createOverlayPollScheduler({
+        tick,
+        intervalMs: POLL_MS,
+        backoffMs: POLL_BACKOFF_MS,
+        maxBackoffMs: 8000
+      })
+    : null;
+
+function schedulePoll() {
+  if (overlayPoll) {
+    overlayPoll.start();
+    return;
+  }
+  // Fallback if lib failed to load — keep stream alive.
+  setTimeout(async () => {
+    try {
+      await tick();
+    } catch (_err) {
+      /* logged in tick */
+    }
+    schedulePoll();
+  }, POLL_MS);
+}
+
+async function bootSprite() {
+  stageSize();
+  ensureKojLiveMotion();
+  applySpriteHeight(HUB_EVOLUTION_SCALE.egg);
+  PRELOAD_MOOD_KEYS.forEach((key) => {
+    void preloadTexture(assetUrl(moodAsset(key)));
+  });
+  const accentScenes = ["den", "night", "cozy", "cave", "feast", "party"];
+  accentScenes.forEach((scene) => {
+    const img = new Image();
+    img.src = assetUrl(`assets/kojnozrout/scenes/scene-${scene}.png`);
+  });
+  const bootUrl = assetUrl(BOOT_SPRITE_PATH);
+  if (await preloadTexture(bootUrl)) {
+    spriteA.src = bootUrl;
+    revealSpriteSlot(spriteA);
+    currentImgUrl = bootUrl;
+    currentAssetKey = BOOT_SPRITE_KEY;
+    lastSwapAt = Date.now();
+  } else {
+    await showCssMascot("idle", 0, BOOT_SPRITE_KEY, "", HUB_EVOLUTION_SCALE.egg);
+  }
+  schedulePoll();
+  void refreshBellyWeather(true);
+}
+
+if (VECTOR_ENABLED) {
+  initVector();
+  schedulePoll();
+  void refreshBellyWeather(true);
+} else {
+  bootSprite();
+}
+
+window.addEventListener("resize", () => {
+  currentAssetKey = "";
+  lastSpriteKey = "";
+  stageSize();
+  syncProjectorLayout();
+});
+</script>
+</body>
+</html>

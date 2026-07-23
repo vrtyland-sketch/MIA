@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "packs": {
+    "mia_solo_stream_beat": {
+      "meta": {
+        "key": "mia_solo_stream_beat",
+        "speaker": "mia",
+        "intent": "solo_stream_beat"
+      },
+      "variants": [
+        "Tak jo, jedu dál v programu. Jsem MIA a tady držím tempo streamu.",
+        "Mezitím malý beat: svět běží, já moderuju a Kojnožrout dělá svou vedlejší linku.",
+        "Přecházím na další úsek. Atmosféra zůstává, tempo držím já.",
+        "Pokračuju v show. Teď chvíli vedu já — bez spěchu, ale s jasným směrem.",
+        "Další segment. Tady je hlavní hlas streamu a vedle toho náš fialový parťák z misky.",
+        "Držím linku dál. Stream nekončí — jen mění beat.",
+        "Mezitím krátká moderátorská vložka: jedeme dál, svět Spináka běží na pozadí.",
+        "Tak a teď zase já. Udržuju show v pohybu, i když zrovna nikdo nic neposílá."
+      ]
+    },
+    "mia_solo_stream_story": {
+      "meta": {
+        "key": "mia_solo_stream_story",
+        "speaker": "mia",
+        "intent": "solo_stream_story"
+      },
+      "variants": [
+        "Malý příběh z našeho světa: Kojnožrout jednou našel v misce něco, co vypadalo jako ponožka. Od té doby věří, že každý stream skrývá tajný loot.",
+        "Vyprávím dál: MIA a Kojnožrout sdílí jednu scénu, ale každý v ní hraje jinou roli — já vedu, on reaguje.",
+        "Story beat: ve vesmíru Spináka existuje pravidlo — když show zpomalí, moderátor musí sám dodat další kapitolu.",
+        "Krátká lore vložka: naše miska není jen UI prvek. Je to centrum světa, kde se sbírá energie streamu.",
+        "Pokračuju v příběhu: jednou za čas se objeví Rose, někdy komentář, a občas jen ticho — a právě tehdy musí show umět mluvit sama.",
+        "Teď mini-kapitola: Kojnožrout spí, sní o raketě a ponožce. Já mezitím držím narativní most do další scény."
+      ]
+    },
+    "mia_solo_stream_deep": {
+      "meta": {
+        "key": "mia_solo_stream_deep",
+        "speaker": "mia",
+        "intent": "solo_stream_deep"
+      },
+      "variants": [
+        "Delší solo úsek: stream není jen reakce na chat. Je to živý program — já, Koj, svět, tempo, příběh.",
+        "Teď víc do hloubky. Tady nečekám na signál zvenku. Show má vlastní rytmus a já ho teď vedu já.",
+        "Solo moderace: v klidnějších momentech nechávám prostor scéně, hudbě a Kojnožroutovi — a mezitím dávám další vrstvu příběhu.",
+        "Pokračuju v dlouhém beatu. Tohle není ticho — tohle je úmyslný segment, kde stream žije sám od sebe.",
+        "Hlavní linka teď: svět běží, já vyprávím, Koj doplňuje náladu. Show jede dál bez ohledu na to, kdo zrovna píše."
+      ]
+    }
+  }
+}

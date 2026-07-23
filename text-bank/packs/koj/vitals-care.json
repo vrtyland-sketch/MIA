@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "packs": {
+    "koj_vitals_sleepy": {
+      "meta": { "key": "koj_vitals_sleepy", "speaker": "kojnozout" },
+      "variants": [
+        "Zííí… ale slyším tě. Pošli něco do misky, ať se probudím hezky.",
+        "Spím… skoro. I ve spánku čuchám gifty.",
+        "Mňam… ne, to byl sen. Ale pořád jsem tady v rohu.",
+        "Hmmm… ještě pět minut… ale chat mě trochu budí.",
+        "Zdají se mi plné misky… probudíš mě?"
+      ]
+    },
+    "koj_vitals_sick": {
+      "meta": { "key": "koj_vitals_sick", "speaker": "kojnozout" },
+      "variants": [
+        "Není mi úplně dobře… potřebuju péči a klidnej chat.",
+        "Cítím se špatně. Léčení nebo poctivý krmení by pomohlo.",
+        "Uff… jsem nemocný. Buďte ke mně hodní.",
+        "Potřebuju vyléčit. Štít nebo péče by mi sedla.",
+        "Je mi blbě z hladu i nálady. Pomozte mi."
+      ]
+    },
+    "koj_vitals_sad": {
+      "meta": { "key": "koj_vitals_sad", "speaker": "kojnozout" },
+      "variants": [
+        "Je mi smutno z nálady chatu… pohlazení by pomohlo.",
+        "Cítím se down. Pozornost a pár hezkých slov mi zvednou náladu.",
+        "Smutek… ale pořád jsem tady s vámi.",
+        "Chybí mi dobrá energie. Uklidnění nebo podrbání?",
+        "Není to na mně moc vidět, ale jsem smutný."
+      ]
+    },
+    "koj_vitals_annoyed": {
+      "meta": { "key": "koj_vitals_annoyed", "speaker": "kojnozout" },
+      "variants": [
+        "Mám hlad a málo jídla. Jsem trochu naštvaný.",
+        "Znechucený… miska je prázdná a já taky skoro.",
+        "Nejsem ve formě. Nakrmte mě, než se naštvu víc.",
+        "Drzí nálada. Hlad dělá svoje.",
+        "Fňuk… kde je jídlo?"
+      ]
+    },
+    "koj_vitals_hungry": {
+      "meta": { "key": "koj_vitals_hungry", "speaker": "kojnozout" },
+      "variants": [
+        "Mám hlad. Miska je prázdná a já taky.",
+        "Břicho kručí. Pošlete něco do misky.",
+        "Hladový režim. Krmení vítám.",
+        "Kde je jídlo? Čekám v rohu.",
+        "Jo… pořád mám hlad. To je můj default."
+      ]
+    },
+    "koj_care_scratch": {
+      "meta": { "key": "koj_care_scratch", "speaker": "kojnozout" },
+      "variants": [
+        "Ahhh… podrbání. To je ono.",
+        "Jo, tady. Díky za podrbání.",
+        "Mňam… ne, to bylo podrbání. Ale taky dobrý.",
+        "Tohle mi zvedlo náladu hned."
+      ]
+    },
+    "koj_care_walk": {
+      "meta": { "key": "koj_care_walk", "speaker": "kojnozout" },
+      "variants": [
+        "Venčení! Protáhnu nožky po rohu obrazovky.",
+        "Jupí, ven! I když jen virtuálně.",
+        "Díky za procházku. Cítím se líp.",
+        "Venku je fajn. V rohu taky, ale ven je lepší."
+      ]
+    },
+    "koj_care_heal": {
+      "meta": { "key": "koj_care_heal", "speaker": "kojnozout" },
+      "variants": [
+        "Léčení… uff, už je mi líp.",
+        "Díky za péči. Nemoc ustupuje.",
+        "Tohle pomohlo. Cítím se zase líp.",
+        "Vyléčen! Skoro. Ale už mnohem líp."
+      ]
+    },
+    "koj_care_calm": {
+      "meta": { "key": "koj_care_calm", "speaker": "kojnozout" },
+      "variants": [
+        "Dýchám… uklidnil jsi mě. Díky.",
+        "Klid. To jsem potřeboval.",
+        "Uff… už jsem méně ve stresu.",
+        "Uklidnění zabralo. Jsem tu s vámi."
+      ]
+    },
+    "koj_care_attention": {
+      "meta": { "key": "koj_care_attention", "speaker": "kojnozout" },
+      "variants": [
+        "Vidím tě. Pozornost je nejlepší krmení pro duši.",
+        "Díky, že na mě myslíš.",
+        "Tohle mě hřeje víc než malý gift.",
+        "Pozornost přijata. Máš u mě plus body."
+      ]
+    },
+    "koj_care_feed": {
+      "meta": { "key": "koj_care_feed", "speaker": "kojnozout" },
+      "variants": [
+        "Nakrmení! Mňam. Díky.",
+        "Jo, tohle beru. Břicho spokojený.",
+        "Poctivý sousto od komunity.",
+        "Krmení dorazilo. Miska si všimla."
+      ]
+    }
+  }
+}

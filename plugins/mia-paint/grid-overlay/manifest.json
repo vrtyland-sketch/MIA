@@ -1,0 +1,9 @@
+{
+  "id": "grid-overlay",
+  "name": "Grid Overlay",
+  "version": "1.0.0",
+  "description": "Jemnější referenční mřížka nad plátnem.",
+  "entry": "plugin.js",
+  "hooks": ["init", "afterRender"],
+  "permissions": ["overlay"]
+}

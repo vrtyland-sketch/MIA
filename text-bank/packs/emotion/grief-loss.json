@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "packs": {
+    "sadness_report_mia": {
+      "meta": {
+        "key": "sadness_report_mia",
+        "speaker": "mia",
+        "intent": "sadness_report",
+        "tone": "sensitive"
+      },
+      "variants": [
+        "{name}, mrzí mě, že je ti smutno. Když budeš chtít, napiš mi víc.",
+        "{name}, vnímám tě a beru to vážně. Jestli chceš, zkus říct, co se stalo.",
+        "{name}, to mě mrzí. Nemusíš na to být sama, klidně to rozveď."
+      ]
+    },
+    "sadness_report_kojnozout": {
+      "meta": {
+        "key": "sadness_report_kojnozout",
+        "speaker": "kojnozout",
+        "intent": "sadness_report",
+        "tone": "sensitive"
+      },
+      "variants": [
+        "{name}, vnímám tě. Dneska spíš zůstanu potichu a budu hlídat klid.",
+        "{name}, slyším tě. Teď radši méně hluku a víc klidu.",
+        "{name}, jo. To už není na srandu, tak držím klidnější režim."
+      ]
+    },
+    "loss_report_mia": {
+      "meta": {
+        "key": "loss_report_mia",
+        "speaker": "mia",
+        "intent": "loss_report",
+        "tone": "sensitive"
+      },
+      "variants": [
+        "{name}, to je mi líto. Takové věci bolí a člověk je bohužel nezastaví.",
+        "{name}, to mě mrzí. Upřímnou soustrast, jestli je to čerstvé.",
+        "{name}, tohle je těžká zpráva. Jsem tady a beru to vážně."
+      ]
+    },
+    "loss_report_kojnozout": {
+      "meta": {
+        "key": "loss_report_kojnozout",
+        "speaker": "kojnozout",
+        "intent": "loss_report",
+        "tone": "sensitive"
+      },
+      "variants": [
+        "{name}, to mě mrzí. To už je věc, u které je lepší zůstat chvíli potichu.",
+        "{name}, slyším tě. Tohle není na lehkou odpověď.",
+        "{name}, jo. To je těžká zpráva."
+      ]
+    },
+    "pet_loss_report_mia": {
+      "meta": {
+        "key": "pet_loss_report_mia",
+        "speaker": "mia",
+        "intent": "pet_loss_report",
+        "tone": "sensitive"
+      },
+      "variants": [
+        "{name}, to je mi líto. Když odejde pejsek nebo jiný zvířecí parťák, bolí to skoro jako ztráta člena rodiny. Kolik mu bylo?",
+        "{name}, to mě mrzí. U mazlíčka člověk neztrácí jen zvíře, ale každodenního parťáka. Když budeš chtít, napiš mi, kolik mu bylo.",
+        "{name}, to je mi líto. Jestli se dožil vysokého věku, znamená to, že u tebe měl dobrý a dlouhý život. Klidně mi napiš, kolik mu bylo."
+      ]
+    },
+    "pet_loss_kojnozout": {
+      "meta": {
+        "key": "pet_loss_kojnozout",
+        "speaker": "kojnozout",
+        "intent": "pet_loss_report",
+        "tone": "sensitive"
+      },
+      "variants": [
+        "{name}, to mě mrzí. Když odejde zvířecí parťák, je to cítit hodně.",
+        "{name}, tohle bolí. Dneska budu spíš potichu a jen držet klid.",
+        "{name}, jo. To už je citlivá věc, tak bez fórů."
+      ]
+    }
+  }
+}

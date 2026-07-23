@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "packs": {
+    "support_small_mia": {
+      "meta": {
+        "key": "support_small_mia",
+        "speaker": "mia",
+        "intent": "support"
+      },
+      "variants": [
+        "Děkuju. I malá podpora je vidět.",
+        "Tohle se počítá. Díky moc.",
+        "Díky. Každý takový impuls má váhu.",
+        "Tohle je milé. Děkuju.",
+        "Registruju to. Díky za podporu.",
+        "Díky. I menší krok dělá atmosféru.",
+        "Tohle se neztratí. Děkuju.",
+        "Pěkný. Díky za tenhle signál.",
+        "Mám to. Díky moc.",
+        "Díky. Tohle má smysl."
+      ]
+    },
+    "support_medium_mia": {
+      "meta": {
+        "key": "support_medium_mia",
+        "speaker": "mia",
+        "intent": "support"
+      },
+      "variants": [
+        "Tohle už je krásně cítit. Děkuju.",
+        "Silnější impuls. Díky moc.",
+        "Tohle už má váhu. Děkuju.",
+        "Pěkně. Tohle už se do nálady propíše.",
+        "Díky. To už je znatelná podpora.",
+        "Tohle už komunita ucítí. Díky.",
+        "Výborně. Tohle má sílu.",
+        "Tady už je podpora opravdu vidět.",
+        "Děkuju. Tohle už nese pěknou energii.",
+        "Jo, tohle je hodně slušný."
+      ]
+    },
+    "support_big_mia": {
+      "meta": {
+        "key": "support_big_mia",
+        "speaker": "mia",
+        "intent": "support"
+      },
+      "variants": [
+        "Tohle už je velký zásah do atmosféry. Děkuju.",
+        "Silná podpora. Tohle je opravdu cítit.",
+        "Tohle už je pořádný moment. Díky moc.",
+        "Výborně. Tohle má velkou váhu.",
+        "Tak tohle už je opravdu silná vlna podpory.",
+        "Děkuju. Tohle už mění tempo prostoru.",
+        "Tohle je krásně silný. Díky.",
+        "Pěkně. Tohle už je velký signál.",
+        "Tady už se komunita opřela do podpory naplno.",
+        "Tohle už je síla, která zůstane vidět."
+      ]
+    },
+    "support_small_kojnozout": {
+      "meta": {
+        "key": "support_small_kojnozout",
+        "speaker": "kojnozout",
+        "intent": "support"
+      },
+      "variants": [
+        "Jo, něco přistálo. To beru.",
+        "Miska to ucítila. Díky.",
+        "Hezky. I menší sousto se počítá.",
+        "Tohle mi zlepšilo náladu.",
+        "Jo, registruju krmení. Díky.",
+        "Pěkný. Něco se pohnulo.",
+        "Tohle chutná i v menší dávce.",
+        "Díky. Miska není úplně opuštěná.",
+        "Jo, tohle se hodí.",
+        "Malý, ale poctivý. Beru."
+      ]
+    },
+    "support_medium_kojnozout": {
+      "meta": {
+        "key": "support_medium_kojnozout",
+        "speaker": "kojnozout",
+        "intent": "support"
+      },
+      "variants": [
+        "Tohle už chutná slušně.",
+        "Jo, tohle je pěkný krmení.",
+        "Miska dostala rozumnou porci.",
+        "Tohle už mi zvedlo vousy.",
+        "Pěkně. Tohle má správnou sílu.",
+        "Jo, tohle už je poctivej nášup.",
+        "Tady už se nehladoví úplně potichu.",
+        "Tohle se mi líbí hodně.",
+        "Jo, taková porce už se počítá.",
+        "Tohle je krmení s charakterem."
+      ]
+    },
+    "support_big_kojnozout": {
+      "meta": {
+        "key": "support_big_kojnozout",
+        "speaker": "kojnozout",
+        "intent": "support"
+      },
+      "variants": [
+        "Tohle už je hostina.",
+        "Tak tohle je pořádný nášup.",
+        "Jo, tohle už mi rozsvítilo oči.",
+        "Tohle už je krmení bez kompromisu.",
+        "Pěkně. Tady už se s miskou nemazlí.",
+        "Tohle je velká porce a já to respektuju.",
+        "Jo, tohle je síla, co se dobře kouše.",
+        "Tohle už je brutálně slušný.",
+        "Tak tohle je nádherná hostina.",
+        "Tohle už je nášup, co si pamatuju."
+      ]
+    }
+  }
+}

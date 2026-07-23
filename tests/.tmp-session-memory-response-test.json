@@ -1,0 +1,158 @@
+{
+  "version": 1,
+  "updatedAt": 1782482990074,
+  "recentMessages": [
+    {
+      "at": 1781419069975,
+      "userLabel": "Jana",
+      "userKey": "jana",
+      "message": "mia jak se mas",
+      "intentType": "direct_status_question"
+    },
+    {
+      "at": 1781419069975,
+      "userLabel": "Jana",
+      "userKey": "jana",
+      "message": "cau",
+      "intentType": "greeting"
+    },
+    {
+      "at": 1781418249082,
+      "userLabel": "Jana",
+      "userKey": "jana",
+      "message": "mia jak se mas",
+      "intentType": "direct_status_question"
+    },
+    {
+      "at": 1781418249082,
+      "userLabel": "Jana",
+      "userKey": "jana",
+      "message": "cau",
+      "intentType": "greeting"
+    },
+    {
+      "at": 1781418124379,
+      "userLabel": "Jana",
+      "userKey": "jana",
+      "message": "mia jak se mas",
+      "intentType": "direct_status_question"
+    },
+    {
+      "at": 1781418124379,
+      "userLabel": "Jana",
+      "userKey": "jana",
+      "message": "cau",
+      "intentType": "greeting"
+    },
+    {
+      "at": 1781418087772,
+      "userLabel": "Jana",
+      "userKey": "jana",
+      "message": "mia jak se mas",
+      "intentType": "direct_status_question"
+    },
+    {
+      "at": 1781418087772,
+      "userLabel": "Jana",
+      "userKey": "jana",
+      "message": "cau",
+      "intentType": "greeting"
+    },
+    {
+      "at": 1781416729038,
+      "userLabel": "Jana",
+      "userKey": "jana",
+      "message": "mia jak se mas",
+      "intentType": "direct_status_question"
+    },
+    {
+      "at": 1781416729038,
+      "userLabel": "Jana",
+      "userKey": "jana",
+      "message": "cau",
+      "intentType": "greeting"
+    },
+    {
+      "at": 1781361476527,
+      "userLabel": "Jana",
+      "userKey": "jana",
+      "message": "mia jak se mas",
+      "intentType": "direct_status_question"
+    },
+    {
+      "at": 1781361476527,
+      "userLabel": "Jana",
+      "userKey": "jana",
+      "message": "cau",
+      "intentType": "greeting"
+    }
+  ],
+  "users": {
+    "jana": {
+      "userLabel": "Jana",
+      "visitCount": 12,
+      "lastMessageAt": 1781419069975,
+      "lastIntentType": "direct_status_question",
+      "lastMessage": "mia jak se mas",
+      "lastBotReplyAt": 1782482986086,
+      "lastBotReplySpeaker": "kojnozout",
+      "lastBotReplyText": "Jana, vidim te v chatu."
+    }
+  },
+  "recentBotReplies": [
+    {
+      "at": 1782482986086,
+      "userLabel": "Jana",
+      "userKey": "jana",
+      "speaker": "kojnozout",
+      "text": "Jana, vidim te v chatu.",
+      "source": "voice",
+      "intentType": ""
+    },
+    {
+      "at": 1782482944822,
+      "userLabel": "Jana",
+      "userKey": "jana",
+      "speaker": "kojnozout",
+      "text": "Jana, vidim te v chatu.",
+      "source": "voice",
+      "intentType": ""
+    },
+    {
+      "at": 1782292400149,
+      "userLabel": "Jana",
+      "userKey": "jana",
+      "speaker": "kojnozout",
+      "text": "Jana, vidim te v chatu.",
+      "source": "voice",
+      "intentType": ""
+    },
+    {
+      "at": 1781913017383,
+      "userLabel": "Jana",
+      "userKey": "jana",
+      "speaker": "kojnozout",
+      "text": "Jana, vidim te v chatu.",
+      "source": "voice",
+      "intentType": ""
+    },
+    {
+      "at": 1781852405021,
+      "userLabel": "Jana",
+      "userKey": "jana",
+      "speaker": "kojnozout",
+      "text": "Jana, vidim te v chatu.",
+      "source": "voice",
+      "intentType": ""
+    },
+    {
+      "at": 1781630705197,
+      "userLabel": "Jana",
+      "userKey": "jana",
+      "speaker": "kojnozout",
+      "text": "Jana, vidim te v chatu.",
+      "source": "voice",
+      "intentType": ""
+    }
+  ]
+}

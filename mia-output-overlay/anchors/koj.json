@@ -1,0 +1,39 @@
+{
+  "version": 26,
+  "characterId": "koj",
+  "artId": "koj-purple-tech-v28",
+  "idleAsset": "assets/kojnozrout/moods/kojnozout-idle.png",
+  "note": "v28 OBS-bright whole-sprite — belly HUD; soft neon rim; head clip unused.",
+  "anchors": {
+    "belly": {
+      "cx": 0.5,
+      "cy": 0.575,
+      "w": 0.36,
+      "h": 0.28
+    },
+    "head": {
+      "cx": 0.5,
+      "cy": 0.3,
+      "w": 0.78,
+      "h": 0.44
+    },
+    "neck": {
+      "x": 0.5,
+      "y": 0.48
+    },
+    "root": {
+      "x": 0.5,
+      "y": 1
+    },
+    "body": {
+      "x": 0.5,
+      "y": 0.72
+    },
+    "eye": {
+      "cx": 0.62,
+      "cy": 0.255,
+      "w": 0.14,
+      "h": 0.12
+    }
+  }
+}

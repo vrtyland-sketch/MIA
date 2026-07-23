@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<title>MIA · Roster 4 žroutů</title>
+<style>
+  html, body { margin: 0; background: #07060c; color: #f2ebff; font-family: "Segoe UI", Arial, sans-serif; }
+  h1 { text-align: center; margin: 16px; font-size: 22px; }
+  p { text-align: center; color: #b9a8c9; font-size: 13px; margin: 0 0 16px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; padding: 0 16px 24px; max-width: 1200px; margin: 0 auto; }
+  .card { border-radius: 16px; overflow: hidden; border: 2px solid rgba(255,255,255,.1); background: #120e1a; }
+  .card img { width: 100%; aspect-ratio: 1; object-fit: contain; background: #000; display: block; }
+  .meta { padding: 12px; border-top: 3px solid var(--accent, #8b5cf6); }
+  .name { font-size: 16px; font-weight: 900; }
+  .title { font-size: 12px; color: #cbbfe0; margin-top: 4px; }
+  .traits { font-size: 11px; color: #9a8fb0; margin-top: 8px; line-height: 1.45; }
+  .tok { --accent: #00f2ea; }
+  .kick { --accent: #53fc18; }
+  .bits { --accent: #9146ff; }
+  .kiss { --accent: #e6007e; }
+</style>
+</head>
+<body>
+<h1>4 coin-žrouti — platformní roster</h1>
+<p>Tokžrout · Stackžrout · Bitsžrout · Kisstube — každý unikátní master</p>
+<div class="grid" id="grid"></div>
+<script>
+const API = location.origin.startsWith("http") ? location.origin : "http://127.0.0.1:3000";
+const ROSTER = [
+  { id: "tiktok", cls: "tok", name: "Tokžrout", title: "Žrout clipů a coinů", accent: "#00f2ea",
+    traits: "Cyan + pink skvrny · rohy · neon TikTok coin", preview: "/assets/kojnozrout/roster/tokzrout-preview.png" },
+  { id: "kick", cls: "kick", name: "Stackžrout", title: "Žrout stacků", accent: "#53fc18",
+    traits: "Acid zelený · svislé oči · stack pláty · K coin", preview: "/assets/kojnozrout/roster/stackzrout-preview.png" },
+  { id: "twitch", cls: "bits", name: "Bitsžrout", title: "Žrout bitů a vazby", accent: "#9146ff",
+    traits: "Fialový · křídla · srdce na bříšku · bit gem coin", preview: "/assets/kojnozrout/roster/bitszrout-preview.png" },
+  { id: "youtube", cls: "kiss", name: "Kisstube", title: "Žrout éteru a coinů", accent: "#e6007e",
+    traits: "Hot pink · radio anténa · kiss mark · hvězda coin", preview: "/assets/kojnozrout/roster/kisstube-preview.png" }
+];
+document.getElementById("grid").innerHTML = ROSTER.map((r) => `
+  <div class="card ${r.cls}" style="--accent:${r.accent}">
+    <img src="${API}${r.preview}?v=7" alt="${r.name}" loading="lazy" />
+    <div class="meta">
+      <div class="name">${r.name}</div>
+      <div class="title">${r.title} · ${r.id}</div>
+      <div class="traits">${r.traits}</div>
+    </div>
+  </div>`).join("");
+</script>
+</body>
+</html>

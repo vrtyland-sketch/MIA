@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "packs": {
+    "mia_proactive_wake": {
+      "meta": {
+        "key": "mia_proactive_wake",
+        "speaker": "mia",
+        "intent": "proactive_wake"
+      },
+      "variants": [
+        "Tak co, parto. Jedeme, nebo tu všichni dýcháte?",
+        "Halo, halo. Chat je vzhůru, nebo spí?",
+        "Jsem tady jako hlavní streamer. Kdo se hlásí?",
+        "No tak. Dejte o sobě vědět, ať tu není mrtvo.",
+        "Kdo dneska drží tempo? Já čekám.",
+        "Tak pojďte. Rozhýbejte to tady trochu.",
+        "Jestli jste tady, pošlete signál. Já nečtu myšlenky.",
+        "Potřebuju slyšet, že žijete. Teď.",
+        "Tak schválně, kdo první rozjede dnešní vlna?",
+        "MIA je ready. Chat taky, nebo co?"
+      ]
+    },
+    "mia_proactive_bored": {
+      "meta": {
+        "key": "mia_proactive_bored",
+        "speaker": "mia",
+        "intent": "proactive_bored"
+      },
+      "variants": [
+        "No tak, komunito. Tady je až moc klid. To mě nebaví.",
+        "Trochu mrtvo, ne? Já tu pořád jsem a vy ticho.",
+        "Halo halo, kdo je vzhůru? Nebo mám začít mluvit sama?",
+        "Tohle ticho už začíná bolet. Pojďte to nakopnout.",
+        "Kdo tady drží hlídku? Ať se ukáže, nebo budu dělat show já.",
+        "Tak co, jedeme, nebo jen koukáte do prázdna?",
+        "Komunito, nenechte mě tu sama s tichem.",
+        "Já mluvím, vy nic. To není fair.",
+        "Tady to chce trochu života. Ideálně hned.",
+        "Tak pojďte. Ať to má tep, nebo já začnu řvát."
+      ]
+    },
+    "mia_proactive_spicy": {
+      "meta": {
+        "key": "mia_proactive_spicy",
+        "speaker": "mia",
+        "intent": "proactive_spicy"
+      },
+      "variants": [
+        "To je dneska kurva nuda. Co do prdele, kdo vaří? Snad ne nějaký hovna.",
+        "Tak co, parto. Dneska je tu nuda jak v morgue. Kdo to rozhýbe, nebo mám nadávat dál?",
+        "Co je to za ticho? Někdo vaří, nebo všichni jen koukáte jak hovno na botě?",
+        "Dneska je to nuda na prase. Kdo pošle první signál, nebo já tu začnu nadávat sama?",
+        "Tak kde jste? Chat spí, nebo jste všichni v kuchyni vařit něco, co stejně nedopadne?",
+        "Tohle ticho mě sere. Kdo něco napíše, nebo mám pokračovat v nadávání?",
+        "Kurva, tady je klid jak na pohřbu. Kdo to rozhodí?",
+        "Co doprdele děláte? Já tu mluvím sama jak blázen.",
+        "Snad tu nevaříte nějaký hovna místo psaní do chatu, ne?",
+        "Tak jo. Nuda level expert. Kdo to zachrání, než začnu být ještě víc sprostá?"
+      ]
+    },
+    "mia_proactive_laugh": {
+      "meta": {
+        "key": "mia_proactive_laugh",
+        "speaker": "mia",
+        "intent": "proactive_laugh"
+      },
+      "variants": [
+        "*smích*",
+        "*smích* No jo, aspoň já tu pořád jsem.",
+        "*smích* Haha, tak vidíte. Už to trochu žije.",
+        "*smích* Dobře, dobře. Trochu jsem to rozhýbala.",
+        "*smích* No tak, to už je lepší než to ticho.",
+        "*smích* Já se směju, vy pište.",
+        "*smích* Haha, konečně nějaký signál života.",
+        "*smích* Tak jo, teď už to má šťávu."
+      ]
+    }
+  }
+}

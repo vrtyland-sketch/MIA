@@ -1,0 +1,14 @@
+{
+  "name": "mia-paint-tauri",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MIA Paint — Tauri 2 native shell (Windows Ink, native dialogs)",
+  "scripts": {
+    "tauri": "tauri",
+    "dev": "tauri dev",
+    "build": "tauri build"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.2.0"
+  }
+}

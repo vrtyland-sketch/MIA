@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kojnožrout — galerie grafiky</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, "Segoe UI", sans-serif; background:#0d0f16; color:#e8ecf5; }
+  header { position:sticky; top:0; z-index:5; background:linear-gradient(180deg,#141a2b,#0d0f16); padding:18px 22px; border-bottom:1px solid #232a3d; }
+  header h1 { margin:0 0 4px; font-size:22px; }
+  header .meta { color:#8b94ad; font-size:13px; }
+  header .badge { display:inline-block; background:#1d2740; color:#7fb0ff; border-radius:20px; padding:2px 10px; margin-right:6px; font-size:12px; }
+  main { padding:18px 22px 60px; max-width:1280px; margin:0 auto; }
+  .group { margin:26px 0; }
+  .group h2 { font-size:18px; margin:0 0 4px; }
+  .group h3 { font-size:15px; margin:0 0 8px; color:#b9c2db; }
+  .gdesc { color:#8b94ad; font-size:13px; margin:0 0 12px; max-width:780px; line-height:1.5; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(132px,1fr)); gap:12px; }
+  .card { margin:0; background:#161b29; border:1px solid #232a3d; border-radius:12px; padding:8px; text-align:center; transition:transform .12s, border-color .12s; }
+  .card:hover { transform:translateY(-3px); border-color:#3a4a72; }
+  .card img { width:100%; height:120px; object-fit:contain; image-rendering:auto; background:radial-gradient(circle at 50% 40%, #1d2336, #11141f); border-radius:8px; }
+  .card .noimg { height:120px; display:flex; align-items:center; justify-content:center; color:#ff7a90; font-size:12px; background:#241420; border-radius:8px; }
+  .card.missing { border-color:#5a2030; }
+  figcaption { margin-top:6px; font-size:12px; line-height:1.35; }
+  figcaption b { color:#fff; word-break:break-word; }
+  figcaption .when { display:block; color:#8b94ad; margin-top:2px; font-size:11px; }
+  .ambient .grid { grid-template-columns:repeat(auto-fill,minmax(108px,1fr)); }
+  .ambient .card img { height:96px; }
+  .section-divider { margin:40px 0 10px; padding-top:18px; border-top:1px solid #232a3d; color:#7fb0ff; font-size:14px; letter-spacing:.5px; text-transform:uppercase; }
+  .orphan .card { border-color:#4a4320; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🐾 Kojnožrout — galerie grafiky</h1>
+  <div class="meta">
+    <span class="badge">103 PNG</span>
+    <span class="badge">5 bez zařazení</span>
+    generováno 2026-06-27T21:20:07.147Z · zdroj: MIA_KOJNOZROUT_DISPLAY.js
+  </div>
+</header>
+<main>
+  <div class="section-divider">Spouštěče podle situace</div>
+  
+    <section class="group">
+      <h2>🩺 Vitální stavy (mají přednost)</h2>
+      <p class="gdesc">Vychází z mood/affliction/vitals. Přebijí vše ostatní — když je Koj nemocný nebo spí, ambient se nehraje.</p>
+      <div class="grid"><figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-sleepy.png" alt="sleepy"><figcaption><b>sleepy</b><span class="when">spí (sleepDepth ≥ 55 nebo isSleeping)</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-sick.png" alt="sick"><figcaption><b>sick</b><span class="when">nemoc (affliction/need/mood = sick)</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-sad.png" alt="sad"><figcaption><b>sad</b><span class="when">smutek (zanedbání)</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-stressed.png" alt="stressed"><figcaption><b>stressed</b><span class="when">stres</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-annoyed.png" alt="annoyed"><figcaption><b>annoyed</b><span class="when">naštvání</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-hungry.png" alt="hungry"><figcaption><b>hungry</b><span class="when">hlad (hunger ≥ 52)</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-full.png" alt="full"><figcaption><b>full</b><span class="when">miska ≥ 95 %</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-calm-deep.png" alt="calm-deep"><figcaption><b>calm-deep</b><span class="when">usíná u videa (sleepDepth 35–55)</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-cozy-blanket.png" alt="cozy-blanket"><figcaption><b>cozy-blanket</b><span class="when">klimbá u videa (sleepDepth 20–35)</span></figcaption></figure></div>
+    </section>
+    <section class="group">
+      <h2>🍽️ Krmení (9 s puls po nakrmení)</h2>
+      <p class="gdesc">Po nakrmení rotuje 16 variant eating-01…16 podle pořadí krmení.</p>
+      <div class="grid"><figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-eating.png" alt="eating"><figcaption><b>eating</b><span class="when">základ</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-eating-01.png" alt="eating-01"><figcaption><b>eating-01</b><span class="when">varianta 1</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-eating-02.png" alt="eating-02"><figcaption><b>eating-02</b><span class="when">varianta 2</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-eating-03.png" alt="eating-03"><figcaption><b>eating-03</b><span class="when">varianta 3</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-eating-04.png" alt="eating-04"><figcaption><b>eating-04</b><span class="when">varianta 4</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-eating-05.png" alt="eating-05"><figcaption><b>eating-05</b><span class="when">varianta 5</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-eating-06.png" alt="eating-06"><figcaption><b>eating-06</b><span class="when">varianta 6</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-eating-07.png" alt="eating-07"><figcaption><b>eating-07</b><span class="when">varianta 7</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-eating-08.png" alt="eating-08"><figcaption><b>eating-08</b><span class="when">varianta 8</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-eating-09.png" alt="eating-09"><figcaption><b>eating-09</b><span class="when">varianta 9</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-eating-10.png" alt="eating-10"><figcaption><b>eating-10</b><span class="when">varianta 10</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-eating-11.png" alt="eating-11"><figcaption><b>eating-11</b><span class="when">varianta 11</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-eating-12.png" alt="eating-12"><figcaption><b>eating-12</b><span class="when">varianta 12</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-eating-13.png" alt="eating-13"><figcaption><b>eating-13</b><span class="when">varianta 13</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-eating-14.png" alt="eating-14"><figcaption><b>eating-14</b><span class="when">varianta 14</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-eating-15.png" alt="eating-15"><figcaption><b>eating-15</b><span class="when">varianta 15</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-eating-16.png" alt="eating-16"><figcaption><b>eating-16</b><span class="when">varianta 16</span></figcaption></figure></div>
+    </section>
+    <section class="group">
+      <h2>⚡ Overlay momenty (krátké pulzy)</h2>
+      <p class="gdesc">Spouští je dění na streamu — combo, duel, flyby, story, gift, spam vlna.</p>
+      <div class="grid"><figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-combo-fire.png" alt="combo-fire"><figcaption><b>combo-fire</b><span class="when">combo overlay aktivní</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-duel-ready.png" alt="duel-ready"><figcaption><b>duel-ready</b><span class="when">duel běží</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-duel-win.png" alt="duel-win"><figcaption><b>duel-win</b><span class="when">duel vyhrán</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-duel-lose.png" alt="duel-lose"><figcaption><b>duel-lose</b><span class="when">duel prohrán</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-flyby-fast.png" alt="flyby-fast"><figcaption><b>flyby-fast</b><span class="when">T0 flyby pozdrav</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-story-read.png" alt="story-read"><figcaption><b>story-read</b><span class="when">story video</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-gift-open.png" alt="gift-open"><figcaption><b>gift-open</b><span class="when">gift visual</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-cheer-loud.png" alt="cheer-loud"><figcaption><b>cheer-loud</b><span class="when">spam/dárková vlna</span></figcaption></figure></div>
+    </section>
+    <section class="group">
+      <h2>🎬 Reakce na chování (kontextové pulzy)</h2>
+      <p class="gdesc">Krátká reakce na konkrétní událost (krmení, péče, quest, chat, evoluce).</p>
+      <div class="grid"><figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-celebrate.png" alt="celebrate"><figcaption><b>celebrate</b><span class="when">plná miska (FULL_BOWL_TRIGGER, 6,5 s)</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-party-pop.png" alt="party-pop"><figcaption><b>party-pop</b><span class="when">quest splněn / stuffed oslava</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-thanks-bow.png" alt="thanks-bow"><figcaption><b>thanks-bow</b><span class="when">reakce na péči/krmení (3,5 s)</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-react-gift.png" alt="react-gift"><figcaption><b>react-gift</b><span class="when">support/big feed (4,5 s)</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-hop.png" alt="hop"><figcaption><b>hop</b><span class="when">chůze (walking)</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-wave-left.png" alt="wave-left"><figcaption><b>wave-left</b><span class="when">hra s chatem — sudý tik (3,2 s)</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-wave-right.png" alt="wave-right"><figcaption><b>wave-right</b><span class="when">hra s chatem — lichý tik</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-proud-stand.png" alt="proud-stand"><figcaption><b>proud-stand</b><span class="when">evoluční moment</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-play.png" alt="play"><figcaption><b>play</b><span class="when">smích / hra s chatem</span></figcaption></figure></div>
+    </section>
+    <section class="group">
+      <h2>📺 Reakce na gift video (fáze podle délky)</h2>
+      <p class="gdesc">Když hraje gift video, Koj prochází fázemi. Délka fází závisí na tieru (T1 nejdéle, T5 nejrychleji).</p>
+      <div class="grid"><figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-react-video.png" alt="react-video"><figcaption><b>react-video</b><span class="when">watch (0–2,5 s)</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-groove.png" alt="groove"><figcaption><b>groove</b><span class="when">groove (2,5 s+)</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-dance.png" alt="dance"><figcaption><b>dance</b><span class="when">dance fáze (dle tieru)</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-hype-jump.png" alt="hype-jump"><figcaption><b>hype-jump</b><span class="when">hype fáze (vrchol)</span></figcaption></figure></div>
+    </section>
+    <section class="group">
+      <h2>🥚 Evoluce (vajíčko / líhnutí)</h2>
+      <p class="gdesc">Když je Koj ve fázi egg/hatch, používá vlastní malý pool.</p>
+      <div class="grid"><figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-egg-rest.png" alt="egg-rest"><figcaption><b>egg-rest</b><span class="when">vajíčko v klidu</span></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-hatch-wiggle.png" alt="hatch-wiggle"><figcaption><b>hatch-wiggle</b><span class="when">líhnutí</span></figcaption></figure></div>
+    </section>
+  
+    <section class="group orphan">
+      <h2>❓ PNG bez zařazení (5)</h2>
+      <p class="gdesc">Existují jako soubor, ale logika je přímo nevolá (rezerva / k zapojení).</p>
+      <div class="grid"><figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-duel.png" alt="duel"><figcaption><b>duel</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-feeding.png" alt="feeding"><figcaption><b>feeding</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-gift.png" alt="gift"><figcaption><b>gift</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-thanks.png" alt="thanks"><figcaption><b>thanks</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-watch.png" alt="watch"><figcaption><b>watch</b></figcaption></figure></div>
+    </section>
+  <div class="section-divider">Ambientní rotace (idle pohyb, když se nic neděje)</div>
+  
+      <section class="group ambient">
+        <h3>idle „idle" → rotace po 7,2 s</h3>
+        <div class="grid"><figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-idle.png" alt="idle"><figcaption><b>idle</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-curious.png" alt="curious"><figcaption><b>curious</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-peek.png" alt="peek"><figcaption><b>peek</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-thinking.png" alt="thinking"><figcaption><b>thinking</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-perch.png" alt="perch"><figcaption><b>perch</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-quest-focus.png" alt="quest-focus"><figcaption><b>quest-focus</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-lean-left.png" alt="lean-left"><figcaption><b>lean-left</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-lean-right.png" alt="lean-right"><figcaption><b>lean-right</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-flyby.png" alt="flyby"><figcaption><b>flyby</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-story.png" alt="story"><figcaption><b>story</b></figcaption></figure></div>
+      </section>
+      <section class="group ambient">
+        <h3>idle „warm" → rotace po 7,2 s</h3>
+        <div class="grid"><figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-warm.png" alt="warm"><figcaption><b>warm</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-calm.png" alt="calm"><figcaption><b>calm</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-cozy-blanket.png" alt="cozy-blanket"><figcaption><b>cozy-blanket</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-sit.png" alt="sit"><figcaption><b>sit</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-react-chat.png" alt="react-chat"><figcaption><b>react-chat</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-bond-warm.png" alt="bond-warm"><figcaption><b>bond-warm</b></figcaption></figure></div>
+      </section>
+      <section class="group ambient">
+        <h3>idle „happy" → rotace po 7,2 s</h3>
+        <div class="grid"><figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-happy.png" alt="happy"><figcaption><b>happy</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-play.png" alt="play"><figcaption><b>play</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-wave.png" alt="wave"><figcaption><b>wave</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-wink.png" alt="wink"><figcaption><b>wink</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-love.png" alt="love"><figcaption><b>love</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-bond-warm.png" alt="bond-warm"><figcaption><b>bond-warm</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-cheer-soft.png" alt="cheer-soft"><figcaption><b>cheer-soft</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-love-hug.png" alt="love-hug"><figcaption><b>love-hug</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-gift-hold.png" alt="gift-hold"><figcaption><b>gift-hold</b></figcaption></figure></div>
+      </section>
+      <section class="group ambient">
+        <h3>idle „excited" → rotace po 7,2 s</h3>
+        <div class="grid"><figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-excited.png" alt="excited"><figcaption><b>excited</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-bounce.png" alt="bounce"><figcaption><b>bounce</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-hop.png" alt="hop"><figcaption><b>hop</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-cheer.png" alt="cheer"><figcaption><b>cheer</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-hype.png" alt="hype"><figcaption><b>hype</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-surprised-pop.png" alt="surprised-pop"><figcaption><b>surprised-pop</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-surprised.png" alt="surprised"><figcaption><b>surprised</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-party.png" alt="party"><figcaption><b>party</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-combo.png" alt="combo"><figcaption><b>combo</b></figcaption></figure></div>
+      </section>
+      <section class="group ambient">
+        <h3>idle „hungry" → rotace po 7,2 s</h3>
+        <div class="grid"><figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-hungry.png" alt="hungry"><figcaption><b>hungry</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-alert.png" alt="alert"><figcaption><b>alert</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-munch.png" alt="munch"><figcaption><b>munch</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-snack.png" alt="snack"><figcaption><b>snack</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-sip.png" alt="sip"><figcaption><b>sip</b></figcaption></figure></div>
+      </section>
+      <section class="group ambient">
+        <h3>idle „full" → rotace po 7,2 s</h3>
+        <div class="grid"><figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-full.png" alt="full"><figcaption><b>full</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-proud.png" alt="proud"><figcaption><b>proud</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-stretch.png" alt="stretch"><figcaption><b>stretch</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-proud-stand.png" alt="proud-stand"><figcaption><b>proud-stand</b></figcaption></figure></div>
+      </section>
+      <section class="group ambient">
+        <h3>idle „sleepy" → rotace po 7,2 s</h3>
+        <div class="grid"><figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-sleepy.png" alt="sleepy"><figcaption><b>sleepy</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-rest.png" alt="rest"><figcaption><b>rest</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-curl.png" alt="curl"><figcaption><b>curl</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-yawn.png" alt="yawn"><figcaption><b>yawn</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-cozy.png" alt="cozy"><figcaption><b>cozy</b></figcaption></figure></div>
+      </section>
+      <section class="group ambient">
+        <h3>idle „sick" → rotace po 7,2 s</h3>
+        <div class="grid"><figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-sick.png" alt="sick"><figcaption><b>sick</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-heal-glow.png" alt="heal-glow"><figcaption><b>heal-glow</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-comfort.png" alt="comfort"><figcaption><b>comfort</b></figcaption></figure></div>
+      </section>
+      <section class="group ambient">
+        <h3>idle „sad" → rotace po 7,2 s</h3>
+        <div class="grid"><figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-sad.png" alt="sad"><figcaption><b>sad</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-neglect-droop.png" alt="neglect-droop"><figcaption><b>neglect-droop</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-comfort.png" alt="comfort"><figcaption><b>comfort</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-shy-hide.png" alt="shy-hide"><figcaption><b>shy-hide</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-shy.png" alt="shy"><figcaption><b>shy</b></figcaption></figure></div>
+      </section>
+      <section class="group ambient">
+        <h3>idle „annoyed" → rotace po 7,2 s</h3>
+        <div class="grid"><figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-annoyed.png" alt="annoyed"><figcaption><b>annoyed</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-guard.png" alt="guard"><figcaption><b>guard</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-chaos-spin.png" alt="chaos-spin"><figcaption><b>chaos-spin</b></figcaption></figure></div>
+      </section>
+      <section class="group ambient">
+        <h3>idle „laugh" → rotace po 7,2 s</h3>
+        <div class="grid"><figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-laugh.png" alt="laugh"><figcaption><b>laugh</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-cheer-loud.png" alt="cheer-loud"><figcaption><b>cheer-loud</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-party-pop.png" alt="party-pop"><figcaption><b>party-pop</b></figcaption></figure></div>
+      </section>
+      <section class="group ambient">
+        <h3>idle „stressed" → rotace po 7,2 s</h3>
+        <div class="grid"><figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-stressed.png" alt="stressed"><figcaption><b>stressed</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-thinking-hmm.png" alt="thinking-hmm"><figcaption><b>thinking-hmm</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-alert.png" alt="alert"><figcaption><b>alert</b></figcaption></figure></div>
+      </section>
+      <section class="group ambient">
+        <h3>idle „celebrate" → rotace po 7,2 s</h3>
+        <div class="grid"><figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-celebrate.png" alt="celebrate"><figcaption><b>celebrate</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-party-pop.png" alt="party-pop"><figcaption><b>party-pop</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-cheer-loud.png" alt="cheer-loud"><figcaption><b>cheer-loud</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-proud-stand.png" alt="proud-stand"><figcaption><b>proud-stand</b></figcaption></figure>
+<figure class="card"><img loading="lazy" src="/assets/kojnozrout/moods/kojnozout-party.png" alt="party"><figcaption><b>party</b></figcaption></figure></div>
+      </section>
+</main>
+</body>
+</html>

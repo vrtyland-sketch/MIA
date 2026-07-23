@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<title>MIA Startup</title>
+<style>
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: linear-gradient(145deg, #060b14 0%, #0f1a2e 45%, #091018 100%);
+  color: #eef4ff;
+}
+.wrap {
+  padding: 48px 56px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+h1 { margin: 0; font-size: 42px; font-weight: 800; }
+.sub { margin-top: 8px; font-size: 18px; color: #9eb4d9; }
+.hero {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 28px;
+  flex: 1;
+  min-height: 0;
+}
+.scoreCard {
+  border-radius: 24px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.1);
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.score {
+  font-size: 120px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+.score span { font-size: 48px; color: #9eb4d9; }
+.streamBadge {
+  margin-top: 24px;
+  padding: 14px 28px;
+  border-radius: 999px;
+  font-size: 22px;
+  font-weight: 800;
+}
+.streamBadge.ready {
+  background: rgba(0,180,95,.22);
+  color: #6dffb0;
+  border: 2px solid rgba(109,255,176,.45);
+}
+.streamBadge.notready {
+  background: rgba(255,193,7,.12);
+  color: #ffd978;
+  border: 2px solid rgba(255,193,7,.35);
+}
+.online {
+  margin-top: 18px;
+  font-size: 16px;
+  color: #7f93b8;
+}
+.panel {
+  border-radius: 24px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.panel h2 {
+  margin: 0;
+  padding: 20px 24px 12px;
+  font-size: 14px;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  color: #9eb4d9;
+}
+.scroll {
+  overflow: auto;
+  padding: 0 18px 18px;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  align-content: start;
+}
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(0,0,0,.18);
+}
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+.dot.ok { background: #22c55e; box-shadow: 0 0 10px rgba(34,197,94,.55); }
+.dot.fail { background: #ef4444; box-shadow: 0 0 10px rgba(239,68,68,.55); }
+.label { font-size: 17px; font-weight: 700; }
+.detail { font-size: 13px; color: #9eb4d9; margin-top: 3px; }
+footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  color: #7f93b8;
+}
+.warn {
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(255,193,7,.08);
+  border: 1px solid rgba(255,193,7,.25);
+  color: #ffd978;
+  font-size: 15px;
+}
+.fade { animation: fadeOut 1.2s ease forwards; }
+@keyframes fadeOut { to { opacity: 0; } }
+</style>
+</head>
+<body>
+<div class="wrap" id="root">
+  <header>
+    <div>
+      <h1>MIA · Stav po startu</h1>
+      <div class="sub" id="ts">Načítám…</div>
+    </div>
+  </header>
+  <div class="warn" id="warn" style="display:none"></div>
+  <div class="hero">
+    <section class="scoreCard">
+      <div class="score" id="score">—<span>%</span></div>
+      <div class="streamBadge notready" id="streamBadge">Kontroluji…</div>
+      <div class="online" id="online">MIA online</div>
+    </section>
+    <section class="panel">
+      <h2>Připravenost systému</h2>
+      <div class="scroll" id="checksGrid"></div>
+    </section>
+  </div>
+  <footer>
+    <span id="media">Media: —</span>
+    <span id="countdown">—</span>
+  </footer>
+</div>
+<script>
+const API = (window.location.origin && window.location.protocol.startsWith("http"))
+  ? window.location.origin
+  : "http://127.0.0.1:3000";
+
+const checksGrid = document.getElementById("checksGrid");
+const score = document.getElementById("score");
+const streamBadge = document.getElementById("streamBadge");
+const online = document.getElementById("online");
+const ts = document.getElementById("ts");
+const warn = document.getElementById("warn");
+const media = document.getElementById("media");
+const countdown = document.getElementById("countdown");
+
+const pageStartAt = Date.now();
+let readyAt = 0;
+let lastData = null;
+let faded = false;
+
+function renderChecks(items) {
+  checksGrid.innerHTML = "";
+  if (!items.length) {
+    checksGrid.innerHTML = '<div class="item"><div class="dot ok"></div><div><div class="label">Načítám…</div></div></div>';
+    return;
+  }
+  for (const c of items) {
+    const el = document.createElement("div");
+    el.className = "item";
+    el.innerHTML = `
+      <div class="dot ${c.ok ? "ok" : "fail"}"></div>
+      <div>
+        <div class="label">${c.label}</div>
+        <div class="detail">${c.detail || (c.ok ? "OK" : "CHYBA")}</div>
+      </div>`;
+    checksGrid.appendChild(el);
+  }
+}
+
+function scoreClass(percent) {
+  if (percent >= 85) return "#6dffb0";
+  if (percent >= 60) return "#ffd978";
+  return "#ff8e8e";
+}
+
+function render(data) {
+  lastData = data;
+  const percent = Number(data.readinessPercent ?? data.summary?.readinessPercent ?? 0);
+  score.innerHTML = `${percent}<span>%</span>`;
+  score.style.color = scoreClass(percent);
+
+  const ready = data.streamReady === true;
+  streamBadge.textContent = data.streamReadyLabel || (ready ? "Připravena streamovat" : "Ještě ne připravena");
+  streamBadge.className = "streamBadge " + (ready ? "ready" : "notready");
+  online.textContent = data.online === false ? "MIA offline" : "MIA online";
+
+  renderChecks(data.checks || []);
+  ts.textContent = new Date(data.generatedAt || Date.now()).toLocaleString("cs-CZ");
+
+  if (data.warnings && data.warnings.length) {
+    warn.style.display = "block";
+    warn.textContent = data.warnings.join(" · ");
+  } else {
+    warn.style.display = "none";
+  }
+
+  if (data.media) {
+    media.textContent = `Media: ${data.media.totalPhotos} fotek · ${data.media.totalVideos} videí · ${data.media.obsAssigned}/31 OBS`;
+  }
+
+  if (!readyAt && data.phase === "done") readyAt = Date.now();
+  maybeFade(data);
+}
+
+function maybeFade(data) {
+  if (faded) return;
+  if (!readyAt) return;
+  const postMs = 30000;
+  const maxMs = data.slideDurationMs || 120000;
+  const endAt = Math.max(pageStartAt + maxMs, readyAt + postMs);
+  const leftSec = Math.ceil((endAt - Date.now()) / 1000);
+  countdown.textContent = leftSec > 0 ? `Slide zmizí za ${leftSec} s` : "Hotovo";
+  if (Date.now() >= endAt) {
+    faded = true;
+    document.getElementById("root").classList.add("fade");
+  }
+}
+
+async function load() {
+  try {
+    const res = await fetch(`${API}/startup/check?_=${Date.now()}`, { cache: "no-store" });
+    const data = await res.json();
+    render(data);
+  } catch (e) {
+    score.innerHTML = "0<span>%</span>";
+    score.style.color = "#ff8e8e";
+    streamBadge.textContent = "MIA offline";
+    streamBadge.className = "streamBadge notready";
+    online.textContent = "Server neběží";
+    ts.textContent = String(e);
+    countdown.textContent = "npm run restart";
+  }
+}
+
+load();
+setInterval(load, 2000);
+setInterval(() => { if (lastData) maybeFade(lastData); }, 1000);
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0",
+  "note": "Tier drives video selection; per-tier rotation stays in MIA_VIDEO_ENGINE.",
+  "byTier": {
+    "T0": { "pool": "T1", "maxMs": 3000 },
+    "T1": { "pool": "T1", "maxMs": 5000 },
+    "T2": { "pool": "T2", "maxMs": 7000 },
+    "T3": { "pool": "T3", "maxMs": 9000 },
+    "T4": { "pool": "T4", "maxMs": 12000 },
+    "T5": { "pool": "T5", "maxMs": 14000 },
+    "T6": { "pool": "T6", "maxMs": 18000 }
+  },
+  "byFamily": {
+    "flower": { "preferKeys": ["rose", "flower", "kytice"] },
+    "animal": { "preferKeys": ["lion", "animal", "pet"] },
+    "food": { "preferKeys": ["donut", "food", "feast"] },
+    "love": { "preferKeys": ["heart", "love"] },
+    "legendary": { "preferKeys": ["galaxy", "legend", "epic"] },
+    "generic": { "preferKeys": [] }
+  }
+}

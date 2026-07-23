@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "packs": {
+    "direct_mia": {
+      "meta": {
+        "speaker": "mia",
+        "intent": "direct_fallback",
+        "legacy": true,
+        "tags": ["legacy", "expansion"]
+      },
+      "variants": [
+        "Ahoj, jsem tady. Co se děje?",
+        "Čau, vidím tě. Klidně piš dál.",
+        "Jo, slyším tě. Co řešíme?",
+        "Nazdar. Jsem připojená a dávám pozor.",
+        "Jsem online. Můžeš pokračovat.",
+        "Vidím tě v chatu. Registruju tě.",
+        "Jsem tu. Co dneska letí?",
+        "Dávám pozor. Co máš pro mě?",
+        "Jsem připravená reagovat.",
+        "Ahoj, vnímám tě naplno."
+      ]
+    },
+    "direct_kojnozout": {
+      "meta": {
+        "speaker": "kojnozout",
+        "intent": "direct_fallback",
+        "legacy": true,
+        "tags": ["legacy", "expansion"]
+      },
+      "variants": [
+        "Jo jo, slyším tě. A slyším i prázdnou misku.",
+        "Nazdar. Máš pro mě něco dobrého?",
+        "Jsem tady. A trochu bych i papal.",
+        "Kojnožrout hlásí službu. Co se děje?",
+        "Vidím tě. A jo, pořád mám hlad.",
+        "Co je? Já tu jsem a číhám.",
+        "Jsem tady. Miska taky.",
+        "Tak povídej. Já si tě očuchám po svém.",
+        "Slyším tě. Miska je pořád důležitá.",
+        "Já tu jsem. Hlad taky."
+      ]
+    },
+    "community_ping_mia": {
+      "meta": {
+        "speaker": "mia",
+        "intent": "community",
+        "tags": ["community", "expansion"]
+      },
+      "variants": [
+        "Komunita se hýbe. To mám ráda.",
+        "Chat se probouzí. Pokračujte.",
+        "Tady už to začíná mít tep.",
+        "Tohle tempo se mi líbí.",
+        "Jo. Tohle už je slušný pohyb.",
+        "Komunita je vzhůru. A to je dobře.",
+        "Tohle už není ticho. Tohle je rytmus.",
+        "Když se komunita rozhýbe, je to hned znát.",
+        "Tenhle prostor má náladu. To beru.",
+        "Chat drží proud. Jen tak dál."
+      ]
+    },
+    "wake_up_chat_mia": {
+      "meta": {
+        "speaker": "mia",
+        "intent": "wake_up",
+        "tags": ["wake", "expansion"]
+      },
+      "variants": [
+        "Tak co, parto. Jedeme nebo spíme?",
+        "Halo, halo. Chat je vzhůru?",
+        "Kdo se hlásí o slovo?",
+        "Tak pojďte. Rozhýbejte to tady.",
+        "Jsem ready. Chat taky?",
+        "Kdo rozjede dnešní vlnu?",
+        "Tak schválně, kdo první hodí signál?",
+        "Potřebuju slyšet, že žijete.",
+        "Pojďme ten prostor znovu nahodit.",
+        "Kdo dneska drží tempo?"
+      ]
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0",
+  "awayScene": "SPINAK_NEJSEM_TU",
+  "mainScene": "SPINAK_ENGINE_GIFTS",
+  "obsSceneSwitchEnv": "MIA_AWAY_OBS_SCENE_SWITCH",
+  "ninjaEmbedEnv": "MIA_OBS_NINJA_URL",
+  "hostOverlay": {
+    "holdVisibleWhileAway": true,
+    "showNinjaWhenUrlSet": true,
+    "showCapybaraPrompt": true
+  },
+  "awayLoop": {
+    "inputName": "MIA_AWAY_LOOP",
+    "legacyInputNames": ["nejsem tu smyčka"],
+    "browserFile": "away-loop-overlay.html",
+    "videoRelPath": "incoming-images/videos/away/nejsem_tu_loop.mp4",
+    "mode": "auto",
+    "looping": true,
+    "width": 1920,
+    "height": 1080
+  }
+}

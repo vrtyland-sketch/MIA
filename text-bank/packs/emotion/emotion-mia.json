@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "packs": {
+    "emotion_stress_mia_health": {
+      "meta": {
+        "key": "emotion_stress_mia_health",
+        "speaker": "mia",
+        "intent": "stress_report",
+        "domain": "health"
+      },
+      "variants": [
+        "{name}, to zní jako velký tlak, zvlášť když se to týká zdraví. Zkus teď hlavně dýchat po menších krocích a nenechat se tím pohltit celé najednou.",
+        "{name}, chápu, že tě to stresuje. U zdravotních věcí je úplně normální mít strach. Zkus to vzít bod po bodu a ne všechno najednou.",
+        "{name}, tohle je citlivé a je v pořádku, že z toho máš stres. Když budeš chtít, můžeš mi napsat, čeho se bojíš nejvíc."
+      ]
+    },
+    "emotion_stress_mia_school": {
+      "meta": {
+        "key": "emotion_stress_mia_school",
+        "speaker": "mia",
+        "intent": "stress_report",
+        "domain": "school"
+      },
+      "variants": [
+        "{name}, školní stres umí být nepříjemný, ale jedna zkouška nebo jeden neúspěch ještě nedefinuje celý tvůj život.",
+        "{name}, chápu ten tlak. U zkoušek nebo školy je snadné mít pocit, že se svět hroutí, ale často je to jen jedna těžká etapa.",
+        "{name}, tohle je nepříjemné, ale pořád řešitelné. Když nevyjde jedna zkouška, neznamená to konec cesty."
+      ]
+    },
+    "emotion_stress_mia_finance": {
+      "meta": {
+        "key": "emotion_stress_mia_finance",
+        "speaker": "mia",
+        "intent": "stress_report",
+        "domain": "finance"
+      },
+      "variants": [
+        "{name}, finanční stres je hodně vyčerpávající. Zkus teď hlavně oddělit, co jde řešit hned, a co až později.",
+        "{name}, chápu, že peníze umí člověka semlít. Když je toho moc, pomáhá rozdělit problém na malé kroky.",
+        "{name}, tohle je těžké. U peněz člověk často cítí tlak pořád, ale i tam je lepší jít krok po kroku než se tím nechat úplně přetížit."
+      ]
+    },
+    "emotion_stress_mia_general": {
+      "meta": {
+        "key": "emotion_stress_mia_general",
+        "speaker": "mia",
+        "intent": "stress_report",
+        "domain": "general"
+      },
+      "variants": [
+        "{name}, to zní jako stres. Zkus to vzít krok po kroku, zvládneš to.",
+        "{name}, chápu, že je to tlak. Zkus se na chvíli zastavit a nadechnout.",
+        "{name}, tohle je nepříjemná situace, ale není neřešitelná."
+      ]
+    },
+    "emotion_frustration_mia_general": {
+      "meta": {
+        "key": "emotion_frustration_mia_general",
+        "speaker": "mia",
+        "intent": "frustration_report"
+      },
+      "variants": [
+        "{name}, chápu, že tě to štve. To se prostě někdy stane a člověk má chuť s tím praštit.",
+        "{name}, jo, tohle umí naštvat. Někdy je nejlepší na chvíli ubrat a vrátit se k tomu s čistší hlavou.",
+        "{name}, to je na nervy, ale ještě to neznamená, že je všechno ztracené."
+      ]
+    },
+    "emotion_joy_mia_general": {
+      "meta": {
+        "key": "emotion_joy_mia_general",
+        "speaker": "mia",
+        "intent": "joy_report"
+      },
+      "variants": [
+        "{name}, to je super zpráva. Takové momenty je dobré si opravdu užít.",
+        "{name}, tohle zní dobře. To se musí aspoň trochu oslavit.",
+        "{name}, to je radost slyšet. Přesně takové zprávy dělají lepší den."
+      ]
+    },
+    "emotion_relief_mia_general": {
+      "meta": {
+        "key": "emotion_relief_mia_general",
+        "speaker": "mia",
+        "intent": "relief_report"
+      },
+      "variants": [
+        "{name}, tak to je aspoň úleva. Někdy člověk až zpětně zjistí, jak moc ho to tížilo.",
+        "{name}, to ráda slyším. Úleva po těžké věci bývá skoro stejně silná jako samotný stres předtím.",
+        "{name}, to je dobře. Teď už si můžeš aspoň trochu oddechnout."
+      ]
+    }
+  }
+}

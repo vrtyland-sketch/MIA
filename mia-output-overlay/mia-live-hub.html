@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<title>MIA Live Hub (legacy)</title>
+<!-- Legacy all-in-one overlay. Pro stabilni OBS pouzij 5 split zdroju — viz startup log. -->
+<style>
+/* Layout pro OBS 1920×1080 — jeden zdroj, pevné zóny, žádné překrývání */
+:root {
+  --stage-w: 1920px;
+  --stage-h: 1080px;
+  --pad: 48px;
+  --bowl-w: 268px;
+  --sprite-w: 272px;
+  --sprite-h: 300px;
+  --speech-max: 1120px;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#stage {
+  position: relative;
+  width: var(--stage-w);
+  height: var(--stage-h);
+  max-width: 100vw;
+  max-height: 100vh;
+  margin: 0 auto;
+}
+
+/* ── ZÓNA 1: status (levý horní roh) ── */
+#conn {
+  position: absolute;
+  top: var(--pad);
+  left: var(--pad);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(0,0,0,.65);
+  z-index: 40;
+}
+#conn.ok { background: rgba(0,150,80,.92); }
+#conn.err { background: rgba(190,40,40,.92); }
+
+/* ── ZÓNA 2: miska (pravý horní roh) ── */
+#bowlPanel {
+  position: absolute;
+  top: var(--pad);
+  right: var(--pad);
+  width: var(--bowl-w);
+  padding: 18px 18px 16px;
+  border-radius: 18px;
+  background: rgba(10,18,18,.94);
+  border: 1px solid rgba(138,255,157,.28);
+  color: #f5fff7;
+  box-shadow: 0 14px 36px rgba(0,0,0,.38);
+  z-index: 35;
+  box-sizing: border-box;
+}
+.bowl-label {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .35px;
+  color: rgba(220,255,228,.72);
+  text-transform: uppercase;
+  line-height: 1.4;
+  margin-bottom: 6px;
+}
+.bowl-pct {
+  font-size: 32px;
+  font-weight: 900;
+  line-height: 1.2;
+  min-height: 40px;
+  padding: 0 0 10px;
+  letter-spacing: -.5px;
+}
+.bowl-track {
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.1);
+  overflow: hidden;
+}
+.bowl-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #8aff9d, #38d976);
+  transition: width .3s ease;
+}
+.bowl-meta {
+  margin-top: 10px;
+  font-size: 11px;
+  color: rgba(220,255,228,.78);
+  line-height: 1.4;
+}
+
+/* ── ZÓNA 3: odpovědi (levý dolní roh, nezasahuje do sprite) ── */
+#speechBox {
+  position: absolute;
+  left: var(--pad);
+  bottom: var(--pad);
+  max-width: var(--speech-max);
+  padding: 20px 26px;
+  border-radius: 22px;
+  color: #fff;
+  display: none;
+  box-shadow: 0 16px 42px rgba(0,0,0,.45);
+  backdrop-filter: none;
+  border-left: 7px solid #00eaff;
+  background: rgba(0,18,28,.9);
+  z-index: 30;
+  box-sizing: border-box;
+}
+#speechBox.koj {
+  background: rgba(24,0,44,.92);
+  border-left-color: #9b5cff;
+}
+#speechTitle {
+  font-size: 13px;
+  font-weight: 900;
+  opacity: .88;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+#speechText {
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1.24;
+  word-break: break-word;
+}
+#speechSub {
+  margin-top: 8px;
+  font-size: 14px;
+  opacity: .82;
+  font-weight: 700;
+}
+
+#voiceTag {
+  position: absolute;
+  left: var(--pad);
+  bottom: calc(var(--pad) + 6px);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #fff;
+  background: rgba(0, 120, 200, .85);
+  display: none;
+  z-index: 32;
+}
+
+/* ── ZÓNA 4: Kojnožrout sprite (pravý dolní roh) ── */
+#spriteDock {
+  position: absolute;
+  right: var(--pad);
+  bottom: calc(var(--pad) - 8px);
+  width: var(--sprite-w);
+  height: var(--sprite-h);
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 20;
+}
+
+#spriteImg {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  max-width: var(--sprite-w);
+  max-height: var(--sprite-h);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  transform-origin: 50% 100%;
+  animation: kojBob 3.2s ease-in-out infinite;
+  filter: drop-shadow(0 12px 28px rgba(0,0,0,.4));
+}
+#spriteImg.hidden { display: none; }
+
+@keyframes kojBob {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-10px); }
+}
+
+#cssMascot {
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  transform: translateX(-50%);
+  width: 168px;
+  height: 196px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 48% 48% 42% 42%;
+  background: linear-gradient(160deg, rgba(138,255,157,.95), rgba(56,180,100,.88));
+  border: 2px solid rgba(255,255,255,.2);
+  box-shadow: 0 14px 30px rgba(0,0,0,.35);
+  animation: kojBob 3.2s ease-in-out infinite;
+  font-size: 52px;
+  line-height: 1;
+}
+
+.pulse { animation: pop .22s ease-out; }
+@keyframes pop {
+  from { transform: translateY(8px) scale(.98); opacity: .15; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+#speechBox.pulse, #speechBox.koj.pulse { animation: pop .22s ease-out; }
+</style>
+</head>
+<body>
+
+<div id="stage">
+  <div id="conn">MIA …</div>
+
+  <aside id="bowlPanel" aria-label="Miska">
+    <div class="bowl-label">Miska Kojnožrout</div>
+    <div id="bowlPct" class="bowl-pct">0 %</div>
+    <div class="bowl-track"><div id="bowlFill" class="bowl-fill"></div></div>
+    <div id="bowlMeta" class="bowl-meta">Čekám…</div>
+  </aside>
+
+  <div id="spriteDock" aria-hidden="true">
+    <div id="cssMascot">🐣</div>
+    <img id="spriteImg" class="hidden" alt="" />
+  </div>
+
+  <div id="speechBox">
+    <div id="speechTitle">Kojnožrout</div>
+    <div id="speechText"></div>
+    <div id="speechSub"></div>
+  </div>
+
+  <div id="voiceTag">MIA mluví…</div>
+  <audio id="voiceAudio" preload="auto"></audio>
+</div>
+
+<script>
+const API_BASE = (window.location.origin && window.location.protocol.startsWith("http"))
+  ? window.location.origin : "http://127.0.0.1:3000";
+
+const conn = document.getElementById("conn");
+const bowlPct = document.getElementById("bowlPct");
+const bowlFill = document.getElementById("bowlFill");
+const bowlMeta = document.getElementById("bowlMeta");
+const speechBox = document.getElementById("speechBox");
+const speechTitle = document.getElementById("speechTitle");
+const speechText = document.getElementById("speechText");
+const speechSub = document.getElementById("speechSub");
+const voiceTag = document.getElementById("voiceTag");
+const voiceAudio = document.getElementById("voiceAudio");
+const spriteImg = document.getElementById("spriteImg");
+const cssMascot = document.getElementById("cssMascot");
+
+const EVOLUTION_SCALE = { egg: 0.24, hatchling: 0.28, sprout: 0.32, guardian: 0.38, legend: 0.44 };
+const MOOD_EMOJI = { idle:"🐣", warm:"😊", happy:"😄", hungry:"🍽️", excited:"🤩", eating:"😋", full:"🫃", sleepy:"😴", sick:"🤢", sad:"😢", annoyed:"😤" };
+const MOOD_FB = { warm:"warm", eating:"eating", sleepy:"sleepy", sick:"sick", sad:"sad", annoyed:"annoyed" };
+const CORE = ["idle","warm","happy","hungry","excited","eating","full"];
+
+let lastSpriteKey = "";
+let cachedTextureUrl = null;
+const textureOkCache = new Map();
+
+/** Legacy hub: žádný TTS / žádná bublina (kanon = MIA_VOICE + MIA_BUBBLE). */
+
+function clamp(n,a,b){ return Math.max(a,Math.min(b,n)); }
+function safe(v){ return typeof v==="string"&&v.trim()?v.trim():""; }
+
+function moodKey(mood, bowl) {
+  const k = safe(mood).toLowerCase() || "idle";
+  if (bowl >= 95 || k === "full") return "full";
+  if (CORE.includes(k) || MOOD_EMOJI[k]) return k in MOOD_EMOJI ? k : "idle";
+  return MOOD_FB[k] || "idle";
+}
+function moodAsset(m){ return `assets/kojnozrout/moods/kojnozout-${m}.png`; }
+
+async function textureOk(url) {
+  if (textureOkCache.has(url)) {
+    return textureOkCache.get(url);
+  }
+  try {
+    const r = await fetch(url, { method: "HEAD", cache: "no-store" });
+    const ok = r.ok;
+    textureOkCache.set(url, ok);
+    return ok;
+  } catch {
+    textureOkCache.set(url, false);
+    return false;
+  }
+}
+
+async function resolveTexture(mood, bowl) {
+  const k = moodKey(mood, bowl);
+  if (await textureOk(moodAsset(k))) return moodAsset(k);
+  const fb = MOOD_FB[k] || "idle";
+  if (await textureOk(moodAsset(fb))) return moodAsset(fb);
+  if (await textureOk(moodAsset("idle"))) return moodAsset("idle");
+  return null;
+}
+
+function showCssMascot(mood, bowl) {
+  cssMascot.textContent = MOOD_EMOJI[moodKey(mood, bowl)] || "🐣";
+  cssMascot.style.display = "flex";
+  spriteImg.classList.add("hidden");
+}
+
+async function renderSprite(state) {
+  const mood = safe(state?.mood) || "idle";
+  const bowl = Number(state?.bowlPercent ?? state?.bowl?.percent ?? 0) || 0;
+  const tier = safe(state?.evolutionTier || state?.evolution?.tier, "egg").toLowerCase();
+  const spriteKey = `${mood}|${Math.round(bowl)}|${tier}`;
+  if (spriteKey === lastSpriteKey) {
+    return;
+  }
+  lastSpriteKey = spriteKey;
+
+  const sc = Number(state?.evolution?.scale);
+  const scale = Number.isFinite(sc) && sc > 0 ? sc : (EVOLUTION_SCALE[tier] || 0.32);
+  const url = await resolveTexture(mood, bowl);
+  cachedTextureUrl = url;
+  if (!url) { showCssMascot(mood, bowl); return; }
+  spriteImg.onerror = () => showCssMascot(mood, bowl);
+  spriteImg.onload = () => { cssMascot.style.display = "none"; spriteImg.classList.remove("hidden"); };
+  spriteImg.style.maxWidth = `${Math.min(272, Math.round(130 + scale * 360))}px`;
+  if (spriteImg.getAttribute("src") !== url) {
+    spriteImg.src = url;
+  }
+}
+
+function setConn(ok, label) { conn.className = ok ? "ok" : "err"; conn.textContent = label; }
+
+function silenceHubVoice() {
+  voiceTag.style.display = "none";
+  try {
+    voiceAudio.pause();
+    voiceAudio.removeAttribute("src");
+    voiceAudio.load();
+  } catch (_err) {
+    /* ignore */
+  }
+}
+
+function syncVoicePlayback(_data, _now) {
+  silenceHubVoice();
+}
+
+function renderBowl(state, care) {
+  const pct = clamp(Number(state?.bowlPercent ?? state?.bowl?.percent ?? 0), 0, 100);
+  bowlPct.textContent = pct >= 1 ? Math.round(pct) + " %" : pct.toFixed(1) + " %";
+  bowlFill.style.width = pct + "%";
+  const mood = safe(state?.mood) || "idle";
+  const hunger = Math.round(Number(state?.hunger || 0));
+  let meta = `Nálada: ${mood} · hlad ${hunger}%`;
+  if (care?.needLabel) meta += ` · ${care.needLabel}`;
+  bowlMeta.textContent = meta;
+}
+
+function hideSpeech() { speechBox.style.display = "none"; speechBox.className = ""; }
+
+async function tick() {
+  const now = Date.now();
+  try {
+    const res = await fetch(`${API_BASE}/overlay-state?_=${now}`, { cache: "no-store" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const data = await res.json();
+    const state = data.kojnozoutState || data.kojnozroutState || {};
+    renderBowl(state, data.careOpportunities);
+    renderSprite(state);
+    syncVoicePlayback(data, now);
+    hideSpeech();
+    setConn(true, "LIVE · miska " + Math.round(Number(state.bowlPercent||0)) + "%");
+  } catch (err) {
+    setConn(false, "SERVER OFFLINE");
+    bowlMeta.textContent = "npm run restart";
+    hideSpeech();
+    silenceHubVoice();
+    console.error("[MIA_LIVE_HUB]", err);
+  }
+}
+
+tick();
+setInterval(tick, 600);
+</script>
+</body>
+</html>

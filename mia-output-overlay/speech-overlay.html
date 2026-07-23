@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<title>MIA · Kojnožrout Speech</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500;600;700;800&family=Orbitron:wght@600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/tiktok-viewer-zones.css?v=36-koj-unify" />
+<link rel="stylesheet" href="/mia-soft-neon-world.css?v=36-koj-unify" />
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  overflow: hidden;
+  font-family: "Exo 2", "Segoe UI", sans-serif;
+}
+
+#status {
+  position: absolute;
+  top: var(--tt-pad, 8px);
+  right: var(--tt-pad, 8px);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  z-index: 20;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#status.err {
+  opacity: 1;
+}
+
+/*
+ * Hard zones (1920×1080):
+ *   MIA    — levý dolní třetina (--mia-zone-*)
+ *   BUBBLE — vpravo od hlavy/hrudníku, mimo Koj (--koj-clear-right)
+ *   KOJ    — OBS pravý dolní dock (mimo tento browser)
+ */
+#box {
+  position: absolute;
+  left: calc(var(--tt-safe-left, 12px) + var(--mia-zone-w) + var(--mia-bubble-gap));
+  right: max(var(--tt-safe-right, 16px), var(--koj-clear-right, 32%));
+  /* Kotva u hlavy — mimo obličej, oddělená od sprite (ne window frame) */
+  bottom: calc(var(--tt-safe-bottom, 14px) + var(--mia-zone-h) * 0.42);
+  max-width: min(440px, 36vw);
+  padding: clamp(12px, 1.5vw, 18px) clamp(15px, 1.9vw, 22px) clamp(13px, 1.6vw, 18px);
+  border-radius: var(--tt-bubble-radius, 18px);
+  color: #f4fbff;
+  display: none;
+  box-sizing: border-box;
+  z-index: 10;
+  background:
+    linear-gradient(155deg, rgba(8, 16, 36, 0.82) 0%, rgba(2, 8, 18, 0.78) 100%);
+  border: 1px solid rgba(120, 180, 255, 0.32);
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(180, 210, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transform-origin: left center;
+  opacity: 0;
+}
+
+#box.show {
+  display: block;
+  animation: bubbleEnter 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+#box.show.speaking-glow {
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.48),
+    0 0 0 1px rgba(160, 200, 255, 0.22),
+    inset 0 1px 0 rgba(180, 210, 255, 0.14);
+  border-color: rgba(140, 190, 255, 0.48);
+}
+
+/* Ocásek bubliny → směrem k ústům MIA (vlevo) */
+#box.owner-mia::before {
+  content: "";
+  position: absolute;
+  left: -9px;
+  top: 42%;
+  width: 14px;
+  height: 14px;
+  background: rgba(4, 10, 22, 0.94);
+  border-left: 1px solid rgba(120, 180, 255, 0.36);
+  border-bottom: 1px solid rgba(120, 180, 255, 0.36);
+  transform: translateY(-50%) rotate(45deg);
+  box-shadow: none;
+}
+
+#box.owner-kojnozout,
+#box.owner-kojnozrout {
+  /* Soft Neon glass — stejná rodina jako MIA, ne fialová bublina */
+  left: var(--tt-safe-left, 16px);
+  right: max(var(--tt-safe-right, 16px), 40%);
+  bottom: var(--tt-safe-bottom, 14px);
+  max-width: min(380px, 36vw);
+  background: var(--sn-koj-glass-bg,
+    linear-gradient(155deg, rgba(6, 42, 40, 0.82) 0%, rgba(2, 22, 28, 0.78) 100%));
+  border-color: var(--sn-koj-glass-border, rgba(110, 240, 210, 0.4));
+  box-shadow: var(--sn-koj-glass-glow,
+    0 12px 32px rgba(0, 0, 0, 0.42),
+    0 0 28px rgba(100, 235, 200, 0.22),
+    inset 0 1px 0 rgba(180, 255, 230, 0.12));
+}
+
+#box.owner-kojnozout.show.speaking-glow,
+#box.owner-kojnozrout.show.speaking-glow {
+  border-color: rgba(180, 150, 255, 0.55);
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.48),
+    0 0 0 1px rgba(170, 140, 255, 0.22),
+    inset 0 1px 0 rgba(200, 180, 255, 0.14);
+}
+
+#box.owner-kojnozout::before,
+#box.owner-kojnozrout::before {
+  display: none;
+}
+
+#box.owner-mia {
+  padding-left: clamp(14px, 1.6vw, 20px);
+}
+
+#title {
+  font-family: Orbitron, "Exo 2", sans-serif;
+  font-size: var(--tt-bubble-title, 12px);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(170, 210, 255, 0.78);
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+
+#box.owner-kojnozout #title,
+#box.owner-kojnozrout #title {
+  color: rgba(200, 180, 255, 0.9);
+  text-shadow: none;
+}
+
+#text {
+  font-size: var(--tt-bubble-font, 24px);
+  line-height: 1.32;
+  font-weight: 700;
+  word-break: break-word;
+  letter-spacing: 0.01em;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+}
+
+#box.owner-kojnozout #text,
+#box.owner-kojnozrout #text {
+  color: #f4f0ff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.55);
+}
+
+#subtext {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.3;
+  opacity: 0.78;
+  font-weight: 600;
+  color: rgba(200, 230, 245, 0.88);
+}
+
+#subtext.achievement {
+  opacity: 1;
+  color: #ffe08a;
+  text-shadow: 0 0 12px rgba(255, 200, 80, 0.45);
+  letter-spacing: 0.02em;
+}
+
+#box.caption-public #subtext {
+  margin-top: 9px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(180, 240, 255, 0.16);
+  font-size: 13px;
+  opacity: 0.88;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.hidden { display: none !important; }
+
+@keyframes bubbleEnter {
+  0% {
+    opacity: 0;
+    transform: translateX(-10px) translateY(6px) scale(0.96);
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* ===== MIA — cyber hero hologram (true-alpha PNG, no card frame) ===== */
+#miaHolo {
+  position: absolute;
+  left: var(--tt-safe-left, 28px);
+  bottom: var(--tt-safe-bottom, 14px);
+  width: var(--mia-zone-w);
+  height: var(--mia-zone-h);
+  padding-bottom: 1%;
+  box-sizing: border-box;
+  pointer-events: none;
+  opacity: 0.94;
+  transform: translateY(0);
+  transition: opacity 480ms ease, filter 620ms ease;
+  z-index: 2;
+  /* Motion: JS MiaHoloMotion on .holo-motion — no CSS float loop (avoids pop) */
+  /* No overflow/radius card — sprite floats on transparent OBS plate */
+  overflow: visible;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  /* Tech Energy Lab — electric cyan + violet (no soft mint glow) */
+  --holo-c1: 140, 200, 255;
+  --holo-c2: 180, 120, 255;
+  --holo-beam-a: 0.06;
+}
+
+/* Tech floor ticks — no soft glow blob */
+#miaHolo::after {
+  content: "";
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: 0;
+  height: 18%;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 10px,
+      rgba(120, 180, 255, 0.14) 10px 11px
+    ),
+    linear-gradient(to top, rgba(20, 40, 70, 0.28), transparent 70%);
+  filter: none;
+  opacity: 0.45;
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 500ms ease;
+}
+
+#miaHolo.speaking {
+  opacity: 1;
+  animation: none;
+  filter: none;
+}
+#miaHolo.speaking::after { opacity: 0.65; }
+#miaHolo.speaking .holo-beam { opacity: 0.14 !important; }
+#miaHolo.speaking .holo-base { animation: none; opacity: 0.55; }
+#miaHolo.speaking .holo-scan { opacity: 0.12; }
+#miaHolo.speaking .holo-sweep { animation-duration: 5.5s; opacity: 0.22; }
+#miaHolo.speaking .holo-glitch {
+  opacity: 0;
+  animation: none;
+}
+
+/* Idle: hide chrome clutter — tag only on speak */
+#miaHolo .entity-tag {
+  position: absolute;
+  left: 50%;
+  bottom: 4%;
+  transform: translateX(-50%);
+  font-family: Orbitron, "Exo 2", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: rgba(170, 200, 255, 0.5);
+  text-shadow: none;
+  opacity: 0;
+  transition: opacity 0.35s ease, color 0.35s ease;
+  z-index: 6;
+  pointer-events: none;
+}
+#miaHolo.speaking .entity-tag {
+  opacity: 0.5;
+  color: #d8e8ff;
+}
+#miaHolo:not(.speaking) .holo-beam { opacity: 0.04; }
+#miaHolo:not(.speaking) .holo-scan { opacity: 0.05; }
+#miaHolo:not(.speaking) .holo-sweep { opacity: 0.1; }
+
+/* Hero body portrait — MIA_HEAD jediná entita; ghost holo pryč */
+#miaHolo.body-hero-active {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  animation: none !important;
+  pointer-events: none !important;
+}
+#miaHolo.body-hero-active .entity-tag,
+#miaHolo.body-hero-active::after {
+  opacity: 0 !important;
+}
+#miaHolo.body-hero-active.speaking {
+  opacity: 0 !important;
+  filter: none;
+  animation: none;
+}
+#miaHolo.body-hero-active.speaking .holo-figure,
+#miaHolo.body-hero-active.speaking .holo-glitch,
+#miaHolo.body-hero-active.speaking .holo-beam,
+#miaHolo.body-hero-active.speaking .holo-base,
+#miaHolo.body-hero-active.speaking .holo-scan,
+#miaHolo.body-hero-active.speaking .holo-sweep,
+#miaHolo.body-hero-active.speaking .holo-parallax,
+#miaHolo.body-hero-active.speaking .entity-tag {
+  opacity: 0 !important;
+  animation: none !important;
+}
+
+#miaHolo.mood-gift {
+  --holo-c1: 255, 210, 80;
+  --holo-c2: 255, 160, 40;
+  --holo-beam-a: 0.34;
+}
+#miaHolo.mood-combo {
+  --holo-c1: 200, 120, 255;
+  --holo-c2: 140, 60, 220;
+  --holo-beam-a: 0.38;
+}
+#miaHolo.mood-duel {
+  --holo-c1: 255, 90, 110;
+  --holo-c2: 200, 40, 60;
+  --holo-beam-a: 0.32;
+}
+
+/* OBS speech strip (TikTok ~1080×400) — holo + bublina vedle sebe */
+@media (max-height: 500px) {
+  #miaHolo {
+    width: var(--mia-zone-w);
+    height: var(--mia-zone-h);
+    left: var(--tt-safe-left, 36px);
+    bottom: var(--tt-safe-bottom, 16px);
+    opacity: 0.94;
+  }
+  #box {
+    left: calc(var(--tt-safe-left, 36px) + var(--mia-zone-w) + var(--mia-bubble-gap));
+    right: max(var(--tt-safe-right, 16px), var(--koj-clear-right, 22%));
+    bottom: clamp(40px, 16vh, 96px);
+    max-width: min(500px, 54vw);
+  }
+  #box.owner-mia::before {
+    top: 48%;
+  }
+  #box.owner-kojnozout,
+  #box.owner-kojnozrout {
+    left: var(--tt-safe-left, 36px);
+    bottom: 10px;
+  }
+}
+
+@keyframes holoFlicker {
+  0%, 100% { opacity: 1; }
+  48% { opacity: 1; }
+  50% { opacity: 0.92; }
+  52% { opacity: 1; }
+  78% { opacity: 0.96; }
+  80% { opacity: 1; }
+}
+@keyframes holoGlitch {
+  0% { clip-path: inset(0 0 0 0); transform: translate(0, 0); opacity: 0.35; }
+  20% { clip-path: inset(12% 0 55% 0); transform: translate(3px, -1px); opacity: 0.7; }
+  40% { clip-path: inset(48% 0 20% 0); transform: translate(-4px, 1px); opacity: 0.5; }
+  60% { clip-path: inset(8% 0 40% 0); transform: translate(2px, 2px); opacity: 0.65; }
+  100% { clip-path: inset(0 0 0 0); transform: translate(0, 0); opacity: 0.3; }
+}
+
+#miaHolo .holo-beam {
+  position: absolute;
+  left: 50%; bottom: 0;
+  transform: translateX(-50%);
+  width: 70%; height: 28%;
+  background: linear-gradient(to top,
+    rgba(var(--holo-c1), var(--holo-beam-a)) 0%,
+    transparent 70%);
+  clip-path: polygon(50% 100%, 18% 0%, 82% 0%);
+  filter: none;
+  opacity: 0.1;
+  transition: opacity 500ms ease, background 680ms ease;
+  z-index: 1;
+}
+#miaHolo.speaking .holo-beam { opacity: 0.14; }
+
+#miaHolo .holo-base {
+  position: absolute;
+  left: 50%; bottom: 1%;
+  transform: translateX(-50%);
+  width: 48%; height: 4%;
+  border-radius: 2px;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(var(--holo-c1), 0.35) 20%,
+    rgba(var(--holo-c2), 0.28) 50%,
+    rgba(var(--holo-c1), 0.35) 80%,
+    transparent);
+  filter: none;
+  transition: background 680ms ease, opacity 400ms ease;
+  animation: none;
+  opacity: 0.4;
+  z-index: 1;
+}
+@keyframes holoBasePulse {
+  0%, 100% { transform: translateX(-50%) scale(0.96); opacity: 0.4; }
+  50% { transform: translateX(-50%) scale(1.02); opacity: 0.55; }
+}
+
+#miaHolo .holo-parallax {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Outer = JS cyborg motion; inner poses keep opacity/scale crossfade only */
+#miaHolo .holo-motion {
+  position: absolute;
+  inset: 0;
+  transform-origin: center bottom;
+  will-change: transform;
+}
+
+/* Part-rig v0 whole-sprite: root+torso only — no interim head clip (double MIA). */
+#miaHolo .holo-torso {
+  position: absolute;
+  inset: 0;
+  transform-origin: center 70%;
+  will-change: transform;
+}
+#miaHolo .holo-head {
+  display: none !important;
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: 0;
+  height: 46%;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+#miaHolo .holo-head img {
+  display: none !important;
+}
+/* v26-koj-WHOLE: unbroken figure — no soft-cut head mask (was double/split). */
+#miaHolo.mia-part-rig .holo-figure {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+#miaHolo .holo-figure {
+  position: absolute;
+  left: 2%; right: 2%;
+  top: 0%;
+  bottom: 4%;
+  /* Contact shadow only — energy FX live on #miaEnergyFx canvas */
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.35));
+  transition: filter 360ms ease;
+  transform-origin: center bottom;
+}
+#miaHolo.speaking .holo-figure {
+  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.4));
+}
+#miaHolo .holo-pose {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  opacity: 0;
+  transform: scale(1);
+  transform-origin: center bottom;
+  transition: opacity var(--mia-pose-fade, 320ms) ease, transform 320ms ease;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+#miaHolo .holo-pose.on {
+  opacity: 1;
+}
+#miaHolo.speaking .holo-pose {
+  transform: scale(1);
+}
+
+#miaHolo .holo-glitch {
+  position: absolute;
+  left: 2%; right: 2%;
+  top: 0;
+  bottom: 4%;
+  background-image: url("/assets/mia/cyber/speak.png?v=36-koj-unify");
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: contain;
+  mix-blend-mode: screen;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Jemný scan — presence, ne spam; mask = true-alpha cyber hero */
+#miaHolo .holo-scan {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(160, 200, 255, 0.05) 0px,
+    rgba(160, 200, 255, 0.05) 1px,
+    transparent 2px,
+    transparent 5px
+  );
+  mix-blend-mode: screen;
+  opacity: 0.08;
+  -webkit-mask: url("/assets/mia/hologram.png?v=36-koj-unify") bottom center / contain no-repeat;
+  mask: url("/assets/mia/hologram.png?v=36-koj-unify") bottom center / contain no-repeat;
+  z-index: 4;
+}
+
+#miaHolo .holo-sweep {
+  position: absolute;
+  left: 0; right: 0;
+  height: 12%;
+  background: linear-gradient(to bottom, transparent, rgba(140, 190, 255, 0.1), transparent);
+  mix-blend-mode: screen;
+  -webkit-mask: url("/assets/mia/hologram.png?v=36-koj-unify") bottom center / contain no-repeat;
+  mask: url("/assets/mia/hologram.png?v=36-koj-unify") bottom center / contain no-repeat;
+  animation: holoSweep 7.5s linear infinite;
+  opacity: 0.22;
+  z-index: 4;
+}
+@keyframes holoSweep {
+  0% { top: -18%; }
+  100% { top: 108%; }
+}
+
+#miaAura { display: none; }
+</style>
+</head>
+<body>
+
+<div id="status" class="hidden"></div>
+<div id="miaHolo" aria-hidden="true" class="tech-energy-lab">
+  <div class="holo-beam"></div>
+  <div class="holo-parallax">
+    <div class="holo-motion" id="miaMotion">
+      <div class="holo-torso" id="miaTorso">
+        <div class="holo-figure" id="miaFigure">
+          <img class="holo-pose on" id="miaPoseA" alt="" decoding="async" draggable="false" />
+          <img class="holo-pose" id="miaPoseB" alt="" decoding="async" draggable="false" />
+        </div>
+        <div class="holo-head" id="miaHead" aria-hidden="true">
+          <img id="miaHeadImg" alt="" decoding="async" draggable="false" />
+        </div>
+        <div class="holo-glitch" id="miaGlitch"></div>
+      </div>
+    </div>
+  </div>
+  <canvas id="miaEnergyFx" class="tech-fx-canvas" aria-hidden="true"></canvas>
+  <div class="holo-scan"></div>
+  <div class="holo-sweep"></div>
+  <div class="holo-base"></div>
+  <div class="entity-tag">MIA · LIVE</div>
+</div>
+<div id="box">
+  <div id="title">MIA</div>
+  <div id="text"></div>
+  <div id="subtext" class="hidden"></div>
+</div>
+
+<script src="/lib/mia-live-lip.js"></script>
+<script src="/lib/mia-live-presence.js?v=36-koj-unify"></script>
+<script src="/lib/mia-rig-anchors.js?v=36-koj-unify"></script>
+<script src="/lib/mia-part-rig.js?v=36-koj-unify"></script>
+<script src="/lib/mia-holo-motion.js?v=36-koj-unify"></script>
+<script src="/lib/mia-tech-energy.js?v=36-koj-unify"></script>
+<script>
+const API_BASE = (() => {
+  if (window.location.origin && window.location.protocol.startsWith("http")) {
+    return window.location.origin;
+  }
+  return "http://127.0.0.1:3000";
+})();
+
+const statusEl = document.getElementById("status");
+const box = document.getElementById("box");
+const title = document.getElementById("title");
+const text = document.getElementById("text");
+const subtext = document.getElementById("subtext");
+const miaHolo = document.getElementById("miaHolo");
+const miaMotion = document.getElementById("miaMotion");
+const miaTorso = document.getElementById("miaTorso");
+const miaFigure = document.getElementById("miaFigure");
+const miaHead = document.getElementById("miaHead");
+const miaHeadImg = document.getElementById("miaHeadImg");
+const miaPoseA = document.getElementById("miaPoseA");
+const miaPoseB = document.getElementById("miaPoseB");
+const miaGlitch = document.getElementById("miaGlitch");
+
+const PRESENCE = window.MiaLivePresence;
+const MIA_FACE = PRESENCE.faces;
+const MIA_IDLE = PRESENCE.idleFace || MIA_FACE.idle;
+const MIA_SPEAK = PRESENCE.speakFace || (PRESENCE.lipLadder && PRESENCE.lipLadder[1]) || MIA_IDLE;
+const POSE_FADE_MS = Math.max(200, Math.min(400, Number(PRESENCE.poseCrossfadeMs) || 320));
+
+let miaSpeaking = false;
+let miaMood = "idle";
+let lastSpeakUrl = "";
+let poseFrontIsA = true;
+let miaAnchors = null;
+
+if (miaHolo) miaHolo.style.setProperty("--mia-pose-fade", POSE_FADE_MS + "ms");
+
+function miaPivotsFromAnchors(doc) {
+  const a = (doc && doc.anchors) || {};
+  const rootPivot = a.root || { x: 0.5, y: 1 };
+  const torsoPivot = a.body || { x: 0.5, y: 0.7 };
+  let headPivot = { x: 0.5, y: 0.92 };
+  if (a.head && a.neck && window.MiaRigAnchors) {
+    headPivot = window.MiaRigAnchors.headPivotRelative(a.head, a.neck);
+  }
+  return { rootPivot, torsoPivot, headPivot, head: a.head };
+}
+
+function applyMiaHeadClipFromAnchors(_doc) {
+  // v26-koj-WHOLE: head clip disabled — single unbroken holo figure.
+  if (miaHead) {
+    miaHead.style.display = "none";
+    miaHead.setAttribute("aria-hidden", "true");
+  }
+}
+
+const _miaBootPivots = miaPivotsFromAnchors(
+  window.MiaRigAnchors ? window.MiaRigAnchors.fallbackDoc("mia") : null
+);
+
+const miaPartRig =
+  window.MiaPartRig &&
+  window.MiaPartRig.createStandardHumanoid({
+    rootEl: miaMotion,
+    torsoEl: miaTorso,
+    headEl: null,
+    includeHead: false,
+    rootPivot: _miaBootPivots.rootPivot,
+    torsoPivot: _miaBootPivots.torsoPivot
+  });
+if (miaPartRig && miaHolo) {
+  miaHolo.classList.add("mia-part-rig");
+  miaHolo.classList.add("mia-whole-sprite");
+}
+
+async function loadMiaAnchorsJson() {
+  if (!window.MiaRigAnchors) return;
+  const doc = await window.MiaRigAnchors.load("mia", {
+    bust: window.MiaRigAnchors.CACHE_BUST || "36-koj-unify"
+  });
+  miaAnchors = doc;
+  applyMiaHeadClipFromAnchors(doc);
+  if (miaPartRig) {
+    const p = miaPivotsFromAnchors(doc);
+    miaPartRig.setPivot("root", p.rootPivot);
+    miaPartRig.setPivot("torso", p.torsoPivot);
+  }
+}
+loadMiaAnchorsJson();
+
+const miaEnergyFx =
+  window.MiaTechEnergy &&
+  window.MiaTechEnergy.create({
+    host: miaHolo,
+    canvas: document.getElementById("miaEnergyFx"),
+    density: 1.08,
+    isSpeaking: () => miaSpeaking,
+    hotspots: [
+      { x: 0.5, y: 0.22, w: 0.22, h: 0.16 },
+      { x: 0.5, y: 0.55, w: 0.3, h: 0.22 },
+      { x: 0.72, y: 0.42, w: 0.14, h: 0.18 }
+    ]
+  });
+
+const holoMotion =
+  window.MiaHoloMotion &&
+  window.MiaHoloMotion.create({
+    el: miaMotion,
+    rig: miaPartRig || null,
+    isSpeaking: () => miaSpeaking,
+    isEnabled: () => !!(miaHolo && !miaHolo.classList.contains("body-hero-active"))
+  });
+if (holoMotion) holoMotion.start();
+
+function syncMiaHeadImg(_url) {
+  // v26 whole-sprite — head clip layer unused
+}
+
+function setMiaFigure(url) {
+  if (!miaPoseA || !miaPoseB || !url) return;
+  if (url === lastSpeakUrl) return;
+  const bust = PRESENCE.bustUrl(url);
+  const first = !lastSpeakUrl;
+  lastSpeakUrl = url;
+  syncMiaHeadImg(url);
+
+  const showOn = (el) => {
+    el.classList.add("on");
+  };
+  const hideOn = (el) => {
+    el.classList.remove("on");
+  };
+
+  if (first) {
+    miaPoseA.src = bust;
+    showOn(miaPoseA);
+    hideOn(miaPoseB);
+    poseFrontIsA = true;
+    if (miaGlitch) miaGlitch.style.backgroundImage = `url("${bust}")`;
+    return;
+  }
+
+  const front = poseFrontIsA ? miaPoseA : miaPoseB;
+  const back = poseFrontIsA ? miaPoseB : miaPoseA;
+
+  const reveal = () => {
+    showOn(back);
+    hideOn(front);
+    poseFrontIsA = !poseFrontIsA;
+    if (miaGlitch) miaGlitch.style.backgroundImage = `url("${bust}")`;
+  };
+
+  const applySrc = () => {
+    if (back.getAttribute("src") === bust) {
+      reveal();
+      return;
+    }
+    const onReady = () => {
+      back.removeEventListener("load", onReady);
+      reveal();
+    };
+    back.addEventListener("load", onReady);
+    back.src = bust;
+    if (back.complete) {
+      back.removeEventListener("load", onReady);
+      reveal();
+    }
+  };
+  applySrc();
+}
+
+function faceForMood(mood) {
+  return MIA_FACE[mood] || MIA_IDLE;
+}
+
+/** Idle hero base, or soft crossfade to speak — never a multi-pose carousel */
+function applyMiaPresencePose() {
+  if (miaSpeaking) {
+    setMiaFigure(MIA_SPEAK);
+    return;
+  }
+  setMiaFigure(faceForMood(miaMood));
+}
+
+function applyMiaMoodFace() {
+  applyMiaPresencePose();
+}
+
+// MIA je projektovaná pořád; "on" = právě mluví → speak PNG + living motion.
+function setMiaAura(on) {
+  if (!miaHolo) return;
+  const next = !!on;
+  miaHolo.classList.toggle("speaking", next);
+  if (box) box.classList.toggle("speaking-glow", next && box.classList.contains("show"));
+  if (next && !miaSpeaking) {
+    miaSpeaking = true;
+    if (holoMotion) holoMotion.setSpeaking(true);
+    applyMiaPresencePose();
+  } else if (!next && miaSpeaking) {
+    miaSpeaking = false;
+    if (holoMotion) holoMotion.setSpeaking(false);
+    applyMiaPresencePose();
+  }
+}
+
+/** Phase 13z — prefer live TTS voice over bubble-signature alone */
+function syncMiaSpeakingAura(data, now, overlay) {
+  const vp = data?.voicePlayback;
+  const voiceMia =
+    vp &&
+    safe(vp.speaker).toLowerCase() === "mia" &&
+    (toNumber(vp.holdUntilTs, 0) > now || isActiveVoicePlayback(vp, now));
+  if (voiceMia) {
+    setMiaAura(true);
+    return;
+  }
+  if (overlay && normalizeOwner(overlay.owner) === "mia" && resolveOverlayText(overlay)) {
+    setMiaAura(true);
+    return;
+  }
+  setMiaAura(false);
+}
+
+function setMiaMood(mood) {
+  const next = mood || "idle";
+  const prev = miaMood;
+  if (next === miaMood) return;
+  miaMood = next;
+  if (miaHolo) {
+    miaHolo.classList.remove("mood-gift", "mood-combo", "mood-duel");
+    if (next === "gift") miaHolo.classList.add("mood-gift");
+    if (next === "combo") miaHolo.classList.add("mood-combo");
+    if (next === "duel") miaHolo.classList.add("mood-duel");
+  }
+  if (
+    holoMotion &&
+    typeof holoMotion.pulse === "function" &&
+    (next === "gift" || next === "combo") &&
+    prev !== next
+  ) {
+    holoMotion.pulse();
+  }
+  applyMiaMoodFace();
+}
+
+function isMomentLive(moment, now) {
+  if (!moment || typeof moment !== "object") return false;
+  const holdUntil = toNumber(moment.holdUntilTs || moment.expiresAt || moment.until, 0);
+  if (holdUntil > 0) return holdUntil > now;
+  return Boolean(moment.active);
+}
+
+function syncMiaHoloMood(data, now) {
+  if (!miaHolo) return;
+  let mood = "idle";
+
+  if (isMomentLive(data?.comboMoment, now) || data?.spamSession?.active) {
+    mood = "combo";
+  } else if (isMomentLive(data?.giftVisual, now) || isMomentLive(data?.giftMoment, now)) {
+    mood = "gift";
+  } else if (data?.duel?.active || data?.arena?.duel?.active) {
+    mood = "duel";
+  } else {
+    const community = data?.communityMood;
+    if (community && toNumber(community.holdUntilTs, 0) > now) {
+      const cm = String(community.miaMood || "idle").toLowerCase();
+      if (cm && cm !== "idle") mood = cm;
+    }
+  }
+  setMiaMood(mood);
+}
+
+const MIN_READ_MS = 9000;
+
+let lastSignature = "";
+let pinnedOverlay = null;
+let pinnedUntil = 0;
+
+function safe(v, fallback = "") {
+  return typeof v === "string" && v.trim() ? v.trim() : fallback;
+}
+
+function toNumber(v, fallback = 0) {
+  const n = Number(v);
+  return Number.isFinite(n) ? n : fallback;
+}
+
+function normalizeOwner(value) {
+  const owner = safe(value).toLowerCase();
+  if (owner === "kojnozrout" || owner === "kojnozout") return "kojnozout";
+  return "mia";
+}
+
+function resolveOverlayText(overlay) {
+  return safe(overlay?.text || overlay?.overlay_text || overlay?.speech_text);
+}
+
+function isActiveOverlay(overlay, now) {
+  if (!overlay || !resolveOverlayText(overlay)) return false;
+  const holdUntil = toNumber(overlay.holdUntilTs, 0);
+  return holdUntil === 0 || holdUntil > now;
+}
+
+function pickActiveOverlay(data, now) {
+  const candidates = [data?.miaOverlay, data?.kojnozoutOverlay, data?.kojnozroutOverlay]
+    .filter((row) => isActiveOverlay(row, now))
+    // Server TTS mirror je redundantní — bublinu při řeči už drží pickVoiceMirrorOverlay.
+    // Jinak po konci TTS stejný text „blikne“ podruhé (jiný holdUntil/signature).
+    .filter((row) => !row?.meta?.voiceMirror);
+
+  if (!candidates.length) return null;
+
+  // Vyšší priorita vyhrává (support overlaye 5–6 nesmí přebít novější nízkoprioritní chatter
+  // s prioritou 3); při shodě priority rozhoduje nejnovější update.
+  candidates.sort((a, b) => {
+    const prioDelta = toNumber(b.priority, 3) - toNumber(a.priority, 3);
+    if (prioDelta !== 0) return prioDelta;
+    return toNumber(b.updatedAt, 0) - toNumber(a.updatedAt, 0);
+  });
+  return candidates[0];
+}
+
+function isActiveVoicePlayback(vp, now) {
+  if (!vp?.textPreview) return false;
+
+  const holdUntil = toNumber(vp.holdUntilTs, 0);
+  if (holdUntil > now) return true;
+
+  const updatedAt = toNumber(vp.updatedAt, 0);
+  if (!updatedAt) return false;
+
+  // OBS audio often outlasts server holdUntil by a few seconds.
+  const graceMs = vp.audioUrl ? 20000 : 12000;
+  return now - updatedAt <= graceMs;
+}
+
+function pickVoiceMirrorOverlay(data, now) {
+  const vp = data?.voicePlayback;
+  const caption = data?.liveCaption;
+  const holdUntilVp = toNumber(vp?.holdUntilTs, 0);
+  const holdUntilCap = toNumber(caption?.holdUntilTs, 0);
+
+  // Veřejné dvojjazyčné titulky (překlad + originál) mají přednost.
+  if (caption && safe(caption.text || caption.translated) && holdUntilCap > now) {
+    return {
+      owner: normalizeOwner(caption.speaker || caption.meta?.speaker || vp?.speaker),
+      title: safe(caption.title, "Překlad"),
+      text: safe(caption.text || caption.translated),
+      subtext: safe(caption.subtext || caption.original),
+      updatedAt: toNumber(caption.updatedAt, now),
+      holdUntilTs: holdUntilCap,
+      meta: { source: "live_caption_public", publicCaption: true, ...(caption.meta || {}) }
+    };
+  }
+
+  if (!isActiveVoicePlayback(vp, now)) return null;
+
+  const owner = normalizeOwner(vp.speaker);
+  return {
+    owner,
+    title: safe(vp.title, owner === "kojnozout" ? "Kojnožrout" : "MIA"),
+    text: safe(vp.translated || vp.textPreview),
+    subtext: safe(vp.subtext || vp.original),
+    updatedAt: toNumber(vp.updatedAt, now),
+    holdUntilTs: holdUntilVp > now ? holdUntilVp : now + MIN_READ_MS,
+    meta: {
+      source: "voice_playback_mirror",
+      publicCaption: Boolean(vp.meta?.publicCaption),
+      ...(vp.meta || {}),
+      playbackId: toNumber(vp.playbackId, 0)
+    }
+  };
+}
+
+function buildSignature(o) {
+  if (!o) return "no-overlay";
+  // Stabilní klíč bez holdUntil — prodloužení TTS hold nesmí znovu překreslit stejný text.
+  return JSON.stringify({
+    owner: normalizeOwner(o.owner),
+    text: resolveOverlayText(o),
+    subtext: safe(o.subtext),
+    playbackId: toNumber(o?.meta?.playbackId, 0)
+  });
+}
+
+function setStatus(mode, label) {
+  if (mode === "err") {
+    statusEl.className = "err";
+    statusEl.textContent = label;
+    return;
+  }
+  statusEl.className = "hidden";
+  statusEl.textContent = label;
+}
+
+function hideBox() {
+  box.style.display = "none";
+  box.className = "";
+  setMiaAura(false);
+  title.textContent = "MIA";
+  text.textContent = "";
+  subtext.textContent = "";
+  subtext.classList.add("hidden");
+  subtext.classList.remove("achievement");
+}
+
+function render(o) {
+  const owner = normalizeOwner(o.owner);
+  const resolvedTitle = safe(o.title, owner === "kojnozout" ? "Kojnožrout" : "MIA");
+  const resolvedText = resolveOverlayText(o);
+  const resolvedSubtext = safe(o.subtext || o.userLabel || o.user || o.giftName);
+
+  const isPublicCaption = Boolean(o?.meta?.publicCaption || o?.meta?.translation);
+  const ownerClass = `owner-${owner}${isPublicCaption ? " caption-public" : ""}`;
+  box.style.display = "block";
+  box.className = ownerClass;
+  void box.offsetWidth; // restart premium entrance
+  box.className = `${ownerClass} show`;
+  title.textContent = resolvedTitle;
+  text.textContent = resolvedText;
+  // speaking aura: syncMiaSpeakingAura() in tick (voicePlayback wins)
+
+  if (resolvedSubtext) {
+    subtext.textContent = resolvedSubtext;
+    subtext.classList.remove("hidden");
+    if (o?.meta?.achievementUnlock) {
+      subtext.classList.add("achievement");
+    } else {
+      subtext.classList.remove("achievement");
+    }
+  } else {
+    subtext.textContent = "";
+    subtext.classList.add("hidden");
+    subtext.classList.remove("achievement");
+  }
+}
+
+function pinOverlay(overlay, now) {
+  const holdUntil = toNumber(overlay.holdUntilTs, 0);
+  const serverUntil = holdUntil > now ? holdUntil : now;
+  pinnedUntil = Math.max(serverUntil, now + MIN_READ_MS);
+  pinnedOverlay = overlay;
+}
+
+function resolveVisibleOverlay(data, now) {
+  const voiceOverlay = pickVoiceMirrorOverlay(data, now);
+  const live = pickActiveOverlay(data, now);
+
+  // Active TTS always wins — never let a stale pin hide the bubble while MIA/Koj speaks.
+  if (voiceOverlay) {
+    pinOverlay(voiceOverlay, now);
+    return voiceOverlay;
+  }
+
+  if (live) {
+    const liveUpdated = toNumber(live.updatedAt, 0);
+    const livePriority = toNumber(live.priority, 3);
+    const pinnedUpdated = pinnedOverlay ? toNumber(pinnedOverlay.updatedAt, 0) : 0;
+    const pinnedPriority = pinnedOverlay ? toNumber(pinnedOverlay.priority, 3) : 0;
+    // Prolom pin když: expiroval, přišel novější text, nebo přišel text s vyšší prioritou.
+    if (!pinnedOverlay || now >= pinnedUntil || liveUpdated > pinnedUpdated || livePriority > pinnedPriority) {
+      pinOverlay(live, now);
+    }
+  }
+  if (pinnedOverlay && now < pinnedUntil) {
+    return pinnedOverlay;
+  }
+  return live;
+}
+
+async function syncBodyHeroPresence() {
+  if (!miaHolo) return;
+  try {
+    // Live authority = whole-sprite (speech). Hide only with explicit ?bodyHero=1 —
+    // studio head preview must not blank OBS MIA while MIA_HEAD stays off.
+    const q = new URLSearchParams(location.search || "");
+    if (q.get("bodyHero") !== "1") {
+      miaHolo.classList.remove("body-hero-active");
+      return;
+    }
+    const res = await fetch(`${API_BASE}/mia/graphics/body/state?_=${Date.now()}`, {
+      cache: "no-store"
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    const heroOn =
+      data &&
+      data.ok !== false &&
+      data.parts &&
+      data.parts.head === true &&
+      String(data.layout || "hero").toLowerCase() !== "composed";
+    miaHolo.classList.toggle("body-hero-active", !!heroOn);
+  } catch (_err) {
+    // body state optional
+  }
+}
+
+async function tick() {
+  const now = Date.now();
+
+  try {
+    const res = await fetch(`${API_BASE}/overlay-state?_=${now}`, { cache: "no-store" });
+    if (!res.ok) throw new Error("overlay-state " + res.status);
+
+    const data = await res.json();
+    syncMiaHoloMood(data, now);
+    void syncBodyHeroPresence();
+    const overlay = resolveVisibleOverlay(data, now);
+
+    if (!overlay) {
+      pinnedOverlay = null;
+      pinnedUntil = 0;
+      if (lastSignature !== "no-overlay") {
+        lastSignature = "no-overlay";
+        hideBox();
+      }
+      syncMiaSpeakingAura(data, now, null);
+      setStatus("ok", "ceka na odpoved");
+      reportSpeechRender(null, now);
+      return;
+    }
+
+    const sig = buildSignature(overlay);
+    if (sig !== lastSignature) {
+      lastSignature = sig;
+      render(overlay);
+    }
+    syncMiaSpeakingAura(data, now, overlay);
+
+    setStatus("ok", normalizeOwner(overlay.owner) === "kojnozout" ? "Koj live" : "MIA live");
+    reportSpeechRender(normalizeOwner(overlay.owner), now);
+  } catch (err) {
+    hideBox();
+    pinnedOverlay = null;
+    pinnedUntil = 0;
+    setStatus("err", "server offline");
+    console.error("[SPEECH_OVERLAY]", err);
+  }
+}
+
+const POLL_MS = 450;
+
+// ===== Propriocepce bubliny =====
+// Hlásí MIA, jak bublina REÁLNĚ sedí: bbox, jestli text přetéká (ořízne se),
+// a jestli nezasahuje mimo viewport zdroje. Tím MIA „vidí", že je něco mimo/zakryté.
+let lastSpeechReportAt = 0;
+const SPEECH_REPORT_MS = 2000;
+
+function reportSpeechRender(owner, now) {
+  if (now - lastSpeechReportAt < SPEECH_REPORT_MS) return;
+  lastSpeechReportAt = now;
+  try {
+    const vw = window.innerWidth || 0;
+    const vh = window.innerHeight || 0;
+    const visible =
+      !!box &&
+      box.classList.contains("show") &&
+      box.style.display !== "none" &&
+      getComputedStyle(box).display !== "none";
+    let report = { ts: now, owner: owner || null, visible, viewport: { w: vw, h: vh } };
+    if (visible && box) {
+      const b = box.getBoundingClientRect();
+      const offLeft = Math.max(0, Math.round(-b.left));
+      const offTop = Math.max(0, Math.round(-b.top));
+      const offRight = Math.max(0, Math.round(b.right - vw));
+      const offBottom = Math.max(0, Math.round(b.bottom - vh));
+      const textOverflow = !!text && (text.scrollHeight - text.clientHeight > 4 || text.scrollWidth - text.clientWidth > 4);
+      report = {
+        ...report,
+        bubble: { x: Math.round(b.left), y: Math.round(b.top), w: Math.round(b.width), h: Math.round(b.height) },
+        offscreen: { left: offLeft, top: offTop, right: offRight, bottom: offBottom },
+        anyOffscreen: offLeft + offTop + offRight + offBottom > 2,
+        textOverflow,
+        holoOverlap: (() => {
+          if (!miaHolo) return false;
+          const cs = getComputedStyle(miaHolo);
+          if (cs.display === "none" || cs.opacity === "0") return false;
+          const hb = miaHolo.getBoundingClientRect();
+          const ix = Math.max(0, Math.min(b.right, hb.right) - Math.max(b.left, hb.left));
+          const iy = Math.max(0, Math.min(b.bottom, hb.bottom) - Math.max(b.top, hb.top));
+          const inter = ix * iy;
+          const textArea = Math.max(1, b.width * b.height);
+          return inter / textArea > 0.45; // bublina z >45 % na hologramu = text přes postavu
+        })()
+      };
+    }
+    void fetch(`${API_BASE}/mia/speech/render-report`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(report),
+      keepalive: true
+    }).catch(() => {});
+  } catch (_err) {
+    /* best-effort, nikdy nesmí shodit overlay */
+  }
+}
+
+// Preload idle + speak — ať výměna PNG nebliká.
+[MIA_IDLE, MIA_SPEAK, ...Object.values(MIA_FACE)].forEach((src) => {
+  const img = new Image();
+  img.src = PRESENCE.bustUrl(src);
+});
+applyMiaMoodFace();
+
+tick();
+setInterval(tick, POLL_MS);
+</script>
+</body>
+</html>

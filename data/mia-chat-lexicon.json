@@ -1,0 +1,526 @@
+{
+  "version": 1,
+  "updatedAt": 1781914061334,
+  "stats": {
+    "messagesSeen": 504,
+    "uniqueWords": 24,
+    "uniquePhrases": 28,
+    "spicyHits": 0
+  },
+  "tone": {
+    "spiceLevel": 0,
+    "casualLevel": 100,
+    "energyLevel": 0,
+    "lastUpdated": 1781913679412
+  },
+  "words": {
+    "test": {
+      "count": 472,
+      "firstSeen": 1781369804347,
+      "lastSeen": 1781913679410,
+      "lastRaw": "test"
+    },
+    "kojnozroiutmia": {
+      "count": 1,
+      "firstSeen": 1781373349725,
+      "lastSeen": 1781373349725,
+      "lastRaw": "kojnozroiutmia"
+    },
+    "jemia": {
+      "count": 1,
+      "firstSeen": 1781373371133,
+      "lastSeen": 1781373371133,
+      "lastRaw": "jemia"
+    },
+    "uky": {
+      "count": 1,
+      "firstSeen": 1781373391907,
+      "lastSeen": 1781373391907,
+      "lastRaw": "uky"
+    },
+    "vsemca": {
+      "count": 1,
+      "firstSeen": 1781373391908,
+      "lastSeen": 1781373391908,
+      "lastRaw": "vsemca"
+    },
+    "nemocny": {
+      "count": 1,
+      "firstSeen": 1781373415339,
+      "lastSeen": 1781373415339,
+      "lastRaw": "nemocny"
+    },
+    "pohadkumio": {
+      "count": 1,
+      "firstSeen": 1781413938326,
+      "lastSeen": 1781413938326,
+      "lastRaw": "pohadkumio"
+    },
+    "rek": {
+      "count": 1,
+      "firstSeen": 1781413938331,
+      "lastSeen": 1781413938331,
+      "lastRaw": "rek"
+    },
+    "ahojmia": {
+      "count": 2,
+      "firstSeen": 1781413992257,
+      "lastSeen": 1781464123464,
+      "lastRaw": "ahojmia"
+    },
+    "miska": {
+      "count": 1,
+      "firstSeen": 1781464004906,
+      "lastSeen": 1781464004906,
+      "lastRaw": "miska"
+    },
+    "hojmio": {
+      "count": 2,
+      "firstSeen": 1781464034547,
+      "lastSeen": 1781464101031,
+      "lastRaw": "hojmio"
+    },
+    "rekni": {
+      "count": 3,
+      "firstSeen": 1781630260754,
+      "lastSeen": 1781907320334,
+      "lastRaw": "rekni"
+    },
+    "pohadku": {
+      "count": 3,
+      "firstSeen": 1781630260754,
+      "lastSeen": 1781907320344,
+      "lastRaw": "pohadku"
+    },
+    "polozka": {
+      "count": 2,
+      "firstSeen": 1781634554160,
+      "lastSeen": 1781634634487,
+      "lastRaw": "polozka"
+    },
+    "item": {
+      "count": 1,
+      "firstSeen": 1781634611559,
+      "lastSeen": 1781634611559,
+      "lastRaw": "item"
+    },
+    "itempolozka": {
+      "count": 1,
+      "firstSeen": 1781634634487,
+      "lastSeen": 1781634634487,
+      "lastRaw": "itempolozka"
+    },
+    "kojnozrout??": {
+      "count": 1,
+      "firstSeen": 1781853268440,
+      "lastSeen": 1781853268440,
+      "lastRaw": "kojnozrout??"
+    },
+    "hlad?ojnozrout": {
+      "count": 1,
+      "firstSeen": 1781853372834,
+      "lastSeen": 1781853372834,
+      "lastRaw": "hlad?ojnozrout"
+    },
+    "nemco": {
+      "count": 1,
+      "firstSeen": 1781853372834,
+      "lastSeen": 1781853372834,
+      "lastRaw": "nemco"
+    },
+    "povez": {
+      "count": 2,
+      "firstSeen": 1781868960596,
+      "lastSeen": 1781869008171,
+      "lastRaw": "povez"
+    },
+    "pribehmia": {
+      "count": 1,
+      "firstSeen": 1781868960596,
+      "lastSeen": 1781868960596,
+      "lastRaw": "pribehmia"
+    },
+    "pribeh": {
+      "count": 1,
+      "firstSeen": 1781906875230,
+      "lastSeen": 1781906875230,
+      "lastRaw": "pribeh"
+    },
+    "prstitelovi": {
+      "count": 1,
+      "firstSeen": 1781906875230,
+      "lastSeen": 1781906875230,
+      "lastRaw": "prstitelovi"
+    },
+    "nia": {
+      "count": 1,
+      "firstSeen": 1781906899160,
+      "lastSeen": 1781906899160,
+      "lastRaw": "nia"
+    }
+  },
+  "phrases": {
+    "ahoj co kojnozroiutmia": {
+      "count": 1,
+      "firstSeen": 1781373349726,
+      "lastSeen": 1781373349726,
+      "lastRaw": "ahoj co kojnozroiutMia"
+    },
+    "jak jemia": {
+      "count": 1,
+      "firstSeen": 1781373371133,
+      "lastSeen": 1781373371133,
+      "lastRaw": "jak jeMia"
+    },
+    "uky vsemca": {
+      "count": 2,
+      "firstSeen": 1781373391908,
+      "lastSeen": 1781373391908,
+      "lastRaw": "uky vsemCA"
+    },
+    "jsem nemocny": {
+      "count": 1,
+      "firstSeen": 1781373415339,
+      "lastSeen": 1781373415339,
+      "lastRaw": "jsem nemocny"
+    },
+    "ahoj mia": {
+      "count": 7,
+      "firstSeen": 1781410191924,
+      "lastSeen": 1781906912177,
+      "lastRaw": "ahoj mia"
+    },
+    "pohadkumio rek": {
+      "count": 1,
+      "firstSeen": 1781413938331,
+      "lastSeen": 1781413938331,
+      "lastRaw": "pohadkumio rek"
+    },
+    "ni pohadkumio rek": {
+      "count": 1,
+      "firstSeen": 1781413938332,
+      "lastSeen": 1781413938332,
+      "lastRaw": "ni pohadkuMio Rek"
+    },
+    "ahoj mio": {
+      "count": 2,
+      "firstSeen": 1781413950154,
+      "lastSeen": 1781630283365,
+      "lastRaw": "ahoj mio"
+    },
+    "ahojmia": {
+      "count": 2,
+      "firstSeen": 1781413992257,
+      "lastSeen": 1781464123464,
+      "lastRaw": "ahojMia"
+    },
+    "ahoj mia co miska": {
+      "count": 1,
+      "firstSeen": 1781464004907,
+      "lastSeen": 1781464004907,
+      "lastRaw": "ahoj mia co miska"
+    },
+    "hojmio a": {
+      "count": 2,
+      "firstSeen": 1781464034547,
+      "lastSeen": 1781464101031,
+      "lastRaw": "hojMio A"
+    },
+    "rekni mi pohadku mia": {
+      "count": 1,
+      "firstSeen": 1781630260754,
+      "lastSeen": 1781630260754,
+      "lastRaw": "rekni mi pohadku Mia"
+    },
+    "polozka": {
+      "count": 1,
+      "firstSeen": 1781634554160,
+      "lastSeen": 1781634554160,
+      "lastRaw": "Položka"
+    },
+    "em item to": {
+      "count": 1,
+      "firstSeen": 1781634611559,
+      "lastSeen": 1781634611559,
+      "lastRaw": "em item To"
+    },
+    "itempolozka polozka": {
+      "count": 2,
+      "firstSeen": 1781634634488,
+      "lastSeen": 1781634634488,
+      "lastRaw": "itemPOLOŽKA položka"
+    },
+    "co kojnozrout?? mia": {
+      "count": 1,
+      "firstSeen": 1781853268440,
+      "lastSeen": 1781853268440,
+      "lastRaw": "co kojnozrout?? Mia"
+    },
+    "hlad?ojnozrout mia jak se ma nemco k": {
+      "count": 1,
+      "firstSeen": 1781853372834,
+      "lastSeen": 1781853372834,
+      "lastRaw": "hlad?ojnozrout mia jak se má nemCO K"
+    },
+    "ahoj mia jak je": {
+      "count": 1,
+      "firstSeen": 1781863444561,
+      "lastSeen": 1781863444561,
+      "lastRaw": "ahoj mia jak je"
+    },
+    "povez pribehmia": {
+      "count": 1,
+      "firstSeen": 1781868960596,
+      "lastSeen": 1781868960596,
+      "lastRaw": "povez pribehmia"
+    },
+    "cau povez pribehmia": {
+      "count": 1,
+      "firstSeen": 1781868960596,
+      "lastSeen": 1781868960596,
+      "lastRaw": "cau povez pribehMia"
+    },
+    "povez pohadku": {
+      "count": 1,
+      "firstSeen": 1781869008171,
+      "lastSeen": 1781869008171,
+      "lastRaw": "povez pohadku"
+    },
+    "z mia povez pohadku": {
+      "count": 1,
+      "firstSeen": 1781869008171,
+      "lastSeen": 1781869008171,
+      "lastRaw": "z Mia povez pohadku"
+    },
+    "rekni pribeh": {
+      "count": 1,
+      "firstSeen": 1781906875233,
+      "lastSeen": 1781906875233,
+      "lastRaw": "rekni pribeh"
+    },
+    "mia rekni pribeh o prstitelovi": {
+      "count": 1,
+      "firstSeen": 1781906875234,
+      "lastSeen": 1781906875234,
+      "lastRaw": "Mia rekni přiběh o prstitelovi"
+    },
+    "ahoj nia": {
+      "count": 1,
+      "firstSeen": 1781906899161,
+      "lastSeen": 1781906899161,
+      "lastRaw": "ahoj nia"
+    },
+    "rekni pohadku": {
+      "count": 1,
+      "firstSeen": 1781907320481,
+      "lastSeen": 1781907320481,
+      "lastRaw": "rekni pohadku"
+    },
+    "mia rekni pohadku": {
+      "count": 1,
+      "firstSeen": 1781907320512,
+      "lastSeen": 1781907320512,
+      "lastRaw": "Mia rekni pohadku"
+    }
+  },
+  "spicy": {},
+  "users": {
+    "test user 123": {
+      "label": "Test User 123",
+      "count": 472,
+      "spicyCount": 0,
+      "lastSeen": 1781913679411,
+      "favoritePhrases": {}
+    },
+    "vasaspinak": {
+      "label": "VasaSpinak",
+      "count": 31,
+      "spicyCount": 0,
+      "lastSeen": 1781907320531,
+      "favoritePhrases": {
+        "ahoj co kojnozroiutmia": {
+          "count": 1,
+          "firstSeen": 1781373349727,
+          "lastSeen": 1781373349727,
+          "lastRaw": "ahoj co kojnozroiutMia"
+        },
+        "jak jemia": {
+          "count": 1,
+          "firstSeen": 1781373371133,
+          "lastSeen": 1781373371133,
+          "lastRaw": "jak jeMia"
+        },
+        "uky vsemca": {
+          "count": 1,
+          "firstSeen": 1781373391908,
+          "lastSeen": 1781373391908,
+          "lastRaw": "uky vsemCA"
+        },
+        "jsem nemocny": {
+          "count": 1,
+          "firstSeen": 1781373415339,
+          "lastSeen": 1781373415339,
+          "lastRaw": "jsem nemocny"
+        },
+        "ni pohadkumio rek": {
+          "count": 1,
+          "firstSeen": 1781413938332,
+          "lastSeen": 1781413938332,
+          "lastRaw": "ni pohadkuMio Rek"
+        },
+        "ahoj mio": {
+          "count": 2,
+          "firstSeen": 1781413950154,
+          "lastSeen": 1781630283365,
+          "lastRaw": "ahoj mio"
+        },
+        "ahojmia": {
+          "count": 2,
+          "firstSeen": 1781413992257,
+          "lastSeen": 1781464123464,
+          "lastRaw": "ahojMia"
+        },
+        "ahoj mia": {
+          "count": 6,
+          "firstSeen": 1781414052848,
+          "lastSeen": 1781906912177,
+          "lastRaw": "ahoj mia"
+        },
+        "ahoj mia co miska": {
+          "count": 1,
+          "firstSeen": 1781464004908,
+          "lastSeen": 1781464004908,
+          "lastRaw": "ahoj mia co miska"
+        },
+        "hojmio a": {
+          "count": 2,
+          "firstSeen": 1781464034547,
+          "lastSeen": 1781464101031,
+          "lastRaw": "hojMio A"
+        },
+        "mia": {
+          "count": 1,
+          "firstSeen": 1781464053388,
+          "lastSeen": 1781464053388,
+          "lastRaw": "Mia"
+        },
+        "rekni mi pohadku mia": {
+          "count": 1,
+          "firstSeen": 1781630260754,
+          "lastSeen": 1781630260754,
+          "lastRaw": "rekni mi pohadku Mia"
+        },
+        "polozka": {
+          "count": 1,
+          "firstSeen": 1781634554160,
+          "lastSeen": 1781634554160,
+          "lastRaw": "Položka"
+        },
+        "em item to": {
+          "count": 1,
+          "firstSeen": 1781634611559,
+          "lastSeen": 1781634611559,
+          "lastRaw": "em item To"
+        },
+        "itempolozka polozka": {
+          "count": 1,
+          "firstSeen": 1781634634488,
+          "lastSeen": 1781634634488,
+          "lastRaw": "itemPOLOŽKA položka"
+        },
+        "co kojnozrout?? mia": {
+          "count": 1,
+          "firstSeen": 1781853268440,
+          "lastSeen": 1781853268440,
+          "lastRaw": "co kojnozrout?? Mia"
+        },
+        "hlad?ojnozrout mia jak se ma nemco k": {
+          "count": 1,
+          "firstSeen": 1781853372834,
+          "lastSeen": 1781853372834,
+          "lastRaw": "hlad?ojnozrout mia jak se má nemCO K"
+        },
+        "ahoj mia jak je": {
+          "count": 1,
+          "firstSeen": 1781863444561,
+          "lastSeen": 1781863444561,
+          "lastRaw": "ahoj mia jak je"
+        },
+        "cau povez pribehmia": {
+          "count": 1,
+          "firstSeen": 1781868960596,
+          "lastSeen": 1781868960596,
+          "lastRaw": "cau povez pribehMia"
+        },
+        "z mia povez pohadku": {
+          "count": 1,
+          "firstSeen": 1781869008171,
+          "lastSeen": 1781869008171,
+          "lastRaw": "z Mia povez pohadku"
+        },
+        "mia rekni pribeh o prstitelovi": {
+          "count": 1,
+          "firstSeen": 1781906875235,
+          "lastSeen": 1781906875235,
+          "lastRaw": "Mia rekni přiběh o prstitelovi"
+        },
+        "ahoj nia": {
+          "count": 1,
+          "firstSeen": 1781906899161,
+          "lastSeen": 1781906899161,
+          "lastRaw": "ahoj nia"
+        },
+        "mia rekni pohadku": {
+          "count": 1,
+          "firstSeen": 1781907320531,
+          "lastSeen": 1781907320531,
+          "lastRaw": "Mia rekni pohadku"
+        }
+      }
+    },
+    "testuser": {
+      "label": "TestUser",
+      "count": 1,
+      "spicyCount": 0,
+      "lastSeen": 1781410191925,
+      "favoritePhrases": {
+        "ahoj mia": {
+          "count": 1,
+          "firstSeen": 1781410191925,
+          "lastSeen": 1781410191925,
+          "lastRaw": "ahoj mia"
+        }
+      }
+    }
+  },
+  "recentSamples": [
+    {
+      "ts": 1781907320540,
+      "userLabel": "VasaSpinak",
+      "platform": "kick",
+      "text": "Mia rekni pohadku",
+      "spicy": false
+    },
+    {
+      "ts": 1781906912177,
+      "userLabel": "VasaSpinak",
+      "platform": "kick",
+      "text": "ahoj mia",
+      "spicy": false
+    },
+    {
+      "ts": 1781906899161,
+      "userLabel": "VasaSpinak",
+      "platform": "kick",
+      "text": "ahoj nia",
+      "spicy": false
+    },
+    {
+      "ts": 1781906875236,
+      "userLabel": "VasaSpinak",
+      "platform": "kick",
+      "text": "Mia rekni přiběh o prstitelovi",
+      "spicy": false
+    }
+  ]
+}

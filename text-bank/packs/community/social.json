@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "packs": {
+    "community_greeting_mia": {
+      "meta": {
+        "key": "community_greeting_mia",
+        "speaker": "mia",
+        "intent": "community"
+      },
+      "variants": [
+        "{name}, ahoj. Jsem ráda, že jsi tady.",
+        "{name}, vítej. Vnímám tě.",
+        "{name}, zdravím tě. Jedu s vámi dál.",
+        "{name}, čau. Vidím tě v chatu.",
+        "{name}, ahoj. Pěkné, že ses ukázal.",
+        "{name}, vítej v proudu.",
+        "{name}, zdravím tě. Dávám pozor.",
+        "{name}, ahoj. Registruju příchod."
+      ]
+    },
+    "community_greeting_kojnozout": {
+      "meta": {
+        "key": "community_greeting_kojnozout",
+        "speaker": "kojnozout",
+        "intent": "community"
+      },
+      "variants": [
+        "{name} je tady. Tak si tě očichám po svém.",
+        "{name}, vítej. Já tě registruju.",
+        "{name} dorazil. To už je lepší společnost.",
+        "{name}, čau. Hlavně nedělej mrtvýho brouka.",
+        "{name}, vidím tě. To je slušný.",
+        "{name}, jo, příchozí potvrzen.",
+        "{name}, nazdar. Tady už to začíná být zajímavější.",
+        "{name}, vítej. Miska tě taky registruje."
+      ]
+    },
+    "community_illness_mia": {
+      "meta": {
+        "key": "community_illness_mia",
+        "speaker": "mia",
+        "intent": "community"
+      },
+      "variants": [
+        "{name}, přeju brzké uzdravení. Snad budete co nejdřív v pořádku — hlavně ať nenakazíte Kojnožrouta.",
+        "{name}, hlavně odpočívej a kurýruj se. Kojnožrouta teď necháme v bezpečí.",
+        "{name}, dej si klid. Zdraví má přednost a Kojnožrouta teď hlídáme."
+      ]
+    },
+    "community_illness_kojnozout": {
+      "meta": {
+        "key": "community_illness_kojnozout",
+        "speaker": "kojnozout",
+        "intent": "community"
+      },
+      "variants": [
+        "{name}… ossík, to jsem asi chytl. Už cítím, že mi není úplně nejlíp.",
+        "{name}, fuj… snad to nebyla chřipka. Cítím se trochu mimo.",
+        "{name}, jo… asi jsem to chytl taky. Teď budu potřebovat péči.",
+        "{name}, ble… snad to přejde. Je mi trochu špatně."
+      ]
+    }
+  }
+}

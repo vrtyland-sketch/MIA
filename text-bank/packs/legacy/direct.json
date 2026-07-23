@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "packs": {
+    "direct_mia": {
+      "meta": {
+        "key": "direct_mia",
+        "speaker": "mia"
+      },
+      "variants": [
+        "Ahoj, jsem tady. Co máš na srdci?",
+        "Čau, vidím tě. Klidně piš dál.",
+        "Jo, slyším tě. Co řešíme?",
+        "Nazdar. Jsem připojená a dávám pozor.",
+        "Ahoj. Jedu s vámi, povídej.",
+        "Jsem tady a vnímám tě.",
+        "Vidím tě v chatu. Pokračuj.",
+        "Jo, registruju tě. Co potřebuješ?",
+        "Jsem online a poslouchám.",
+        "Ahoj, klidně to rozjeď.",
+        "Jsem tu. Co dneska letí?",
+        "Vidím tě. Můžeš mluvit.",
+        "Jsem připravená reagovat.",
+        "Dávám pozor. Co máš pro mě?",
+        "Ahoj, vnímám tě naplno."
+      ]
+    },
+    "direct_kojnozout": {
+      "meta": {
+        "key": "direct_kojnozout",
+        "speaker": "kojnozout"
+      },
+      "variants": [
+        "Jo jo, slyším tě. A slyším i prázdnou misku.",
+        "Nazdar. Máš pro mě něco dobrého?",
+        "Jsem tady. A trochu bych i papal.",
+        "Kojnožrout hlásí službu. Co se děje?",
+        "Vidím tě. A jo, pořád mám hlad.",
+        "Já tě slyším taky. Jen bacha, koušu náladou.",
+        "Co je? Já tu jsem a číhám.",
+        "Jsem tady. Miska taky.",
+        "Jo, registruju tě. A registruju i každý sousto.",
+        "Nazdar. Co neseš?",
+        "Tak povídej. Já si tě očuchám po svém.",
+        "Jsem připravenej. Ideálně i na krmení.",
+        "Slyším tě. A jo, miska je pořád důležitá.",
+        "Co se děje, komunito? Já koukám.",
+        "Já tu jsem. Hlad taky."
+      ]
+    }
+  }
+}

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MIA Gift Animation Desk</title>
+  <link rel="stylesheet" href="/mia-soft-neon-world.css?v=36-koj-unify" />
+  <style>
+    :root {
+      --ga-accent: #b388ff;
+      --ga-cyan: #5ee7ff;
+      --ga-ink: #e8f2ff;
+      --ga-muted: #9bb0c9;
+      --ga-panel: rgba(8, 14, 28, 0.86);
+      --ga-line: rgba(140, 170, 255, 0.28);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ga-ink);
+      background:
+        radial-gradient(ellipse at 18% 0%, rgba(160, 120, 255, 0.22), transparent 48%),
+        radial-gradient(ellipse at 88% 18%, rgba(80, 200, 255, 0.14), transparent 42%),
+        linear-gradient(160deg, #050a14, #0c1528 55%, #070e1a);
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+    .shell { max-width: 1180px; margin: 0 auto; padding: 28px 20px 48px; }
+    header h1 {
+      margin: 0 0 6px;
+      font-size: clamp(28px, 4vw, 40px);
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, #fff 0%, #c9b0ff 55%, #7ee0ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    header p { margin: 0 0 18px; color: var(--ga-muted); max-width: 68ch; }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0 0 20px;
+    }
+    .chip {
+      appearance: none;
+      border: 1px solid var(--ga-line);
+      background: rgba(120, 100, 255, 0.08);
+      color: var(--ga-ink);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font: inherit;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .chip:hover { border-color: rgba(180, 150, 255, 0.55); }
+    .chip.wau {
+      background: linear-gradient(135deg, rgba(180, 120, 255, 0.35), rgba(80, 200, 255, 0.18));
+      border-color: rgba(180, 150, 255, 0.5);
+      font-weight: 650;
+    }
+    .chip.on {
+      box-shadow: 0 0 0 1px rgba(160, 120, 255, 0.55), 0 0 18px rgba(100, 180, 255, 0.18);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 18px;
+    }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+    .panel {
+      background: var(--ga-panel);
+      border: 1px solid var(--ga-line);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow:
+        0 6px 18px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(180, 210, 255, 0.08);
+      backdrop-filter: blur(10px);
+    }
+    .panel h2 {
+      margin: 0 0 12px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #b8c8ff;
+    }
+    label {
+      display: block;
+      font-size: 12px;
+      color: var(--ga-muted);
+      margin: 10px 0 4px;
+    }
+    input, textarea, select {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid var(--ga-line);
+      background: rgba(0, 0, 0, 0.28);
+      color: var(--ga-ink);
+      padding: 10px 12px;
+      font: inherit;
+    }
+    textarea { min-height: 72px; resize: vertical; }
+    .row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    button, .btn {
+      appearance: none;
+      border: 1px solid var(--ga-line);
+      background: rgba(255,255,255,0.04);
+      color: var(--ga-ink);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    button.primary {
+      background: linear-gradient(135deg, #9b6dff, #4fc3ff);
+      border-color: transparent;
+      color: #0a1020;
+      font-weight: 700;
+    }
+    button:disabled { opacity: 0.5; cursor: wait; }
+    .status {
+      margin-top: 12px;
+      font-size: 13px;
+      color: #b7d4ef;
+      min-height: 1.4em;
+    }
+    .preview {
+      aspect-ratio: 16/9;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--ga-line);
+      background:
+        radial-gradient(ellipse at 70% 30%, rgba(160, 120, 255, 0.18), transparent 50%),
+        #070d18;
+      position: relative;
+    }
+    .preview iframe, .preview img, .preview video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border: 0;
+      display: block;
+    }
+    .brief {
+      margin-top: 12px;
+      font-size: 12px;
+      line-height: 1.45;
+      color: var(--ga-muted);
+      white-space: pre-wrap;
+      max-height: 180px;
+      overflow: auto;
+    }
+    .toggles { display: grid; gap: 8px; margin-top: 8px; }
+    .toggle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.02);
+    }
+    .toggle span { font-size: 13px; }
+    .links { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    code { font-size: 12px; color: #9fdfff; }
+    .tier-note strong { color: #d4c0ff; }
+  </style>
+</head>
+<body>
+  <div class="shell soft-neon-lab tech-energy-lab">
+    <header>
+      <h1>Gift Animation Desk</h1>
+      <p>
+        Součást grafického celku Soft Neon: gift z mapy + profilovka → ~10s purple-tech stage
+        (stejné energy particles jako MIA / Koj). OBS:
+        <code>MIA_GIFT_ANIMATION</code>
+        → <code>/gift-animation-overlay.html?v=37-stream-polish</code>
+      </p>
+      <div class="chips" id="giftChips" role="group" aria-label="Rychlé gifty">
+        <button type="button" class="chip wau on" data-gift="lion">Lion · WAU</button>
+        <button type="button" class="chip wau" data-gift="universe">Universe · WAU</button>
+        <button type="button" class="chip wau" data-gift="galaxy">Galaxy · high</button>
+        <button type="button" class="chip" data-gift="rose">Rose</button>
+        <button type="button" class="chip" data-gift="heart">Heart</button>
+      </div>
+    </header>
+
+    <div class="grid">
+      <section class="panel">
+        <h2>Prompt builder</h2>
+        <label for="giftKey">Gift (mapa / alias)</label>
+        <input id="giftKey" list="giftHints" value="lion" placeholder="lion / lev / LION" />
+        <datalist id="giftHints">
+          <option value="lion"></option>
+          <option value="lev"></option>
+          <option value="rose"></option>
+          <option value="galaxy"></option>
+          <option value="universe"></option>
+          <option value="heart"></option>
+        </datalist>
+
+        <label for="username">Username</label>
+        <input id="username" value="DemoDivak" />
+
+        <label for="avatarUrl">Profile picture URL</label>
+        <input id="avatarUrl" placeholder="https://… (TikTok avatar)" />
+
+        <label for="extraWords">Extra words (volitelné)</label>
+        <textarea id="extraWords" placeholder="např. zlatá hříva, jemné mazlení"></textarea>
+
+        <div class="row">
+          <button type="button" class="primary" id="btnGenerate">Generate 10s animation</button>
+          <button type="button" id="btnAsk">Ask chat for words</button>
+          <button type="button" id="btnPreview">Preview prompt</button>
+        </div>
+        <div class="status" id="status">Připraveno · purple-tech stage.</div>
+        <div class="brief" id="brief"></div>
+
+        <h2 style="margin-top:20px">Auto na streamu</h2>
+        <div class="toggles">
+          <label class="toggle"><span>Auto generovat z gift mapy</span>
+            <input type="checkbox" id="cfgAuto" /></label>
+          <label class="toggle"><span>Nejdřív ask words</span>
+            <input type="checkbox" id="cfgAsk" /></label>
+        </div>
+        <label for="cfgTier">Min. tier pro auto</label>
+        <select id="cfgTier">
+          <option>T1</option><option>T2</option><option selected>T3</option>
+          <option>T4</option><option>T5</option><option>T6</option>
+        </select>
+        <div class="row">
+          <button type="button" id="btnSaveCfg">Uložit config</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Preview / OBS</h2>
+        <div class="preview" id="preview">
+          <iframe id="previewFrame" title="gift animation preview"></iframe>
+        </div>
+        <div class="row">
+          <a class="btn" id="openOverlay" href="/gift-animation-overlay.html?v=37-stream-polish" target="_blank">Otevřít overlay</a>
+          <a class="btn" id="openManifest" href="#" target="_blank">Manifest</a>
+          <a class="btn" href="/mia-paint/rig-desk.html">Rig Desk</a>
+          <a class="btn" href="/mia-streamer-dashboard.html">Dashboard</a>
+        </div>
+        <p class="status" style="margin-top:14px">
+          OBS Browser Source (1920×1080, transparent, Shutdown when not visible = OFF):<br />
+          <code>http://127.0.0.1:3000/gift-animation-overlay.html?v=37-stream-polish</code><br />
+          Scéna: <code>SPINAK_ENGINE_GIFTS</code> · zdroj: <code>MIA_GIFT_ANIMATION</code>
+          (<code>npm run obs:apply-hands</code> · <code>npm run obs:refresh-overlays</code>)
+        </p>
+        <p class="brief tier-note" id="limitNote">
+          Quality: <strong>v3 WAU</strong> Lion / Universe (true-alpha PNG dual frames) ·
+          Galaxy high · levnější gifty = v2 SVG creature. Stejný tech-energy jazyk jako MIA + Koj runtime.
+          Není AI celovečerní video — stream-ready MIA world stage.
+        </p>
+      </section>
+    </div>
+
+    <div class="links">
+      <span class="status">gift overlay <code>v=37-stream-polish</code></span>
+      <span class="status">docs: <code>docs/MIA_GRAPHICS_WHOLE.md</code> · <code>docs/SOFT_NEON_RIG_DESK.md</code></span>
+    </div>
+  </div>
+
+<script>
+(function () {
+  const BUST = "37-stream-polish";
+  const $ = (id) => document.getElementById(id);
+  const status = $("status");
+  const briefEl = $("brief");
+  const frame = $("previewFrame");
+  const giftKey = $("giftKey");
+
+  function setStatus(msg) { status.textContent = msg; }
+
+  function withBust(url) {
+    if (!url) return "/gift-animation-overlay.html?v=" + BUST;
+    return url + (url.includes("?") ? "&" : "?") + "v=" + BUST;
+  }
+
+  async function api(path, opts) {
+    const res = await fetch(path, {
+      cache: "no-store",
+      headers: { "Content-Type": "application/json" },
+      ...opts
+    });
+    return res.json();
+  }
+
+  function payload() {
+    return {
+      giftKey: giftKey.value.trim(),
+      giftName: giftKey.value.trim(),
+      username: $("username").value.trim() || "Divák",
+      profileImageUrl: $("avatarUrl").value.trim(),
+      extraWords: $("extraWords").value.trim() || undefined
+    };
+  }
+
+  function syncChips() {
+    const v = String(giftKey.value || "").trim().toLowerCase();
+    document.querySelectorAll("#giftChips .chip").forEach((btn) => {
+      const g = String(btn.getAttribute("data-gift") || "").toLowerCase();
+      const on =
+        v === g ||
+        (g === "lion" && (v === "lev" || v === "🦁")) ||
+        (g === "universe" && /vesmir|vesmír|universe|🌠/.test(v));
+      btn.classList.toggle("on", on);
+    });
+  }
+
+  document.querySelectorAll("#giftChips .chip").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      giftKey.value = btn.getAttribute("data-gift") || "lion";
+      syncChips();
+      setStatus("Gift: " + giftKey.value);
+    });
+  });
+  giftKey.addEventListener("input", syncChips);
+  syncChips();
+
+  function showResult(data) {
+    if (!data?.ok && !data?.pendingAsk) {
+      setStatus("Chyba: " + (data?.error || "unknown"));
+      return;
+    }
+    if (data.pendingAsk) {
+      setStatus("Ask words aktivní — čekám na chat / timeout.");
+      briefEl.textContent = data.brief?.askChatPrompt || data.pendingAsk.askChatPrompt || "";
+      frame.src = withBust("/gift-animation-overlay.html");
+      return;
+    }
+    const tier = data.brief?.motif?.qualityTier || data.motif?.qualityTier || "";
+    const spec = data.brief?.motif?.spectacle || data.motif?.spectacle || "";
+    setStatus(
+      "Hotovo · job " + (data.jobId || "") +
+      (spec ? " · " + spec : "") +
+      (tier ? " · " + String(tier).replace(/^mia_/, "") : "")
+    );
+    briefEl.textContent = [
+      data.brief?.caption,
+      data.brief?.improvLine,
+      data.brief?.sceneLine,
+      "AI prompt (future): " + (data.brief?.aiVideoPrompt || "").slice(0, 220) + "…"
+    ].filter(Boolean).join("\n");
+    const url = data.overlayUrl || ("/gift-animation-overlay.html?job=" + encodeURIComponent(data.jobId || ""));
+    frame.src = withBust(url);
+    $("openOverlay").href = withBust(url);
+    if (data.manifestUrl) $("openManifest").href = data.manifestUrl;
+  }
+
+  $("btnPreview").onclick = async () => {
+    setStatus("Stavím prompt…");
+    const data = await api("/api/gift-animation/preview", {
+      method: "POST",
+      body: JSON.stringify(payload())
+    });
+    briefEl.textContent = JSON.stringify(data.brief || data, null, 2);
+    setStatus(data.ok ? "Prompt ready" : (data.error || "fail"));
+  };
+
+  $("btnGenerate").onclick = async () => {
+    $("btnGenerate").disabled = true;
+    setStatus("Generuju ~10s purple-tech animaci…");
+    try {
+      const data = await api("/api/gift-animation/generate", {
+        method: "POST",
+        body: JSON.stringify(payload())
+      });
+      showResult(data);
+    } catch (err) {
+      setStatus("Chyba: " + err.message);
+    } finally {
+      $("btnGenerate").disabled = false;
+    }
+  };
+
+  $("btnAsk").onclick = async () => {
+    setStatus("Ask words…");
+    const data = await api("/api/gift-animation/ask-words", {
+      method: "POST",
+      body: JSON.stringify(payload())
+    });
+    showResult(data);
+  };
+
+  async function loadCfg() {
+    try {
+      const data = await api("/api/gift-animation/config");
+      const c = data.config || {};
+      $("cfgAuto").checked = !!c.autoEnabled;
+      $("cfgAsk").checked = !!c.askWordsByDefault;
+      $("cfgTier").value = c.minTier || "T3";
+    } catch (_err) { /* ignore */ }
+  }
+
+  $("btnSaveCfg").onclick = async () => {
+    const data = await api("/api/gift-animation/config", {
+      method: "POST",
+      body: JSON.stringify({
+        autoEnabled: $("cfgAuto").checked,
+        askWordsByDefault: $("cfgAsk").checked,
+        minTier: $("cfgTier").value
+      })
+    });
+    setStatus(data.ok ? "Config uložen" : (data.error || "config fail"));
+  };
+
+  loadCfg();
+})();
+</script>
+</body>
+</html>

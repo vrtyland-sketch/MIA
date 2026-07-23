@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <title>T0 Flyby</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: transparent;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: #fff;
+    }
+
+    #flyby {
+      position: absolute;
+      top: 38%;
+      left: -320px;
+      display: none;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 18px 12px 12px;
+      border-radius: 999px;
+      background: rgba(8, 12, 28, 0.82);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(10px);
+      will-change: transform;
+    }
+
+    #flyby.active {
+      display: flex;
+      animation: flyAcross 4.6s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+    }
+
+    @keyframes flyAcross {
+      0% { transform: translateX(0); opacity: 0; }
+      8% { opacity: 1; }
+      88% { opacity: 1; }
+      100% { transform: translateX(calc(100vw + 360px)); opacity: 0; }
+    }
+
+    .avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 18px;
+      text-transform: uppercase;
+      border: 2px solid var(--accent, #00eaff);
+      box-shadow: 0 0 18px color-mix(in srgb, var(--accent, #00eaff) 45%, transparent);
+      background: linear-gradient(135deg, rgba(155, 92, 255, 0.85), rgba(0, 234, 255, 0.75));
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .copy {
+      min-width: 180px;
+    }
+
+    .label {
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      opacity: 0.72;
+      font-weight: 800;
+    }
+
+    .name {
+      font-size: 22px;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-top: 2px;
+    }
+
+    .sub {
+      font-size: 12px;
+      opacity: 0.78;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div id="flyby">
+    <div class="avatar" id="avatar"></div>
+    <div class="copy">
+      <div class="label" id="label">T0</div>
+      <div class="name" id="name">Divák</div>
+      <div class="sub" id="sub"></div>
+    </div>
+  </div>
+
+  <script>
+    const root = document.getElementById("flyby");
+    const avatarEl = document.getElementById("avatar");
+    let lastId = "";
+
+    function initials(name) {
+      const parts = String(name || "?").trim().split(/\s+/).filter(Boolean);
+      if (parts.length === 0) return "?";
+      if (parts.length === 1) return parts[0].slice(0, 2);
+      return `${parts[0][0] || ""}${parts[1][0] || ""}`;
+    }
+
+    function render(flyby) {
+      if (!flyby || !flyby.flybyId) {
+        root.classList.remove("active");
+        return;
+      }
+
+      if (flyby.flybyId === lastId && root.classList.contains("active")) {
+        return;
+      }
+
+      lastId = flyby.flybyId;
+      root.style.setProperty("--accent", flyby.accent || "#00eaff");
+      document.getElementById("label").textContent = flyby.label || "T0";
+      document.getElementById("name").textContent = flyby.userLabel || "Divák";
+      document.getElementById("sub").textContent = flyby.subtext || "";
+
+      avatarEl.innerHTML = "";
+      if (flyby.avatarUrl) {
+        const img = document.createElement("img");
+        img.src = flyby.avatarUrl;
+        img.alt = flyby.userLabel || "avatar";
+        img.referrerPolicy = "no-referrer";
+        img.onerror = () => {
+          avatarEl.textContent = initials(flyby.userLabel);
+        };
+        avatarEl.appendChild(img);
+      } else {
+        avatarEl.textContent = initials(flyby.userLabel);
+      }
+
+      root.classList.remove("active");
+      void root.offsetWidth;
+      root.classList.add("active");
+    }
+
+    async function tick() {
+      try {
+        const res = await fetch("/overlay-state?_=" + Date.now(), { cache: "no-store" });
+        if (!res.ok) throw new Error("overlay-state");
+        render((await res.json())?.t0Flyby || null);
+      } catch (_err) {}
+    }
+
+    tick();
+    setInterval(tick, 350);
+  </script>
+</body>
+</html>

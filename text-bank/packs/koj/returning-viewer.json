@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "packs": {
+    "koj_returning_ack": {
+      "meta": {
+        "key": "koj_returning_ack",
+        "speaker": "kojnozout",
+        "intent": "returning_viewer"
+      },
+      "variants": [
+        "Rád tě zase vidím tady.",
+        "Zase tady — dobrý, registruju tě.",
+        "Jo, zpátky. To beru.",
+        "Zase v chatu — slyším tě.",
+        "Vítám tě znovu, já jsem pořád vzhůru."
+      ]
+    }
+  }
+}

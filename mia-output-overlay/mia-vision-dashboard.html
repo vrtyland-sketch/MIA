@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MIA Vision — náhled scény</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: #0b0f14;
+      color: #e8eef5;
+      min-height: 100vh;
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 20px; }
+    h1 { font-size: 1.25rem; margin: 0 0 6px; }
+    .sub { color: #8fa3b8; margin-bottom: 18px; font-size: 0.92rem; }
+    .grid { display: grid; grid-template-columns: 1fr 320px; gap: 16px; }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+    .card {
+      background: #121a24;
+      border: 1px solid #243041;
+      border-radius: 12px;
+      padding: 14px;
+    }
+    .preview {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      border-radius: 8px;
+      object-fit: contain;
+      display: block;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin-right: 6px;
+      margin-bottom: 6px;
+    }
+    .ok { background: #12351f; color: #7dffb0; }
+    .warn { background: #3a2a10; color: #ffcc66; }
+    .meta { font-size: 0.85rem; line-height: 1.5; color: #b7c5d6; }
+    .meta strong { color: #fff; }
+    ul { margin: 8px 0 0; padding-left: 18px; }
+    .foot { margin-top: 14px; color: #6f8196; font-size: 0.8rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>MIA Vision</h1>
+    <div class="sub">Živý náhled scény + auto-layout pro TikTok / Kick</div>
+    <div class="grid">
+      <div class="card">
+        <img id="preview" class="preview" alt="Náhled scény" />
+        <div class="foot" id="previewMeta">Čekám na screenshot…</div>
+      </div>
+      <div class="card">
+        <div id="badges"></div>
+        <div class="meta" id="meta"></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const preview = document.getElementById("preview");
+    const previewMeta = document.getElementById("previewMeta");
+    const badges = document.getElementById("badges");
+    const meta = document.getElementById("meta");
+
+    async function refresh() {
+      try {
+        const res = await fetch("/mia/vision", { cache: "no-store" });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || "vision unavailable");
+
+        const v = data.vision || {};
+        const mode = data.layoutMode || v.lastMode || "idle";
+        const platform = v.lastPlatform || "tiktok";
+
+        badges.innerHTML = `
+          <span class="badge ok">${mode}</span>
+          <span class="badge ${v.running ? "ok" : "warn"}">${v.running ? "sleduje" : "vypnuto"}</span>
+          <span class="badge ok">${platform}</span>
+        `;
+
+        const playing = (v.lastView?.playingNow || [])
+          .map((x) => `<li>${x.sourceName} (${x.tier})</li>`)
+          .join("") || "<li>žádné gift video</li>";
+
+        meta.innerHTML = `
+          <div><strong>Auto-layout:</strong> ${v.autoLayout ? "zapnuto" : "vypnuto"}</div>
+          <div><strong>Interval:</strong> ${v.intervalMs || "?"} ms</div>
+          <div><strong>Aplikováno pozic:</strong> ${v.appliedCount || 0}</div>
+          <div style="margin-top:10px"><strong>Právě hraje:</strong></div>
+          <ul>${playing}</ul>
+        `;
+
+        const url = v.previewUrl || v.lastScreenshot?.publicUrl || "";
+        if (url) {
+          preview.src = url + (url.includes("?") ? "&" : "?") + "t=" + Date.now();
+          previewMeta.textContent = "Poslední snímek scény";
+        } else {
+          preview.removeAttribute("src");
+          previewMeta.textContent = "Screenshot se načte za pár sekund…";
+        }
+      } catch (err) {
+        previewMeta.textContent = "Chyba: " + (err.message || err);
+      }
+    }
+
+    refresh();
+    setInterval(refresh, 2500);
+  </script>
+</body>
+</html>

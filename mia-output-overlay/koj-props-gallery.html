@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<title>MIA · Koj props</title>
+<style>
+  html, body { margin: 0; background: #07060c; color: #f2ebff; font-family: "Segoe UI", Arial, sans-serif; }
+  h1 { text-align: center; margin: 16px; font-size: 22px; }
+  p { text-align: center; color: #b9a8c9; font-size: 13px; margin: 0 0 16px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; padding: 0 16px 24px; max-width: 900px; margin: 0 auto; }
+  .card { border-radius: 16px; overflow: hidden; border: 2px solid rgba(138,255,157,.25); background: #0a0812; text-align: center; }
+  .card img { width: 100%; aspect-ratio: 1; object-fit: contain; display: block; background: repeating-conic-gradient(#111 0% 25%, #0a0a0a 0% 50%) 50%/24px 24px; }
+  .meta { padding: 10px; font-size: 13px; font-weight: 800; }
+  .use { font-size: 11px; color: #9a8fb0; padding-bottom: 10px; }
+</style>
+</head>
+<body>
+<h1>Scene props — runtime propLayer</h1>
+<p>Miska · míč · mikrofon · mávající ruka</p>
+<div class="grid" id="grid"></div>
+<script>
+const API = location.origin.startsWith("http") ? location.origin : "http://127.0.0.1:3000";
+const PROPS = [
+  { id: "bowl", label: "Miska", use: "feeding / hungry / full" },
+  { id: "ball", label: "Míč", use: "play / hop / excited" },
+  { id: "mic", label: "Mikrofon", use: "stream / cheer" },
+  { id: "hand", label: "Ruka", use: "wave / greet" }
+];
+document.getElementById("grid").innerHTML = PROPS.map((p) => `
+  <div class="card">
+    <img src="${API}/assets/kojnozrout/props/${p.id}.png?v=1" alt="${p.label}" loading="lazy" />
+    <div class="meta">${p.label}</div>
+    <div class="use">${p.use}</div>
+  </div>`).join("");
+</script>
+</body>
+</html>

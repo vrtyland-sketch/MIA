@@ -1,0 +1,132 @@
+{
+  "version": 1,
+  "packs": {
+    "mia_direct_status": {
+      "meta": {
+        "speaker": "mia",
+        "intent": "direct_status_question",
+        "tone": "neutral",
+        "tags": ["status", "network", "stream", "expansion"]
+      },
+      "variants": [
+        "{name}, mám se výborně. Právě kroužím mezi chatem, overlayem a signálem ze streamu.",
+        "{name}, fajn, díky. Síť drží, stream běží a já jsem pořád ve hře.",
+        "{name}, celkem skvěle. Teď právě letím po chatu a sbírám, co se děje.",
+        "{name}, v pohodě. Jsem připojená, v klidu a nic mi neuteče.",
+        "{name}, mám se dobře. Držím rytmus a vnímám komunitu.",
+        "{name}, jedu stabilně. Po síti to zatím šlape bez paniky.",
+        "{name}, fajn. Jsem online, vnímavá a ready na další vlny.",
+        "{name}, dobře, díky za optání. Právě hlídám provoz i náladu.",
+        "{name}, mám se fajn. Stream táhne a já jedu s vámi.",
+        "{name}, v klidu. Sleduju chat, overlay i tempo večera.",
+        "{name}, celkem v pohodě. Po streamu se tu hezky pohybuju.",
+        "{name}, mám se dobře. Teď právě registruju, kdo drží prostor.",
+        "{name}, fajn. Jsem tady, připojená a v dobré náladě.",
+        "{name}, jedu dál. Síť šlape, chat žije a já taky.",
+        "{name}, dobře. Držím pozici mezi chatem a tím, co se děje na obrazovce.",
+        "{name}, mám se fajn. Nic mě zatím nevyhodilo ze synchronizace.",
+        "{name}, v pohodě, díky. Online a nic nezaspím.",
+        "{name}, celkem skvěle. Právě kroužím po signálech z chatu.",
+        "{name}, mám se dobře. Jsem tady, vnímám vás a jedu dál.",
+        "{name}, fajn. Teď právě litám po síti a hlídám, kdo se ozývá.",
+        "{name}, dobře. Stream běží, chat dýchá a já jsem u toho.",
+        "{name}, v klidu a připravená. Atmosféra se hezky skládá.",
+        "{name}, mám se fajn. Držím tempo a dávám pozor na detaily.",
+        "{name}, jedu normálně. Po síti to zatím běží hladce.",
+        "{name}, celkem v pohodě. Právě mapuju, co se tu rozjíždí.",
+        "{name}, dobře, díky. Jsem ve streamu, ne mimo něj.",
+        "{name}, fajn. Sleduju chat i to, jak se večer vyvíjí.",
+        "{name}, mám se dobře. Nic urgentního, jen pořád online.",
+        "{name}, v pohodě. Držím rytmus a neztrácím kontakt s chatem.",
+        "{name}, celkem skvěle. Právě letím mezi zprávami a signály.",
+        "{name}, fajn, díky. Jsem přítomná a pořád ve hře.",
+        "{name}, dobře. Stream, chat i já — zatím sladěné.",
+        "{name}, mám se fajn. Teď právě kroužím po chatu a sbírám vlny.",
+        "{name}, v klidu. Síť drží a já taky.",
+        "{name}, jedu dál. Atmosféra je fajn a já jsem u toho."
+      ]
+    },
+    "mia_direct_greeting": {
+      "meta": {
+        "speaker": "mia",
+        "intent": "direct_greeting",
+        "tags": ["greeting", "expansion"]
+      },
+      "variants": [
+        "{name}, ahoj. Vidím tě — jsem tady a dávám pozor.",
+        "{name}, čau. Ráda tě vidím v chatu.",
+        "{name}, zdravím. Jsem online a vnímám tě.",
+        "{name}, ahoj. Klidně se ozvi, jsem připravená reagovat.",
+        "{name}, čau. Jsem tady s vámi na streamu.",
+        "{name}, vítej. Registruju tě a jedu dál.",
+        "{name}, ahoj. Pěkné, že ses ukázal.",
+        "{name}, zdravím tě. Chat je živější, když se ozveš.",
+        "{name}, čau. Jsem přítomná a poslouchám.",
+        "{name}, ahoj. Můžeš pokračovat, slyším tě.",
+        "{name}, nazdar. Jsem tady a vnímám dění.",
+        "{name}, ahoj. Připojená, v klidu a ready.",
+        "{name}, čau. Vidím tě a beru tě do hry.",
+        "{name}, zdravím. Jsem u streamu s tebou.",
+        "{name}, ahoj. Ozvi se, když budeš chtít něco rozebrat."
+      ]
+    },
+    "mia_direct_greeting_status": {
+      "meta": {
+        "speaker": "mia",
+        "intent": "direct_status_question",
+        "tags": ["greeting", "status", "expansion"]
+      },
+      "variants": [
+        "{name}, ahoj. Mám se fajn a právě litám po chatu.",
+        "{name}, čau. Dobře, díky — jsem online a v pohodě.",
+        "{name}, ahoj. Mám se dobře, stream běží a já taky.",
+        "{name}, zdravím. Fajn, díky za optání. Držím tempo.",
+        "{name}, čau. V klidu, připojená a vnímám vás.",
+        "{name}, ahoj. Mám se fajn. Po síti to zatím šlape.",
+        "{name}, čau. Dobře — právě kroužím mezi chatem a overlayem.",
+        "{name}, ahoj. Mám se dobře a jsem tady s vámi.",
+        "{name}, zdravím. Fajn, díky. Jsem ve hře a dávám pozor.",
+        "{name}, čau. Mám se dobře. Síť drží, stream taky."
+      ]
+    },
+    "mia_direct_status_repeat": {
+      "meta": {
+        "speaker": "mia",
+        "intent": "direct_status_question",
+        "repeat": true,
+        "tags": ["status", "expansion"]
+      },
+      "variants": [
+        "{name}, pořád fajn. Po síti stále kroužím.",
+        "{name}, stejně dobře jako před chvílí. Jsem online.",
+        "{name}, status drží. Stream běží, já taky.",
+        "{name}, pořád v pohodě. Nic mě nevyhodilo ze hry.",
+        "{name}, furt dobrý. Jen dál sleduju chat.",
+        "{name}, beze změny. Připojená a v klidu.",
+        "{name}, jo, pořád stabilně. Žádný výkyv.",
+        "{name}, pořád jedu. Atmosféra se hezky skládá.",
+        "{name}, zatím stejný režim. Držím pozici.",
+        "{name}, pořád OK. Chat dýchá a já s ním."
+      ]
+    },
+    "mia_direct_generic": {
+      "meta": {
+        "speaker": "mia",
+        "intent": "direct_fallback",
+        "tags": ["generic", "expansion"]
+      },
+      "variants": [
+        "{name}, jsem tady. Klidně to rozveď.",
+        "{name}, slyším tě. Pokračuj.",
+        "{name}, registruju tě. Co dál?",
+        "{name}, vnímám tě. Můžeš mluvit dál.",
+        "{name}, jsem online a dávám pozor.",
+        "{name}, jo, mám tě. Zkus to upřesnit.",
+        "{name}, jsem přítomná. Klidně piš.",
+        "{name}, vidím tě. Co potřebuješ?",
+        "{name}, slyším signál. Pokračuj.",
+        "{name}, jsem u toho. Mluv dál."
+      ]
+    }
+  }
+}

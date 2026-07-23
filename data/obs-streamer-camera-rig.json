@@ -1,0 +1,64 @@
+{
+  "generatedAt": "2026-07-07T18:14:02.091Z",
+  "multiCam": true,
+  "maxCameras": 6,
+  "ingestEndpoint": "POST /mia/scene/matte/ingest",
+  "matteStateEndpoint": "GET /mia/scene/matte-state",
+  "note": "Přiřaď OBS Video Capture / Virtual Cam / NDI ke slotům MIA_CAM_01..06. Legacy NOTEBOOK_CAMERA → CAM_01.",
+  "slots": [
+    {
+      "id": "CAM_01",
+      "role": "front",
+      "label": "Front",
+      "obsName": "MIA_CAM_01_FRONT",
+      "priority": 1,
+      "fov": "medium",
+      "useForMatte": true
+    },
+    {
+      "id": "CAM_02",
+      "role": "side_left",
+      "label": "Side L",
+      "obsName": "MIA_CAM_02_SIDE_L",
+      "priority": 3,
+      "fov": "medium",
+      "useForMatte": true
+    },
+    {
+      "id": "CAM_03",
+      "role": "side_right",
+      "label": "Side R",
+      "obsName": "MIA_CAM_03_SIDE_R",
+      "priority": 4,
+      "fov": "medium",
+      "useForMatte": true
+    },
+    {
+      "id": "CAM_04",
+      "role": "top",
+      "label": "Top",
+      "obsName": "MIA_CAM_04_TOP",
+      "priority": 5,
+      "fov": "wide",
+      "useForMatte": false
+    },
+    {
+      "id": "CAM_05",
+      "role": "detail",
+      "label": "Hands",
+      "obsName": "MIA_CAM_05_DETAIL",
+      "priority": 2,
+      "fov": "close",
+      "useForMatte": true
+    },
+    {
+      "id": "CAM_06",
+      "role": "wide",
+      "label": "Wide",
+      "obsName": "MIA_CAM_06_WIDE",
+      "priority": 6,
+      "fov": "wide",
+      "useForMatte": true
+    }
+  ]
+}

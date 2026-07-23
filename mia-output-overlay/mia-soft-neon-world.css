@@ -1,0 +1,123 @@
+/**
+ * Soft Neon → Tech Energy Lab (v32 gfx-whole)
+ * Shared AI-lab palette: grid, scan ticks, sharp sparks — readable on dark TikTok.
+ * Loaded by speech-overlay + kojnozrout-runtime + gift-animation.
+ */
+:root {
+  /* Tech Energy tokens (RGB channels for rgba()) */
+  --sn-mint: 160, 120, 255;          /* violet accent (was mint) */
+  --sn-aqua: 100, 210, 255;          /* electric cyan */
+  --sn-cyan: 80, 200, 255;
+  --sn-ember: 255, 140, 70;
+  --sn-spark: 220, 240, 255;
+  --sn-lab-deep: 4, 10, 22;
+  --sn-lab-mid: 10, 18, 36;
+  --sn-rim: 180, 160, 255;
+  --sn-glow-strong: 0.32;
+  --sn-glow-soft: 0.14;
+  --sn-floor-pad: 0.28;
+
+  --world-mint: var(--sn-mint);
+  --world-aqua: var(--sn-aqua);
+  --world-cyan: var(--sn-cyan);
+  --holo-c1: 140, 200, 255;
+  --holo-c2: 180, 120, 255;
+
+  --sn-glass-bg:
+    linear-gradient(155deg, rgba(8, 16, 36, 0.82) 0%, rgba(2, 8, 18, 0.78) 100%);
+  --sn-glass-border: rgba(120, 180, 255, 0.32);
+  /* Hard edge + thin rim — no soft bloom pads */
+  --sn-glass-glow:
+    0 6px 18px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(180, 210, 255, 0.1);
+
+  --sn-koj-glass-bg:
+    linear-gradient(155deg, rgba(14, 10, 32, 0.84) 0%, rgba(4, 10, 22, 0.8) 100%);
+  --sn-koj-glass-border: rgba(170, 130, 255, 0.38);
+  --sn-koj-glass-glow:
+    0 6px 18px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(200, 180, 255, 0.1);
+}
+
+@keyframes snGlowPulse {
+  0%, 100% { opacity: 0.55; filter: brightness(1); }
+  50% { opacity: 0.85; filter: brightness(1.06); }
+}
+
+@keyframes snSparkleTwinkle {
+  0%, 100% { opacity: 0.1; transform: scale(0.65); }
+  35% { opacity: 0.9; transform: scale(1.1); }
+  70% { opacity: 0.25; transform: scale(0.85); }
+}
+
+@keyframes snFloorPulse {
+  0%, 100% {
+    opacity: 0.45;
+    transform: translateX(-50%) scaleX(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateX(-50%) scaleX(1.03);
+  }
+}
+
+@keyframes snCollarPulse {
+  0%, 100% {
+    opacity: 0.4;
+    box-shadow: 0 0 0 1px rgba(var(--sn-aqua), 0.35);
+  }
+  50% {
+    opacity: 0.75;
+    box-shadow: 0 0 0 1px rgba(var(--sn-mint), 0.55);
+  }
+}
+
+@keyframes snScanTick {
+  0% { transform: translateY(-100%); opacity: 0; }
+  8% { opacity: 0.55; }
+  100% { transform: translateY(220%); opacity: 0; }
+}
+
+@keyframes snElectronDrift {
+  0% { transform: translate(0, 0); opacity: 0; }
+  15% { opacity: 0.7; }
+  100% { transform: translate(var(--ex, 12px), var(--ey, -28px)); opacity: 0; }
+}
+
+/* Tech lab chrome — thin border, no bloom */
+.soft-neon-lab .rd-canvas-wrap,
+.sn-rig-desk-chrome {
+  border-color: var(--sn-glass-border);
+  box-shadow: var(--sn-glass-glow);
+}
+
+/* Shared tech environment framing (optional host) */
+.tech-energy-lab {
+  position: relative;
+}
+
+.tech-energy-lab::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.18;
+  background-image:
+    linear-gradient(rgba(100, 180, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(100, 180, 255, 0.07) 1px, transparent 1px);
+  background-size: 48px 48px;
+  -webkit-mask: radial-gradient(ellipse 70% 65% at 50% 70%, #000 20%, transparent 78%);
+  mask: radial-gradient(ellipse 70% 65% at 50% 70%, #000 20%, transparent 78%);
+}
+
+.tech-fx-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+  mix-blend-mode: screen;
+  opacity: 0.92;
+}

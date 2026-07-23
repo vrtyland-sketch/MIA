@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="theme-color" content="#0b0b16" />
+<title>MIA — duel překladač</title>
+<style>
+  :root { --bg:#0b0b16; --card:#161427; --accent:#8b5cf6; --koj:#a855f7; --ok:#22c55e; --warn:#f59e0b; --fail:#ef4444; --txt:#ece9ff; --muted:#9a93c7; --mic:#ef4444; }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { margin:0; background:var(--bg); color:var(--txt); font-family:-apple-system,Segoe UI,Roboto,sans-serif; padding:14px 14px 40px; }
+  h1 { font-size:18px; margin:4px 0 6px; }
+  .lead { font-size:13px; color:var(--muted); line-height:1.45; margin:0 0 12px; }
+  .card { background:var(--card); border-radius:14px; padding:12px; margin-bottom:12px; }
+  .card h2 { font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin:0 0 10px; }
+  label { font-size:12px; color:var(--muted); display:block; margin:6px 0 4px; }
+  input, select, textarea { width:100%; background:#100e1f; border:1px solid #342c54; border-radius:10px; color:var(--txt); padding:12px; font-size:16px; font-family:inherit; }
+  textarea { min-height:64px; resize:vertical; }
+  .row { display:flex; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
+  .row > * { flex:1; min-width:100px; }
+  button { font-size:15px; font-weight:700; color:var(--txt); background:#241f3d; border:1px solid #342c54; border-radius:12px; padding:14px 10px; cursor:pointer; }
+  button:active { transform:scale(.97); }
+  button.accent { background:var(--accent); border-color:var(--accent); }
+  button.koj { background:var(--koj); border-color:var(--koj); }
+  button.secondary { background:#1a1730; font-size:13px; padding:10px; }
+  button.mic { min-height:96px; font-size:17px; line-height:1.25; }
+  button.mic.live { background:var(--mic); border-color:#fecaca; box-shadow:0 0 24px rgba(239,68,68,.45); }
+  .hint { font-size:12px; color:var(--muted); line-height:1.45; }
+  .hint.ok { color:var(--ok); }
+  .hint.fail { color:var(--fail); }
+  .roles { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .role { background:#100e1f; border:1px solid #2a2444; border-radius:12px; padding:10px; }
+  .role strong { display:block; margin-bottom:4px; }
+  .role span { font-size:12px; color:var(--muted); line-height:1.35; }
+  .pair { display:grid; gap:8px; }
+  .pair .box { background:#100e1f; border-radius:10px; padding:10px; border:1px solid #2a2444; }
+  .pair .box strong { display:block; color:var(--muted); font-size:11px; margin-bottom:4px; }
+  #log { font-size:12px; color:var(--muted); background:#0e0c1c; border-radius:10px; padding:10px; min-height:48px; max-height:220px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
+  .badge { display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; font-weight:700; background:rgba(139,92,246,.2); color:#c4b5fd; }
+  .badge.on { background:rgba(34,197,94,.2); color:var(--ok); }
+</style>
+</head>
+<body>
+<h1>MIA — plný překladač (duel)</h1>
+<p class="lead">
+  <strong>Auto:</strong> oba hlasy česky = nic nepřekládá. Jeden hlas jiný než česky = automatický překlad.<br>
+  <strong>MIA</strong> = tvůj hlas ven · <strong>Kojnožrout</strong> = soupeř dovnitř · titulky veřejné.
+</p>
+
+<div class="card">
+  <h2>Stav</h2>
+  <div class="row">
+    <div><span id="interpBadge" class="badge">překladač …</span></div>
+    <div><span id="duelBadge" class="badge">duel …</span></div>
+  </div>
+  <div id="stateHint" class="hint" style="margin-top:8px;">Načítám…</div>
+  <div class="row" style="margin-top:8px;">
+    <button type="button" class="secondary" id="refreshState">Obnovit stav</button>
+    <button type="button" class="secondary" id="toggleInterp">Zap/Vyp překladač</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Nápověda pro mikrofon soupeře (STT)</h2>
+  <select id="foreignLang">
+    <option value="en">English</option>
+    <option value="de">Deutsch</option>
+    <option value="es">Español</option>
+    <option value="fr">Français</option>
+    <option value="pl">Polski</option>
+    <option value="it">Italiano</option>
+    <option value="uk">Українська</option>
+    <option value="ru">Русский</option>
+  </select>
+  <div class="hint" style="margin-top:6px;">Jen pro lepší rozpoznání řeči u tlačítka SOUPEŘ. Překlad se zapne až když MIA sama uslyší cizí jazyk.</div>
+</div>
+
+<div class="card">
+  <h2>Role (automaticky)</h2>
+  <div class="roles">
+    <div class="role">
+      <strong>MIA · Ty</strong>
+      <span>Česky + slyší cizí partnera → překlad ven. Oba česky → klid.</span>
+    </div>
+    <div class="role">
+      <strong>Koj · Soupeř</strong>
+      <span>Cizí řeč detekována → překlad do češtiny. Čeština → klid.</span>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Mikrofon (Chrome / Edge)</h2>
+  <div class="row">
+    <button type="button" class="mic accent" id="micStreamer">🎤 TY<br><small>MIA ven</small></button>
+    <button type="button" class="mic koj" id="micGuest">🎤 SOUPEŘ<br><small>Koj dovnitř</small></button>
+  </div>
+  <div class="row" style="margin-top:8px;">
+    <button type="button" class="secondary" id="guestAutoBtn">Soupeř auto-poslech: OFF</button>
+  </div>
+  <div id="micHint" class="hint" style="margin-top:8px;">Drž tlačítko a mluv. Nebo zapni auto-poslech soupeře (duel) — překládá věty průběžně.</div>
+</div>
+
+<div class="card">
+  <h2>Nebo text ručně</h2>
+  <textarea id="manualText" placeholder="Text k překladu…"></textarea>
+  <div class="row" style="margin-top:8px;">
+    <button type="button" class="accent" id="sendStreamer">MIA · Ty</button>
+    <button type="button" class="koj" id="sendGuest">Koj · Soupeř</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Poslední veřejný titulek</h2>
+  <div class="pair">
+    <div class="box"><strong>Kanál</strong><div id="outChannel">—</div></div>
+    <div class="box"><strong>Originál</strong><div id="outOriginal">—</div></div>
+    <div class="box"><strong>Překlad (overlay + hlas)</strong><div id="outTranslated">—</div></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Log</h2>
+  <div id="log"></div>
+</div>
+
+<script>
+(function () {
+  const logEl = document.getElementById("log");
+  const foreignLangEl = document.getElementById("foreignLang");
+  const outChannel = document.getElementById("outChannel");
+  const outOriginal = document.getElementById("outOriginal");
+  const outTranslated = document.getElementById("outTranslated");
+  const micHint = document.getElementById("micHint");
+  const stateHint = document.getElementById("stateHint");
+  const interpBadge = document.getElementById("interpBadge");
+  const duelBadge = document.getElementById("duelBadge");
+
+  let interpreterEnabled = true;
+  let activeChannel = null;
+  let recognition = null;
+  let listening = false;
+  let finalTranscript = "";
+
+  function log(msg) {
+    logEl.textContent = `[${new Date().toLocaleTimeString()}] ${msg}\n` + logEl.textContent;
+  }
+
+  async function api(path, opts = {}) {
+    const res = await fetch(path, {
+      method: opts.method || "GET",
+      headers: { "Content-Type": "application/json", ...(opts.headers || {}) },
+      body: opts.body ? JSON.stringify(opts.body) : undefined
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || data.ok === false) {
+      throw new Error(data.error || data.reason || `http_${res.status}`);
+    }
+    return data;
+  }
+
+  function showResult(data) {
+    outChannel.textContent = `${data.channel || "?"} · ${data.speaker || "?"} · ${String(data.from || "").toUpperCase()}→${String(data.to || "").toUpperCase()}`;
+    outOriginal.textContent = data.original || "—";
+    outTranslated.textContent = data.translated || "—";
+  }
+
+  async function refreshState() {
+    const state = await api("/mia/translate/state");
+    interpreterEnabled = state.interpreterEnabled !== false;
+    interpBadge.textContent = interpreterEnabled ? "překladač ON" : "překladač OFF";
+    interpBadge.className = "badge" + (interpreterEnabled ? " on" : "");
+    duelBadge.textContent = state.duelActive ? "duel ACTIVE" : "duel idle";
+    duelBadge.className = "badge" + (state.duelActive ? " on" : "");
+
+    if (state.lastForeignLanguage) {
+      foreignLangEl.value = state.lastForeignLanguage;
+    }
+
+    const last = state.liveCaption || state.lastGuestTranslation || state.lastMicTranslation || state.lastChatTranslation;
+    if (last) {
+      showResult({
+        channel: last.channel || (last.speaker === "kojnozout" ? "guest" : "streamer"),
+        speaker: last.speaker,
+        from: last.from,
+        to: last.to,
+        original: last.original || last.subtext,
+        translated: last.translated || last.text
+      });
+    }
+
+    const voices = `ty=${state.streamerVoiceLang || "cs"} · soupeř=${state.guestVoiceLang || "cs"}`;
+    stateHint.textContent = state.bothCzech !== false
+      ? `Oba hlasy česky — nepřekládá. (${voices})`
+      : `Cizí hlas aktivní — překládá. (${voices})`;
+    stateHint.className = "hint ok";
+  }
+
+  async function sendUtterance(text, channelHint = "") {
+    const clean = String(text || "").trim();
+    if (!clean) return;
+    // Auto: detekce jazyka. Oba česky = nic. Jeden cizí = překlad.
+    outChannel.textContent = "auto …";
+    outOriginal.textContent = clean;
+    outTranslated.textContent = "… detekuji jazyk …";
+    log(`Odesílám [auto${channelHint ? "/" + channelHint : ""}]: ${clean}`);
+    const data = await api("/mia/mic/utterance", {
+      method: "POST",
+      body: {
+        text: clean,
+        auto: true,
+        channel: channelHint || undefined
+      }
+    });
+    if (data.skipped) {
+      outChannel.textContent = `bez překladu · ty=${data.streamerVoiceLang || "cs"} · soupeř=${data.guestVoiceLang || "cs"}`;
+      outTranslated.textContent = clean;
+      log(`SKIP ${data.reason} · detekce=${data.detectedLang || "?"} · hlasy ${data.streamerVoiceLang}/${data.guestVoiceLang}`);
+      return;
+    }
+    showResult(data);
+    log(`OK ${data.speaker} ${String(data.from).toUpperCase()}→${String(data.to).toUpperCase()}: ${data.translated}`);
+  }
+
+  document.getElementById("sendStreamer").addEventListener("click", async () => {
+    try { await sendUtterance(document.getElementById("manualText").value, "streamer"); }
+    catch (err) { log("FAIL " + err.message); outTranslated.textContent = err.message; }
+  });
+  document.getElementById("sendGuest").addEventListener("click", async () => {
+    try { await sendUtterance(document.getElementById("manualText").value, "guest"); }
+    catch (err) { log("FAIL " + err.message); outTranslated.textContent = err.message; }
+  });
+  document.getElementById("refreshState").addEventListener("click", () => refreshState().catch(() => {}));
+  document.getElementById("toggleInterp").addEventListener("click", async () => {
+    try {
+      await api("/mia/translate/mode", { method: "POST", body: { enabled: !interpreterEnabled } });
+      await refreshState();
+    } catch (err) { log("FAIL " + err.message); }
+  });
+  foreignLangEl.addEventListener("change", () => {
+    log("STT nápověda pro soupeře: " + foreignLangEl.value + " (nepřepíná překlad silou)");
+  });
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const micStreamer = document.getElementById("micStreamer");
+  const micGuest = document.getElementById("micGuest");
+
+  function bindMic(btn, channel) {
+    if (!SpeechRecognition) {
+      btn.disabled = true;
+      return;
+    }
+
+    function start() {
+      if (listening) return;
+      activeChannel = channel;
+      finalTranscript = "";
+      recognition = new SpeechRecognition();
+      recognition.lang = channel === "guest" ? (foreignLangEl.value === "en" ? "en-US" : foreignLangEl.value + "-" + foreignLangEl.value.toUpperCase()) : "cs-CZ";
+      if (channel === "guest") {
+        const map = { en: "en-US", de: "de-DE", es: "es-ES", fr: "fr-FR", pl: "pl-PL", it: "it-IT", uk: "uk-UA", ru: "ru-RU" };
+        recognition.lang = map[foreignLangEl.value] || "en-US";
+      } else {
+        recognition.lang = "cs-CZ";
+      }
+      recognition.interimResults = true;
+      recognition.continuous = false;
+
+      recognition.onstart = () => {
+        listening = true;
+        btn.classList.add("live");
+        micHint.textContent = channel === "guest"
+          ? "Poslouchám SOUPEŘE (cizí jazyk)…"
+          : "Poslouchám TEBE (česky)…";
+        micHint.className = "hint ok";
+      };
+      recognition.onresult = (event) => {
+        let interim = "";
+        for (let i = event.resultIndex; i < event.results.length; i += 1) {
+          const chunk = event.results[i][0].transcript;
+          if (event.results[i].isFinal) finalTranscript += chunk;
+          else interim += chunk;
+        }
+        outOriginal.textContent = (finalTranscript || interim || "…").trim();
+      };
+      recognition.onerror = (event) => {
+        listening = false;
+        btn.classList.remove("live");
+        micHint.textContent = "Mikrofon: " + (event.error || "error");
+        micHint.className = "hint fail";
+      };
+      recognition.onend = async () => {
+        listening = false;
+        btn.classList.remove("live");
+        const text = finalTranscript.trim();
+        if (!text) {
+          micHint.textContent = "Nic neslyším — zkus znovu.";
+          micHint.className = "hint fail";
+          return;
+        }
+        try {
+          await sendUtterance(text, channel);
+          micHint.textContent = "Hotovo — veřejný titulek + hlas v OBS.";
+          micHint.className = "hint ok";
+        } catch (err) {
+          micHint.textContent = err.message;
+          micHint.className = "hint fail";
+          log("FAIL " + err.message);
+        }
+      };
+
+      try { recognition.start(); } catch (_err) { /* ignore */ }
+    }
+
+    function stop() {
+      if (!listening || !recognition) return;
+      try { recognition.stop(); } catch (_err) { /* ignore */ }
+    }
+
+    btn.addEventListener("mousedown", start);
+    btn.addEventListener("mouseup", stop);
+    btn.addEventListener("mouseleave", stop);
+    btn.addEventListener("touchstart", (e) => { e.preventDefault(); start(); }, { passive: false });
+    btn.addEventListener("touchend", (e) => { e.preventDefault(); stop(); }, { passive: false });
+  }
+
+  let guestAuto = false;
+  let guestAutoRec = null;
+  const guestAutoBtn = document.getElementById("guestAutoBtn");
+
+  function guestLangCode() {
+    const map = { en: "en-US", de: "de-DE", es: "es-ES", fr: "fr-FR", pl: "pl-PL", it: "it-IT", uk: "uk-UA", ru: "ru-RU" };
+    return map[foreignLangEl.value] || "en-US";
+  }
+
+  function stopGuestAuto() {
+    guestAuto = false;
+    guestAutoBtn.textContent = "Soupeř auto-poslech: OFF";
+    guestAutoBtn.classList.remove("koj");
+    if (guestAutoRec) {
+      try { guestAutoRec.onend = null; guestAutoRec.stop(); } catch (_err) { /* ignore */ }
+      guestAutoRec = null;
+    }
+    micHint.textContent = "Auto-poslech soupeře vypnutý.";
+    micHint.className = "hint";
+  }
+
+  function startGuestAuto() {
+    if (!SpeechRecognition) return;
+    guestAuto = true;
+    guestAutoBtn.textContent = "Soupeř auto-poslech: ON";
+    guestAutoBtn.classList.add("koj");
+    micHint.textContent = "Auto-poslech soupeře běží — věty se překládají průběžně.";
+    micHint.className = "hint ok";
+
+    function loop() {
+      if (!guestAuto) return;
+      guestAutoRec = new SpeechRecognition();
+      guestAutoRec.lang = guestLangCode();
+      guestAutoRec.interimResults = false;
+      guestAutoRec.continuous = true;
+      let buffer = "";
+
+      guestAutoRec.onresult = async (event) => {
+        for (let i = event.resultIndex; i < event.results.length; i += 1) {
+          if (!event.results[i].isFinal) continue;
+          const chunk = String(event.results[i][0].transcript || "").trim();
+          if (!chunk) continue;
+          buffer = chunk;
+          outOriginal.textContent = chunk;
+          try {
+            await sendUtterance(chunk, "guest");
+          } catch (err) {
+            log("AUTO FAIL " + err.message);
+          }
+        }
+      };
+      guestAutoRec.onerror = (event) => {
+        if (!guestAuto) return;
+        if (event.error === "no-speech" || event.error === "aborted") return;
+        log("AUTO mic: " + (event.error || "error"));
+      };
+      guestAutoRec.onend = () => {
+        if (!guestAuto) return;
+        setTimeout(loop, 250);
+      };
+      try { guestAutoRec.start(); } catch (_err) {
+        setTimeout(loop, 800);
+      }
+    }
+
+    loop();
+  }
+
+  guestAutoBtn.addEventListener("click", () => {
+    if (guestAuto) stopGuestAuto();
+    else startGuestAuto();
+  });
+
+  if (!SpeechRecognition) {
+    micHint.textContent = "Web Speech API chybí — použij Chrome/Edge, nebo piš text ručně.";
+    micHint.className = "hint fail";
+    micStreamer.disabled = true;
+    micGuest.disabled = true;
+    guestAutoBtn.disabled = true;
+  } else {
+    bindMic(micStreamer, "streamer");
+    bindMic(micGuest, "guest");
+  }
+
+  refreshState().catch((err) => {
+    stateHint.textContent = err.message;
+    stateHint.className = "hint fail";
+  });
+  setInterval(() => { refreshState().catch(() => {}); }, 8000);
+})();
+</script>
+</body>
+</html>

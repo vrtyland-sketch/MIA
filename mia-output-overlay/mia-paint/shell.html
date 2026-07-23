@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<html lang="cs">
+
+<head>
+
+  <meta charset="utf-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>MIA Paint — Shell</title>
+
+  <style>
+
+    html, body { margin: 0; height: 100%; background: #12151c; }
+
+    iframe { border: 0; width: 100%; height: 100%; }
+
+  </style>
+
+</head>
+
+<body>
+
+  <iframe id="paintFrame" title="MIA Paint" allow="clipboard-read; clipboard-write"></iframe>
+
+  <script src="lib/mia-paint-native-shell.js"></script>
+
+  <script>
+
+    (function () {
+
+      "use strict";
+
+      var frame = document.getElementById("paintFrame");
+
+      var origin = window.location.origin || "http://127.0.0.1:3000";
+
+      frame.src = origin + "/mia-paint/?shell=1";
+
+
+
+      if (window.MIA_PAINT_SHELL_BRIDGE && window.MIA_PAINT_SHELL_BRIDGE.attachShellHost) {
+
+        window.MIA_PAINT_NATIVE = window.MIA_PAINT_SHELL_BRIDGE.attachShellHost({
+
+          frame: frame,
+
+          origin: origin,
+
+          capabilities: {
+
+            filesystem: true,
+
+            windowsInk: /Win/i.test(navigator.platform || ""),
+
+            offline: true,
+
+            saveDialog: false,
+
+            openDialog: false,
+
+            pointerPressure: true
+
+          }
+
+        });
+
+      }
+
+    })();
+
+  </script>
+
+</body>
+
+</html>
+

@@ -1,0 +1,17 @@
+{
+  "version": "1.0.0",
+  "byTier": {
+    "T0": { "fill": 4, "water": 0 },
+    "T1": { "fill": 8, "water": 2 },
+    "T2": { "fill": 14, "water": 4 },
+    "T3": { "fill": 22, "water": 6 },
+    "T4": { "fill": 34, "water": 8 },
+    "T5": { "fill": 48, "water": 10 },
+    "T6": { "fill": 64, "water": 12 }
+  },
+  "specialFoodByKey": {
+    "DONUT": "donut_feast",
+    "GALAXY": "galaxy_nectar",
+    "LION": "royal_meat"
+  }
+}

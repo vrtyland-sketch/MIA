@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<title>MIA Voice</title>
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 200px;
+  height: 80px;
+  overflow: hidden;
+  background: transparent;
+}
+
+#voiceAudio {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+</style>
+</head>
+<body>
+<audio id="voiceAudio" preload="auto" playsinline webkit-playsinline></audio>
+<script>
+const API_BASE = (window.location.origin && window.location.protocol.startsWith("http"))
+  ? window.location.origin
+  : "http://127.0.0.1:3000";
+
+const POLL_MS = 350;
+const AUTH_KEY = "mia_voice_audio_authority_v1";
+const AUTH_CHANNEL = "mia_voice_audio_authority_v1";
+const voiceAudio = document.getElementById("voiceAudio");
+
+let activePlaybackId = 0;
+let completedPlaybackId = 0;
+let playInFlight = false;
+let pendingPlayback = null;
+let audioUnlocked = false;
+let lastPlayError = "";
+let isAudioAuthority = false;
+
+/**
+ * Pouze kanonická mia-voice-overlay.html smí hrát.
+ * Hub / legacy redirect / jiné URL = tvrdé NO (localStorage mezi OBS CEF selhává).
+ */
+const PATH = String(location.pathname || "").toLowerCase();
+const IS_CANONICAL_VOICE = /mia-voice-overlay\.html/.test(PATH);
+const AUTHORITY_SCORE = IS_CANONICAL_VOICE ? 100 : 0;
+const INSTANCE_ID = `${AUTHORITY_SCORE}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+
+let authChannel = null;
+try {
+  if (typeof BroadcastChannel === "function") {
+    authChannel = new BroadcastChannel(AUTH_CHANNEL);
+    authChannel.onmessage = (ev) => {
+      const msg = ev?.data;
+      if (!msg || msg.type !== "claim") return;
+      if (Number(msg.score || 0) > AUTHORITY_SCORE) {
+        isAudioAuthority = false;
+        hardStopAudio();
+      } else if (
+        Number(msg.score || 0) === AUTHORITY_SCORE &&
+        String(msg.id || "") !== INSTANCE_ID &&
+        String(msg.id || "") < INSTANCE_ID
+      ) {
+        // Peer with same score and lexicographically smaller id wins.
+        isAudioAuthority = false;
+        hardStopAudio();
+      }
+    };
+  }
+} catch (_err) {
+  authChannel = null;
+}
+
+function hardStopAudio() {
+  if (!voiceAudio) return;
+  try {
+    voiceAudio.pause();
+    voiceAudio.removeAttribute("src");
+    voiceAudio.load();
+  } catch (_err) {
+    /* ignore */
+  }
+  playInFlight = false;
+  pendingPlayback = null;
+}
+
+function readAuthority() {
+  try {
+    const raw = localStorage.getItem(AUTH_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (_err) {
+    return null;
+  }
+}
+
+function writeAuthority(entry) {
+  try {
+    localStorage.setItem(AUTH_KEY, JSON.stringify(entry));
+  } catch (_err) {
+    /* ignore */
+  }
+  try {
+    if (authChannel) {
+      authChannel.postMessage({ type: "claim", ...entry });
+    }
+  } catch (_err) {
+    /* ignore */
+  }
+}
+
+function refreshAudioAuthority() {
+  if (!IS_CANONICAL_VOICE) {
+    isAudioAuthority = false;
+    hardStopAudio();
+    return false;
+  }
+
+  const now = Date.now();
+  const cur = readAuthority();
+  const stale = !cur || !cur.id || now - Number(cur.ts || 0) > 2800;
+  const myScore = AUTHORITY_SCORE;
+  const theirScore = Number(cur?.score || 0);
+
+  if (stale || cur.id === INSTANCE_ID || myScore > theirScore) {
+    writeAuthority({ id: INSTANCE_ID, score: myScore, ts: now });
+    isAudioAuthority = true;
+    return true;
+  }
+
+  if (myScore === theirScore && String(cur.id || "") < INSTANCE_ID && now - Number(cur.ts || 0) > 900) {
+    writeAuthority({ id: INSTANCE_ID, score: myScore, ts: now });
+    isAudioAuthority = true;
+    return true;
+  }
+
+  isAudioAuthority = false;
+  hardStopAudio();
+  return false;
+}
+
+/** OBS CEF často blokuje první play() — odemkni muted silent buffer. */
+async function unlockAudio() {
+  if (!IS_CANONICAL_VOICE) return false;
+  if (audioUnlocked || !voiceAudio) return audioUnlocked;
+  try {
+    voiceAudio.muted = true;
+    voiceAudio.volume = 0;
+    // Tiny silent wav
+    voiceAudio.src =
+      "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA";
+    voiceAudio.load();
+    await voiceAudio.play();
+    voiceAudio.pause();
+    voiceAudio.currentTime = 0;
+    voiceAudio.muted = false;
+    voiceAudio.volume = 1;
+    voiceAudio.removeAttribute("src");
+    audioUnlocked = true;
+    lastPlayError = "";
+  } catch (err) {
+    lastPlayError = String(err && err.name || err);
+    audioUnlocked = false;
+  }
+  return audioUnlocked;
+}
+
+function resolveAudioUrl(vp) {
+  const raw = String(vp?.audioUrl || "");
+  if (!raw) return "";
+  const base = raw.startsWith("http") ? raw : `${API_BASE}${raw}`;
+  const bust = Number(vp.playbackId || vp.updatedAt || Date.now());
+  return base.includes("?") ? `${base}&_pb=${bust}` : `${base}?_pb=${bust}`;
+}
+
+async function playWithRetry(url, attempts = 3) {
+  let lastErr = null;
+  for (let i = 0; i < attempts; i += 1) {
+    try {
+      if (!audioUnlocked) await unlockAudio();
+      voiceAudio.muted = false;
+      voiceAudio.volume = 1;
+      voiceAudio.pause();
+      voiceAudio.currentTime = 0;
+      voiceAudio.src = url;
+      voiceAudio.load();
+      await voiceAudio.play();
+      lastPlayError = "";
+      return true;
+    } catch (err) {
+      lastErr = err;
+      lastPlayError = String(err && err.name || err);
+      // NotAllowedError → zkus znovu unlock
+      audioUnlocked = false;
+      await unlockAudio();
+      await new Promise((r) => setTimeout(r, 120 * (i + 1)));
+    }
+  }
+  if (lastErr) console.error("[MIA_VOICE]", lastErr);
+  return false;
+}
+
+async function playVoicePlayback(vp) {
+  if (!IS_CANONICAL_VOICE) return;
+  if (!vp?.audioUrl) return;
+  // Refuse if server marks a different exclusive sink (belt-and-suspenders).
+  if (vp.audioSink && vp.audioSink !== "mia_voice") return;
+  if (!refreshAudioAuthority()) return;
+
+  const playbackId = Number(vp.playbackId || 0);
+  if (playbackId > 0 && playbackId === completedPlaybackId) return;
+
+  if (
+    playInFlight &&
+    !voiceAudio.paused &&
+    !voiceAudio.ended &&
+    playbackId > 0 &&
+    playbackId !== activePlaybackId
+  ) {
+    if (!pendingPlayback || playbackId >= Number(pendingPlayback.playbackId || 0)) {
+      pendingPlayback = vp;
+    }
+    return;
+  }
+
+  if (playbackId > 0 && playbackId === activePlaybackId && playInFlight) return;
+  if (
+    playbackId > 0 &&
+    playbackId === activePlaybackId &&
+    !voiceAudio.paused &&
+    !voiceAudio.ended
+  ) {
+    return;
+  }
+
+  const url = resolveAudioUrl(vp);
+  activePlaybackId = playbackId > 0 ? playbackId : Date.now();
+  playInFlight = true;
+
+  voiceAudio.onended = () => {
+    playInFlight = false;
+    completedPlaybackId = activePlaybackId;
+    const next = pendingPlayback;
+    pendingPlayback = null;
+    if (next) void playVoicePlayback(next);
+  };
+  voiceAudio.onerror = () => {
+    playInFlight = false;
+    activePlaybackId = 0;
+    lastPlayError = "media_error";
+    const next = pendingPlayback;
+    pendingPlayback = null;
+    if (next) void playVoicePlayback(next);
+  };
+
+  const ok = await playWithRetry(url);
+  if (!ok) {
+    playInFlight = false;
+    activePlaybackId = 0;
+  }
+}
+
+async function tick() {
+  const now = Date.now();
+  refreshAudioAuthority();
+  if (!IS_CANONICAL_VOICE || !isAudioAuthority) return;
+  try {
+    const res = await fetch(`${API_BASE}/overlay-state?_=${now}`, { cache: "no-store" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const data = await res.json();
+    const vp = data.voicePlayback;
+    if (vp && Number(vp.holdUntilTs || 0) > now && vp.audioUrl) {
+      await playVoicePlayback(vp);
+    }
+  } catch (err) {
+    console.error("[MIA_VOICE_OVERLAY]", err);
+  }
+}
+
+if (IS_CANONICAL_VOICE) {
+  void unlockAudio();
+  refreshAudioAuthority();
+  tick();
+  setInterval(tick, POLL_MS);
+} else {
+  hardStopAudio();
+  console.warn("[MIA_VOICE] Non-canonical URL — audio disabled:", PATH);
+}
+
+window.__miaVoiceDebug = () => ({
+  audioUnlocked,
+  isAudioAuthority,
+  isCanonicalVoice: IS_CANONICAL_VOICE,
+  authorityScore: AUTHORITY_SCORE,
+  instanceId: INSTANCE_ID,
+  activePlaybackId,
+  completedPlaybackId,
+  playInFlight,
+  lastPlayError,
+  paused: voiceAudio.paused,
+  src: voiceAudio.currentSrc
+});
+</script>
+</body>
+</html>

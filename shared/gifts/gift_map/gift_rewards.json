@@ -1,0 +1,25 @@
+{
+  "version": "1.0.0",
+  "note": "Public never shows coins — only MIA points / items.",
+  "xp": {
+    "viewerPerCoin": 1,
+    "communityPerCoin": 0.25,
+    "kojPerCoin": 0.5,
+    "streamerPerCoin": 0.1
+  },
+  "levels": {
+    "viewer": { "base": 50, "growth": 1.35 },
+    "support": { "base": 80, "growth": 1.4 },
+    "community": { "base": 200, "growth": 1.25 },
+    "care": { "base": 60, "growth": 1.3 }
+  },
+  "itemChanceByTier": {
+    "T0": 0.05,
+    "T1": 0.12,
+    "T2": 0.22,
+    "T3": 0.35,
+    "T4": 0.5,
+    "T5": 0.65,
+    "T6": 0.8
+  }
+}

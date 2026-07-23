@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "templates": {
+    "donator_spotlight": {
+      "label": "Top dárce — spotlight",
+      "type": "gift_overlay",
+      "layout": "donator_spotlight_pro",
+      "effectProgram": "generic_support",
+      "kojMood": "excited",
+      "avatarRadius": 96,
+      "avatarRing": true,
+      "profileCategory": "profile_photo",
+      "minTier": "T2",
+      "captionTemplate": "{fullUser}",
+      "subcaptionTemplate": "Spinák · děkujeme · {tier}"
+    },
+    "profile_card_warm": {
+      "label": "Profilová karta — warm",
+      "type": "photo_overlay",
+      "layout": "profile_hero_card",
+      "effectProgram": "warm_glow",
+      "kojMood": "warm",
+      "profileCategory": "profile_photo",
+      "captionTemplate": "{user}",
+      "subcaptionTemplate": "Spinák · top komunita"
+    },
+    "profile_card_clean": {
+      "label": "Profilová karta — clean",
+      "type": "photo_overlay",
+      "layout": "profile_minimal",
+      "effectProgram": "generic_support",
+      "kojMood": "happy",
+      "profileCategory": "profile_hero",
+      "captionTemplate": "{user}",
+      "subcaptionTemplate": "Děkujeme za podporu"
+    },
+    "cute_burst": {
+      "label": "Cute clip",
+      "type": "obs_video",
+      "videoCategory": "cute_clip",
+      "tier": "T1"
+    },
+    "donator_video": {
+      "label": "Dárce + moment",
+      "type": "obs_video",
+      "videoCategory": "donator_moment",
+      "tier": "T2"
+    },
+    "story_music": {
+      "label": "Příběh + hudba",
+      "type": "obs_video",
+      "videoCategory": "story_music",
+      "tier": "T3"
+    },
+    "story_epic": {
+      "label": "Epický příběh",
+      "type": "obs_video",
+      "videoCategory": "story_epic",
+      "tier": "T4"
+    },
+    "story_legend": {
+      "label": "Legendární příběh",
+      "type": "obs_video",
+      "videoCategory": "story_legend",
+      "tier": "T5"
+    },
+    "profile_reel": {
+      "label": "Profilové video dárce",
+      "type": "obs_video",
+      "videoCategory": "profile_reel",
+      "tier": "PROFILE"
+    }
+  },
+  "tierSlots": {
+    "T1": ["T1_VIDEO_01", "T1_VIDEO_02", "T1_VIDEO_03", "T1_VIDEO_04", "T1_VIDEO_05", "T1_VIDEO_06"],
+    "T2": ["T2_VIDEO_05", "T2_VIDEO_06", "T2_VIDEO_07", "T2_VIDEO_08", "T2_VIDEO_09", "T2_VIDEO_10"],
+    "T3": ["T3_VIDEO_09", "T3_VIDEO_10", "T3_VIDEO_11", "T3_VIDEO_12", "T3_VIDEO_13", "T3_VIDEO_14"],
+    "T4": ["T4_VIDEO_13", "T4_VIDEO_14", "T4_VIDEO_15", "T4_VIDEO_16", "T4_VIDEO_17", "T4_VIDEO_18"],
+    "T5": ["T5_VIDEO_19", "T5_VIDEO_20", "T5_VIDEO_21"],
+    "PROFILE": ["PROFILE_VIDEO_01", "PROFILE_VIDEO_02", "PROFILE_VIDEO_03", "PROFILE_VIDEO_04"]
+  },
+  "contentKindTierDefaults": {
+    "short_animation": "T1",
+    "quote_clip": "T2",
+    "donator_moment": "T2",
+    "profile_reel": "PROFILE",
+    "story_music": "T3",
+    "story_epic": "T4",
+    "story_legend": "T5",
+    "cute_clip": "T1",
+    "generic_video": "T3"
+  },
+  "categoryTierDefaults": {
+    "cute_clip": "T1",
+    "donator_moment": "T2",
+    "story_music": "T3",
+    "story_epic": "T4",
+    "story_legend": "T5",
+    "whatsapp_video": "T2",
+    "generic_video": "T3"
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "packs": {
+    "support_spam_success_mia": {
+      "meta": {
+        "key": "support_spam_success_mia",
+        "speaker": "mia",
+        "intent": "support"
+      },
+      "variants": [
+        "Spam dorazil jak měl. Krásná práce.",
+        "Tohle byla povedená společná vlna.",
+        "Výborně. Komunita to dotlačila správně.",
+        "Tohle už je přesně ten moment, kdy se spojí tempo a chuť.",
+        "Pěkně. Spam splněný a je to znát.",
+        "Tohle byla poctivá společná práce.",
+        "Komunita to zvládla. Výborně.",
+        "Tohle už je krásná souhra.",
+        "Jo. Přesně takhle má vypadat splněný tlak komunity.",
+        "Výborně. Tohle se povedlo."
+      ]
+    },
+    "support_spam_fail_mia": {
+      "meta": {
+        "key": "support_spam_fail_mia",
+        "speaker": "mia",
+        "intent": "support"
+      },
+      "variants": [
+        "Bylo to blízko. Ještě trochu a bylo by to tam.",
+        "Tady chyběl jen kousek.",
+        "Málem. Příště to můžete dorazit.",
+        "Bylo to těsné. Ještě jeden impuls navíc.",
+        "Jo, bylo to skoro ono.",
+        "Tady už to skoro klaplo.",
+        "Chyběl jen malý krok.",
+        "Málem krásný zásah. Příště to dorazte.",
+        "Tohle bylo těsně pod hranou.",
+        "Ještě trochu tlaku a bylo to hotové."
+      ]
+    },
+    "support_spam_success_kojnozout": {
+      "meta": {
+        "key": "support_spam_success_kojnozout",
+        "speaker": "kojnozout",
+        "intent": "support"
+      },
+      "variants": [
+        "Jo! Tohle byl pořádnej hromadnej nášup.",
+        "Spam dorazil. To už mi chutná.",
+        "Tohle byl krásnej kolektivní útok na misku.",
+        "Výborně. Tohle mi zvedlo náladu.",
+        "Jo, tak tohle byla poctivá smečka.",
+        "Tohle už byl masakr v dobrým.",
+        "Pěkně. Tohle byla hostina komunitní silou.",
+        "Jo, tohle mi sedlo až do vousů.",
+        "Tak tohle bylo krásně dotažený.",
+        "Tohle byla čistá radost pro bestii."
+      ]
+    },
+    "support_spam_fail_kojnozout": {
+      "meta": {
+        "key": "support_spam_fail_kojnozout",
+        "speaker": "kojnozout",
+        "intent": "support"
+      },
+      "variants": [
+        "Bylo to blízko. Fakt blízko.",
+        "Jo, málem jsem už jásal.",
+        "Tady chyblo jen trochu.",
+        "Málem krásná porce navíc.",
+        "Jo, tohle skoro klaplo.",
+        "Ještě kousek a bylo by veselo.",
+        "Bylo to těsně pod čenichem.",
+        "Málem. Příště to dorvěte.",
+        "Tohle skoro vyšlo, sakra.",
+        "Chyběl jen malej dokus."
+      ]
+    },
+    "support_full_bowl_mia": {
+      "meta": {
+        "key": "support_full_bowl_mia",
+        "speaker": "mia",
+        "intent": "support"
+      },
+      "variants": [
+        "Miska je plná. Tohle je krásně vidět.",
+        "Maximum dosaženo. Výborná práce.",
+        "Tohle už je plná péče.",
+        "Miska doražená na maximum.",
+        "Tohle je okamžik, který komunita skutečně vytvořila.",
+        "Plná miska. Tohle je velký moment.",
+        "Výborně. Tohle už je úplné naplnění.",
+        "Tady už není co dodávat. Miska je plná.",
+        "Komunita to dotáhla až na strop.",
+        "Tohle už je čisté maximum."
+      ]
+    },
+    "support_full_bowl_kojnozout": {
+      "meta": {
+        "key": "support_full_bowl_kojnozout",
+        "speaker": "kojnozout",
+        "intent": "support"
+      },
+      "variants": [
+        "Miska je plná. To je nádhera.",
+        "Jo. Tohle už je plný stav a já jsem spokojenej.",
+        "Tak tohle je maximum. A já to respektuju.",
+        "Plná miska. Teď už se jen mlaská.",
+        "Tady už není kam přidat.",
+        "Jo, tohle už je naplnění bez srandy.",
+        "Miska dorvaná až po okraj.",
+        "Tohle je krásnej plnej stav.",
+        "Jo. Teď už mám fakt vystaráno.",
+        "Tohle je hostina dotažená na maximum."
+      ]
+    },
+    "support_combo": {
+      "meta": {
+        "key": "support_combo",
+        "intent": "support"
+      },
+      "variants": [
+        "Tohle už byla pěkná vlna.",
+        "Tak tohle mělo sílu.",
+        "Jo, tohle se propsalo hned.",
+        "Tohle byl poctivej zásah.",
+        "Tohle už mělo tah.",
+        "Pěkně. Tady se něco pohnulo.",
+        "Tohle nebyl jen náhodný impuls.",
+        "Jo, tohle je slušný kombo.",
+        "Tady už je znát společná energie.",
+        "Tohle má váhu a rytmus."
+      ]
+    }
+  }
+}

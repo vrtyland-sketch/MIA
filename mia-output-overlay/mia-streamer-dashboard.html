@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MIA Streamer Dashboard</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121a2e;
+      --line: rgba(255,255,255,0.08);
+      --text: #eef3ff;
+      --muted: rgba(238,243,255,0.68);
+      --ok: #38d976;
+      --warn: #ffb400;
+      --bad: #ff5d5d;
+      --accent: #00eaff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(0,0,0,0.25);
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+    h1 { margin: 0; font-size: 22px; }
+    .meta { color: var(--muted); font-size: 13px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      padding: 20px 24px 32px;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px 18px;
+    }
+    .card h2 {
+      margin: 0 0 12px;
+      font-size: 14px;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 14px;
+    }
+    .row:last-child { border-bottom: 0; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      background: rgba(255,255,255,0.06);
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--muted);
+    }
+    .dot.ok { background: var(--ok); }
+    .dot.bad { background: var(--bad); }
+    .dot.warn { background: var(--warn); }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    a.btn {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: rgba(0,234,255,0.12);
+      border: 1px solid rgba(0,234,255,0.25);
+      color: var(--text);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    a.btn:hover { background: rgba(0,234,255,0.2); }
+    button.btn {
+      cursor: pointer;
+      font: inherit;
+      color: inherit;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: rgba(0,234,255,0.12);
+      border: 1px solid rgba(0,234,255,0.25);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    button.btn:hover { background: rgba(0,234,255,0.2); }
+    .mono { font-family: Consolas, monospace; font-size: 12px; color: var(--muted); }
+    #feed {
+      max-height: 220px;
+      overflow: auto;
+      font-size: 13px;
+    }
+    #feed .item { padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .donor-ini {
+      width: 32px; height: 32px; border-radius: 50%; flex: 0 0 auto;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: linear-gradient(160deg, #3a4a72, #1d2336);
+      border: 2px solid rgba(255,208,96,0.5); color: #fff;
+      font-size: 12px; font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>MIA Streamer Dashboard</h1>
+      <div class="meta" id="clock">Načítám…</div>
+    </div>
+    <div class="pill"><span class="dot" id="healthDot"></span><span id="healthLabel">Kontrola…</span></div>
+  </header>
+
+  <div class="grid">
+    <section class="card">
+      <h2>Runtime</h2>
+      <div class="row"><span>Server</span><strong id="uptime">—</strong></div>
+      <div class="row"><span>OBS</span><strong id="obsState">—</strong></div>
+      <div class="row"><span>Kick bridge</span><strong id="kickState">—</strong></div>
+      <div class="row"><span>Diváci</span><strong id="viewers">—</strong></div>
+      <div class="actions">
+        <a class="btn" href="/obs/reconnect" target="_blank">OBS reconnect</a>
+        <a class="btn" href="/startup-check.html" target="_blank">Startup check</a>
+        <a class="btn" href="/health" target="_blank">Health JSON</a>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Video &amp; hlas</h2>
+      <div class="row"><span>Video fronta</span><strong id="videoQueue">—</strong></div>
+      <div class="row"><span>Aktuální clip</span><strong id="videoNow">—</strong></div>
+      <div class="row"><span>Hlas fronta</span><strong id="voiceQueue">—</strong></div>
+      <div class="row"><span>Hlas teď</span><strong id="voiceNow">—</strong></div>
+      <p class="mono" style="opacity:.7;margin:6px 0 0;font-size:12px;line-height:1.35">
+        Neslyšíš MIA/Koje? <strong>Oživit hlas</strong>. Ozvěna = Desktop Audio snímá Monitor —
+        revive Desktop Audio ztlumí. Koj i MIA jdou přes MIA_VOICE.
+      </p>
+      <div class="actions">
+        <button class="btn" type="button" id="btnReviveVoice">Oživit hlas</button>
+        <button class="btn" type="button" id="btnTestMiaVoice">Test MIA</button>
+        <button class="btn" type="button" id="btnTestKojVoice">Test Koj</button>
+        <a class="btn" href="/tts/test" target="_blank">TTS JSON</a>
+        <a class="btn" href="/video/test?tier=T1" target="_blank">Test T1 video</a>
+        <a class="btn" href="/video/test?tier=T3" target="_blank">Test T3 video</a>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>OBS layout</h2>
+      <div class="row"><span>Vision</span><strong id="visionMode">—</strong></div>
+      <div class="row"><span>Koj pozice</span><strong id="visionKoj">—</strong></div>
+      <div class="actions">
+        <button class="btn" type="button" id="btnFixLayout">Srovnat layout</button>
+        <button class="btn" type="button" id="btnRefreshOverlays">Refresh overlay cache</button>
+        <button class="btn" type="button" id="btnPrepStream">Prep stream (OBS)</button>
+        <a class="btn" href="/mia-vision-dashboard.html" target="_blank">Vision dashboard</a>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Host režim</h2>
+      <div class="row"><span>World mode</span><strong id="worldMode">—</strong></div>
+      <div class="row"><span>Host badge</span><strong id="hostBadge">—</strong></div>
+      <div class="row"><span>Solo fáze</span><strong id="soloPhase">—</strong></div>
+      <div class="row"><span>Away scéna</span><strong id="awayScene">—</strong></div>
+      <div class="actions">
+        <a class="btn" href="/capybara/test?user=Fan&away=1" target="_blank">Test NEJSEM TU</a>
+        <a class="btn" href="/solo-stream/status" target="_blank">Solo status</a>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Combo &amp; spam</h2>
+      <div class="row"><span>Spam session</span><strong id="spamActive">—</strong></div>
+      <div class="row"><span>Body / dárky</span><strong id="spamPoints">—</strong></div>
+      <div class="row"><span>Okno</span><strong id="spamWindow">—</strong></div>
+      <div class="row"><span>Poslední combo</span><strong id="comboNow">—</strong></div>
+      <div class="actions">
+        <a class="btn" href="/combo-overlay.html" target="_blank">Combo overlay</a>
+        <a class="btn" href="/overlay-state" target="_blank">Overlay state</a>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Koj &amp; donátoři <span class="mono" style="opacity:.6;font-size:12px">(interně · MIA body)</span></h2>
+      <div class="row"><span>Miska</span><strong id="bowl">—</strong></div>
+      <div class="row"><span>Nálada</span><strong id="mood">—</strong></div>
+      <div class="row"><span>Sprite</span><strong id="kojSprite">—</strong></div>
+      <div class="row"><span>Emoji</span><strong id="kojEmoji">—</strong></div>
+      <div class="row"><span>Duel</span><strong id="kojDuel">—</strong></div>
+      <div class="row"><span>Test mode</span><strong id="kojTestMode">—</strong></div>
+      <div class="row"><span>Showcase</span><strong id="kojShowcase">—</strong></div>
+      <div class="actions">
+        <button class="btn" type="button" id="btnKojWake">Probud Koj</button>
+        <button class="btn" type="button" id="btnDuelStart">Start duel</button>
+        <button class="btn" type="button" id="btnTestMode">Toggle test mode</button>
+        <button class="btn" type="button" id="btnShowcase">MIA pusť testy</button>
+        <button class="btn" type="button" id="btnKojStates">Koj stavy (slide)</button>
+        <a class="btn" href="/kojnozrout-runtime.html" target="_blank">Koj runtime</a>
+      </div>
+      <div id="feed"></div>
+    </section>
+
+    <section class="card">
+      <h2>Ekonomika &amp; T0</h2>
+      <div class="row"><span>Supporters</span><strong id="supporterCount">—</strong></div>
+      <div class="row"><span>T0 likes</span><strong id="t0Likes">—</strong></div>
+      <div class="row"><span>T0 follows</span><strong id="t0Follows">—</strong></div>
+      <div class="row"><span>T0 shares</span><strong id="t0Shares">—</strong></div>
+      <div class="row"><span>Team split</span><strong id="teamSplit">—</strong></div>
+      <div id="supporterFeed" class="mono"></div>
+      <div class="actions">
+        <a class="btn" href="/t0/test?event=FOLLOW&user=Fan" target="_blank">Test T0 follow</a>
+        <a class="btn" href="/t0/test?event=SHARE&user=Fan" target="_blank">Test T0 share</a>
+        <a class="btn" href="/t0-flyby-overlay.html" target="_blank">T0 flyby overlay</a>
+        <a class="btn" href="/kojnozrout-duel-overlay.html" target="_blank">Duel overlay</a>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>MIA body preview</h2>
+      <div class="row"><span>Zdroj</span><strong id="bodyPreviewSource">—</strong></div>
+      <div class="row"><span>Mood</span><strong id="bodyPreviewMood">—</strong></div>
+      <div class="row"><span>Části</span><strong id="bodyPreviewParts">—</strong></div>
+      <div class="row"><span>Layout</span><strong id="bodyPreviewLayout">—</strong></div>
+      <div class="row"><span>OBS sync</span><strong id="bodyPreviewObs">—</strong></div>
+      <p class="mono" style="opacity:.7;margin:6px 0 0;font-size:12px;line-height:1.35">
+        <strong>Hero portrait (13e)</strong> = jedna MIA nad bublinou (produkční look).
+        Po výpadku MIA použij <strong>Oživit OBS + ukaž body</strong>.
+      </p>
+      <div class="actions">
+        <button class="btn" type="button" id="btnBodyPreview">Hero portrait</button>
+        <button class="btn" type="button" id="btnBodyRevive">Oživit OBS + ukaž body</button>
+        <button class="btn" type="button" id="btnBodyPreviewSpeak">Hero + mluví</button>
+        <button class="btn" type="button" id="btnBodyPreviewGift">Gift hero</button>
+        <button class="btn" type="button" id="btnBodyPreviewComposed">Composed (debug)</button>
+        <button class="btn" type="button" id="btnBodyPreviewReset">Vypnout</button>
+        <a class="btn" href="/mia-paint/" target="_blank">Graphics Studio</a>
+        <a class="btn" href="/mia-paint/rig-desk.html" target="_blank">Soft Neon Rig Desk</a>
+        <a class="btn" href="/mia-paint/gift-animation-desk.html" target="_blank">Gift Animation Desk</a>
+        <a class="btn" href="/mia/graphics/body" target="_blank">Body API</a>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Animation Bank <span class="mono" style="opacity:.6;font-size:12px">(12x–13z)</span></h2>
+      <div class="row"><span>Clipů</span><strong id="bankClipCount">—</strong></div>
+      <div class="row"><span>Vybraný</span><strong id="bankSelected">—</strong></div>
+      <div class="row"><span>Quality</span><strong id="bankQuality">—</strong></div>
+      <div class="row"><span>Live sheet</span><strong id="bankLiveEligible">—</strong></div>
+      <div class="row"><span>Gate</span><strong id="bankGateStatus">—</strong></div>
+      <div class="row"><span>Preview</span><strong id="bankPreviewStatus">—</strong></div>
+      <div id="bankProdChecklist" class="mono" style="margin:8px 0;padding:8px;border:1px solid #333;background:#0d0d0d;font-size:12px;line-height:1.55">
+        <div style="opacity:.75;margin-bottom:4px">Production checklist (13n)</div>
+        <div id="checkSheet">□ Sheet</div>
+        <div id="checkAlpha">□ Alpha / quality</div>
+        <div id="checkPreview">□ Preview (body/Koj)</div>
+        <div id="checkGate">□ Gate ready</div>
+        <div id="checkForce">□ Force vypnuto (doporučeno)</div>
+        <div id="checkSummary" style="margin-top:6px;opacity:.85">—</div>
+      </div>
+      <label class="mono" style="display:block;margin:8px 0 4px;opacity:.75">Bank clip</label>
+      <select id="bankClipSelect" style="width:100%;max-width:100%;padding:6px;background:#111;color:#eee;border:1px solid #333"></select>
+      <label class="mono" style="display:block;margin:8px 0 4px;opacity:.75">AI generate (13j)</label>
+      <input id="bankAiPrompt" type="text" placeholder="MIA cyberpunk mascot wave…" style="width:100%;padding:6px;background:#111;color:#eee;border:1px solid #333;box-sizing:border-box;margin-bottom:6px" />
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px">
+        <select id="bankAiMotion" style="flex:1;min-width:120px;padding:6px;background:#111;color:#eee;border:1px solid #333">
+          <option value="idle">Idle</option>
+          <option value="wave" selected>Wave</option>
+          <option value="bounce">Bounce</option>
+          <option value="nod">Nod</option>
+          <option value="speak">Speak</option>
+        </select>
+        <select id="bankAiFrames" style="width:90px;padding:6px;background:#111;color:#eee;border:1px solid #333" title="Počet snímků">
+          <option value="4">4 fr</option>
+          <option value="6" selected>6 fr</option>
+          <option value="8">8 fr</option>
+        </select>
+      </div>
+      <label class="mono" style="display:flex;align-items:center;gap:8px;margin:6px 0;opacity:.85">
+        <input id="bankAiAutoPromote" type="checkbox" />
+        Auto promote po generate (quality ai/procedural, ne live)
+      </label>
+      <label class="mono" style="display:block;margin:8px 0 4px;opacity:.75">AI staging (12z)</label>
+      <select id="stagingSelect" style="width:100%;max-width:100%;padding:6px;background:#111;color:#eee;border:1px solid #333"></select>
+      <div id="bankStagingPreview" style="margin:8px 0;min-height:72px;display:flex;align-items:center;gap:10px">
+        <img id="bankStagingThumb" alt="" style="max-height:72px;max-width:160px;background:#0a0a0a;border:1px solid #333;display:none" />
+        <span id="bankStagingThumbLabel" class="mono" style="opacity:.7;font-size:12px">staging sheet —</span>
+      </div>
+      <label class="mono" style="display:block;margin:8px 0 4px;opacity:.75">giftKeys (čárkou) · rose, heart_small, lion…</label>
+      <input id="bankGiftKeys" type="text" placeholder="rose, heart_small" style="width:100%;padding:6px;background:#111;color:#eee;border:1px solid #333;box-sizing:border-box" />
+      <label class="mono" style="display:flex;align-items:center;gap:8px;margin:8px 0;opacity:.85">
+        <input id="bankOverrideHardcoded" type="checkbox" />
+        Override known gifts (12y) — live sheet místo gift/rose atd.
+      </label>
+      <label class="mono" style="display:flex;align-items:center;gap:8px;margin:8px 0;opacity:.85">
+        <input id="bankForceProduction" type="checkbox" />
+        Force production (12z) — procedural / low-alpha (nebezpečné)
+      </label>
+      <label class="mono" style="display:flex;align-items:center;gap:8px;margin:8px 0;opacity:.85">
+        <input id="bankSyncBody" type="checkbox" checked />
+        Sync MIA body (13b)
+      </label>
+      <label class="mono" style="display:flex;align-items:center;gap:8px;margin:8px 0;opacity:.85">
+        <input id="bankSyncObs" type="checkbox" checked />
+        Sync OBS body layers
+      </label>
+      <label class="mono" style="display:block;margin:8px 0 4px;opacity:.75">Assemble clips (čárkou, pořadí = timeline)</label>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <input id="bankAssembleClips" type="text" placeholder="wave-a, idle-b" style="flex:1;min-width:180px;padding:6px;background:#111;color:#eee;border:1px solid #333;box-sizing:border-box" title="Staging IDs oddělené čárkou" />
+        <button class="btn" type="button" id="btnAssembleAddSelected" title="Přidej vybraný staging do seznamu">＋ selected</button>
+        <button class="btn" type="button" id="btnAssembleClear" title="Vyčisti seznam">Clear</button>
+      </div>
+      <div class="actions" style="margin-top:8px;gap:8px;display:flex;flex-wrap:wrap;align-items:center">
+        <label class="mono" style="opacity:.8">fps
+          <input id="bankAssembleFps" type="number" min="1" max="30" value="12" style="width:56px;padding:4px;background:#111;color:#eee;border:1px solid #333;margin-left:4px" />
+        </label>
+        <label class="mono" style="opacity:.8">gap
+          <input id="bankAssembleGap" type="number" min="0" max="24" value="0" style="width:48px;padding:4px;background:#111;color:#eee;border:1px solid #333;margin-left:4px" title="Prázdné framу mezi clipy" />
+        </label>
+        <label class="mono" style="opacity:.8">hold
+          <input id="bankAssembleHold" type="number" min="0" max="24" value="0" style="width:48px;padding:4px;background:#111;color:#eee;border:1px solid #333;margin-left:4px" title="Drž poslední frame clipu" />
+        </label>
+        <select id="bankAssembleFormat" style="padding:6px;background:#111;color:#eee;border:1px solid #333" title="Assemble format">
+          <option value="gif">GIF</option>
+          <option value="webm">WEBM</option>
+          <option value="mp4">MP4</option>
+        </select>
+        <label class="mono" style="opacity:.8">audio
+          <input id="bankAssembleAudio" type="file" accept="audio/*,.mp3,.wav,.m4a,.ogg" style="max-width:160px;margin-left:4px" title="Volitelné audio (jen WEBM/MP4)" />
+        </label>
+        <button class="btn" type="button" id="btnStagingAssemble" title="Spojit staging clipy do jednoho videa">Assemble</button>
+      </div>
+      <div class="actions" style="margin-top:10px">
+        <button class="btn" type="button" id="btnBankRefresh">Obnovit</button>
+        <button class="btn" type="button" id="btnBankAiGenerate">Generovat AI animaci</button>
+        <button class="btn" type="button" id="btnStagingPromote">Promote staging</button>
+        <button class="btn" type="button" id="btnStagingPreview">Preview staging</button>
+        <button class="btn" type="button" id="btnStagingGif" title="Encode + stáhnout GIF">GIF</button>
+        <button class="btn" type="button" id="btnStagingWebm" title="Encode + stáhnout WEBM (ffmpeg)">WEBM</button>
+        <button class="btn" type="button" id="btnStagingMp4" title="Encode + stáhnout MP4 (ffmpeg)">MP4</button>
+        <a class="btn" id="bankStagingMediaLink" href="#" target="_blank" style="display:none">Otevřít media</a>
+        <a class="btn" id="bankAiPaintLink" href="/mia-paint/" target="_blank">Otevřít v Paint</a>
+        <button class="btn" type="button" id="btnBankPreview">Preview body+Koj</button>
+        <button class="btn" type="button" id="btnBankBind">Bind giftKeys</button>
+        <button class="btn" type="button" id="btnBankMarkProd">Mark production</button>
+        <a class="btn" id="bankSheetLink" href="/kojnozrout-runtime.html?animBank=1" target="_blank">Koj ?animBank=1</a>
+        <a class="btn" href="/mia/animation/bank" target="_blank">Bank API</a>
+      </div>
+      <div id="bankStagingPlayerWrap" style="margin-top:10px;display:none">
+        <div class="mono" style="opacity:.75;font-size:12px;margin-bottom:4px">Staging playback</div>
+        <video id="bankStagingPlayer" controls muted loop playsinline
+          style="max-width:100%;max-height:180px;background:#0a0a0a;border:1px solid #333;display:none"></video>
+        <img id="bankStagingGifPlay" alt="staging gif" style="max-height:180px;max-width:100%;background:#0a0a0a;border:1px solid #333;display:none" />
+      </div>
+      <div id="bankClipList" class="mono" style="margin-top:10px;max-height:160px;overflow:auto"></div>
+    </section>
+
+    <section class="card">
+      <h2>Gift mapping audit</h2>
+      <div class="row"><span>Poslední gift</span><strong id="mapGift">—</strong></div>
+      <div class="row"><span>Canonical</span><strong id="mapKey">—</strong></div>
+      <div class="row"><span>Source</span><strong id="mapSource">—</strong></div>
+      <div class="row"><span>Confidence</span><strong id="mapConfidence">—</strong></div>
+      <div class="row"><span>Tier</span><strong id="mapTier">—</strong></div>
+    </section>
+  </div>
+
+  <script>
+    const healthDot = document.getElementById("healthDot");
+    const healthLabel = document.getElementById("healthLabel");
+    const clock = document.getElementById("clock");
+
+    function setHealth(ok, label) {
+      healthDot.className = "dot " + (ok ? "ok" : "bad");
+      healthLabel.textContent = label;
+    }
+
+    function fmtBool(v) { return v ? "ANO" : "NE"; }
+
+    async function refresh() {
+      clock.textContent = new Date().toLocaleString("cs-CZ");
+      try {
+        const [statusRes, overlayRes] = await Promise.all([
+          fetch("/status", { cache: "no-store" }),
+          fetch("/overlay-state", { cache: "no-store" })
+        ]);
+        const status = await statusRes.json();
+        const overlay = await overlayRes.json();
+
+        setHealth(
+          statusRes.ok && status.ok !== false,
+          statusRes.ok
+            ? status.obs?.connected
+              ? "MIA OK · OBS OK"
+              : "MIA OK · OBS offline"
+            : "MIA DOWN — npm run restart + Oživit OBS"
+        );
+
+        document.getElementById("uptime").textContent =
+          `${status.uptimeSec || 0}s · port ${status.port || "?"}`;
+        document.getElementById("obsState").textContent =
+          fmtBool(status.obs?.connected) + " · " + (status.obs?.giftScene || "—");
+        document.getElementById("kickState").textContent =
+          fmtBool(status.kick?.connected) + " · " + fmtBool(status.kick?.started);
+        document.getElementById("viewers").textContent =
+          String(status.audience?.viewerCount || 0) + " · " + (status.audience?.platform || "—");
+
+        const video = status.video || overlay.video || {};
+        document.getElementById("videoQueue").textContent =
+          `${video.queueLength ?? video.pendingQueue?.length ?? 0} čeká · processing ${fmtBool(video.processing || video.playing)}`;
+        document.getElementById("videoNow").textContent =
+          video.currentSource || video.currentPlayback?.sourceName || video.currentTier || "—";
+
+        const voice = overlay.voicePlayback || {};
+        document.getElementById("voiceQueue").textContent =
+          String(voice.queueLength ?? 0);
+        document.getElementById("voiceNow").textContent =
+          voice.active ? (voice.owner || "mluví") : "ticho";
+
+        const spam = overlay.spamSession || status.spam || {};
+        document.getElementById("spamActive").textContent = fmtBool(spam.active);
+        document.getElementById("spamPoints").textContent =
+          `${spam.totalPoints || 0} bodů · ${spam.eventCount || 0} dárků · ${spam.participantCount || 0} lidí`;
+        document.getElementById("spamWindow").textContent =
+          `${spam.remainingWindowSec || 0}s · next ${spam.nextRewardTier || "—"}`;
+
+        const combo = overlay.comboMoment;
+        document.getElementById("comboNow").textContent =
+          combo ? `${combo.kind}: ${combo.title}` : "—";
+
+        const host = overlay.hostMode || {};
+        document.getElementById("worldMode").textContent = overlay.worldMode || host.worldMode || "default";
+        document.getElementById("hostBadge").textContent = host.label || host.badge || "LIVE";
+        document.getElementById("soloPhase").textContent = host.soloStreamPhase || "main";
+        document.getElementById("awayScene").textContent =
+          host.awaySceneActive ? (host.sceneName || "active") : (host.sceneName || "—");
+
+        const koj = overlay.kojnozoutState || {};
+        const kojDisp = overlay.kojDisplay || {};
+        const duel = overlay.duel || {};
+        const testMode = overlay.kojTestMode || {};
+
+        document.getElementById("bowl").textContent =
+          `${Math.round(koj.bowlPercent || 0)}% · hlad ${Math.round(koj.hunger || 0)}`;
+        document.getElementById("mood").textContent =
+          (koj.walkActive ? `venčí ${koj.walkRemainingSec || "?"}s · ` : "") +
+          (kojDisp.mood || koj.mood || koj.vitals?.dominantMood || "—");
+        document.getElementById("kojSprite").textContent = kojDisp.spriteAsset || "—";
+        document.getElementById("kojEmoji").textContent = kojDisp.moodEmoji || "—";
+        document.getElementById("kojDuel").textContent =
+          duel.active ? `LIVE · ${duel.localPoints || 0} vs ${duel.opponentPoints || 0}` : "neaktivní";
+        document.getElementById("kojTestMode").textContent =
+          testMode.enabled ? `ANO (miska ≥${testMode.minBowlPercent || 35}%)` : "NE";
+        document.getElementById("kojShowcase").textContent =
+          showcase.active
+            ? `běží ${showcase.step || 0}/${showcase.total || "?"}`
+            : `neaktivní · ${showcase.catalogSize || 0} kroků`;
+
+        try {
+          const visionRes = await fetch("/mia/vision", { cache: "no-store" });
+          if (visionRes.ok) {
+            const vision = await visionRes.json();
+            const layout = vision.vision?.lastLayout || {};
+            const kojPos = layout.plan?.koj;
+            document.getElementById("visionMode").textContent =
+              `${vision.layoutMode || layout.mode || "idle"} · ${layout.platform || "tiktok"}`;
+            document.getElementById("visionKoj").textContent =
+              kojPos ? `x${kojPos.positionX} y${kojPos.positionY} · ${Math.round((kojPos.scaleX || 1) * 100)}%` : "—";
+          }
+        } catch (_visionErr) {
+          document.getElementById("visionMode").textContent = "—";
+          document.getElementById("visionKoj").textContent = "—";
+        }
+
+        const gifts = overlay.recentGifts || overlay.giftLedger?.entries || [];
+        const feed = document.getElementById("feed");
+        const donorInitials = (s) => {
+          const t = String(s || "").replace(/[^\p{L}\p{N} ]/gu, "").trim();
+          if (!t) return "?";
+          const p = t.split(/\s+/);
+          return (p.length >= 2 ? p[0][0] + p[1][0] : t.slice(0, 2)).toUpperCase();
+        };
+        feed.innerHTML = gifts.slice(0, 6).map((g) => {
+          const who = g.userLabel || g.username || g.user || "?";
+          const gift = g.giftName || g.name || "gift";
+          const tier = g.tier || g.streamTier || "";
+          const count = g.giftCount > 1 ? `×${g.giftCount}` : "";
+          const pts = Number(g.miaPoints || 0);
+          const avatar = g.avatarUrl
+            ? `<img src="${g.avatarUrl}" alt="" style="width:32px;height:32px;border-radius:50%;object-fit:cover;flex:0 0 auto" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${donorInitials(who)}',className:'donor-ini'}))">`
+            : `<span class="donor-ini">${donorInitials(who)}</span>`;
+          return `<div class="item" style="display:flex;align-items:center;gap:8px">
+            ${avatar}
+            <div style="line-height:1.3">
+              <strong>${who}</strong> · ${gift} ${count} ${tier ? `<span class="mono">${tier}</span>` : ""}
+              <br><small style="opacity:.8">⭐ ${pts} MIA bodů</small>
+            </div>
+          </div>`;
+        }).join("") || '<div class="item mono">Zatím žádní donátoři</div>';
+
+        const audit = overlay.runtimeAudit || {};
+        const totals = audit.engagementTotals || {};
+        document.getElementById("supporterCount").textContent =
+          String(audit.supporterCount || overlay.giftEconomy?.count || 0);
+        document.getElementById("t0Likes").textContent = String(totals.like || 0);
+        document.getElementById("t0Follows").textContent = String(totals.follow || 0);
+        document.getElementById("t0Shares").textContent = String(totals.share || 0);
+
+        const team = audit.teamScore || overlay.hostTeamScore || {};
+        document.getElementById("teamSplit").textContent =
+          team.hostPoints > 0
+            ? `local ${team.localPoints || 0} · host ${team.hostPoints || 0} (${team.splitPct || 0}%)`
+            : `local ${team.localPoints || 0}`;
+
+        const supporters = audit.topSupporters || overlay.giftEconomy?.entries || [];
+        const supporterFeed = document.getElementById("supporterFeed");
+        supporterFeed.innerHTML = supporters.slice(0, 4).map((s) => {
+          const eng = s.engagementCounts || {};
+          return `<div class="item">${s.userLabel || "?"} · Lv${s.giftLevel || 1} · XP ${s.cumulativeXp || 0} · ❤${eng.like || 0} ➕${eng.follow || 0}</div>`;
+        }).join("") || '<div class="item">Zatím žádní supporters</div>';
+
+        const map = audit.lastGiftMapping || {};
+        document.getElementById("mapGift").textContent = map.giftName || "—";
+        document.getElementById("mapKey").textContent = map.canonicalKey || "—";
+        document.getElementById("mapSource").textContent = map.mappingSource || "—";
+        document.getElementById("mapConfidence").textContent =
+          map.mappingConfidence ? `${Math.round(map.mappingConfidence * 100)}%` : "—";
+        document.getElementById("mapTier").textContent = map.streamTier || "—";
+
+        try {
+          const bodyRes = await fetch("/mia/graphics/body/state", { cache: "no-store" });
+          if (bodyRes.ok) {
+            const body = await bodyRes.json();
+            const visible =
+              Object.entries(body.parts || {})
+                .filter(([, on]) => on)
+                .map(([part]) => part)
+                .join(", ") || "žádné";
+            document.getElementById("bodyPreviewSource").textContent = body.source || "—";
+            document.getElementById("bodyPreviewMood").textContent =
+              `${body.mood || "idle"}${body.speaking ? " · mluví" : ""}`;
+            document.getElementById("bodyPreviewParts").textContent = visible;
+            const layoutEl = document.getElementById("bodyPreviewLayout");
+            if (layoutEl) layoutEl.textContent = body.layout || "hero";
+          }
+        } catch (_bodyErr) {
+          document.getElementById("bodyPreviewSource").textContent = "—";
+          document.getElementById("bodyPreviewMood").textContent = "—";
+          document.getElementById("bodyPreviewParts").textContent = "—";
+          const layoutEl = document.getElementById("bodyPreviewLayout");
+          if (layoutEl) layoutEl.textContent = "—";
+        }
+      } catch (err) {
+        setHealth(false, "OFFLINE");
+      }
+    }
+
+    async function postJson(url, body) {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: body ? JSON.stringify(body) : undefined
+      });
+      return res.json();
+    }
+
+    document.getElementById("btnKojWake").addEventListener("click", async () => {
+      await postJson("/koj/wake");
+      refresh();
+    });
+
+    document.getElementById("btnDuelStart").addEventListener("click", async () => {
+      await postJson("/duel/start", { opponentLabel: "Soupeř" });
+      refresh();
+    });
+
+    document.getElementById("btnTestMode").addEventListener("click", async () => {
+      const overlay = await fetch("/overlay-state", { cache: "no-store" }).then((r) => r.json());
+      const enabled = !(overlay.kojTestMode && overlay.kojTestMode.enabled);
+      await postJson("/koj/test-mode", { enabled });
+      refresh();
+    });
+
+    document.getElementById("btnShowcase").addEventListener("click", async () => {
+      await postJson("/showcase/start", { message: "mia pust testy", userLabel: "VasaSpinak" });
+      refresh();
+    });
+
+    document.getElementById("btnKojStates").addEventListener("click", async () => {
+      await postJson("/showcase/koj-states", { userLabel: "VasaSpinak" });
+      refresh();
+    });
+
+    document.getElementById("btnFixLayout").addEventListener("click", async () => {
+      await postJson("/obs/fix-layout");
+      refresh();
+    });
+
+    document.getElementById("btnReviveVoice").addEventListener("click", async () => {
+      const result = await postJson("/obs/revive-voice", { speaker: "mia" });
+      const el = document.getElementById("voiceNow");
+      if (el) {
+        el.textContent = result.ok
+          ? `revive OK · ${result.tts?.speaker || "mia"}`
+          : `revive FAIL · ${result.error || result.voice?.error || "?"}`;
+      }
+      refresh();
+    });
+
+    document.getElementById("btnTestMiaVoice").addEventListener("click", async () => {
+      await fetch("/tts/test?speaker=mia&fresh=1", { cache: "no-store" });
+      refresh();
+    });
+
+    document.getElementById("btnTestKojVoice").addEventListener("click", async () => {
+      await fetch("/tts/test?speaker=koj&fresh=1", { cache: "no-store" });
+      refresh();
+    });
+
+    document.getElementById("btnRefreshOverlays").addEventListener("click", async () => {
+      await postJson("/obs/refresh-overlays");
+      refresh();
+    });
+
+    document.getElementById("btnPrepStream").addEventListener("click", async () => {
+      await postJson("/obs/prep-stream");
+      refresh();
+    });
+
+    document.getElementById("btnBodyPreview").addEventListener("click", async () => {
+      const result = await postJson("/mia/graphics/body/preview", {
+        mood: "wave",
+        layout: "hero",
+        syncObs: true
+      });
+      setBodyObsStatus(result.obsSync);
+      refresh();
+    });
+
+    document.getElementById("btnBodyRevive").addEventListener("click", async () => {
+      try {
+        await postJson("/obs/refresh-overlays");
+      } catch (_err) {
+        // refresh může selhat když OBS offline — preview stejně zkusí sync
+      }
+      const result = await postJson("/mia/graphics/body/preview", {
+        mood: "wave",
+        layout: "hero",
+        speaking: true,
+        syncObs: true
+      });
+      setBodyObsStatus(result.obsSync);
+      refresh();
+    });
+
+    document.getElementById("btnBodyPreviewSpeak").addEventListener("click", async () => {
+      const result = await postJson("/mia/graphics/body/preview", {
+        mood: "happy",
+        speaking: true,
+        layout: "hero",
+        syncObs: true
+      });
+      setBodyObsStatus(result.obsSync);
+      refresh();
+    });
+
+    document.getElementById("btnBodyPreviewGift").addEventListener("click", async () => {
+      const result = await postJson("/mia/graphics/body/preview", {
+        mood: "gift",
+        layout: "hero",
+        syncObs: true
+      });
+      setBodyObsStatus(result.obsSync);
+      refresh();
+    });
+
+    document.getElementById("btnBodyPreviewComposed").addEventListener("click", async () => {
+      const result = await postJson("/mia/graphics/body/preview", {
+        mood: "wave",
+        layout: "composed",
+        syncObs: true
+      });
+      setBodyObsStatus(result.obsSync);
+      refresh();
+    });
+
+    document.getElementById("btnBodyPreviewReset").addEventListener("click", async () => {
+      const result = await postJson("/mia/graphics/body/preview/reset", { syncObs: true });
+      setBodyObsStatus(result.obsSync);
+      refresh();
+    });
+
+    function setBodyObsStatus(obsSync) {
+      const el = document.getElementById("bodyPreviewObs");
+      if (!obsSync) {
+        el.textContent = "—";
+        return;
+      }
+      if (obsSync.skipped) {
+        el.textContent = "vypnuto";
+        return;
+      }
+      if (obsSync.ok) {
+        const shown = (obsSync.results || []).filter((row) => row.enabled && row.ok).length;
+        el.textContent = shown > 0 ? `OK · ${shown} vrstev` : "OK · skryto";
+        return;
+      }
+      el.textContent = obsSync.reason === "obs_connect_failed" ? "OBS offline" : "chyba";
+    }
+
+    let bankClips = [];
+    let lastPreviewedBankClipId = null;
+    let lastPreviewedStagingId = null;
+
+    function selectedBankClip() {
+      const id = document.getElementById("bankClipSelect").value;
+      return bankClips.find((c) => c.id === id) || null;
+    }
+
+    function markCheck(elId, ok, label) {
+      const el = document.getElementById(elId);
+      if (!el) return;
+      el.textContent = `${ok ? "✓" : "□"} ${label}`;
+      el.style.color = ok ? "#7dcea0" : "#aaa";
+    }
+
+    function updateProductionChecklist() {
+      const clip = selectedBankClip();
+      const force = document.getElementById("bankForceProduction")?.checked;
+      const hasSheet = !!(clip?.sheetUrl || clip?.built);
+      const alphaOk =
+        clip?.trueAlpha !== false &&
+        (clip?.avgAlphaRatio == null || Number(clip.avgAlphaRatio) >= 0.35);
+      const qualityOk = clip?.quality === "production" || clip?.quality === "ai" || force;
+      const alphaQualityOk = !!clip && alphaOk && (clip.quality !== "procedural" || force);
+      const previewed = !!(clip && lastPreviewedBankClipId === clip.id);
+      const gateOk = !!(clip && (clip.liveSheetEligible || clip.productionReady || force));
+      const forceOff = !force;
+
+      markCheck("checkSheet", hasSheet, "Sheet");
+      markCheck(
+        "checkAlpha",
+        alphaQualityOk,
+        clip
+          ? `Alpha/quality (${clip.quality || "?"}${clip.avgAlphaRatio != null ? ` · α${Number(clip.avgAlphaRatio).toFixed(2)}` : ""})`
+          : "Alpha / quality"
+      );
+      markCheck("checkPreview", previewed, "Preview (body/Koj)");
+      markCheck(
+        "checkGate",
+        gateOk,
+        clip?.liveSheetEligible ? "Už production" : clip?.productionReady ? "Gate ready" : "Gate ready"
+      );
+      markCheck("checkForce", forceOff, "Force vypnuto (doporučeno)");
+
+      const summary = document.getElementById("checkSummary");
+      if (!clip) {
+        summary.textContent = "Vyber bank clip";
+        return;
+      }
+      const ready = hasSheet && alphaQualityOk && previewed && (clip.productionReady || force) && forceOff;
+      const softReady = hasSheet && alphaQualityOk && previewed && (clip.productionReady || force);
+      if (clip.liveSheetEligible) summary.textContent = "Už LIVE production";
+      else if (ready) summary.textContent = "Checklist OK → Mark production";
+      else if (softReady && force) summary.textContent = "Force zapnuto — double-check α / art";
+      else if (!previewed) summary.textContent = "Nejdřív Preview body+Koj";
+      else if (!alphaQualityOk) summary.textContent = "Blokováno quality/α — Force jen nouzově";
+      else if (!clip.productionReady) summary.textContent = (clip.productionBlockers || []).join(",") || "Gate blocked";
+      else summary.textContent = "Doplň checklist";
+    }
+
+    function productionChecklistBlocks(action) {
+      const clip = selectedBankClip();
+      const force = document.getElementById("bankForceProduction")?.checked;
+      const warnings = [];
+      if (!clip) return ["no_clip"];
+      if (!(clip.sheetUrl || clip.built)) warnings.push("no_sheet");
+      if (!lastPreviewedBankClipId || lastPreviewedBankClipId !== clip.id) {
+        warnings.push("preview_required");
+      }
+      if (clip.quality === "procedural" && !force) warnings.push("procedural_needs_force");
+      if (clip.avgAlphaRatio != null && Number(clip.avgAlphaRatio) < 0.35 && !force) {
+        warnings.push("alpha_too_low");
+      }
+      if (action === "mark" && !clip.productionReady && !force) warnings.push("gate_blocked");
+      return warnings;
+    }
+
+    function renderBankClips(payload) {
+      bankClips = payload.clips || [];
+      document.getElementById("bankClipCount").textContent = String(payload.clipCount || bankClips.length);
+      const select = document.getElementById("bankClipSelect");
+      const prev = select.value;
+      select.innerHTML = bankClips
+        .map((c) => {
+          const live = c.liveSheetEligible ? "LIVE" : "studio";
+          return `<option value="${c.id}">${c.id} · ${c.quality || "?"} · ${live}</option>`;
+        })
+        .join("");
+      if (prev && bankClips.some((c) => c.id === prev)) select.value = prev;
+      updateBankSelection();
+      document.getElementById("bankClipList").innerHTML =
+        bankClips
+          .slice(0, 12)
+          .map((c) => {
+            const keys = (c.giftKeys || []).join(",") || "—";
+            return `<div class="item">${c.id} · ${c.quality} · keys ${keys}</div>`;
+          })
+          .join("") || '<div class="item">Bank prázdný / nedostupný</div>';
+    }
+
+    function updateBankSelection() {
+      const clip = selectedBankClip();
+      document.getElementById("bankSelected").textContent = clip?.id || "—";
+      document.getElementById("bankQuality").textContent = clip?.quality || "—";
+      let liveLabel = "—";
+      if (clip) {
+        if (clip.overrideActive) liveLabel = "OVERRIDE · ANO";
+        else if (clip.overridePending) liveLabel = "override pending";
+        else liveLabel = clip.liveSheetEligible ? "ANO" : "NE (studio only)";
+      }
+      document.getElementById("bankLiveEligible").textContent = liveLabel;
+      const gateEl = document.getElementById("bankGateStatus");
+      if (!clip) gateEl.textContent = "—";
+      else if (clip.liveSheetEligible) gateEl.textContent = "už production";
+      else if (clip.productionReady) gateEl.textContent = "ready";
+      else gateEl.textContent = (clip.productionBlockers || []).join(",") || "blocked";
+      if (clip?.giftKeys?.length) {
+        document.getElementById("bankGiftKeys").value = clip.giftKeys.join(", ");
+      }
+      document.getElementById("bankOverrideHardcoded").checked = !!clip?.giftOverride;
+      const sheetLink = document.getElementById("bankSheetLink");
+      if (clip?.sheetUrl) {
+        sheetLink.href = clip.sheetUrl;
+        sheetLink.textContent = "Sheet PNG";
+      } else {
+        sheetLink.href = "/kojnozrout-runtime.html?animBank=1";
+        sheetLink.textContent = "Koj ?animBank=1";
+      }
+      updateProductionChecklist();
+    }
+
+    async function refreshBank() {
+      try {
+        const res = await fetch("/mia/animation/bank/operator", { cache: "no-store" });
+        if (!res.ok) {
+          document.getElementById("bankClipCount").textContent = "err";
+          return;
+        }
+        renderBankClips(await res.json());
+      } catch (_err) {
+        document.getElementById("bankClipCount").textContent = "—";
+      }
+      refreshStaging();
+    }
+
+    async function refreshStaging(selectId) {
+      try {
+        const res = await fetch("/mia/animation/staging", { cache: "no-store" });
+        const select = document.getElementById("stagingSelect");
+        if (!res.ok) {
+          select.innerHTML = '<option value="">staging unavailable</option>';
+          return;
+        }
+        const data = await res.json();
+        const clips = data.clips || [];
+        select.innerHTML =
+          clips
+            .map((c) => {
+              const gate = c.productionReady ? "ready" : (c.blockers || []).join("|") || "blocked";
+              return `<option value="${c.stagingId}">${c.stagingId} · ${c.quality || "?"} · α${c.avgAlphaRatio != null ? Number(c.avgAlphaRatio).toFixed(2) : "?"} · ${gate}</option>`;
+            })
+            .join("") || '<option value="">žádný staging</option>';
+        if (selectId) {
+          select.value = selectId;
+        }
+        updateBankPaintLink();
+      } catch (_err) {
+        document.getElementById("stagingSelect").innerHTML = '<option value="">—</option>';
+      }
+    }
+
+    function clearStagingPlayback() {
+      const wrap = document.getElementById("bankStagingPlayerWrap");
+      const video = document.getElementById("bankStagingPlayer");
+      const gif = document.getElementById("bankStagingGifPlay");
+      if (video) {
+        video.pause();
+        video.removeAttribute("src");
+        video.style.display = "none";
+        video.load?.();
+      }
+      if (gif) {
+        gif.removeAttribute("src");
+        gif.style.display = "none";
+      }
+      if (wrap) wrap.style.display = "none";
+    }
+
+    function showStagingPlayback(url, format) {
+      const wrap = document.getElementById("bankStagingPlayerWrap");
+      const video = document.getElementById("bankStagingPlayer");
+      const gif = document.getElementById("bankStagingGifPlay");
+      if (!wrap || !url) {
+        clearStagingPlayback();
+        return;
+      }
+      wrap.style.display = "block";
+      const bust = `${url}${url.includes("?") ? "&" : "?"}t=${Date.now()}`;
+      if (format === "gif") {
+        video.style.display = "none";
+        video.pause();
+        video.removeAttribute("src");
+        gif.src = bust;
+        gif.style.display = "block";
+        return;
+      }
+      gif.style.display = "none";
+      gif.removeAttribute("src");
+      video.src = bust;
+      video.style.display = "block";
+      video.play?.().catch(() => {});
+    }
+
+    async function refreshStagingMedia(stagingId) {
+      if (!stagingId) {
+        clearStagingPlayback();
+        return;
+      }
+      try {
+        const res = await fetch(`/mia/animation/staging/${encodeURIComponent(stagingId)}/media`, {
+          cache: "no-store"
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        const prefer =
+          (data.mp4 && { url: data.mp4, format: "mp4" }) ||
+          (data.webm && { url: data.webm, format: "webm" }) ||
+          (data.gif && { url: data.gif, format: "gif" }) ||
+          null;
+        if (prefer) showStagingPlayback(prefer.url, prefer.format);
+        else clearStagingPlayback();
+      } catch (_err) {
+        /* ignore */
+      }
+    }
+
+    function updateBankPaintLink() {
+      const link = document.getElementById("bankAiPaintLink");
+      const stagingId = document.getElementById("stagingSelect").value;
+      const thumb = document.getElementById("bankStagingThumb");
+      const thumbLabel = document.getElementById("bankStagingThumbLabel");
+      if (stagingId) {
+        link.href = `/mia-paint/?aiStaging=${encodeURIComponent(stagingId)}`;
+        link.textContent = "Otevřít v Paint";
+        const sheetUrl = `/mia/animation/staging/${encodeURIComponent(stagingId)}/sheet?t=${Date.now()}`;
+        thumb.src = sheetUrl;
+        thumb.style.display = "block";
+        thumb.onerror = () => {
+          thumb.style.display = "none";
+          thumbLabel.textContent = `staging ${stagingId} · bez sheetu`;
+        };
+        thumb.onload = () => {
+          thumb.style.display = "block";
+          thumbLabel.textContent = `staging ${stagingId}`;
+        };
+        thumbLabel.textContent = `staging ${stagingId}…`;
+        refreshStagingMedia(stagingId);
+      } else {
+        link.href = "/mia-paint/";
+        link.textContent = "Otevřít v Paint";
+        thumb.removeAttribute("src");
+        thumb.style.display = "none";
+        thumbLabel.textContent = "staging sheet —";
+        clearStagingPlayback();
+      }
+    }
+
+    document.getElementById("bankClipSelect").addEventListener("change", updateBankSelection);
+    document.getElementById("bankForceProduction")?.addEventListener("change", updateProductionChecklist);
+    document.getElementById("stagingSelect").addEventListener("change", updateBankPaintLink);
+    document.getElementById("btnBankRefresh").addEventListener("click", () => refreshBank());
+    document.getElementById("btnBankAiGenerate").addEventListener("click", async () => {
+      const prompt =
+        document.getElementById("bankAiPrompt").value.trim() || "MIA cyberpunk mascot";
+      const motion = document.getElementById("bankAiMotion").value || "wave";
+      const frameCount = Math.max(2, Math.min(8, Number(document.getElementById("bankAiFrames").value) || 6));
+      const autoPromote = document.getElementById("bankAiAutoPromote").checked;
+      const status = document.getElementById("bankPreviewStatus");
+      status.textContent = `generuji ${motion}…`;
+      const btn = document.getElementById("btnBankAiGenerate");
+      btn.disabled = true;
+      try {
+        const result = await postJson("/mia/graphics/ai/animation/generate", {
+          prompt,
+          motion,
+          frameCount,
+          width: 256,
+          height: 256,
+          fps: 12,
+          packSheet: true,
+          persist: true,
+          encodeGif: false,
+          encodeWebm: false,
+          includeFramesBase64: false,
+          promoteToBank: autoPromote,
+          bankCategory: "ai"
+        });
+        if (!result.ok) {
+          status.textContent = result.error || "generate fail";
+          return;
+        }
+        const alpha =
+          result.avgAlphaRatio != null ? ` · α${Math.round(result.avgAlphaRatio * 100)}%` : "";
+        const promo = result.promote?.ok
+          ? ` · promoted ${result.promote.clipId}`
+          : autoPromote
+            ? ` · promote ${result.promote?.error || "skip"}`
+            : "";
+        status.textContent = `OK · ${result.clipId} · ${result.provider || "?"}${alpha}${promo}`;
+        await refreshStaging(result.clipId);
+        updateBankPaintLink();
+        if (result.promote?.ok) refreshBank();
+      } catch (_err) {
+        status.textContent = "generate offline";
+      } finally {
+        btn.disabled = false;
+      }
+    });
+    document.getElementById("btnStagingPromote").addEventListener("click", async () => {
+      const stagingId = document.getElementById("stagingSelect").value;
+      if (!stagingId) return;
+      if (!lastPreviewedStagingId || lastPreviewedStagingId !== stagingId) {
+        const ok = window.confirm(
+          `Staging ${stagingId} nebyl previewnutý v této session.\n\nPřesto Promote? (doporučeno nejdřív Preview staging)`
+        );
+        if (!ok) return;
+      }
+      const result = await postJson("/mia/animation/promote-ai", {
+        stagingId,
+        category: "ai",
+        bankClipId: `ai/${stagingId}`
+      });
+      document.getElementById("bankPreviewStatus").textContent = result.ok
+        ? `promoted · ${result.clipId} · ${result.quality}`
+        : result.error || "fail";
+      refreshBank();
+    });
+    document.getElementById("btnStagingPreview").addEventListener("click", async () => {
+      const stagingId = document.getElementById("stagingSelect").value;
+      if (!stagingId) return;
+      const syncBody = document.getElementById("bankSyncBody").checked;
+      const syncObs = document.getElementById("bankSyncObs").checked;
+      const status = document.getElementById("bankPreviewStatus");
+      status.textContent = `staging preview…`;
+      const result = await postJson(`/mia/animation/staging/${encodeURIComponent(stagingId)}/preview`, {
+        push: true,
+        syncBody,
+        syncObs
+      });
+      if (!result.ok) {
+        status.textContent = result.error || "staging preview fail";
+        return;
+      }
+      const bodyBit = result.bodyMood ? ` · body ${result.bodyMood}` : "";
+      const obsBit =
+        result.obsSync?.ok ? " · OBS OK" : result.obsSync?.skipped ? "" : " · OBS fail";
+      status.textContent = result.pushed
+        ? `staging OK · ${stagingId}${bodyBit}${obsBit}`
+        : result.error || "preview only";
+      if (result.ok) lastPreviewedStagingId = stagingId;
+      if (result.kojPreviewUrl) {
+        window.open(result.kojPreviewUrl, "_blank");
+      }
+      refresh();
+    });
+    async function encodeStagingFormat(format) {
+      const stagingId = document.getElementById("stagingSelect").value;
+      if (!stagingId) return;
+      const status = document.getElementById("bankPreviewStatus");
+      const mediaLink = document.getElementById("bankStagingMediaLink");
+      status.textContent = `encode ${format}…`;
+      const result = await postJson(`/mia/animation/staging/${encodeURIComponent(stagingId)}/encode`, {
+        format
+      });
+      if (!result.ok) {
+        status.textContent =
+          result.error === "ffmpeg_missing"
+            ? `${String(format).toUpperCase()}: chybí ffmpeg (${result.hint || "MIA_FFMPEG_PATH"})`
+            : result.error || "encode fail";
+        mediaLink.style.display = "none";
+        return;
+      }
+      const kb = result.byteLength ? ` · ${Math.round(result.byteLength / 1024)} KB` : "";
+      status.textContent = `${result.format} OK · ${result.frameCount}fr${kb}`;
+      if (result.downloadUrl) {
+        mediaLink.href = `${result.downloadUrl}?t=${Date.now()}`;
+        mediaLink.textContent = `Otevřít ${String(result.format).toUpperCase()}`;
+        mediaLink.style.display = "";
+        showStagingPlayback(result.downloadUrl, result.format);
+      }
+    }
+    document.getElementById("btnStagingGif").addEventListener("click", () => encodeStagingFormat("gif"));
+    document.getElementById("btnStagingWebm").addEventListener("click", () => encodeStagingFormat("webm"));
+    document.getElementById("btnStagingMp4").addEventListener("click", () => encodeStagingFormat("mp4"));
+    document.getElementById("btnStagingAssemble").addEventListener("click", async () => {
+      const status = document.getElementById("bankPreviewStatus");
+      const mediaLink = document.getElementById("bankStagingMediaLink");
+      const raw = document.getElementById("bankAssembleClips").value.trim();
+      const stagingSelected = document.getElementById("stagingSelect").value;
+      const clips = (raw || stagingSelected)
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+      if (!clips.length) {
+        status.textContent = "assemble: zadej staging IDs";
+        return;
+      }
+      const format = document.getElementById("bankAssembleFormat").value || "gif";
+      const fps = Math.max(1, Math.min(30, Number(document.getElementById("bankAssembleFps").value) || 12));
+      const gapFrames = Math.max(0, Math.min(24, Number(document.getElementById("bankAssembleGap").value) || 0));
+      const holdLast = Math.max(0, Math.min(24, Number(document.getElementById("bankAssembleHold").value) || 0));
+      const audioInput = document.getElementById("bankAssembleAudio");
+      const body = { clips, format, fps, gapFrames, holdLast };
+      if (audioInput?.files?.[0]) {
+        if (format === "gif") {
+          status.textContent = "audio: zvol WEBM nebo MP4";
+          return;
+        }
+        status.textContent = "načítám audio…";
+        const file = audioInput.files[0];
+        const buf = await file.arrayBuffer();
+        const bytes = new Uint8Array(buf);
+        let binary = "";
+        for (let i = 0; i < bytes.length; i += 1) binary += String.fromCharCode(bytes[i]);
+        body.audioBase64 = btoa(binary);
+        body.audioExt = (file.name.split(".").pop() || "mp3").toLowerCase();
+      }
+      status.textContent = `assemble ${clips.length} clips → ${format}…`;
+      const result = await postJson("/mia/animation/assemble", body);
+      if (!result.ok) {
+        status.textContent =
+          result.error === "ffmpeg_missing"
+            ? `${String(format).toUpperCase()}: chybí ffmpeg (${result.hint || "MIA_FFMPEG_PATH"})`
+            : result.error || "assemble fail";
+        return;
+      }
+      const kb = result.byteLength ? ` · ${Math.round(result.byteLength / 1024)} KB` : "";
+      const audioBit = result.hasAudio ? " · audio" : "";
+      status.textContent = `assemble OK · ${result.stagingId} · ${result.frameCount}fr${kb}${audioBit}`;
+      if (result.downloadUrl) {
+        mediaLink.href = `${result.downloadUrl}?t=${Date.now()}`;
+        mediaLink.textContent = `Otevřít ${String(result.format).toUpperCase()}`;
+        mediaLink.style.display = "";
+        showStagingPlayback(result.downloadUrl, result.format);
+      }
+      await refreshStaging(result.stagingId);
+      updateBankPaintLink();
+    });
+    document.getElementById("btnAssembleAddSelected")?.addEventListener("click", () => {
+      const stagingId = document.getElementById("stagingSelect").value;
+      const input = document.getElementById("bankAssembleClips");
+      if (!stagingId || !input) return;
+      const parts = input.value
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+      if (!parts.includes(stagingId)) parts.push(stagingId);
+      input.value = parts.join(", ");
+    });
+    document.getElementById("btnAssembleClear")?.addEventListener("click", () => {
+      const input = document.getElementById("bankAssembleClips");
+      if (input) input.value = "";
+      const audio = document.getElementById("bankAssembleAudio");
+      if (audio) audio.value = "";
+    });
+    document.getElementById("stagingSelect").addEventListener("change", () => {
+      const assembleInput = document.getElementById("bankAssembleClips");
+      const stagingId = document.getElementById("stagingSelect").value;
+      if (assembleInput && stagingId && !assembleInput.value.trim()) {
+        assembleInput.value = stagingId;
+      }
+    });
+    document.getElementById("btnBankPreview").addEventListener("click", async () => {
+      const clip = selectedBankClip();
+      if (!clip) return;
+      const syncBody = document.getElementById("bankSyncBody").checked;
+      const syncObs = document.getElementById("bankSyncObs").checked;
+      const result = await postJson("/mia/animation/bank/preview", {
+        clipId: clip.id,
+        push: true,
+        syncBody,
+        syncObs
+      });
+      const bodyBit = result.bodyMood ? ` · body ${result.bodyMood}` : "";
+      const obsBit =
+        result.obsSync?.ok ? " · OBS OK" : result.obsSync?.skipped ? "" : " · OBS fail";
+      document.getElementById("bankPreviewStatus").textContent = result.pushed
+        ? `OK · ${clip.id}${bodyBit}${obsBit}`
+        : result.error || (result.ok ? "URL only" : "fail");
+      if (result.ok || result.pushed) {
+        lastPreviewedBankClipId = clip.id;
+        updateProductionChecklist();
+      }
+      if (result.kojPreviewUrl) {
+        window.open(result.kojPreviewUrl, "_blank");
+      }
+      refresh();
+    });
+    document.getElementById("btnBankBind").addEventListener("click", async () => {
+      const clip = selectedBankClip();
+      if (!clip) return;
+      const giftKeys = document
+        .getElementById("bankGiftKeys")
+        .value.split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+      const overrideHardcoded = document.getElementById("bankOverrideHardcoded").checked;
+      if (overrideHardcoded) {
+        const ok = window.confirm(
+          `Override known gifts for ${clip.id}?\nKeys: ${giftKeys.join(", ")}\n\nLive sheets použijí tento clip místo gift/rose atd. (až po Mark production).`
+        );
+        if (!ok) return;
+      }
+      const result = await postJson("/mia/animation/bank/bind-gift-keys", {
+        clipId: clip.id,
+        giftKeys,
+        overrideHardcoded,
+        confirmOverride: overrideHardcoded
+      });
+      document.getElementById("bankPreviewStatus").textContent = result.ok
+        ? `${result.overrideActive ? "OVERRIDE LIVE" : result.overridePending ? "override pending" : "bound"} · ${(result.giftKeys || []).join(",")}`
+        : result.error || "fail";
+      if (result.warning) document.getElementById("bankPreviewStatus").textContent += ` · ${result.warning}`;
+      refreshBank();
+    });
+    document.getElementById("btnBankMarkProd").addEventListener("click", async () => {
+      const clip = selectedBankClip();
+      if (!clip) return;
+      const forceProduction = document.getElementById("bankForceProduction").checked;
+      const blocks = productionChecklistBlocks("mark");
+      if (blocks.includes("preview_required")) {
+        const okPrev = window.confirm(
+          `Clip ${clip.id} nebyl previewnutý (body+Koj) v této session.\n\nPřesto Mark production?`
+        );
+        if (!okPrev) return;
+      }
+      if (blocks.includes("alpha_too_low") || blocks.includes("procedural_needs_force")) {
+        if (!forceProduction) {
+          document.getElementById("bankPreviewStatus").textContent =
+            `checklist: ${blocks.join(",")} — zapni Force nebo oprav art`;
+          updateProductionChecklist();
+          return;
+        }
+      }
+      const msg = forceProduction
+        ? `FORCE production for ${clip.id}?\nProcedural/low-alpha půjde na live.`
+        : `Mark ${clip.id} as PRODUCTION?\nLive gift sheets will use this clip when resolved.`;
+      if (!window.confirm(msg)) return;
+      const result = await postJson("/mia/animation/mark-production", {
+        clipId: clip.id,
+        confirmProduction: true,
+        forceProduction,
+        confirmForceProduction: forceProduction
+      });
+      document.getElementById("bankPreviewStatus").textContent = result.ok
+        ? `production · ${clip.id}${result.forced ? " · FORCED" : ""}`
+        : result.error === "production_gate_failed"
+          ? `gate: ${(result.blockers || []).join(",")}`
+          : result.error || "fail";
+      refreshBank();
+    });
+
+    setInterval(refresh, 1200);
+    refresh();
+    refreshBank();
+  </script>
+</body>
+</html>

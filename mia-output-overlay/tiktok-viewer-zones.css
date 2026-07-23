@@ -1,0 +1,74 @@
+/**
+ * TikTok LIVE / OBS — safe zones + hard layout lanes (1920×1080 / 1080×1920 portrait).
+ * Pozice na canvasu řídí MIA Vision; uvnitř browser zdroje drží CSS zóny bez overlap.
+ *
+ * Layout lanes (portrait 1080×1920):
+ *   MIA   — hero left / center-lower (large presence)
+ *   BUBBLE — u hlavy, mimo obličej, mimo Koj dock
+ *   KOJ   — pravý dolní dock (OBS source; clear-right v bublině)
+ */
+:root {
+  --tt-safe-top: clamp(40px, 6.5vh, 120px);
+  --tt-safe-bottom: clamp(72px, 12vh, 180px);
+  /* Min 28px — drop-shadow / glow holo jinak ořízne overflow:hidden na body */
+  --tt-safe-left: clamp(28px, 3.5vw, 48px);
+  --tt-safe-right: clamp(16px, 7vw, 88px);
+  --tt-pad: clamp(8px, 2vw, 16px);
+  --tt-bubble-radius: clamp(14px, 2.5vw, 22px);
+  --tt-bubble-font: clamp(17px, 2.1vw, 26px);
+  --tt-bubble-title: clamp(11px, 1.2vw, 13px);
+
+  /* Hard presence zones — speech-overlay + Koj clear margin */
+  --mia-zone-w: clamp(280px, 32vw, 460px);
+  --mia-zone-h: clamp(400px, 62vh, 780px);
+  --mia-bubble-gap: clamp(8px, 1vw, 16px);
+  --koj-clear-right: 30%;
+  --holo-cyan: 0, 230, 255;
+  --holo-silver: 200, 230, 245;
+
+  /* Soft Neon Companion Lab — shared with mia-soft-neon-world.css */
+  --sn-mint: 100, 235, 200;
+  --sn-aqua: 130, 220, 230;
+  --sn-cyan: 80, 210, 255;
+  --world-mint: var(--sn-mint);
+  --world-aqua: var(--sn-aqua);
+}
+
+/* Vertikální stage (≤ ~3:4, vč. TikTok 9:16) — větší MIA hero */
+@media (max-aspect-ratio: 3/4) {
+  :root {
+    --tt-safe-bottom: clamp(110px, 12vh, 220px);
+    --tt-safe-top: clamp(56px, 7vh, 130px);
+    --tt-safe-right: clamp(12px, 9vw, 100px);
+    --mia-zone-w: clamp(340px, 52vw, 560px);
+    --mia-zone-h: clamp(520px, 58vh, 980px);
+    --koj-clear-right: 26%;
+  }
+}
+
+/* Landscape (≥ ~4:3) */
+@media (min-aspect-ratio: 4/3) {
+  :root {
+    --tt-safe-bottom: clamp(96px, 14vh, 220px);
+    --tt-safe-top: clamp(56px, 7vh, 130px);
+    --tt-safe-right: clamp(12px, 9vw, 100px);
+    --mia-zone-w: clamp(240px, 28vw, 400px);
+    --mia-zone-h: clamp(340px, 52vh, 620px);
+    --koj-clear-right: 28%;
+  }
+}
+
+/* Úzký landscape strip (legacy speech 1080×400) — MIA | bublina vedle sebe */
+@media (max-height: 500px) {
+  :root {
+    --tt-safe-bottom: 16px;
+    --tt-safe-top: 6px;
+    --tt-safe-left: 36px;
+    --tt-safe-right: 16px;
+    --tt-bubble-font: clamp(15px, 3.6vw, 22px);
+    --mia-zone-w: clamp(140px, 20vw, 240px);
+    --mia-zone-h: clamp(160px, 72vh, 300px);
+    --mia-bubble-gap: 10px;
+    --koj-clear-right: 22%;
+  }
+}

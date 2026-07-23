@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "packs": {
+    "koj_feed_small": {
+      "meta": {
+        "key": "koj_feed_small",
+        "speaker": "kojnozout"
+      },
+      "variants": [
+        "Malý sousto, ale potěší.",
+        "Jo, něco malého přistálo.",
+        "I menší porce se počítá.",
+        "Tohle mi udělalo radost.",
+        "Jo, tohle jde správným směrem.",
+        "Není to hostina, ale chutná to.",
+        "Miska si všimla.",
+        "Tohle je poctivej malej nášup.",
+        "Beru. I tohle se hodí.",
+        "Malý, ale slušný."
+      ]
+    },
+    "koj_feed_medium": {
+      "meta": {
+        "key": "koj_feed_medium",
+        "speaker": "kojnozout"
+      },
+      "variants": [
+        "Tohle už je pěkná porce.",
+        "Jo, takhle se mi to líbí.",
+        "Střední nášup, ale poctivej.",
+        "Tohle už mi zlepšilo večer.",
+        "Jo, tohle už je rozumný krmení.",
+        "Tak tohle už je slušný chod.",
+        "Miska dostala něco, co stojí za řeč.",
+        "Tohle už má pěknou chuť.",
+        "Jo, takhle jo.",
+        "Tady už se děje něco dobrého."
+      ]
+    },
+    "koj_feed_big": {
+      "meta": {
+        "key": "koj_feed_big",
+        "speaker": "kojnozout"
+      },
+      "variants": [
+        "Tohle už je pořádná hostina.",
+        "Jo, tohle už je velký krmení.",
+        "Tak tohle byla porce, co rozsvítí i vousy.",
+        "Tady už se s miskou nehraje.",
+        "Tohle už je vážnej nášup.",
+        "Tak tohle je velký krmení.",
+        "Tohle je porce, co se pamatuje.",
+        "Jo, tohle už je krmení bez ostychu.",
+        "Takový nášup mám rád.",
+        "Tohle je hostina se vším všudy."
+      ]
+    },
+    "koj_full_bowl": {
+      "meta": {
+        "key": "koj_full_bowl",
+        "speaker": "kojnozout"
+      },
+      "variants": [
+        "Kojnožrout má nacpáno až po okraj.",
+        "Miska je plná. Kojnožrout je na maximu.",
+        "Tady už není kam přidat. Miska je plná.",
+        "Plná miska. Kojnožrout spokojeně mlaská.",
+        "Tohle už je naprosté maximum.",
+        "Kojnožrout je plný a spokojený.",
+        "Miska doražená až na strop.",
+        "Tady už je plno. A je to krásně vidět.",
+        "Kojnožrout hlásí plný stav.",
+        "Péče dorazila až na maximum.",
+        "Tak tohle už je naplnění bez kompromisu.",
+        "Miska už víc neunese a já taky ne.",
+        "Tohle je plnej stav se vším všudy.",
+        "Tady už se jen mlaská a odpočívá.",
+        "Maximum dosaženo. Krásná práce."
+      ]
+    },
+    "mia_care": {
+      "meta": {
+        "key": "mia_care",
+        "speaker": "mia"
+      },
+      "variants": [
+        "Péče o Kojnožrouta je vidět. A systém si toho všímá.",
+        "Tady už nejde jen o náhodu. Tohle je péče.",
+        "Když komunita pečuje, je to poznat.",
+        "Kojnožrout není dekorace. Tohle je vztah a růst.",
+        "Přesně takhle se buduje živý companion.",
+        "Tahle péče dává celému systému smysl.",
+        "Když se komunita stará, vrací se to do atmosféry.",
+        "Tohle už je víc než reakce. Tohle je péče.",
+        "Kojnožrout roste díky vám. A je to znát.",
+        "Péče, rytmus a komunita. Přesně ten směr, co chceme.",
+        "Mazlíček není jen efekt. Reaguje na to, co děláte.",
+        "Je hezky vidět, že komunita vytváří vztah, ne jen čísla.",
+        "Tohle není jen support. Tohle je starost o živou přítomnost na streamu.",
+        "Když se o něj staráte, stream má jinou náladu.",
+        "Přesně v tomhle je síla komunity."
+      ]
+    }
+  }
+}

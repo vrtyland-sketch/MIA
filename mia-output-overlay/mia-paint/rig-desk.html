@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Soft Neon Rig Desk</title>
+<link rel="stylesheet" href="/mia-soft-neon-world.css?v=36-koj-unify" />
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap");
+
+  :root {
+    --rd-mint: rgba(var(--sn-mint), 0.95);
+    --rd-ink: #d8fff2;
+    --rd-muted: rgba(180, 230, 220, 0.62);
+    --rd-panel: var(--sn-glass-bg);
+    --rd-border: var(--sn-glass-border);
+    --rd-glow: var(--sn-glass-glow);
+    --rd-danger: #ff8a9a;
+    --rd-ok: #7dffc2;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    min-height: 100%;
+    font-family: "Space Grotesk", "Segoe UI", sans-serif;
+    color: var(--rd-ink);
+    background:
+      radial-gradient(ellipse 90% 70% at 18% 12%, rgba(var(--sn-mint), 0.16), transparent 55%),
+      radial-gradient(ellipse 80% 60% at 88% 78%, rgba(var(--sn-cyan), 0.12), transparent 50%),
+      linear-gradient(165deg, rgb(var(--sn-lab-deep)) 0%, #021018 48%, rgb(var(--sn-lab-mid)) 100%);
+  }
+
+  .rd-shell {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 28px 22px 40px;
+    display: grid;
+    gap: 18px;
+  }
+
+  .rd-brand {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 10px 18px;
+  }
+  .rd-brand h1 {
+    margin: 0;
+    font-size: clamp(1.6rem, 3.2vw, 2.35rem);
+    letter-spacing: 0.02em;
+    font-weight: 700;
+    text-shadow: 0 0 28px rgba(var(--sn-mint), 0.35);
+  }
+  .rd-brand p {
+    margin: 0;
+    color: var(--rd-muted);
+    font-size: 0.95rem;
+    max-width: 42ch;
+  }
+
+  .rd-stage {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.75fr);
+    gap: 16px;
+    align-items: stretch;
+  }
+  @media (max-width: 900px) {
+    .rd-stage { grid-template-columns: 1fr; }
+  }
+
+  .rd-canvas-wrap {
+    position: relative;
+    min-height: 520px;
+    border-radius: 18px;
+    border: 1px solid var(--rd-border);
+    background:
+      linear-gradient(180deg, rgba(6, 36, 40, 0.55), rgba(2, 14, 18, 0.72)),
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 23px,
+        rgba(var(--sn-mint), 0.035) 24px
+      );
+    box-shadow: var(--rd-glow);
+    overflow: hidden;
+  }
+
+  .rd-rig-root {
+    position: absolute;
+    inset: 24px 24px 48px;
+    transform-origin: 50% 100%;
+  }
+  .rd-body {
+    position: absolute;
+    inset: 0;
+    transform-origin: 50% 72%;
+  }
+  .rd-sprite-slot {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+  }
+  .rd-sprite-slot img {
+    display: block;
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    object-position: bottom center;
+    filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.45));
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
+  }
+
+  .rd-head-clip {
+    position: absolute;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 3;
+  }
+  .rd-head-clip.ready { opacity: 1; }
+  .rd-head-clip img {
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  .rd-overlay {
+    position: absolute;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 5;
+  }
+  .rd-handle {
+    position: absolute;
+    pointer-events: auto;
+    cursor: move;
+    border: 1.5px solid rgba(var(--sn-mint), 0.85);
+    background: rgba(var(--sn-mint), 0.08);
+    box-shadow: 0 0 14px rgba(var(--sn-mint), 0.25);
+    border-radius: 6px;
+  }
+  .rd-handle[data-key="head"] {
+    border-color: rgba(var(--sn-cyan), 0.9);
+    background: rgba(var(--sn-cyan), 0.07);
+  }
+  .rd-handle .rd-label {
+    position: absolute;
+    left: 6px;
+    top: -18px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--rd-ink);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+    pointer-events: none;
+  }
+  .rd-pivot {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    margin: -8px 0 0 -8px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    background: rgba(255, 140, 180, 0.85);
+    box-shadow: 0 0 12px rgba(255, 120, 160, 0.55);
+    pointer-events: auto;
+    cursor: grab;
+    z-index: 6;
+  }
+  .rd-pivot[data-key="root"],
+  .rd-pivot[data-key="body"] {
+    background: rgba(120, 200, 255, 0.85);
+    box-shadow: 0 0 12px rgba(100, 190, 255, 0.5);
+  }
+  .rd-pivot .rd-label {
+    position: absolute;
+    left: 18px;
+    top: -2px;
+    white-space: nowrap;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--rd-ink);
+    pointer-events: none;
+  }
+  .rd-resize {
+    position: absolute;
+    right: -5px;
+    bottom: -5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    background: #fff;
+    box-shadow: 0 0 8px rgba(var(--sn-mint), 0.6);
+    cursor: nwse-resize;
+  }
+
+  .rd-panel {
+    border-radius: 18px;
+    border: 1px solid var(--rd-border);
+    background: var(--rd-panel);
+    box-shadow: var(--rd-glow);
+    padding: 16px 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .rd-panel h2 {
+    margin: 0;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--rd-muted);
+    font-weight: 600;
+  }
+
+  .rd-seg {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    padding: 4px;
+    border-radius: 12px;
+    background: rgba(0, 12, 16, 0.45);
+    border: 1px solid rgba(var(--sn-mint), 0.18);
+  }
+  .rd-seg button {
+    appearance: none;
+    border: 0;
+    border-radius: 9px;
+    padding: 10px 8px;
+    font: inherit;
+    font-weight: 600;
+    color: var(--rd-muted);
+    background: transparent;
+    cursor: pointer;
+  }
+  .rd-seg button.on {
+    color: #041418;
+    background: linear-gradient(135deg, rgba(var(--sn-mint), 0.95), rgba(var(--sn-aqua), 0.88));
+    box-shadow: 0 0 18px rgba(var(--sn-mint), 0.28);
+  }
+
+  .rd-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 0.92rem;
+  }
+  .rd-row label { color: var(--rd-muted); }
+  .rd-toggle {
+    appearance: none;
+    width: 44px;
+    height: 24px;
+    border-radius: 999px;
+    border: 1px solid rgba(var(--sn-mint), 0.35);
+    background: rgba(0, 20, 24, 0.7);
+    position: relative;
+    cursor: pointer;
+  }
+  .rd-toggle::after {
+    content: "";
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: rgba(var(--sn-mint), 0.55);
+    transition: transform 160ms ease, background 160ms ease;
+  }
+  .rd-toggle.on {
+    background: rgba(var(--sn-mint), 0.22);
+  }
+  .rd-toggle.on::after {
+    transform: translateX(20px);
+    background: rgba(var(--sn-mint), 0.95);
+  }
+
+  .rd-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .rd-actions button,
+  .rd-actions a.btn {
+    appearance: none;
+    border: 1px solid rgba(var(--sn-mint), 0.35);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font: inherit;
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--rd-ink);
+    background: rgba(0, 18, 22, 0.55);
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+  }
+  .rd-actions button.primary {
+    grid-column: 1 / -1;
+    border-color: transparent;
+    color: #041418;
+    background: linear-gradient(135deg, rgba(var(--sn-mint), 0.95), rgba(var(--sn-cyan), 0.8));
+    box-shadow: 0 0 20px rgba(var(--sn-mint), 0.3);
+  }
+  .rd-actions button:hover,
+  .rd-actions a.btn:hover { filter: brightness(1.08); }
+
+  .rd-status {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px;
+    line-height: 1.45;
+    color: var(--rd-muted);
+    min-height: 2.8em;
+    white-space: pre-wrap;
+  }
+  .rd-status.ok { color: var(--rd-ok); }
+  .rd-status.err { color: var(--rd-danger); }
+
+  .rd-json {
+    width: 100%;
+    min-height: 140px;
+    resize: vertical;
+    border-radius: 10px;
+    border: 1px solid rgba(var(--sn-mint), 0.22);
+    background: rgba(0, 10, 14, 0.65);
+    color: #b8ffe8;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 11px;
+    padding: 10px;
+  }
+
+  .rd-foot {
+    color: var(--rd-muted);
+    font-size: 0.82rem;
+  }
+  .rd-foot a { color: var(--rd-mint); }
+</style>
+</head>
+<body>
+  <div class="rd-shell soft-neon-lab">
+    <header class="rd-brand">
+      <h1>Soft Neon Rig Desk</h1>
+      <p>Táhni kotvy · živý part-rig preview · ulož JSON pro OBS runtime.</p>
+    </header>
+
+    <div class="rd-stage">
+      <div class="rd-canvas-wrap" id="canvasWrap">
+        <div class="rd-rig-root" id="rigRoot">
+          <div class="rd-body" id="rigBody">
+            <div class="rd-sprite-slot" id="spriteSlot">
+              <img id="spriteImg" alt="sprite" decoding="async" draggable="false" />
+            </div>
+            <div class="rd-head-clip" id="headClip" aria-hidden="true">
+              <img id="headImg" alt="" decoding="async" draggable="false" />
+            </div>
+            <div class="rd-overlay" id="anchorOverlay">
+              <div class="rd-handle" data-key="belly" data-kind="rect">
+                <span class="rd-label">belly</span>
+                <div class="rd-resize" data-resize="belly"></div>
+              </div>
+              <div class="rd-handle" data-key="head" data-kind="rect">
+                <span class="rd-label">head</span>
+                <div class="rd-resize" data-resize="head"></div>
+              </div>
+              <div class="rd-pivot" data-key="neck" data-kind="pivot">
+                <span class="rd-label">neck</span>
+              </div>
+              <div class="rd-pivot" data-key="body" data-kind="pivot">
+                <span class="rd-label">body</span>
+              </div>
+              <div class="rd-pivot" data-key="root" data-kind="pivot">
+                <span class="rd-label">root</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="rd-panel">
+        <h2>Entity</h2>
+        <div class="rd-seg" role="tablist">
+          <button type="button" id="btnKoj" class="on" data-entity="koj">Koj</button>
+          <button type="button" id="btnMia" data-entity="mia">MIA</button>
+        </div>
+
+        <div class="rd-row">
+          <label for="btnLive">Live preview</label>
+          <button type="button" class="rd-toggle on" id="btnLive" aria-pressed="true" title="Head yaw/nod"></button>
+        </div>
+
+        <div class="rd-actions">
+          <button type="button" class="primary" id="btnSave">Save to server</button>
+          <button type="button" id="btnCopy">Copy JSON</button>
+          <button type="button" id="btnDownload">Download</button>
+          <button type="button" id="btnReset">Reset</button>
+          <button type="button" id="btnReload">Reload JSON</button>
+          <a class="btn" href="/mia-streamer-dashboard.html" target="_blank">Dashboard</a>
+          <a class="btn" href="/mia-paint/gift-animation-desk.html" target="_blank">Gift Anim</a>
+        </div>
+
+        <div class="rd-status" id="status">Načítám kotvy…</div>
+        <textarea class="rd-json" id="jsonOut" readonly spellcheck="false"></textarea>
+      </aside>
+    </div>
+
+    <p class="rd-foot">
+      Runtime: <code>/kojnozrout-runtime.html</code> · <code>/speech-overlay.html</code>
+      · cache <code>v=36-koj-unify</code>
+      · gift anim: <a href="/mia-paint/gift-animation-desk.html">Gift Animation Desk</a>
+      · celek: <code>docs/MIA_GRAPHICS_WHOLE.md</code>
+      · po save: <code>npm run obs:refresh-overlays</code>
+    </p>
+  </div>
+
+<script src="/lib/koj-body-anchors.js?v=36-koj-unify"></script>
+<script src="/lib/mia-rig-anchors.js?v=36-koj-unify"></script>
+<script src="/lib/mia-part-rig.js?v=36-koj-unify"></script>
+<script src="/lib/koj-live-motion.js?v=36-koj-unify"></script>
+<script>
+(function () {
+  const R = window.MiaRigAnchors;
+  const BUST = (R && R.CACHE_BUST) || "36-koj-unify";
+  const entityBtns = {
+    koj: document.getElementById("btnKoj"),
+    mia: document.getElementById("btnMia")
+  };
+  const spriteImg = document.getElementById("spriteImg");
+  const headClip = document.getElementById("headClip");
+  const headImg = document.getElementById("headImg");
+  const spriteSlot = document.getElementById("spriteSlot");
+  const rigRoot = document.getElementById("rigRoot");
+  const rigBody = document.getElementById("rigBody");
+  const overlay = document.getElementById("anchorOverlay");
+  const statusEl = document.getElementById("status");
+  const jsonOut = document.getElementById("jsonOut");
+  const btnLive = document.getElementById("btnLive");
+
+  let entity = "koj";
+  let doc = null;
+  let defaultsByEntity = {};
+  let liveOn = true;
+  let partRig = null;
+  let liveMotion = null;
+  let drag = null;
+
+  function setStatus(msg, kind) {
+    statusEl.textContent = msg;
+    statusEl.className = "rd-status" + (kind ? " " + kind : "");
+  }
+
+  function assetUrl(rel) {
+    if (!rel) return "";
+    if (/^https?:\/\//i.test(rel) || rel.startsWith("/")) {
+      return rel + (rel.includes("?") ? "&" : "?") + "v=" + BUST;
+    }
+    return "/" + rel.replace(/^\//, "") + "?v=" + BUST;
+  }
+
+  function currentDocPayload() {
+    return {
+      version: 25,
+      characterId: entity,
+      artId: doc.artId,
+      idleAsset: doc.idleAsset,
+      note: doc.note || "",
+      anchors: JSON.parse(JSON.stringify(doc.anchors))
+    };
+  }
+
+  function refreshJson() {
+    jsonOut.value = JSON.stringify(currentDocPayload(), null, 2);
+  }
+
+  function measureSpriteBox() {
+    const cw = rigBody.clientWidth;
+    const ch = rigBody.clientHeight;
+    const w = spriteImg.offsetWidth;
+    const h = spriteImg.offsetHeight;
+    if (cw < 8 || ch < 8 || w < 8 || h < 8) return null;
+    return { left: (cw - w) / 2, top: ch - h, width: w, height: h };
+  }
+
+  function placeHandles() {
+    if (!doc) return;
+    const box = measureSpriteBox();
+    if (!box) return;
+    const a = doc.anchors;
+
+    overlay.querySelectorAll("[data-key]").forEach((el) => {
+      const key = el.getAttribute("data-key");
+      const kind = el.getAttribute("data-kind");
+      if (kind === "rect" && a[key]) {
+        const r = a[key];
+        el.style.left = box.left + (r.cx - r.w / 2) * box.width + "px";
+        el.style.top = box.top + (r.cy - r.h / 2) * box.height + "px";
+        el.style.width = r.w * box.width + "px";
+        el.style.height = r.h * box.height + "px";
+      } else if (kind === "pivot" && a[key]) {
+        const p = a[key];
+        el.style.left = box.left + p.x * box.width + "px";
+        el.style.top = box.top + p.y * box.height + "px";
+      }
+    });
+
+    syncHeadClip(box);
+    applyRigPivots();
+  }
+
+  function syncHeadClip(box) {
+    const head = doc.anchors.head;
+    const neck = doc.anchors.neck;
+    if (!head || !box) {
+      headClip.classList.remove("ready");
+      return;
+    }
+    const left = box.left + (head.cx - head.w / 2) * box.width;
+    const top = box.top + (head.cy - head.h / 2) * box.height;
+    const width = head.w * box.width;
+    const height = head.h * box.height;
+    headClip.style.left = left + "px";
+    headClip.style.top = top + "px";
+    headClip.style.width = width + "px";
+    headClip.style.height = height + "px";
+    headImg.style.left = box.left - left + "px";
+    headImg.style.top = box.top - top + "px";
+    headImg.style.width = box.width + "px";
+    headImg.style.height = box.height + "px";
+    if (headImg.src !== spriteImg.src) headImg.src = spriteImg.src;
+    headClip.classList.add("ready");
+
+    if (partRig && neck) {
+      const rel = R.headPivotRelative(head, neck);
+      partRig.setPivot("head", rel);
+    }
+  }
+
+  function applyRigPivots() {
+    if (!partRig || !doc) return;
+    const a = doc.anchors;
+    if (a.root) partRig.setPivot("root", a.root);
+    if (a.body) partRig.setPivot("body", a.body);
+    if (a.head && a.neck) partRig.setPivot("head", R.headPivotRelative(a.head, a.neck));
+  }
+
+  function ensureRig() {
+    if (partRig || !window.MiaPartRig) return partRig;
+    partRig = window.MiaPartRig.createStandardHumanoid({
+      torsoId: "body",
+      rootEl: rigRoot,
+      torsoEl: rigBody,
+      headEl: headClip,
+      rootPivot: (doc && doc.anchors.root) || { x: 0.5, y: 1 },
+      torsoPivot: (doc && doc.anchors.body) || { x: 0.5, y: 0.72 },
+      headPivot: { x: 0.5, y: 1 }
+    });
+    return partRig;
+  }
+
+  function ensureLive() {
+    ensureRig();
+    if (!liveMotion && window.KojLiveMotion) {
+      liveMotion = window.KojLiveMotion.create({
+        el: rigRoot,
+        rig: partRig,
+        isSpeaking: () => false,
+        isEnabled: () => liveOn
+      });
+      liveMotion.start();
+    }
+  }
+
+  function setLive(on) {
+    liveOn = !!on;
+    btnLive.classList.toggle("on", liveOn);
+    btnLive.setAttribute("aria-pressed", liveOn ? "true" : "false");
+    if (liveOn) ensureLive();
+    else if (partRig) {
+      partRig.setLocal("root", { x: 0, y: 0, rot: 0, sx: 1, sy: 1 });
+      partRig.setLocal("body", { x: 0, y: 0, rot: 0, sx: 1, sy: 1 });
+      partRig.setLocal("head", { x: 0, y: 0, rot: 0, sx: 1, sy: 1 });
+      partRig.update();
+      placeHandles();
+    }
+  }
+
+  async function loadEntity(id) {
+    entity = id === "mia" ? "mia" : "koj";
+    Object.keys(entityBtns).forEach((k) => {
+      entityBtns[k].classList.toggle("on", k === entity);
+    });
+    setStatus("Načítám " + entity + "…");
+    doc = await R.load(entity, { bust: BUST });
+    defaultsByEntity[entity] = JSON.parse(JSON.stringify(doc));
+    spriteImg.src = assetUrl(doc.idleAsset);
+    refreshJson();
+    ensureRig();
+    applyRigPivots();
+    if (liveOn) ensureLive();
+    setStatus("Entity: " + entity + " · art " + (doc.artId || "—") + " · JSON loaded", "ok");
+  // place after image layout
+  if (spriteImg.complete) placeHandles();
+  }
+
+  spriteImg.addEventListener("load", () => placeHandles());
+  window.addEventListener("resize", () => placeHandles());
+
+  function boxFromEvent() {
+    const box = measureSpriteBox();
+    if (!box) return null;
+    const bodyRect = rigBody.getBoundingClientRect();
+    return {
+      ...box,
+      originX: bodyRect.left + box.left,
+      originY: bodyRect.top + box.top
+    };
+  }
+
+  function onPointerDown(e) {
+    const handle = e.target.closest("[data-key], [data-resize]");
+    if (!handle) return;
+    e.preventDefault();
+    const box = boxFromEvent();
+    if (!box || !doc) return;
+    const resizeKey = handle.getAttribute("data-resize");
+    const key = resizeKey || handle.getAttribute("data-key") || handle.closest("[data-key]")?.getAttribute("data-key");
+    if (!key || !doc.anchors[key]) return;
+    const kind = resizeKey ? "resize" : handle.getAttribute("data-kind") || handle.closest("[data-kind]")?.getAttribute("data-kind");
+    const a = doc.anchors[key];
+    drag = {
+      key,
+      kind,
+      startX: e.clientX,
+      startY: e.clientY,
+      start: JSON.parse(JSON.stringify(a)),
+      box
+    };
+    handle.setPointerCapture?.(e.pointerId);
+  }
+
+  function onPointerMove(e) {
+    if (!drag || !doc) return;
+    const { box, key, kind, start, startX, startY } = drag;
+    const dx = (e.clientX - startX) / box.width;
+    const dy = (e.clientY - startY) / box.height;
+    if (kind === "pivot") {
+      doc.anchors[key] = {
+        x: Math.max(0, Math.min(1, start.x + dx)),
+        y: Math.max(0, Math.min(1, start.y + dy))
+      };
+    } else if (kind === "resize") {
+      doc.anchors[key] = {
+        cx: start.cx,
+        cy: start.cy,
+        w: Math.max(0.04, Math.min(1, start.w + dx)),
+        h: Math.max(0.04, Math.min(1, start.h + dy))
+      };
+    } else {
+      doc.anchors[key] = {
+        ...start,
+        cx: Math.max(0, Math.min(1, start.cx + dx)),
+        cy: Math.max(0, Math.min(1, start.cy + dy))
+      };
+    }
+    refreshJson();
+    placeHandles();
+  }
+
+  function onPointerUp() {
+    drag = null;
+  }
+
+  overlay.addEventListener("pointerdown", onPointerDown);
+  window.addEventListener("pointermove", onPointerMove);
+  window.addEventListener("pointerup", onPointerUp);
+
+  entityBtns.koj.addEventListener("click", () => loadEntity("koj"));
+  entityBtns.mia.addEventListener("click", () => loadEntity("mia"));
+  btnLive.addEventListener("click", () => setLive(!liveOn));
+
+  document.getElementById("btnReset").addEventListener("click", () => {
+    const fb = defaultsByEntity[entity] || R.fallbackDoc(entity);
+    doc = JSON.parse(JSON.stringify(fb));
+    refreshJson();
+    placeHandles();
+    setStatus("Reset na načtené / fallback hodnoty", "ok");
+  });
+
+  document.getElementById("btnReload").addEventListener("click", () => loadEntity(entity));
+
+  document.getElementById("btnCopy").addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(jsonOut.value);
+      setStatus("JSON zkopírován do schránky", "ok");
+    } catch (_err) {
+      setStatus("Clipboard selhal — vyber textarea ručně", "err");
+    }
+  });
+
+  document.getElementById("btnDownload").addEventListener("click", () => {
+    const blob = new Blob([jsonOut.value], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = entity + ".json";
+    a.click();
+    URL.revokeObjectURL(a.href);
+    setStatus("Stáhnuto " + entity + ".json", "ok");
+  });
+
+  document.getElementById("btnSave").addEventListener("click", async () => {
+    const payload = currentDocPayload();
+    setStatus("Ukládám…");
+    try {
+      const res = await fetch("/api/rig-anchors", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) {
+        throw new Error(data.error || ("http_" + res.status));
+      }
+      setStatus("Uloženo → " + (data.path || ("/anchors/" + entity + ".json")) + " · refresh OBS", "ok");
+    } catch (err) {
+      setStatus("Save API selhalo (" + (err.message || err) + ") — použij Download", "err");
+      // still offer download
+    }
+  });
+
+  loadEntity("koj");
+})();
+</script>
+</body>
+</html>

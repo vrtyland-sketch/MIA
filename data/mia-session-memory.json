@@ -1,0 +1,464 @@
+{
+  "version": 1,
+  "updatedAt": 1783627055482,
+  "recentMessages": [
+    {
+      "at": 1783627045398,
+      "userLabel": "LiveAuditCare",
+      "userKey": "liveauditcare",
+      "message": "podrbi kojnozouta",
+      "intentType": "statement"
+    },
+    {
+      "at": 1783584962905,
+      "userLabel": "LiveAuditCare",
+      "userKey": "liveauditcare",
+      "message": "podrbi kojnozouta",
+      "intentType": "statement"
+    },
+    {
+      "at": 1783578173185,
+      "userLabel": "LiveAuditCare",
+      "userKey": "liveauditcare",
+      "message": "podrbi kojnozouta",
+      "intentType": "statement"
+    },
+    {
+      "at": 1783501564423,
+      "userLabel": "LiveAuditCare",
+      "userKey": "liveauditcare",
+      "message": "podrbi kojnozouta",
+      "intentType": "statement"
+    },
+    {
+      "at": 1783494211587,
+      "userLabel": "LiveAuditCare",
+      "userKey": "liveauditcare",
+      "message": "podrbi kojnozouta",
+      "intentType": "statement"
+    },
+    {
+      "at": 1783452683980,
+      "userLabel": "LiveAuditCare",
+      "userKey": "liveauditcare",
+      "message": "podrbi kojnozouta",
+      "intentType": "statement"
+    },
+    {
+      "at": 1783452411318,
+      "userLabel": "LiveAuditCare",
+      "userKey": "liveauditcare",
+      "message": "podrbi kojnozouta",
+      "intentType": "statement"
+    },
+    {
+      "at": 1783345381376,
+      "userLabel": "VasaSpinak",
+      "userKey": "vasaspinak",
+      "message": "mia  pust kojnozrot test",
+      "intentType": "direct_statement"
+    },
+    {
+      "at": 1783203105736,
+      "userLabel": "Test User 123",
+      "userKey": "test_user_123",
+      "message": "This is a Test",
+      "intentType": "statement"
+    },
+    {
+      "at": 1783203099688,
+      "userLabel": "Test User 123",
+      "userKey": "test_user_123",
+      "message": "This is a Test",
+      "intentType": "statement"
+    },
+    {
+      "at": 1783203091586,
+      "userLabel": "Test User 123",
+      "userKey": "test_user_123",
+      "message": "This is a Test",
+      "intentType": "statement"
+    },
+    {
+      "at": 1783203086614,
+      "userLabel": "Test User 123",
+      "userKey": "test_user_123",
+      "message": "This is a Test",
+      "intentType": "statement"
+    }
+  ],
+  "users": {
+    "vasaspinak": {
+      "userLabel": "VasaSpinak",
+      "visitCount": 106,
+      "lastMessageAt": 1783345381376,
+      "lastIntentType": "direct_statement",
+      "lastMessage": "mia  pust kojnozrot test",
+      "lastBotReplyAt": 1783181448405,
+      "lastBotReplySpeaker": "mia",
+      "lastBotReplyText": "VasaSpinak, chytám pointu. Co z toho chceš dál?"
+    },
+    "test_user_123": {
+      "userLabel": "Test User 123",
+      "visitCount": 1013,
+      "lastMessageAt": 1783203105736,
+      "lastIntentType": "statement",
+      "lastMessage": "This is a Test",
+      "lastBotReplyAt": 1783203128682,
+      "lastBotReplySpeaker": "mia",
+      "lastBotReplyText": "Test, dobrý timing — právě jsem u chatu."
+    },
+    "testuser": {
+      "userLabel": "TestUser",
+      "visitCount": 1,
+      "lastMessageAt": 1781410191938,
+      "lastIntentType": "greeting",
+      "lastMessage": "ahoj mia"
+    },
+    "debug_uživatel": {
+      "userLabel": "Debug uživatel",
+      "visitCount": 3,
+      "lastMessageAt": 1782000065929,
+      "lastIntentType": "direct_statement",
+      "lastMessage": "MIA prehraj video",
+      "lastBotReplyAt": 1781636481062,
+      "lastBotReplySpeaker": "mia",
+      "lastBotReplyText": "Debug, Debug, ráda tě zase vidím. ahoj. Vidím tě — jsem tady a dávám pozor. Mimochodem — v chatu dneska pořád padá This is a Test."
+    },
+    "divák": {
+      "userLabel": "Divák",
+      "visitCount": 5,
+      "lastMessageAt": 1782836997880,
+      "lastIntentType": "statement",
+      "lastMessage": "batoh",
+      "lastBotReplyAt": 1782836943698,
+      "lastBotReplySpeaker": "kojnozout",
+      "lastBotReplyText": "Divák, zase tady — dobrý, registruju tě. v pohodě. Jen břicho má svoje názory."
+    },
+    "debug_podporovatel": {
+      "userLabel": "Debug podporovatel",
+      "visitCount": 0,
+      "lastMessageAt": 0,
+      "lastIntentType": "",
+      "lastMessage": "",
+      "lastBotReplyAt": 1781636454223,
+      "lastBotReplySpeaker": "mia",
+      "lastBotReplyText": "Debug, Kojnožrout zírá, ale Rose určitě zaregistroval."
+    },
+    "test": {
+      "userLabel": "Test",
+      "visitCount": 0,
+      "lastMessageAt": 0,
+      "lastIntentType": "",
+      "lastMessage": "",
+      "lastBotReplyAt": 1781904835144,
+      "lastBotReplySpeaker": "kojnozout",
+      "lastBotReplyText": "Jo, něco přistálo. To beru."
+    },
+    "liveaudit": {
+      "userLabel": "LiveAudit",
+      "visitCount": 0,
+      "lastMessageAt": 0,
+      "lastIntentType": "",
+      "lastMessage": "",
+      "lastBotReplyAt": 1783627051482,
+      "lastBotReplySpeaker": "mia",
+      "lastBotReplyText": "LiveAudit, smutek trochu poleví — Rose od tebe je vidět."
+    },
+    "t": {
+      "userLabel": "T",
+      "visitCount": 0,
+      "lastMessageAt": 0,
+      "lastIntentType": "",
+      "lastMessage": "",
+      "lastBotReplyAt": 1781906353013,
+      "lastBotReplySpeaker": "mia",
+      "lastBotReplyText": "T, Rose dorazil přesně ve chvíli, kdy miska volala."
+    },
+    "audit_user": {
+      "userLabel": "Audit User",
+      "visitCount": 1,
+      "lastMessageAt": 1781995733102,
+      "lastIntentType": "direct_question",
+      "lastMessage": "Ahoj MIA reagujes?",
+      "lastBotReplyAt": 1781995793344,
+      "lastBotReplySpeaker": "mia",
+      "lastBotReplyText": "Audit, občas tu zazní ahoj mia — beru to jako náš společný rytmus."
+    },
+    "t1_divák": {
+      "userLabel": "T1 Divák",
+      "visitCount": 0,
+      "lastMessageAt": 0,
+      "lastIntentType": "",
+      "lastMessage": "",
+      "lastBotReplyAt": 1782836956594,
+      "lastBotReplySpeaker": "mia",
+      "lastBotReplyText": "T1, Kojnožrout má hlad — Rose padá úplně správně."
+    },
+    "t5_divák": {
+      "userLabel": "T5 Divák",
+      "visitCount": 0,
+      "lastMessageAt": 0,
+      "lastIntentType": "",
+      "lastMessage": "",
+      "lastBotReplyAt": 1782836966976,
+      "lastBotReplySpeaker": "mia",
+      "lastBotReplyText": "Tohle se počítá. Díky moc."
+    },
+    "novy_fan": {
+      "userLabel": "Novy Fan",
+      "visitCount": 0,
+      "lastMessageAt": 0,
+      "lastIntentType": "",
+      "lastMessage": "",
+      "lastBotReplyAt": 1782836976540,
+      "lastBotReplySpeaker": "mia",
+      "lastBotReplyText": "Tohle už není náhoda. Tohle je flow."
+    },
+    "t3_divák": {
+      "userLabel": "T3 Divák",
+      "visitCount": 0,
+      "lastMessageAt": 0,
+      "lastIntentType": "",
+      "lastMessage": "",
+      "lastBotReplyAt": 1782836999907,
+      "lastBotReplySpeaker": "mia",
+      "lastBotReplyText": "Díky. Tohle má smysl."
+    },
+    "langtester": {
+      "userLabel": "LangTester",
+      "visitCount": 4,
+      "lastMessageAt": 1783098092212,
+      "lastIntentType": "direct_question",
+      "lastMessage": "Hello MIA, how are you today? Thanks for the stream!",
+      "lastBotReplyAt": 1783098101605,
+      "lastBotReplySpeaker": "mia",
+      "lastBotReplyText": "LangTester, dobrá otázka — chvilku."
+    },
+    "liveauditcare": {
+      "userLabel": "LiveAuditCare",
+      "visitCount": 9,
+      "lastMessageAt": 1783627045398,
+      "lastIntentType": "statement",
+      "lastMessage": "podrbi kojnozouta"
+    }
+  },
+  "recentBotReplies": [
+    {
+      "at": 1783627051482,
+      "userLabel": "LiveAudit",
+      "userKey": "liveaudit",
+      "speaker": "mia",
+      "text": "LiveAudit, smutek trochu poleví — Rose od tebe je vidět.",
+      "source": "companion",
+      "intentType": ""
+    },
+    {
+      "at": 1783627044271,
+      "userLabel": "LiveAudit",
+      "userKey": "liveaudit",
+      "speaker": "kojnozout",
+      "text": "LiveAudit poslal Rose",
+      "source": "primary",
+      "intentType": ""
+    },
+    {
+      "at": 1783584964381,
+      "userLabel": "LiveAudit",
+      "userKey": "liveaudit",
+      "speaker": "mia",
+      "text": "LiveAudit, Kojnožrout je teď smutný — Rose mu zvedne náladu.",
+      "source": "companion",
+      "intentType": ""
+    },
+    {
+      "at": 1783584960388,
+      "userLabel": "LiveAudit",
+      "userKey": "liveaudit",
+      "speaker": "kojnozout",
+      "text": "LiveAudit poslal Rose",
+      "source": "primary",
+      "intentType": ""
+    },
+    {
+      "at": 1783578179483,
+      "userLabel": "LiveAudit",
+      "userKey": "liveaudit",
+      "speaker": "mia",
+      "text": "LiveAudit, Rose dorazil v citlivý moment. Kojnožrout to vnímá.",
+      "source": "companion",
+      "intentType": ""
+    },
+    {
+      "at": 1783578172179,
+      "userLabel": "LiveAudit",
+      "userKey": "liveaudit",
+      "speaker": "kojnozout",
+      "text": "LiveAudit poslal Rose",
+      "source": "primary",
+      "intentType": ""
+    },
+    {
+      "at": 1783501570648,
+      "userLabel": "LiveAudit",
+      "userKey": "liveaudit",
+      "speaker": "mia",
+      "text": "LiveAudit, smutek trochu poleví — Rose od tebe je vidět.",
+      "source": "companion",
+      "intentType": ""
+    },
+    {
+      "at": 1783501563377,
+      "userLabel": "LiveAudit",
+      "userKey": "liveaudit",
+      "speaker": "kojnozout",
+      "text": "LiveAudit poslal Rose",
+      "source": "primary",
+      "intentType": ""
+    },
+    {
+      "at": 1783494217675,
+      "userLabel": "LiveAudit",
+      "userKey": "liveaudit",
+      "speaker": "mia",
+      "text": "LiveAudit, Rose je přesně to, co smutnému Kojnožroutovi udělá den lepším.",
+      "source": "companion",
+      "intentType": ""
+    },
+    {
+      "at": 1783494210652,
+      "userLabel": "LiveAudit",
+      "userKey": "liveaudit",
+      "speaker": "kojnozout",
+      "text": "LiveAudit poslal Rose",
+      "source": "primary",
+      "intentType": ""
+    },
+    {
+      "at": 1783452689974,
+      "userLabel": "LiveAudit",
+      "userKey": "liveaudit",
+      "speaker": "mia",
+      "text": "LiveAudit, Rose je přesně to, co smutnému Kojnožroutovi udělá den lepším.",
+      "source": "companion",
+      "intentType": ""
+    },
+    {
+      "at": 1783452682870,
+      "userLabel": "LiveAudit",
+      "userKey": "liveaudit",
+      "speaker": "kojnozout",
+      "text": "LiveAudit poslal Rose",
+      "source": "primary",
+      "intentType": ""
+    },
+    {
+      "at": 1783452417335,
+      "userLabel": "LiveAudit",
+      "userKey": "liveaudit",
+      "speaker": "mia",
+      "text": "LiveAudit, Rose dorazil v citlivý moment. Kojnožrout to vnímá.",
+      "source": "companion",
+      "intentType": ""
+    },
+    {
+      "at": 1783452410207,
+      "userLabel": "LiveAudit",
+      "userKey": "liveaudit",
+      "speaker": "kojnozout",
+      "text": "LiveAudit poslal Rose",
+      "source": "primary",
+      "intentType": ""
+    },
+    {
+      "at": 1783203128682,
+      "userLabel": "Test User 123",
+      "userKey": "test_user_123",
+      "speaker": "mia",
+      "text": "Test, dobrý timing — právě jsem u chatu.",
+      "source": "primary",
+      "intentType": ""
+    },
+    {
+      "at": 1783203123957,
+      "userLabel": "Test User 123",
+      "userKey": "test_user_123",
+      "speaker": "mia",
+      "text": "Test, klidně se ptej. Dávám pozor.",
+      "source": "primary",
+      "intentType": ""
+    },
+    {
+      "at": 1783203114441,
+      "userLabel": "Test User 123",
+      "userKey": "test_user_123",
+      "speaker": "mia",
+      "text": "Test, jsem tady. Co je na stole?",
+      "source": "primary",
+      "intentType": ""
+    },
+    {
+      "at": 1783203109732,
+      "userLabel": "Test User 123",
+      "userKey": "test_user_123",
+      "speaker": "mia",
+      "text": "Test, jo, jsem tady. Ptej se.",
+      "source": "primary",
+      "intentType": ""
+    },
+    {
+      "at": 1783203090559,
+      "userLabel": "Test User 123",
+      "userKey": "test_user_123",
+      "speaker": "mia",
+      "text": "Test, pořád tě slyším — co teď?",
+      "source": "primary",
+      "intentType": ""
+    },
+    {
+      "at": 1783203080124,
+      "userLabel": "Test User 123",
+      "userKey": "test_user_123",
+      "speaker": "mia",
+      "text": "Test, zase tě vidím. Co je nového?",
+      "source": "primary",
+      "intentType": ""
+    },
+    {
+      "at": 1783203071194,
+      "userLabel": "Test User 123",
+      "userKey": "test_user_123",
+      "speaker": "mia",
+      "text": "Test, mám tě v obraze. Co přesně řešíme?",
+      "source": "primary",
+      "intentType": ""
+    },
+    {
+      "at": 1783203064037,
+      "userLabel": "Test User 123",
+      "userKey": "test_user_123",
+      "speaker": "mia",
+      "text": "Test, chat žije a ty taky — co dál?",
+      "source": "primary",
+      "intentType": ""
+    },
+    {
+      "at": 1783203056725,
+      "userLabel": "Test User 123",
+      "userKey": "test_user_123",
+      "speaker": "mia",
+      "text": "Test, beru to. Co je teď hlavní otázka?",
+      "source": "primary",
+      "intentType": ""
+    },
+    {
+      "at": 1783203026722,
+      "userLabel": "Test User 123",
+      "userKey": "test_user_123",
+      "speaker": "mia",
+      "text": "Test, Kojnožrout je teď smutný — Rose mu zvedne náladu.",
+      "source": "companion",
+      "intentType": ""
+    }
+  ]
+}

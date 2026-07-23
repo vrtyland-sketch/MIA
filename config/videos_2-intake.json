@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "description": "Ruční tier review pro incoming-images/videos_2 — merge při media:scan.",
+  "reviewedAt": "2026-07-04",
+  "ignored": [
+    "*.url",
+    "*.zip",
+    "Photos-3-001.zip",
+    "Photos-3-001 (1).zip"
+  ],
+  "assignments": [
+    {
+      "rel": "videos_2/lv_0_20260411115935.mp4",
+      "tier": "T5",
+      "contentKind": "story_legend",
+      "note": "LV edit ~12 MB — epický střih, signature T5 rotace"
+    },
+    {
+      "rel": "videos_2/lv_0_20260411120454.mp4",
+      "tier": "T5",
+      "contentKind": "story_legend",
+      "note": "LV edit pár — stejná série jako 1115935"
+    },
+    {
+      "rel": "videos_2/lv_7574590375705480453_20260516152347 (1).mp4",
+      "tier": "T5",
+      "contentKind": "story_legend",
+      "note": "LV edit 38 MB — nejdelší z nové série, mega boss feel"
+    },
+    {
+      "rel": "videos_2/2026-06-21-201620647.mp4",
+      "tier": "T5",
+      "contentKind": "story_legend",
+      "note": "Google Photos export 180 MB — největší soubor, legend slot"
+    },
+    {
+      "rel": "videos_2/2026-06-30-170940174.mp4",
+      "tier": "T5",
+      "contentKind": "story_legend",
+      "note": "Photos export 23 MB — T5 rotace"
+    },
+    {
+      "rel": "videos_2/2026-06-30-170837281.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "note": "Photos export 20 MB — epic mezi T4 a T5"
+    },
+    {
+      "rel": "videos_2/lv_0_20260411115550.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "note": "LV edit 11.6 MB — boss arrival / T4"
+    },
+    {
+      "rel": "videos_2/2026-04-19-121304490.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "note": "Photos export 35 MB — silný příběh, T4 slot"
+    },
+    {
+      "rel": "videos_2/VID-20260419-WA0070.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "note": "WhatsApp 35 MB — komunitní epic, ne jen T3 hudba"
+    },
+    {
+      "rel": "videos_2/VID-20260504-WA0001.mp4",
+      "tier": "T4",
+      "contentKind": "story_epic",
+      "note": "WhatsApp 39 MB — velký WA clip → T4"
+    },
+    {
+      "rel": "videos_2/VID-20260318-WA0333.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "note": "WhatsApp 11 MB — příběh + hudba, střední tier"
+    },
+    {
+      "rel": "videos_2/2026-06-25-152308764.mp4",
+      "tier": "T3",
+      "contentKind": "story_music",
+      "note": "Photos export 12 MB — T3 rotace"
+    },
+    {
+      "rel": "videos_2/lv_0_20260411124814.mp4",
+      "tier": "T2",
+      "contentKind": "donator_moment",
+      "note": "Krátký LV clip 1.3 MB — rychlý dárkový moment"
+    },
+    {
+      "rel": "videos_2/VID-20260318-WA0328.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "note": "Krátké WA 0.5 MB — profilové video dárce"
+    },
+    {
+      "rel": "videos_2/VID-20260419-WA0095.mp4",
+      "tier": "PROFILE",
+      "contentKind": "profile_reel",
+      "note": "Krátké WA 0.8 MB — profilové video"
+    }
+  ]
+}

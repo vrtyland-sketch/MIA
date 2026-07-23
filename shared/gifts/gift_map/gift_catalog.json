@@ -1,0 +1,445 @@
+{
+  "version": "1.1.0",
+  "gifts": {
+    "ROSE": {
+      "key": "ROSE",
+      "label": "Rose",
+      "category": "FLOWER",
+      "defaultTier": "T1",
+      "priority": 2,
+      "care": "LOVE",
+      "bowl": { "food": true, "fillMul": 1 },
+      "video": { "family": "flower", "preferTier": "T1" },
+      "overlay": {
+        "style": "soft",
+        "color": "#ff6b9d",
+        "icon": "🌹",
+        "template": "{user} poslal Rose"
+      },
+      "voice": { "owner": "kojnozout", "tone": "thanks" },
+      "xp": { "viewerMul": 1, "kojMul": 1, "communityMul": 1 },
+      "rewards": ["snack"],
+      "achievements": ["first_gift", "rose_wave"]
+    },
+    "FLOWERS_BOUQUET": {
+      "key": "FLOWERS_BOUQUET",
+      "label": "Kytice",
+      "category": "FLOWER",
+      "defaultTier": "T2",
+      "priority": 4,
+      "care": "LOVE",
+      "bowl": { "food": true, "fillMul": 1.1 },
+      "video": { "family": "flower", "preferTier": "T2" },
+      "overlay": {
+        "style": "soft",
+        "color": "#ff6b9d",
+        "icon": "💐",
+        "template": "{user} poslal kytici"
+      },
+      "voice": { "owner": "mia", "tone": "warm" },
+      "xp": { "viewerMul": 1.1, "kojMul": 1, "communityMul": 1.05 },
+      "rewards": ["cheer"],
+      "achievements": ["first_gift"]
+    },
+    "LION": {
+      "key": "LION",
+      "label": "Lion",
+      "category": "ANIMAL",
+      "defaultTier": "T4",
+      "priority": 10,
+      "care": "SUPPORT",
+      "bowl": { "food": true, "fillMul": 1.4 },
+      "video": { "family": "animal", "preferTier": "T4" },
+      "overlay": {
+        "style": "epic",
+        "color": "#ffb020",
+        "icon": "🦁",
+        "template": "{user} přinesl Kojnožroutovi Lva"
+      },
+      "voice": { "owner": "kojnozout", "tone": "epic" },
+      "xp": { "viewerMul": 1.4, "kojMul": 1.5, "communityMul": 1.2 },
+      "rewards": ["feast", "boost"],
+      "achievements": ["legendary_supporter"]
+    },
+    "GALAXY": {
+      "key": "GALAXY",
+      "label": "Galaxy",
+      "category": "LEGENDARY",
+      "defaultTier": "T5",
+      "priority": 9,
+      "care": "SPECIAL",
+      "bowl": { "food": true, "fillMul": 1.6, "special": true },
+      "video": { "family": "legendary", "preferTier": "T5" },
+      "overlay": {
+        "style": "legend",
+        "color": "#7c5cff",
+        "icon": "🌌",
+        "template": "{user} otevřel Galaxy"
+      },
+      "voice": { "owner": "kojnozout", "tone": "legend" },
+      "xp": { "viewerMul": 1.6, "kojMul": 1.8, "communityMul": 1.4 },
+      "rewards": ["koruna", "box"],
+      "achievements": ["legendary_supporter", "bowl_king"]
+    },
+    "UNIVERSE": {
+      "key": "UNIVERSE",
+      "label": "Universe",
+      "category": "LEGENDARY",
+      "defaultTier": "T6",
+      "priority": 10,
+      "care": "SPECIAL",
+      "bowl": { "food": true, "fillMul": 1.8, "special": true },
+      "video": { "family": "legendary", "preferTier": "T6" },
+      "overlay": {
+        "style": "legend",
+        "color": "#5b8cff",
+        "icon": "🌠",
+        "template": "{user} otevřel Universe"
+      },
+      "voice": { "owner": "kojnozout", "tone": "legend" },
+      "xp": { "viewerMul": 1.8, "kojMul": 2, "communityMul": 1.5 },
+      "rewards": ["koruna", "box", "boost"],
+      "achievements": ["legendary_supporter", "bowl_king"]
+    },
+    "HEART": {
+      "key": "HEART",
+      "label": "Heart",
+      "category": "LOVE",
+      "defaultTier": "T1",
+      "priority": 2,
+      "care": "LOVE",
+      "bowl": { "food": false, "fillMul": 0.6 },
+      "video": { "family": "love", "preferTier": "T1" },
+      "overlay": {
+        "style": "soft",
+        "color": "#ff4d6d",
+        "icon": "❤️",
+        "template": "{user} poslal srdce"
+      },
+      "voice": { "owner": "mia", "tone": "warm" },
+      "xp": { "viewerMul": 1, "kojMul": 0.8, "communityMul": 1 },
+      "rewards": ["cheer"],
+      "achievements": ["first_gift"]
+    },
+    "HEART_BIG": {
+      "key": "HEART_BIG",
+      "label": "Big Heart",
+      "category": "LOVE",
+      "defaultTier": "T3",
+      "priority": 6,
+      "care": "LOVE",
+      "bowl": { "food": false, "fillMul": 0.9 },
+      "video": { "family": "love", "preferTier": "T3" },
+      "overlay": {
+        "style": "soft",
+        "color": "#ff4d6d",
+        "icon": "💖",
+        "template": "{user} poslal velké srdce"
+      },
+      "voice": { "owner": "kojnozout", "tone": "warm" },
+      "xp": { "viewerMul": 1.2, "kojMul": 1, "communityMul": 1.1 },
+      "rewards": ["cheer"],
+      "achievements": ["first_gift"]
+    },
+    "FINGER_HEART": {
+      "key": "FINGER_HEART",
+      "label": "Finger Heart",
+      "category": "LOVE",
+      "defaultTier": "T1",
+      "priority": 2,
+      "care": "LOVE",
+      "bowl": { "food": false, "fillMul": 0.5 },
+      "video": { "family": "love", "preferTier": "T1" },
+      "overlay": {
+        "style": "soft",
+        "color": "#ff4d6d",
+        "icon": "🫰",
+        "template": "{user} poslal Finger Heart"
+      },
+      "voice": { "owner": "mia", "tone": "warm" },
+      "xp": { "viewerMul": 1, "kojMul": 0.8, "communityMul": 1 },
+      "rewards": ["cheer"],
+      "achievements": ["first_gift"]
+    },
+    "DONUT": {
+      "key": "DONUT",
+      "label": "Donut",
+      "category": "FOOD",
+      "defaultTier": "T2",
+      "priority": 4,
+      "care": "CARE",
+      "bowl": { "food": true, "fillMul": 1.2 },
+      "video": { "family": "food", "preferTier": "T2" },
+      "overlay": {
+        "style": "fun",
+        "color": "#ff8fab",
+        "icon": "🍩",
+        "template": "{user} přinesl Kojnožroutovi hostinu"
+      },
+      "voice": { "owner": "kojnozout", "tone": "feed" },
+      "xp": { "viewerMul": 1.1, "kojMul": 1.3, "communityMul": 1 },
+      "rewards": ["feast", "kolac"],
+      "achievements": ["feeder"]
+    },
+    "FOOD_CARE": {
+      "key": "FOOD_CARE",
+      "label": "Jídlo",
+      "category": "FOOD",
+      "defaultTier": "T2",
+      "priority": 4,
+      "care": "CARE",
+      "bowl": { "food": true, "fillMul": 1.2 },
+      "video": { "family": "food", "preferTier": "T2" },
+      "overlay": {
+        "style": "fun",
+        "color": "#ff8fab",
+        "icon": "🍪",
+        "template": "{user} přinesl Kojnožroutovi jídlo"
+      },
+      "voice": { "owner": "kojnozout", "tone": "feed" },
+      "xp": { "viewerMul": 1.1, "kojMul": 1.3, "communityMul": 1 },
+      "rewards": ["feast", "snack"],
+      "achievements": ["feeder"]
+    },
+    "GG": {
+      "key": "GG",
+      "label": "GG",
+      "category": "FUN",
+      "defaultTier": "T1",
+      "priority": 2,
+      "care": "SUPPORT",
+      "bowl": { "food": true, "fillMul": 0.8 },
+      "video": { "family": "generic", "preferTier": "T1" },
+      "overlay": {
+        "style": "fun",
+        "color": "#5ce1e6",
+        "icon": "🎮",
+        "template": "{user} hodil GG"
+      },
+      "voice": { "owner": "kojnozout", "tone": "thanks" },
+      "xp": { "viewerMul": 1, "kojMul": 1, "communityMul": 1 },
+      "rewards": ["cheer"],
+      "achievements": ["first_gift"]
+    },
+    "CELEBRATION": {
+      "key": "CELEBRATION",
+      "label": "Oslava",
+      "category": "FUN",
+      "defaultTier": "T2",
+      "priority": 4,
+      "care": "SUPPORT",
+      "bowl": { "food": true, "fillMul": 1 },
+      "video": { "family": "generic", "preferTier": "T2" },
+      "overlay": {
+        "style": "fun",
+        "color": "#ffd166",
+        "icon": "🎉",
+        "template": "{user} spustil oslavu"
+      },
+      "voice": { "owner": "kojnozout", "tone": "celebrate" },
+      "xp": { "viewerMul": 1.1, "kojMul": 1.1, "communityMul": 1.15 },
+      "rewards": ["cheer"],
+      "achievements": ["first_gift"]
+    },
+    "CAPYBARA": {
+      "key": "CAPYBARA",
+      "label": "Capybara",
+      "category": "ANIMAL",
+      "defaultTier": "T2",
+      "priority": 5,
+      "care": "PET",
+      "bowl": { "food": true, "fillMul": 1.15 },
+      "video": { "family": "animal", "preferTier": "T2" },
+      "overlay": {
+        "style": "fun",
+        "color": "#c4a484",
+        "icon": "🦫",
+        "template": "{user} poslal Kapybaru"
+      },
+      "voice": { "owner": "kojnozout", "tone": "pet" },
+      "xp": { "viewerMul": 1.15, "kojMul": 1.25, "communityMul": 1.1 },
+      "rewards": ["snack", "cheer"],
+      "achievements": ["first_gift", "feeder"]
+    },
+    "ANIMAL_SMALL": {
+      "key": "ANIMAL_SMALL",
+      "label": "Zvíře",
+      "category": "ANIMAL",
+      "defaultTier": "T1",
+      "priority": 3,
+      "care": "PET",
+      "bowl": { "food": true, "fillMul": 1.05 },
+      "video": { "family": "animal", "preferTier": "T1" },
+      "overlay": {
+        "style": "fun",
+        "color": "#c4a484",
+        "icon": "🐾",
+        "template": "{user} poslal zvíře Kojnožroutovi"
+      },
+      "voice": { "owner": "kojnozout", "tone": "pet" },
+      "xp": { "viewerMul": 1.05, "kojMul": 1.15, "communityMul": 1 },
+      "rewards": ["snack"],
+      "achievements": ["first_gift"]
+    },
+    "ANIMAL_PREMIUM": {
+      "key": "ANIMAL_PREMIUM",
+      "label": "Prémiové zvíře",
+      "category": "ANIMAL",
+      "defaultTier": "T4",
+      "priority": 8,
+      "care": "PET",
+      "bowl": { "food": true, "fillMul": 1.35 },
+      "video": { "family": "animal", "preferTier": "T4" },
+      "overlay": {
+        "style": "epic",
+        "color": "#ffb020",
+        "icon": "🐯",
+        "template": "{user} přivolal prémiové zvíře"
+      },
+      "voice": { "owner": "kojnozout", "tone": "epic" },
+      "xp": { "viewerMul": 1.35, "kojMul": 1.4, "communityMul": 1.2 },
+      "rewards": ["feast", "boost"],
+      "achievements": ["legendary_supporter"]
+    },
+    "MUSIC_SMALL": {
+      "key": "MUSIC_SMALL",
+      "label": "Hudba",
+      "category": "FUN",
+      "defaultTier": "T1",
+      "priority": 3,
+      "care": "SUPPORT",
+      "bowl": { "food": true, "fillMul": 0.9 },
+      "video": { "family": "generic", "preferTier": "T1" },
+      "overlay": {
+        "style": "fun",
+        "color": "#9b5de5",
+        "icon": "🎵",
+        "template": "{user} pustil hudbu"
+      },
+      "voice": { "owner": "kojnozout", "tone": "thanks" },
+      "xp": { "viewerMul": 1.05, "kojMul": 1, "communityMul": 1.05 },
+      "rewards": ["cheer"],
+      "achievements": ["first_gift"]
+    },
+    "MUSIC_BIG": {
+      "key": "MUSIC_BIG",
+      "label": "Velká hudba",
+      "category": "FUN",
+      "defaultTier": "T3",
+      "priority": 6,
+      "care": "SUPPORT",
+      "bowl": { "food": true, "fillMul": 1.1 },
+      "video": { "family": "generic", "preferTier": "T3" },
+      "overlay": {
+        "style": "fun",
+        "color": "#9b5de5",
+        "icon": "🎶",
+        "template": "{user} rozjel velkou hudbu"
+      },
+      "voice": { "owner": "kojnozout", "tone": "celebrate" },
+      "xp": { "viewerMul": 1.2, "kojMul": 1.1, "communityMul": 1.15 },
+      "rewards": ["cheer", "boost"],
+      "achievements": ["first_gift"]
+    },
+    "TRAVEL": {
+      "key": "TRAVEL",
+      "label": "Cesta",
+      "category": "SPECIAL",
+      "defaultTier": "T3",
+      "priority": 6,
+      "care": "SUPPORT",
+      "bowl": { "food": true, "fillMul": 1.1 },
+      "video": { "family": "generic", "preferTier": "T3" },
+      "overlay": {
+        "style": "epic",
+        "color": "#4cc9f0",
+        "icon": "🚌",
+        "template": "{user} vyrazil na cestu"
+      },
+      "voice": { "owner": "kojnozout", "tone": "celebrate" },
+      "xp": { "viewerMul": 1.2, "kojMul": 1.1, "communityMul": 1.1 },
+      "rewards": ["boost"],
+      "achievements": ["first_gift"]
+    },
+    "PREMIUM_VEHICLE": {
+      "key": "PREMIUM_VEHICLE",
+      "label": "Prémiové vozidlo",
+      "category": "SPECIAL",
+      "defaultTier": "T4",
+      "priority": 8,
+      "care": "SUPPORT",
+      "bowl": { "food": true, "fillMul": 1.3 },
+      "video": { "family": "generic", "preferTier": "T4" },
+      "overlay": {
+        "style": "epic",
+        "color": "#4cc9f0",
+        "icon": "🚀",
+        "template": "{user} přivezl prémiové vozidlo"
+      },
+      "voice": { "owner": "kojnozout", "tone": "epic" },
+      "xp": { "viewerMul": 1.35, "kojMul": 1.3, "communityMul": 1.2 },
+      "rewards": ["boost", "box"],
+      "achievements": ["legendary_supporter"]
+    },
+    "BATTLE_POWER": {
+      "key": "BATTLE_POWER",
+      "label": "Síla",
+      "category": "SPECIAL",
+      "defaultTier": "T3",
+      "priority": 7,
+      "care": "SUPPORT",
+      "bowl": { "food": true, "fillMul": 1.15 },
+      "video": { "family": "generic", "preferTier": "T3" },
+      "overlay": {
+        "style": "epic",
+        "color": "#ef476f",
+        "icon": "⚡",
+        "template": "{user} poslal sílu do arény"
+      },
+      "voice": { "owner": "kojnozout", "tone": "epic" },
+      "xp": { "viewerMul": 1.25, "kojMul": 1.2, "communityMul": 1.15 },
+      "rewards": ["boost"],
+      "achievements": ["first_gift"]
+    },
+    "MAGIC_SPACE": {
+      "key": "MAGIC_SPACE",
+      "label": "Magie",
+      "category": "MAGIC",
+      "defaultTier": "T3",
+      "priority": 6,
+      "care": "SPECIAL",
+      "bowl": { "food": true, "fillMul": 1.1, "special": true },
+      "video": { "family": "legendary", "preferTier": "T3" },
+      "overlay": {
+        "style": "legend",
+        "color": "#7c5cff",
+        "icon": "✨",
+        "template": "{user} seslal magii"
+      },
+      "voice": { "owner": "kojnozout", "tone": "legend" },
+      "xp": { "viewerMul": 1.2, "kojMul": 1.2, "communityMul": 1.1 },
+      "rewards": ["cheer", "boost"],
+      "achievements": ["first_gift"]
+    },
+    "GENERIC": {
+      "key": "GENERIC",
+      "label": "Gift",
+      "category": "GENERIC",
+      "defaultTier": "T1",
+      "priority": 1,
+      "care": "SUPPORT",
+      "bowl": { "food": true, "fillMul": 1 },
+      "video": { "family": "generic", "preferTier": null },
+      "overlay": {
+        "style": "soft",
+        "color": "#9b8cff",
+        "icon": "🎁",
+        "template": "{user} poslal dárek"
+      },
+      "voice": { "owner": "kojnozout", "tone": "thanks" },
+      "xp": { "viewerMul": 1, "kojMul": 1, "communityMul": 1 },
+      "rewards": ["snack"],
+      "achievements": ["first_gift"]
+    }
+  }
+}

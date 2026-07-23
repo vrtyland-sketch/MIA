@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MIA Gift Animation</title>
+  <link rel="stylesheet" href="/mia-soft-neon-world.css?v=37-stream-polish" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: transparent;
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+    #stage {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 620ms cubic-bezier(0.22, 0.8, 0.25, 1);
+    }
+    #stage.on { opacity: 1; }
+    #stage.leaving {
+      opacity: 0;
+      transition: opacity 520ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    #stage.ask .cast { animation: none; }
+    #stage.ask .hand,
+    #stage.ask .beam,
+    #stage.ask .belly-flash { display: none !important; }
+    #fx {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .cast {
+      position: relative;
+      width: min(1100px, 94vw);
+      height: min(620px, 78vh);
+      border-radius: 32px;
+      overflow: hidden;
+      isolation: isolate;
+      transform-origin: 50% 55%;
+      animation: camera 10s cubic-bezier(0.22, 0.8, 0.25, 1) forwards;
+      box-shadow:
+        0 28px 80px rgba(0, 0, 0, 0.55),
+        0 0 0 1px color-mix(in srgb, var(--motif, #c77dff) 40%, transparent),
+        0 0 60px color-mix(in srgb, var(--motif, #c77dff) 22%, transparent);
+      background:
+        radial-gradient(ellipse at 72% 28%, color-mix(in srgb, var(--motif, #c77dff) 42%, transparent) 0%, transparent 52%),
+        radial-gradient(ellipse at 22% 70%, color-mix(in srgb, var(--accent, #7ee0ff) 28%, transparent) 0%, transparent 48%),
+        linear-gradient(155deg, rgba(10, 8, 24, 0.94), rgba(22, 12, 42, 0.9) 48%, rgba(8, 14, 28, 0.92));
+      z-index: 2;
+    }
+    #stage.spec-max .cast,
+    #stage.spec-high .cast {
+      width: min(1180px, 96vw);
+      height: min(680px, 82vh);
+      box-shadow:
+        0 32px 96px rgba(0, 0, 0, 0.62),
+        0 0 0 1px color-mix(in srgb, var(--accent, #c77dff) 55%, transparent),
+        0 0 90px color-mix(in srgb, var(--motif, #c77dff) 26%, transparent),
+        0 0 140px color-mix(in srgb, var(--accent, #7ee0ff) 16%, transparent);
+    }
+    #stage.spec-max.shake .cast {
+      animation: camera 10s cubic-bezier(0.22, 0.8, 0.25, 1) forwards, softShake 0.55s ease-in-out;
+    }
+    .cast::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 3px,
+          rgba(180, 120, 255, 0.03) 3px,
+          rgba(180, 120, 255, 0.03) 4px
+        );
+      mix-blend-mode: screen;
+      opacity: 0.55;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .cast::after {
+      content: "";
+      position: absolute;
+      inset: -20%;
+      background: conic-gradient(from 120deg, transparent, color-mix(in srgb, var(--motif, #c77dff) 18%, transparent), transparent 40%);
+      animation: veil 8s linear infinite;
+      opacity: 0.55;
+      z-index: 0;
+    }
+    @keyframes camera {
+      0% { transform: scale(0.9) translateY(28px); filter: brightness(0.85); }
+      10% { transform: scale(1.01) translateY(0); filter: brightness(1); }
+      55% { transform: scale(1.04) translate(-10px, -6px); }
+      88% { transform: scale(1.08) translate(-18px, -12px); }
+      100% { transform: scale(1.1) translate(-20px, -14px); filter: brightness(1.08); }
+    }
+    @keyframes softShake {
+      0%, 100% { translate: 0 0; }
+      20% { translate: -6px 3px; }
+      40% { translate: 7px -4px; }
+      60% { translate: -5px -2px; }
+      80% { translate: 4px 3px; }
+    }
+    @keyframes veil {
+      to { transform: rotate(360deg); }
+    }
+    .layer {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+    }
+    .mia {
+      position: absolute;
+      left: 4%;
+      bottom: 6%;
+      width: min(340px, 34%);
+      height: 78%;
+      background: url("/assets/mia/cyber/speak.png?v=37-stream-polish") bottom center / contain no-repeat;
+      filter: drop-shadow(0 0 28px rgba(160, 120, 255, 0.38));
+      transform-origin: 50% 90%;
+      opacity: 0;
+      animation-name: idleMia, enterMia;
+      animation-duration: 2.6s, 1.1s;
+      animation-timing-function: ease-in-out, cubic-bezier(0.2, 0.9, 0.2, 1);
+      animation-iteration-count: infinite, 1;
+      animation-fill-mode: both, forwards;
+    }
+    #stage.spec-max .mia {
+      width: min(380px, 36%);
+      filter: drop-shadow(0 0 36px rgba(160, 120, 255, 0.52));
+    }
+    .mia .lip {
+      position: absolute;
+      left: 50%;
+      bottom: 38%;
+      width: 42%;
+      height: 28%;
+      transform: translateX(-50%);
+      background: url("/assets/mia/cyber/lip/01.png?v=37-stream-polish") center / contain no-repeat;
+      opacity: 0.55;
+      animation: lipFlick 0.9s steps(2) infinite;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+    @keyframes enterMia {
+      from { opacity: 0; transform: translateX(-40px) scale(0.92); }
+      to { opacity: 1; transform: translateX(0) scale(1); }
+    }
+    @keyframes idleMia {
+      0%, 100% { transform: translateY(0) rotate(-1deg); }
+      50% { transform: translateY(-10px) rotate(1.2deg); }
+    }
+    @keyframes lipFlick {
+      0%, 100% { opacity: 0.35; }
+      50% { opacity: 0.7; }
+    }
+    .koj {
+      position: absolute;
+      right: 3%;
+      bottom: 8%;
+      width: min(280px, 28%);
+      height: 62%;
+      background: url("/assets/kojnozrout/moods/kojnozout-happy.png?v=37-stream-polish") bottom center / contain no-repeat;
+      filter: drop-shadow(0 0 24px rgba(180, 100, 255, 0.4));
+      opacity: 0;
+      animation: idleKoj 2.2s ease-in-out infinite, enterKoj 1.2s 0.25s cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+      transform-origin: 50% 90%;
+    }
+    #stage.spec-max .koj {
+      width: min(320px, 30%);
+      filter: drop-shadow(0 0 34px rgba(180, 100, 255, 0.55));
+    }
+    @keyframes enterKoj {
+      from { opacity: 0; transform: translateX(36px) scale(0.9); }
+      to { opacity: 1; transform: translateX(0) scale(1); }
+    }
+    @keyframes idleKoj {
+      0%, 100% { transform: translateY(0) rotate(2deg); }
+      50% { transform: translateY(-14px) rotate(-2deg); }
+    }
+    .avatar-wrap {
+      position: absolute;
+      left: 50%;
+      top: 10%;
+      width: 152px;
+      height: 152px;
+      transform: translateX(-50%);
+      z-index: 5;
+      opacity: 0;
+      animation: enterAvatar 0.9s 0.15s forwards;
+    }
+    #stage.spec-max .avatar-wrap {
+      width: 118px;
+      height: 118px;
+      top: 6%;
+      left: 50%;
+      z-index: 7;
+    }
+    #stage.spec-max .creature {
+      z-index: 4;
+    }
+    #stage.spec-max .avatar-wrap .avatar.ph {
+      font-size: 40px;
+    }
+    @keyframes enterAvatar {
+      from { opacity: 0; transform: translateX(-50%) translateY(-20px) scale(0.85); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+    }
+    .avatar-ring {
+      position: absolute;
+      inset: -12px;
+      border-radius: 50%;
+      border: 3px solid color-mix(in srgb, var(--motif, #c77dff) 80%, white);
+      box-shadow:
+        0 0 0 6px color-mix(in srgb, var(--motif, #c77dff) 18%, transparent),
+        0 0 36px color-mix(in srgb, var(--motif, #c77dff) 55%, transparent);
+      animation: pulseRing 2s ease-in-out infinite;
+    }
+    @keyframes pulseRing {
+      0%, 100% { transform: scale(1); opacity: 0.85; }
+      50% { transform: scale(1.06); opacity: 1; }
+    }
+    .avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      background: #1a1430;
+    }
+    .avatar.ph {
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 56px;
+      font-weight: 750;
+      background: linear-gradient(145deg, #241848, #102038);
+    }
+    .creature {
+      position: absolute;
+      left: 50%;
+      top: 38%;
+      width: 240px;
+      height: 240px;
+      transform: translate(-50%, -20%);
+      z-index: 4;
+      display: grid;
+      place-items: center;
+      opacity: 0;
+      animation: creatureIn 1s 0.35s forwards, creatureAct 2.8s 1.2s ease-in-out infinite;
+      filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.4));
+    }
+    #stage.spec-max .creature,
+    #stage.spec-high .creature {
+      width: min(420px, 44%);
+      height: min(420px, 68%);
+      top: 34%;
+      filter:
+        drop-shadow(0 16px 36px rgba(0, 0, 0, 0.5))
+        drop-shadow(0 0 28px color-mix(in srgb, var(--motif, #ffb020) 45%, transparent));
+      animation:
+        creatureIn 1.05s 0.28s forwards,
+        creatureEpic 3.2s 1.15s ease-in-out infinite;
+    }
+    #stage.spec-max.roar-beat .creature {
+      animation: creatureRoarPulse 0.7s ease-out;
+    }
+    @keyframes creatureIn {
+      from { opacity: 0; transform: translate(-50%, 10%) scale(0.7); }
+      to { opacity: 1; transform: translate(-50%, -20%) scale(1); }
+    }
+    @keyframes creatureAct {
+      0%, 100% { transform: translate(-50%, -20%) rotate(-3deg) scale(1); }
+      35% { transform: translate(-50%, -28%) rotate(5deg) scale(1.08); }
+      60% { transform: translate(-50%, -16%) rotate(-2deg) scale(0.98); }
+    }
+    @keyframes creatureEpic {
+      0%, 100% { transform: translate(-50%, -18%) rotate(-2deg) scale(1); }
+      30% { transform: translate(-50%, -26%) rotate(3deg) scale(1.05); }
+      55% { transform: translate(-50%, -14%) rotate(-1.5deg) scale(0.98); }
+      78% { transform: translate(-50%, -22%) rotate(2deg) scale(1.03); }
+    }
+    @keyframes creatureRoarPulse {
+      0% { transform: translate(-50%, -18%) scale(1); filter: brightness(1); }
+      40% { transform: translate(-50%, -24%) scale(1.12); filter: brightness(1.25); }
+      100% { transform: translate(-50%, -18%) scale(1); filter: brightness(1); }
+    }
+    .creature svg,
+    .creature .sprite-stack {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+    .sprite-stack {
+      position: relative;
+      display: grid;
+      place-items: center;
+    }
+    .sprite-stack img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: opacity 360ms ease, filter 360ms ease;
+    }
+    .sprite-stack img.roar {
+      opacity: 0;
+    }
+    #stage.roar-beat .sprite-stack img.calm { opacity: 0; }
+    #stage.roar-beat .sprite-stack img.roar { opacity: 1; }
+    .creature-aura {
+      position: absolute;
+      left: 50%;
+      top: 48%;
+      width: 280px;
+      height: 280px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      z-index: 3;
+      pointer-events: none;
+      opacity: 0;
+      background:
+        radial-gradient(circle, color-mix(in srgb, var(--motif, #ffb020) 40%, transparent) 0%, transparent 70%);
+    }
+    #stage.spec-max .creature-aura,
+    #stage.spec-high .creature-aura {
+      width: 460px;
+      height: 460px;
+      opacity: 0;
+      animation: auraPulse 10s ease-in-out forwards;
+    }
+    @keyframes auraPulse {
+      0%, 12% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+      28% { opacity: 0.55; transform: translate(-50%, -50%) scale(1); }
+      52% { opacity: 0.75; transform: translate(-50%, -50%) scale(1.15); }
+      70% { opacity: 0.95; transform: translate(-50%, -50%) scale(1.35); }
+      100% { opacity: 0.45; transform: translate(-50%, -50%) scale(1.5); }
+    }
+    .belly-flash {
+      position: absolute;
+      left: 50%;
+      top: 52%;
+      width: 140px;
+      height: 140px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      z-index: 5;
+      pointer-events: none;
+      opacity: 0;
+      background:
+        radial-gradient(circle, rgba(255, 200, 80, 0.85) 0%, rgba(255, 120, 40, 0.35) 42%, transparent 70%);
+      mix-blend-mode: screen;
+      display: none;
+    }
+    #stage.spec-max .belly-flash,
+    #stage.spec-high .belly-flash { display: block; }
+    #stage.spec-max.roar-beat .belly-flash,
+    #stage.spec-high.roar-beat .belly-flash {
+      animation: bellyFlash 0.85s ease-out;
+    }
+    @keyframes bellyFlash {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+      35% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(1.6); }
+    }
+    .beam {
+      position: absolute;
+      right: 18%;
+      top: 36%;
+      width: 0;
+      height: 6px;
+      z-index: 6;
+      transform-origin: right center;
+      border-radius: 999px;
+      pointer-events: none;
+      opacity: 0;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        color-mix(in srgb, var(--accent, #c77dff) 55%, white) 18%,
+        #fff 48%,
+        color-mix(in srgb, var(--motif, #ffb020) 70%, white) 100%
+      );
+      box-shadow:
+        0 0 18px color-mix(in srgb, var(--accent, #c77dff) 80%, transparent),
+        0 0 40px color-mix(in srgb, var(--motif, #ffb020) 45%, transparent);
+      display: none;
+    }
+    #stage.spec-max .beam,
+    #stage.spec-high .beam { display: block; }
+    #stage.spec-max.beam-on .beam,
+    #stage.spec-high.beam-on .beam {
+      animation: kojBeam 1.1s ease-out forwards;
+    }
+    @keyframes kojBeam {
+      0% { opacity: 0; width: 0; filter: brightness(1); }
+      18% { opacity: 1; width: 38%; }
+      55% { opacity: 1; width: 46%; filter: brightness(1.35); }
+      100% { opacity: 0; width: 52%; filter: brightness(0.8); }
+    }
+    .hand {
+      position: absolute;
+      left: 38%;
+      top: 48%;
+      width: 110px;
+      height: 110px;
+      z-index: 6;
+      background: url("/assets/kojnozrout/props/hand.png?v=37-stream-polish") center / contain no-repeat;
+      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.35));
+      opacity: 0;
+      animation: petHand 2.8s 1.4s ease-in-out infinite;
+    }
+    #stage.spec-max .hand {
+      width: 128px;
+      height: 128px;
+      left: 34%;
+      top: 46%;
+      animation: petHandEpic 2.6s 1.2s ease-in-out infinite;
+    }
+    @keyframes petHand {
+      0%, 100% { opacity: 0.9; transform: translate(0, 0) rotate(-12deg) scale(0.92); }
+      40% { opacity: 1; transform: translate(95px, -36px) rotate(8deg) scale(1.05); }
+      70% { transform: translate(70px, 4px) rotate(-4deg) scale(1); }
+    }
+    @keyframes petHandEpic {
+      0%, 100% { opacity: 0.95; transform: translate(0, 0) rotate(-14deg) scale(0.94); }
+      35% { opacity: 1; transform: translate(120px, -48px) rotate(10deg) scale(1.1); }
+      62% { transform: translate(88px, 6px) rotate(-6deg) scale(1.02); }
+      82% { transform: translate(100px, -20px) rotate(4deg) scale(1.06); }
+    }
+    #stage.roar-beat .hand { opacity: 0 !important; animation: none; }
+    .energy {
+      position: absolute;
+      left: 50%;
+      top: 48%;
+      width: 320px;
+      height: 320px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      z-index: 3;
+      background:
+        radial-gradient(circle, color-mix(in srgb, var(--motif, #c77dff) 35%, transparent) 0%, transparent 68%);
+      opacity: 0;
+      animation: energyBurst 10s ease-in-out forwards;
+    }
+    #stage.spec-max .energy {
+      width: 520px;
+      height: 520px;
+      background:
+        radial-gradient(circle, color-mix(in srgb, var(--motif, #c77dff) 40%, transparent) 0%, transparent 55%),
+        radial-gradient(circle, color-mix(in srgb, var(--accent, #7ee0ff) 26%, transparent) 20%, transparent 72%);
+    }
+    @keyframes energyBurst {
+      0%, 18% { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+      35% { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+      70% { opacity: 0.95; transform: translate(-50%, -50%) scale(1.35); }
+      100% { opacity: 0.55; transform: translate(-50%, -50%) scale(1.55); }
+    }
+    .badge {
+      position: absolute;
+      top: 18px;
+      right: 22px;
+      z-index: 8;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: color-mix(in srgb, var(--accent, #7ee0ff) 85%, white);
+      opacity: 0.8;
+      text-shadow: 0 0 12px rgba(126, 224, 255, 0.4);
+    }
+    #stage.spec-max .badge {
+      color: #e0d0ff;
+      text-shadow: 0 0 16px rgba(160, 120, 255, 0.55);
+    }
+    .caption {
+      position: absolute;
+      left: 4%;
+      right: 4%;
+      bottom: 5%;
+      z-index: 8;
+      padding: 14px 18px 16px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(12, 8, 28, 0.15), rgba(8, 6, 20, 0.78));
+      border: 1px solid color-mix(in srgb, var(--motif, #c77dff) 28%, transparent);
+      color: #fff;
+      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55);
+      opacity: 0;
+      animation: captionIn 0.7s 0.5s forwards;
+    }
+    #stage.spec-max .caption {
+      padding: 16px 22px 18px;
+      border: 1px solid color-mix(in srgb, var(--accent, #c77dff) 42%, transparent);
+      box-shadow: 0 0 40px color-mix(in srgb, var(--motif, #c77dff) 16%, transparent);
+      background: linear-gradient(180deg, rgba(16, 10, 32, 0.22), rgba(8, 6, 20, 0.86));
+    }
+    @keyframes captionIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .caption h1 {
+      font-size: clamp(22px, 3vw, 34px);
+      font-weight: 780;
+      letter-spacing: 0.01em;
+      margin-bottom: 6px;
+    }
+    #stage.spec-max .caption h1 {
+      font-size: clamp(26px, 3.4vw, 40px);
+      letter-spacing: 0.02em;
+      background: linear-gradient(90deg, #fff 0%, #c9b0ff 42%, #7ee0ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: none;
+      filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.55));
+    }
+    .caption p {
+      font-size: clamp(15px, 2vw, 20px);
+      color: #d8c8ff;
+      opacity: 0.95;
+    }
+    #stage.spec-max .caption p { color: #d8c8ff; }
+    .phase {
+      position: absolute;
+      top: 18px;
+      left: 22px;
+      z-index: 8;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #9fdfff;
+      opacity: 0.7;
+    }
+    #stage.spec-max .phase { color: #c9b0ff; }
+  </style>
+</head>
+<body>
+  <div id="stage" class="tech-energy-lab soft-neon-lab" aria-live="polite">
+    <canvas id="fx" width="1920" height="1080"></canvas>
+    <canvas id="giftTechFx" class="tech-fx-canvas" aria-hidden="true"></canvas>
+    <div class="cast" id="cast">
+      <div class="badge" id="badge">Gift anim · tech energy</div>
+      <div class="phase" id="phase">ESTABLISH</div>
+      <div class="energy" id="energy"></div>
+      <div class="creature-aura" id="aura"></div>
+      <div class="layer">
+        <div class="mia" id="mia"><div class="lip"></div></div>
+        <div class="koj" id="koj"></div>
+        <div class="beam" id="beam"></div>
+        <div class="avatar-wrap">
+          <div class="avatar-ring"></div>
+          <img class="avatar" id="avatar" alt="" hidden />
+          <div class="avatar ph" id="avatarPh" hidden>?</div>
+        </div>
+        <div class="creature" id="creature"></div>
+        <div class="belly-flash" id="belly"></div>
+        <div class="hand" id="hand"></div>
+      </div>
+      <div class="caption">
+        <h1 id="title"></h1>
+        <p id="sub"></p>
+      </div>
+    </div>
+  </div>
+  <script src="/lib/mia-tech-energy.js?v=37-stream-polish"></script>
+  <script>
+    const BUST = "37-stream-polish";
+    const POLL_MS = 400;
+    const stage = document.getElementById("stage");
+    const cast = document.getElementById("cast");
+    const avatar = document.getElementById("avatar");
+    const avatarPh = document.getElementById("avatarPh");
+    const title = document.getElementById("title");
+    const sub = document.getElementById("sub");
+    const badge = document.getElementById("badge");
+    const phaseEl = document.getElementById("phase");
+    const creature = document.getElementById("creature");
+    const koj = document.getElementById("koj");
+    const hand = document.getElementById("hand");
+    const canvas = document.getElementById("fx");
+    const ctx = canvas.getContext("2d");
+
+    let activeKey = "";
+    let hideTimer = null;
+    let phaseTimer = null;
+    let beatTimers = [];
+    let raf = 0;
+    let particles = [];
+    let playing = false;
+    let motifColor = "#c77dff";
+    let accentColor = "#7ee0ff";
+    let spectacle = "simple";
+    const params = new URLSearchParams(location.search);
+    const forcedJob = params.get("job") || "";
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth || 1920;
+      canvas.height = window.innerHeight || 1080;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    const giftTechEnergy =
+      window.MiaTechEnergy &&
+      window.MiaTechEnergy.create({
+        host: stage,
+        canvas: document.getElementById("giftTechFx"),
+        density: 1.05,
+        isSpeaking: () => playing,
+        hotspots: [
+          { x: 0.5, y: 0.28, w: 0.22, h: 0.16 },
+          { x: 0.5, y: 0.55, w: 0.36, h: 0.28 },
+          { x: 0.72, y: 0.48, w: 0.16, h: 0.18 }
+        ]
+      });
+
+    function clearBeatTimers() {
+      for (const t of beatTimers) clearTimeout(t);
+      beatTimers = [];
+      stage.classList.remove("roar-beat", "beam-on", "shake");
+    }
+
+    function creatureSvg(kind, color, accent) {
+      const c = color || "#ffb020";
+      const a = accent || "#c77dff";
+      if (kind === "lion") {
+        return `
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="mane" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="${c}" stop-opacity="0.95"/>
+      <stop offset="70%" stop-color="${a}" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="${a}" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <circle cx="100" cy="100" r="78" fill="url(#mane)" filter="url(#glow)"/>
+  <ellipse cx="100" cy="108" rx="42" ry="46" fill="#1a1230" stroke="${c}" stroke-width="3"/>
+  <circle cx="84" cy="100" r="6" fill="${a}"/><circle cx="116" cy="100" r="6" fill="${a}"/>
+  <path d="M88 118 Q100 128 112 118" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round"/>
+  <path d="M70 78 Q60 50 78 62" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round"/>
+  <path d="M130 78 Q140 50 122 62" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round"/>
+</svg>`;
+      }
+      if (kind === "rose") {
+        return `
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="rBloom" cx="50%" cy="42%" r="55%">
+      <stop offset="0%" stop-color="#ffe6f2"/>
+      <stop offset="28%" stop-color="${c}"/>
+      <stop offset="78%" stop-color="${a}" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="${a}" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="rGlow"><feGaussianBlur stdDeviation="2.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <circle cx="100" cy="86" r="62" fill="url(#rBloom)" filter="url(#rGlow)"/>
+  <path d="M100 78 C92 62 78 58 72 70 C66 82 78 92 100 108 C122 92 134 82 128 70 C122 58 108 62 100 78Z" fill="${c}" opacity="0.95"/>
+  <path d="M100 86 C94 74 84 72 80 80 C76 88 86 96 100 108 C114 96 124 88 120 80 C116 72 106 74 100 86Z" fill="#fff" opacity="0.28"/>
+  <path d="M100 118 C100 138 90 154 100 172 C110 154 100 138 100 118" fill="#5ee7ff" opacity="0.88"/>
+  <path d="M100 130 C86 124 78 132 84 142" fill="none" stroke="#7c5cff" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="100" cy="86" r="10" fill="${a}" opacity="0.7"/>
+</svg>`;
+      }
+      if (kind === "galaxy" || kind === "universe") {
+        return `
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="gCore" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff"/>
+      <stop offset="22%" stop-color="${c}"/>
+      <stop offset="70%" stop-color="${a}" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="${a}" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="gGlow"><feGaussianBlur stdDeviation="2.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <circle cx="100" cy="100" r="78" fill="url(#gCore)" opacity="0.55" filter="url(#gGlow)"/>
+  <ellipse cx="100" cy="100" rx="74" ry="26" fill="none" stroke="${c}" stroke-width="3.2" opacity="0.9" transform="rotate(-18 100 100)"/>
+  <ellipse cx="100" cy="100" rx="58" ry="20" fill="none" stroke="${a}" stroke-width="2.4" opacity="0.8" transform="rotate(24 100 100)"/>
+  <ellipse cx="100" cy="100" rx="40" ry="14" fill="none" stroke="#fff" stroke-width="1.4" opacity="0.45" transform="rotate(-40 100 100)"/>
+  <circle cx="100" cy="100" r="18" fill="url(#gCore)"/>
+  <circle cx="46" cy="68" r="3.2" fill="#fff"/><circle cx="152" cy="124" r="2.6" fill="#fff"/>
+  <circle cx="132" cy="58" r="2.2" fill="${a}"/><circle cx="64" cy="140" r="2" fill="${c}"/>
+</svg>`;
+      }
+      if (kind === "heart") {
+        return `
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="hBloom" cx="50%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#fff"/>
+      <stop offset="35%" stop-color="${c}"/>
+      <stop offset="100%" stop-color="${a}" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="hGlow"><feGaussianBlur stdDeviation="2.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <circle cx="100" cy="100" r="72" fill="url(#hBloom)" opacity="0.45" filter="url(#hGlow)"/>
+  <path d="M100 162 C38 112 28 68 70 48 C92 36 100 54 100 54 C100 54 108 36 130 48 C172 68 162 112 100 162Z" fill="${c}" stroke="${a}" stroke-width="3" opacity="0.96"/>
+  <path d="M78 78 C88 68 98 74 100 86 C102 74 112 68 122 78" fill="#fff" opacity="0.28"/>
+  <circle cx="100" cy="92" r="14" fill="#fff" opacity="0.18"/>
+</svg>`;
+      }
+      return `
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <rect x="55" y="70" width="90" height="70" rx="16" fill="#1a1430" stroke="${c}" stroke-width="4"/>
+  <path d="M70 70 Q100 40 130 70" fill="none" stroke="${a}" stroke-width="5"/>
+  <circle cx="100" cy="105" r="10" fill="${c}"/>
+</svg>`;
+    }
+
+    function withBust(url) {
+      if (!url) return "";
+      return url + (url.includes("?") ? "&" : "?") + "v=" + BUST;
+    }
+
+    function resolveSpectacle(motif, giftKey) {
+      const fromMotif = String((motif && motif.spectacle) || "").toLowerCase();
+      if (["max", "high", "mid", "simple"].includes(fromMotif)) return fromMotif;
+      const key = String(giftKey || (motif && motif.id) || "").toUpperCase();
+      if (key === "LION" || key === "UNIVERSE") return "max";
+      if (key === "GALAXY") return "high";
+      if (key === "ROSE" || key === "HEART" || key === "HEART_BIG") return "mid";
+      return "simple";
+    }
+
+    function particleBudget(spec) {
+      if (spec === "max") return 160;
+      if (spec === "high") return 110;
+      if (spec === "mid") return 72;
+      return 48;
+    }
+
+    function spawnParticles() {
+      particles = [];
+      const n = particleBudget(spectacle);
+      for (let i = 0; i < n; i += 1) {
+        const kindRoll = Math.random();
+        const kind =
+          kindRoll > 0.72 ? "spark" : kindRoll > 0.45 ? "electron" : "ember";
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: 0.7 + Math.random() * (spectacle === "max" ? 2.8 : 2.2),
+          vx: -0.55 + Math.random() * 1.1,
+          vy: -0.7 - Math.random() * (spectacle === "max" ? 2.2 : 1.5),
+          a: 0.28 + Math.random() * 0.65,
+          life: 36 + Math.random() * 130,
+          kind
+        });
+      }
+    }
+
+    function tickFx() {
+      if (!playing) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const p of particles) {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life -= 1;
+        if (p.kind === "ember") p.vy -= 0.012;
+        if (p.life <= 0 || p.y < -10) {
+          p.x = Math.random() * canvas.width;
+          p.y = canvas.height + 10;
+          p.life = 50 + Math.random() * 120;
+        }
+        ctx.globalAlpha = p.a;
+        if (p.kind === "spark") {
+          ctx.fillStyle = Math.random() > 0.45 ? "#e8f4ff" : motifColor;
+          ctx.fillRect(p.x, p.y, p.r * 2.1, Math.max(0.7, p.r * 0.35));
+        } else if (p.kind === "electron") {
+          ctx.fillStyle = accentColor;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = "rgba(160,220,255,0.55)";
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(p.x - 3.5, p.y);
+          ctx.lineTo(p.x + 3.5, p.y);
+          ctx.stroke();
+        } else {
+          ctx.fillStyle = Math.random() > 0.5 ? motifColor : accentColor;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r * 0.85, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      ctx.globalAlpha = 1;
+      raf = requestAnimationFrame(tickFx);
+    }
+
+    function setPhaseLabels(holdMs, beats) {
+      if (phaseTimer) clearInterval(phaseTimer);
+      const epic = spectacle === "max" || spectacle === "high";
+      const custom = Array.isArray(beats) && beats.length >= 4
+        ? beats.map((b) => String(b || "").toUpperCase())
+        : null;
+      const labels = epic
+        ? [
+            { at: 0, text: (custom && custom[0]) || "ESTABLISH" },
+            { at: 0.18, text: (custom && custom[1]) || "PET" },
+            { at: 0.48, text: (custom && custom[2]) || "ROAR" },
+            { at: 0.72, text: (custom && custom[3]) || "PAYOFF" }
+          ]
+        : [
+            { at: 0, text: "ESTABLISH" },
+            { at: 0.22, text: "ACTION" },
+            { at: 0.72, text: "PAYOFF" }
+          ];
+      const t0 = Date.now();
+      const update = () => {
+        const t = (Date.now() - t0) / Math.max(1, holdMs);
+        let text = labels[0].text;
+        for (const L of labels) if (t >= L.at) text = L.text;
+        phaseEl.textContent = text;
+      };
+      update();
+      phaseTimer = setInterval(update, 160);
+    }
+
+    function scheduleEpicBeats(holdMs) {
+      clearBeatTimers();
+      if (spectacle !== "max" && spectacle !== "high") return;
+      const roarAt = Math.round(holdMs * 0.48);
+      const beamAt = Math.round(holdMs * 0.52);
+      const shakeAt = Math.round(holdMs * 0.5);
+      beatTimers.push(setTimeout(() => {
+        stage.classList.add("roar-beat");
+        setTimeout(() => stage.classList.remove("roar-beat"), 900);
+      }, roarAt));
+      beatTimers.push(setTimeout(() => {
+        stage.classList.add("beam-on");
+        setTimeout(() => stage.classList.remove("beam-on"), 1200);
+      }, beamAt));
+      if (spectacle === "max") {
+        beatTimers.push(setTimeout(() => {
+          stage.classList.add("shake");
+          setTimeout(() => stage.classList.remove("shake"), 600);
+        }, shakeAt));
+      }
+    }
+
+    function setAvatar(url, label) {
+      if (url) {
+        avatar.hidden = false;
+        avatarPh.hidden = true;
+        avatar.src = withBust(url);
+        avatar.onerror = () => {
+          avatar.hidden = true;
+          avatarPh.hidden = false;
+          avatarPh.textContent = (label || "?").charAt(0).toUpperCase();
+        };
+      } else {
+        avatar.hidden = true;
+        avatarPh.hidden = false;
+        avatarPh.textContent = (label || "?").charAt(0).toUpperCase();
+      }
+    }
+
+    function applyArt(motif) {
+      const art = (motif && motif.art) || {};
+      const kojUrl = withBust(art.koj || "/assets/kojnozrout/moods/kojnozout-happy.png");
+      koj.style.backgroundImage = 'url("' + kojUrl + '")';
+      const kind = (motif && (motif.creature || motif.id)) || "gift";
+      const sprite = art.creatureSprite;
+      const roar = art.creatureRoar;
+      const useSprite =
+        !!sprite &&
+        (spectacle === "max" ||
+          spectacle === "high" ||
+          kind === "lion" ||
+          kind === "universe" ||
+          kind === "galaxy");
+      if (useSprite) {
+        const calmSrc = withBust(sprite);
+        const roarSrc = withBust(roar || sprite);
+        creature.innerHTML =
+          '<div class="sprite-stack">' +
+          '<img class="calm" src="' + calmSrc + '" alt="" />' +
+          '<img class="roar" src="' + roarSrc + '" alt="" />' +
+          "</div>";
+      } else {
+        creature.innerHTML = creatureSvg(kind, motifColor, accentColor);
+      }
+    }
+
+    function applySpectacleClass(spec) {
+      stage.classList.remove("spec-max", "spec-high", "spec-mid", "spec-simple");
+      stage.classList.add("spec-" + (spec || "simple"));
+    }
+
+    function showMoment(m) {
+      if (!m) return;
+      const key = [m.jobId, m.updatedAt, m.phase, m.caption].join("|");
+      if (key === activeKey) return;
+      activeKey = key;
+
+      motifColor = (m.motif && m.motif.color) || "#c77dff";
+      accentColor = (m.motif && m.motif.accent) || "#7ee0ff";
+      document.documentElement.style.setProperty("--motif", motifColor);
+      document.documentElement.style.setProperty("--accent", accentColor);
+
+      spectacle = resolveSpectacle(m.motif, m.giftKey);
+      applySpectacleClass(spectacle);
+
+      title.textContent = m.caption || m.askChatPrompt || ((m.userLabel || "") + " · " + (m.giftName || ""));
+      sub.textContent = m.phase === "ask_words"
+        ? (m.improvLine || "Napiš 1–3 slova do chatu…")
+        : (m.improvLine || "");
+
+      const q = (m.motif && m.motif.qualityTier) || m.qualityTier || "";
+      if (m.trueAiVideo) badge.textContent = "Gift anim · AI video";
+      else if (spectacle === "max") badge.textContent = "Gift anim · WAU · tech energy";
+      else if (q) badge.textContent = "Gift anim · " + q.replace(/^mia_/, "").replace(/_/g, " ");
+      else badge.textContent = "Gift anim · tech energy";
+
+      setAvatar(m.avatarUrl || m.posterUrl, m.userLabel);
+      applyArt(m.motif || {});
+
+      const isAsk = m.phase === "ask_words";
+      stage.classList.toggle("ask", isAsk);
+      hand.style.display = isAsk ? "none" : "block";
+      cast.style.animationDuration = isAsk ? "0s" : "10s";
+
+      playing = true;
+      spawnParticles();
+      cancelAnimationFrame(raf);
+      tickFx();
+
+      const hold = Math.max(4000, (m.holdUntilTs || 0) - Date.now());
+      setPhaseLabels(hold, (m.motif && m.motif.beats) || []);
+      if (!isAsk) scheduleEpicBeats(hold);
+
+      stage.classList.remove("leaving");
+      stage.classList.add("on");
+      if (hideTimer) clearTimeout(hideTimer);
+      hideTimer = setTimeout(() => {
+        stage.classList.add("leaving");
+        stage.classList.remove("on");
+        setTimeout(() => {
+          stage.classList.remove("leaving");
+          activeKey = "";
+          playing = false;
+          clearBeatTimers();
+          cancelAnimationFrame(raf);
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          if (phaseTimer) clearInterval(phaseTimer);
+        }, 540);
+      }, hold);
+    }
+
+    async function loadJob(jobId) {
+      try {
+        const res = await fetch("/api/gift-animation/jobs/" + encodeURIComponent(jobId), { cache: "no-store" });
+        const data = await res.json();
+        const man = data?.manifest;
+        if (!man) return;
+        showMoment({
+          jobId: man.jobId,
+          updatedAt: man.createdAt,
+          phase: "playing",
+          caption: man.caption,
+          improvLine: man.improvLine,
+          motif: man.motif,
+          avatarUrl: man.assets?.avatarUrl,
+          posterUrl: man.assets?.posterUrl,
+          userLabel: man.username,
+          giftName: man.giftLabel,
+          giftKey: man.giftKey,
+          trueAiVideo: man.trueAiVideo,
+          qualityTier: man.qualityTier,
+          holdUntilTs: Date.now() + (man.durationMs || 10000)
+        });
+      } catch (_err) { /* ignore */ }
+    }
+
+    function applyThemeHint(theme) {
+      if (!theme || !theme.enabled || !theme.cssVars) return;
+      const root = document.documentElement;
+      for (const [key, value] of Object.entries(theme.cssVars)) {
+        if (typeof key === "string" && key.startsWith("--") && value != null) {
+          root.style.setProperty(key, String(value));
+        }
+      }
+    }
+
+    async function poll() {
+      try {
+        if (forcedJob) {
+          await loadJob(forcedJob);
+          return;
+        }
+        const res = await fetch("/overlay-state", { cache: "no-store" });
+        const data = await res.json();
+        applyThemeHint(data?.theme);
+        if (data?.giftAnimationMoment) {
+          showMoment(data.giftAnimationMoment);
+        }
+      } catch (_err) { /* ignore */ }
+    }
+
+    setInterval(poll, POLL_MS);
+    poll();
+  </script>
+</body>
+</html>

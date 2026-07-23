@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<title>Kojnožrout Batoh</title>
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+#panel {
+  position: absolute;
+  left: 24px;
+  bottom: 120px;
+  min-width: 280px;
+  max-width: 360px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(18, 8, 36, 0.82);
+  border: 2px solid rgba(155, 92, 255, 0.75);
+  color: #fff;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+#panel.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#title {
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #c9a6ff;
+  margin-bottom: 6px;
+}
+
+#user {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+#items {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 14px;
+}
+
+.item-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.item-icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.item-row strong {
+  color: #ffe27a;
+  flex-shrink: 0;
+}
+
+#hint {
+  margin-top: 10px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+#queue {
+  margin-top: 8px;
+  font-size: 11px;
+  color: rgba(201, 166, 255, 0.85);
+}
+</style>
+</head>
+<body>
+<div id="panel">
+  <div id="title">Batoh</div>
+  <div id="user">—</div>
+  <div id="items"></div>
+  <div id="hint">Napiš <strong>item</strong> pro batoh · <strong>item use</strong> v duelu</div>
+  <div id="queue"></div>
+</div>
+
+<script>
+const panel = document.getElementById("panel");
+const userEl = document.getElementById("user");
+const itemsEl = document.getElementById("items");
+const queueEl = document.getElementById("queue");
+const titleEl = document.getElementById("title");
+
+let hideTimer = null;
+
+function renderItems(items) {
+  itemsEl.innerHTML = "";
+  if (!items || items.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "item-row";
+    empty.textContent = "Prázdný batoh — gift / chat / like";
+    itemsEl.appendChild(empty);
+    return;
+  }
+
+  items.forEach((item) => {
+    const row = document.createElement("div");
+    row.className = "item-row";
+    const id = String(item.id || "").toLowerCase();
+    const label = item.label || id || "Item";
+    const icon = id
+      ? `<img class="item-icon" src="/assets/kojnozrout/items/${id}.png?v=4" alt="" onerror="this.style.display='none'" />`
+      : "";
+    row.innerHTML = `<div class="item-left">${icon}<span>${label}</span></div><strong>+${item.power || 0}</strong>`;
+    itemsEl.appendChild(row);
+  });
+}
+
+function showPanel(display, duel) {
+  if (!display || !display.current) {
+    panel.classList.remove("visible");
+    return;
+  }
+
+  const current = display.current;
+  titleEl.textContent = duel?.active ? "Batoh · duel" : "Batoh";
+  userEl.textContent = current.userLabel || "Divák";
+  renderItems(current.items || []);
+
+  const queueLen = Number(display.queueLength || 0);
+  queueEl.textContent = queueLen > 0 ? `Ve frontě: ${queueLen} diváků` : "";
+
+  panel.classList.add("visible");
+  clearTimeout(hideTimer);
+  hideTimer = setTimeout(() => panel.classList.remove("visible"), 9000);
+}
+
+let pollInFlight = false;
+let pollFailStreak = 0;
+const POLL_MS = 900;
+const POLL_BACKOFF_MS = 2500;
+
+async function poll() {
+  if (pollInFlight) return;
+  pollInFlight = true;
+  try {
+    const res = await fetch("/overlay-state", { cache: "no-store" });
+    const data = await res.json();
+    showPanel(data.backpack?.display, data.duel);
+    pollFailStreak = 0;
+  } catch (err) {
+    pollFailStreak += 1;
+    console.warn("[BACKPACK_OVERLAY]", err.message);
+  } finally {
+    pollInFlight = false;
+  }
+}
+
+function schedulePoll() {
+  const delay = pollFailStreak > 0
+    ? Math.min(POLL_BACKOFF_MS * pollFailStreak, 8000)
+    : POLL_MS;
+  setTimeout(async () => {
+    await poll();
+    schedulePoll();
+  }, delay);
+}
+
+schedulePoll();
+</script>
+</body>
+</html>

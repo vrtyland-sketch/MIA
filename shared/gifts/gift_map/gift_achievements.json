@@ -1,0 +1,36 @@
+{
+  "version": "1.0.0",
+  "achievements": {
+    "first_gift": {
+      "id": "first_gift",
+      "label": "První gift",
+      "when": { "totalGifts": 1 }
+    },
+    "rose_wave": {
+      "id": "rose_wave",
+      "label": "100 Roses",
+      "when": { "giftKey": "ROSE", "count": 100 }
+    },
+    "coins_1000": {
+      "id": "coins_1000",
+      "label": "1000 coins (internal)",
+      "when": { "totalCoins": 1000 },
+      "public": false
+    },
+    "legendary_supporter": {
+      "id": "legendary_supporter",
+      "label": "Legendární supporter",
+      "when": { "minTier": "T4" }
+    },
+    "bowl_king": {
+      "id": "bowl_king",
+      "label": "Král misky",
+      "when": { "bowlFillTotal": 500 }
+    },
+    "feeder": {
+      "id": "feeder",
+      "label": "Krmič Kojnožrouta",
+      "when": { "care": "CARE", "count": 20 }
+    }
+  }
+}

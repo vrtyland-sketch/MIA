@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "packs": {
+    "koj_evolution_hatchling": {
+      "meta": {
+        "key": "koj_evolution_hatchling",
+        "speaker": "kojnozout"
+      },
+      "variants": [
+        "Prask! {name}, vylíhl jsem se. Už nejsem vejíčko.",
+        "Tak jo {name}, Mládě je venku. První velký krok.",
+        "{name}, právě jsem se probral. Už rostu.",
+        "Vejíčko prasklo. Díky {name}, jsem Mládě.",
+        "Tohle je nová fáze. {name}, díky za krmení."
+      ]
+    },
+    "koj_evolution_sprout": {
+      "meta": {
+        "key": "koj_evolution_sprout",
+        "speaker": "kojnozout"
+      },
+      "variants": [
+        "{name}, rostu dál. Teď jsem Pučící.",
+        "Pučící fáze aktivní. {name}, komunita to táhne.",
+        "Už nejsem malý. {name}, posun na Pučící je tady.",
+        "Miska, komunita a {name} — teď jsem Pučící.",
+        "Další evoluce. {name}, Pučící fáze je moje."
+      ]
+    },
+    "koj_evolution_guardian": {
+      "meta": {
+        "key": "koj_evolution_guardian",
+        "speaker": "kojnozout"
+      },
+      "variants": [
+        "{name}, teď hlídám misku jako Ochránce.",
+        "Ochránce fáze. {name}, tohle už je vážná péče.",
+        "Už nejsem jen roztomilost. {name}, jsem Ochránce.",
+        "Komunita mě posunula na Ochránce. {name}, díky.",
+        "Ochránce stojí u misky. {name}, krásná evoluce."
+      ]
+    },
+    "koj_evolution_legend": {
+      "meta": {
+        "key": "koj_evolution_legend",
+        "speaker": "kojnozout"
+      },
+      "variants": [
+        "{name}, Legenda je tady. Miska si to pamatuje.",
+        "Maximální evoluce. {name}, jsem Legenda.",
+        "Legenda fáze odemčena. {name}, tohle je stream historie.",
+        "Už není kam růst. {name}, Legenda stojí u misky.",
+        "Komunita mě dotáhla na Legendu. {name}, respekt."
+      ]
+    },
+    "mia_evolution_hatchling": {
+      "meta": {
+        "key": "mia_evolution_hatchling",
+        "speaker": "mia"
+      },
+      "variants": [
+        "{name} právě pomohl Kojnožroutovi vylíhnout se. Mládě je tady.",
+        "Evoluce! {name} posunul Kojnožrouta z vejíčka na Mládě.",
+        "Milník na streamu: {name}, Kojnožrout právě vylíhl.",
+        "Tohle je první velká evoluce. Díky {name}."
+      ]
+    },
+    "mia_evolution_sprout": {
+      "meta": {
+        "key": "mia_evolution_sprout",
+        "speaker": "mia"
+      },
+      "variants": [
+        "{name} posunul Kojnožrouta na Pučící. Růst je vidět.",
+        "Evoluce na Pučící. {name}, komunita to táhne.",
+        "Kojnožrout právě vyrostl na Pučící. Díky {name}.",
+        "Další fáze odemčena. {name}, Pučící je live."
+      ]
+    },
+    "mia_evolution_guardian": {
+      "meta": {
+        "key": "mia_evolution_guardian",
+        "speaker": "mia"
+      },
+      "variants": [
+        "{name} dotáhl Kojnožrouta na Ochránce. To už je pořádná péče.",
+        "Ochránce fáze. {name}, komunita staví vztah s Kojem.",
+        "Evoluce na Ochránce. {name}, stream to cítí.",
+        "Kojnožrout je Ochránce misky. {name}, krásný milník."
+      ]
+    },
+    "mia_evolution_legend": {
+      "meta": {
+        "key": "mia_evolution_legend",
+        "speaker": "mia"
+      },
+      "variants": [
+        "{name} dotáhl Kojnožrouta na Legendu. Maximum dosaženo.",
+        "Legenda fáze odemčena. {name}, tohle je velký stream moment.",
+        "Kojnožrout je Legenda. {name}, respekt celé komunitě.",
+        "Finální evoluce. {name}, Koj právě udělal historii."
+      ]
+    }
+  }
+}

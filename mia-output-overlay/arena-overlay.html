@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<title>MIA · Platform Arena</title>
+<style>
+  :root {
+    --bg: rgba(8, 6, 14, 0.88);
+    --txt: #f8f0ff;
+    --muted: #b9a8c9;
+  }
+  html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    overflow: hidden;
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: var(--txt);
+  }
+  #wrap {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    top: 10px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .card {
+    background: var(--bg);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    padding: 10px;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+    border-top: 4px solid var(--accent, #8b5cf6);
+    min-height: 128px;
+    position: relative;
+  }
+  .card.champion {
+    box-shadow: 0 0 0 2px var(--accent), 0 12px 32px rgba(0,0,0,0.45);
+  }
+  .card.tok { border-top-color: #00f2ea; }
+  .card.stack { border-top-color: #53fc18; background: linear-gradient(160deg, rgba(8,24,6,.92), rgba(6,10,8,.9)); }
+  .card.bits { border-top-color: #9146ff; background: linear-gradient(160deg, rgba(20,8,36,.94), rgba(10,6,18,.9)); }
+  .card.kisstube {
+    background: linear-gradient(160deg, rgba(48, 6, 28, 0.94), rgba(18, 6, 14, 0.9));
+    border-color: rgba(230, 0, 126, 0.5);
+    border-top-color: #e6007e;
+  }
+  .avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    object-fit: contain;
+    float: right;
+    margin: -2px 0 6px 8px;
+    border: 2px solid rgba(255,255,255,0.25);
+    background: rgba(0,0,0,0.25);
+    transition: transform 0.2s ease, filter 0.2s ease;
+  }
+  .card.battle-active .avatar {
+    filter: drop-shadow(0 0 10px var(--accent, #8b5cf6));
+  }
+  .card.pose-attack .avatar { transform: scale(1.08) rotate(-6deg); }
+  .card.pose-hit .avatar { transform: scale(0.94) rotate(8deg); opacity: 0.88; }
+  .card.pose-buff .avatar { transform: scale(1.04); filter: brightness(1.12); }
+  .card.pose-attacker { box-shadow: 0 0 0 2px gold, 0 12px 32px rgba(0,0,0,0.45); }
+  .pose-chip {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 99px;
+    background: rgba(255,255,255,0.1);
+    color: var(--muted);
+  }
+  .card.kisstube .avatar { border-color: rgba(255, 141, 199, 0.7); }
+  .name { font-size: 13px; font-weight: 900; letter-spacing: 0.02em; }
+  .title { font-size: 10px; color: var(--muted); margin-top: 2px; line-height: 1.25; }
+  .points { margin-top: 8px; font-size: 22px; font-weight: 900; clear: both; }
+  .meta { margin-top: 4px; font-size: 11px; color: var(--muted); }
+  .bar {
+    margin-top: 8px;
+    height: 6px;
+    border-radius: 99px;
+    background: rgba(255,255,255,0.08);
+    overflow: hidden;
+  }
+  .bar > i {
+    display: block;
+    height: 100%;
+    width: 0%;
+    background: var(--accent, #8b5cf6);
+    border-radius: 99px;
+    transition: width 0.4s ease;
+  }
+  .card.tok .bar > i { background: linear-gradient(90deg, #00f2ea, #ff0050); }
+  .card.stack .bar > i { background: linear-gradient(90deg, #53fc18, #0b0b0b); }
+  .card.bits .bar > i { background: linear-gradient(90deg, #9146ff, #efeff1); }
+  .card.kisstube .bar > i { background: linear-gradient(90deg, #e6007e, #ffd6ec); }
+  #banner {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    background: rgba(10, 8, 16, 0.88);
+    font-size: 12px;
+    color: var(--muted);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  #banner strong { color: #fff; }
+</style>
+</head>
+<body>
+<div id="wrap"></div>
+<div id="banner">Aréna načítá…</div>
+<script>
+const API = (location.origin && location.protocol.startsWith("http"))
+  ? location.origin
+  : "http://127.0.0.1:3000";
+
+const AVATARS = {
+  tiktok: "/assets/kojnozrout/roster/tokzrout-preview.png",
+  kick: "/assets/kojnozrout/roster/stackzrout-preview.png",
+  twitch: "/assets/kojnozrout/roster/bitszrout-preview.png",
+  youtube: "/assets/kojnozrout/roster/kisstube-preview.png"
+};
+
+const CLASS_BY_ID = {
+  tiktok: "tok",
+  kick: "stack",
+  twitch: "bits",
+  youtube: "kisstube"
+};
+
+function esc(s) {
+  return String(s || "").replace(/[&<>"']/g, (c) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[c]));
+}
+
+function poseClass(pose = "idle") {
+  const p = String(pose || "idle").toLowerCase();
+  if (p.startsWith("attack") || p === "item_box") return "pose-attack";
+  if (p.startsWith("hit")) return "pose-hit";
+  if (p === "item_buff" || p === "item_heal" || p === "win") return "pose-buff";
+  return "";
+}
+
+function render(data) {
+  const arena = data.arena || data;
+  const roster = Array.isArray(data.roster) ? data.roster : [];
+  const byId = Object.fromEntries(roster.map((r) => [r.id, r]));
+  const platforms = arena?.platforms || [];
+  const battle = arena?.battle || {};
+  const sprites = battle.sprites || {};
+  const current = battle.current || null;
+  const duelActive = Boolean(arena?.duel?.active || arena?.tournament?.active);
+  const maxPts = Math.max(1, ...platforms.map((p) => Number(p.miaPoints) || 0));
+  const wrap = document.getElementById("wrap");
+
+  wrap.innerHTML = platforms.map((p) => {
+    const profile = byId[p.id] || {};
+    const theme = p.theme || {};
+    const accent = theme.accent || profile.accent || "#8b5cf6";
+    const cls = CLASS_BY_ID[p.id] || "";
+    const pct = Math.round(((Number(p.miaPoints) || 0) / maxPts) * 100);
+    const spr = sprites[p.id] || {};
+    const pose = spr.pose || "idle";
+    const avatarSrc = duelActive
+      ? spr.spriteUrl || spr.idleUrl || profile.previewPng || AVATARS[p.id] || ""
+      : profile.previewPng || AVATARS[p.id] || `/assets/kojnozrout/forms/${p.id}/idle.png`;
+    const avatar = avatarSrc
+      ? `<img class="avatar" src="${API}${esc(avatarSrc)}" alt="${esc(p.label)}" onerror="this.style.display='none'" />`
+      : "";
+    const title = profile.title || p.mascot || p.label;
+    const isAttacker = current?.attacker === p.id;
+    const poseChip = duelActive && pose !== "idle"
+      ? `<span class="pose-chip">${esc(pose.replace(/_/g, " "))}</span>`
+      : "";
+    return `<div class="card ${cls}${p.isChampion ? " champion" : ""}${duelActive ? " battle-active" : ""}${poseClass(pose) ? " " + poseClass(pose) : ""}${isAttacker ? " pose-attacker" : ""}" style="--accent:${esc(accent)}">
+      ${avatar}
+      <div class="name">${esc(p.label)}${p.isChampion ? " · 👑" : ""}</div>
+      <div class="title">${esc(title)}</div>
+      ${poseChip}
+      <div class="points">${Math.round(Number(p.miaPoints) || 0)}</div>
+      <div class="meta">W${p.wins || 0} / L${p.losses || 0} · reigns ${p.reigns || 0}</div>
+      <div class="bar"><i style="width:${pct}%"></i></div>
+    </div>`;
+  }).join("");
+
+  const duel = arena?.duel;
+  const tourney = arena?.tournament;
+  let line = "Coin-žrouti · dárek zvyšuje šanci na odměnu";
+  if (tourney?.championLabel) {
+    line = `Champion: <strong>${esc(tourney.championLabel)}</strong> · ` + line;
+  }
+  if (duel?.active) {
+    const sec = Math.ceil((duel.remainingMs || 0) / 1000);
+    line = `Duel ${sec}s · ` + line;
+  }
+  document.getElementById("banner").innerHTML = line;
+}
+
+async function tick() {
+  try {
+    const res = await fetch(API + "/arena/status");
+    const data = await res.json();
+    if (data?.ok) {
+      render(data);
+    }
+  } catch (_err) {
+    document.getElementById("banner").textContent = "Aréna offline";
+  }
+}
+
+tick();
+setInterval(tick, 850);
+</script>
+</body>
+</html>

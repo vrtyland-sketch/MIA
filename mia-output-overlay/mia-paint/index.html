@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MIA Paint</title>
+  <link rel="stylesheet" href="styles/editor.css" />
+</head>
+<body data-theme="dark">
+  <header id="topBar">
+    <div class="brand">MIA Paint</div>
+    <nav class="menu">
+      <button type="button" class="menu-btn" id="btnMenuFile">Soubor</button>
+      <div id="fileMenu" class="dropdown" hidden>
+        <button type="button" id="btnOpen">Otevřít…</button>
+        <button type="button" id="btnSave">Uložit</button>
+        <button type="button" id="btnSaveAs">Uložit jako…</button>
+        <hr />
+        <button type="button" id="btnImportImage">Import obrázku…</button>
+        <button type="button" id="btnExportPng">Export PNG</button>
+        <button type="button" id="btnExportJpg">Export JPG</button>
+        <button type="button" id="btnExportWebp">Export WEBP</button>
+        <hr />
+        <button type="button" id="btnExportKojMenu">Export → Koj Factory</button>
+        <div id="pluginMenuItems"></div>
+      </div>
+      <button type="button" class="menu-btn" disabled>Úpravy</button>
+      <button type="button" class="menu-btn" disabled>Vrstva</button>
+      <button type="button" id="btnFit">Fit</button>
+      <button type="button" id="btnZoom100">100%</button>
+      <button type="button" id="btnExportSvg" title="Export SVG">SVG</button>
+    </nav>
+    <div class="top-actions">
+      <button type="button" id="btnTheme" title="Tmavý / světlý režim">🌓</button>
+      <button type="button" id="btnSync" title="Sync s MIA agent API">Sync</button>
+    </div>
+  </header>
+
+  <aside id="leftPanel">
+    <div class="panel-head">
+      <span>Vrstvy</span>
+      <button type="button" id="btnAddLayer" title="Nová raster vrstva">+</button>
+      <button type="button" id="btnAddVector" title="Vektorová vrstva">V+</button>
+    </div>
+    <ul id="layerList"></ul>
+  </aside>
+
+  <main id="workspace">
+    <div id="toolRail">
+      <button type="button" class="tool active" data-tool="move" title="Posun (V)">✥</button>
+      <button type="button" class="tool" data-tool="brush" title="Štětec (B)">🖌</button>
+      <button type="button" class="tool" data-tool="eraser" title="Guma (E)">⌫</button>
+      <button type="button" class="tool" data-tool="fill" title="Výplň (G)">🪣</button>
+      <button type="button" class="tool" data-tool="vector-rect" title="Vektor obdélník (R)">▢</button>
+      <button type="button" class="tool" data-tool="select-rect" title="Výběr obdélník (M)">▭</button>
+      <button type="button" class="tool" data-tool="select-lasso" title="Laso (L)">⌇</button>
+      <button type="button" class="tool" data-tool="select-wand" title="Kouzelná hůlka (W)">🪄</button>
+      <button type="button" class="tool" data-tool="transform" title="Posun výběru (T)">↔</button>
+      <button type="button" class="tool" data-tool="crop" title="Ořez (C)">⬒</button>
+      <button type="button" class="tool" data-tool="bone-ik" title="Bones IK drag (I)">IK</button>
+    </div>
+    <div id="canvasHost">
+      <canvas id="gpuCanvas"></canvas>
+      <canvas id="overlayCanvas"></canvas>
+      <div id="fxOverlayHost" class="fx-overlay-host" aria-hidden="true"></div>
+    </div>
+  </main>
+
+  <aside id="rightPanel">
+    <div class="panel-head">Vlastnosti</div>
+    <div class="props">
+      <label>Dokument</label>
+      <input id="docName" type="text" value="Nový projekt" />
+      <label>Rozměr</label>
+      <div id="docSize" class="muted">1920 × 1080</div>
+      <label>Zoom</label>
+      <div id="zoomLabel">100%</div>
+      <label>GPU</label>
+      <div id="gpuBackend" class="muted">—</div>
+      <label>Runtime</label>
+      <div id="nativeBackend" class="muted">—</div>
+      <div id="brushProps">
+        <label>Štětec / guma</label>
+        <input id="brushSize" type="range" min="4" max="128" value="24" />
+        <div id="brushSizeLabel" class="muted">24 px</div>
+        <input id="brushColor" type="color" value="#1a1a2e" />
+        <label>Tlak tabletu</label>
+        <select id="pressureCurve">
+          <option value="firm" selected>Pevný (firm)</option>
+          <option value="soft">Jemný (soft)</option>
+          <option value="linear">Lineární</option>
+          <option value="hard">Tvrdý (hard)</option>
+        </select>
+      </div>
+      <div id="selectProps" hidden>
+        <label>Kouzelná hůlka — tolerance</label>
+        <input id="wandTolerance" type="range" min="0" max="96" value="32" />
+        <div id="wandToleranceLabel" class="muted">32</div>
+        <button type="button" id="btnClearSelection" class="panel-btn">Zrušit výběr</button>
+      </div>
+      <div id="aiProps">
+        <label>MIA AI</label>
+        <input id="aiPrompt" type="text" placeholder="Prompt pro generování…" />
+        <button type="button" id="btnAiGenerate" class="panel-btn">Generovat vrstvu</button>
+        <label class="muted">AI animace (timeline)</label>
+        <select id="aiAnimMotion" title="Motion pose">
+          <option value="idle">Idle</option>
+          <option value="wave">Wave</option>
+          <option value="bounce">Bounce</option>
+          <option value="nod">Nod</option>
+          <option value="speak">Speak</option>
+        </select>
+        <select id="aiAnimFrames" title="Počet snímků">
+          <option value="4">4 fr</option>
+          <option value="6" selected>6 fr</option>
+          <option value="8">8 fr</option>
+          <option value="12">12 fr</option>
+        </select>
+        <button type="button" id="btnAiGenerateAnim" class="panel-btn" title="True-alpha AI animace → timeline">Generovat animaci</button>
+        <button type="button" id="btnAiEdit" class="panel-btn">Upravit výběr</button>
+        <button type="button" id="btnAiRemoveBg" class="panel-btn">Odstranit pozadí</button>
+        <button type="button" id="btnAiTrueAlpha" class="panel-btn" title="True-alpha matte (magenta/edge flood)">True Alpha</button>
+        <button type="button" id="btnAiUpscale" class="panel-btn">Upscale 2×</button>
+        <button type="button" id="btnAiRestore" class="panel-btn">Obnovit</button>
+        <label class="muted">Paleta</label>
+        <select id="aiPalette">
+          <option value="cyberpunk">Cyberpunk</option>
+          <option value="neon">Neon</option>
+          <option value="warm">Teplá</option>
+          <option value="cold">Studená</option>
+          <option value="vintage">Vintage</option>
+          <option value="mono">Mono</option>
+        </select>
+        <button type="button" id="btnAiRecolor" class="panel-btn">Přebarvit</button>
+        <label class="muted">Částice</label>
+        <select id="fxPreset">
+          <option value="sparkle_blue">Modré jiskry</option>
+          <option value="sparkle_pink">Růžové jiskry</option>
+          <option value="rain">Déšť</option>
+          <option value="fire">Oheň</option>
+          <option value="smoke">Kouř</option>
+          <option value="heal">Srdíčka</option>
+        </select>
+        <button type="button" id="btnAddParticles" class="panel-btn">Přidat částice</button>
+        <label class="muted">Avatar</label>
+        <select id="avatarPreset">
+          <option value="mia">MIA mascot</option>
+          <option value="koj">Koj styl</option>
+          <option value="stream">Stream</option>
+        </select>
+        <button type="button" id="btnCreateAvatar" class="panel-btn">Vytvořit avatar</button>
+        <button type="button" id="btnObsPreview" class="panel-btn" title="Realtime náhled do OBS">OBS náhled</button>
+        <button type="button" id="btnExportKoj" class="panel-btn">Export → Koj Factory</button>
+        <div id="aiStatus" class="muted">AI: —</div>
+      </div>
+    </div>
+  </aside>
+
+  <section id="timelineBar">
+    <div id="timelineToolbar">
+      <button type="button" id="btnTimelinePlay" title="Přehrát animaci">▶</button>
+      <button type="button" id="btnTimelineAdd" title="Nový snímek">+F</button>
+      <button type="button" id="btnTimelineCapture" title="Zachytit snímek">📷</button>
+      <button type="button" id="btnMotionKf" title="Keyframe aktivní vrstvy">KF</button>
+      <button type="button" id="btnMotionCamera" title="Keyframe kamery">Cam</button>
+      <button type="button" id="btnMotionBones" title="Bones rig">Bones</button>
+      <button type="button" id="btnMotionAi" title="AI Motion keyframes">AI</button>
+      <select id="motionAiStyle" title="Motion preset" style="max-width:110px">
+        <option value="bounce">Bounce</option>
+        <option value="pulse">Pulse</option>
+        <option value="shake">Shake</option>
+        <option value="hair_eyes" selected>Hair/Eyes</option>
+        <option value="blink">Blink</option>
+        <option value="breath">Breath</option>
+        <option value="nod_gesture">Nod</option>
+        <option value="sway">Sway</option>
+        <option value="zoom_pulse">Zoom pulse</option>
+      </select>
+      <button type="button" id="btnMotionLip" title="Viseme z textu">Lip</button>
+      <button type="button" id="btnMotionLipAudio" title="Lip sync z audio (Whisper STT → viseme, fallback amplituda)">Lip♪</button>
+      <input type="file" id="fileLipAudio" accept="audio/*,.wav,.mp3,.m4a,.ogg" hidden />
+      <button type="button" id="btnMotionIk" title="IK solve na rig">IK</button>
+      <label id="boneOverlayLabel"><input type="checkbox" id="boneOverlayToggle" checked /> Bones viz</label>
+      <select id="cameraPresetSelect" title="Virtuální záběr C1–C6">
+        <option value="C1">C1 Wide</option>
+        <option value="C2">C2 Med</option>
+        <option value="C3">C3 Close</option>
+        <option value="C4">C4 Detail</option>
+        <option value="C5">C5 Hero</option>
+        <option value="C6">C6 Profile</option>
+      </select>
+      <input type="range" id="motionPlayhead" min="0" max="2000" value="0" title="Motion playhead (ms)" />
+      <button type="button" id="btnExportSheet" title="Export sprite sheet manifest">Sheet</button>
+      <button type="button" id="btnExportStaging" title="Uložit polish zpět do AI staging">→ Staging</button>
+      <button type="button" id="btnExportBank" title="Export do Animation Bank">→ Bank</button>
+      <button type="button" id="btnExportGif" title="Export GIF">GIF</button>
+      <button type="button" id="btnExportWebm" title="Export WEBM">WEBM</button>
+      <button type="button" id="btnExportMp4" title="Export MP4 (ffmpeg)">MP4</button>
+      <label id="onionSkinLabel" title="Onion skin — předchozí/následující snímky">
+        <input type="checkbox" id="onionSkin" checked /> Onion
+        <input type="range" id="onionDepth" min="1" max="3" value="1" title="Onion depth ±N" />
+        <span id="onionDepthVal">1</span>
+      </label>
+    </div>
+    <div id="motionTimelineHost" aria-label="Motion timeline editor"></div>
+    <div id="timelineBottom">
+      <ul id="frameList"></ul>
+    </div>
+  </section>
+
+  <footer id="statusBar">
+    <span id="statusTool">Nástroj: Posun</span>
+    <span id="statusCoords">0, 0</span>
+    <span id="statusTiles">tiles: 0</span>
+    <span id="statusHistory">undo: —</span>
+    <span id="statusFrame">frame: 1/1</span>
+    <span id="statusHint">Space pan · G výplň · R vektor · Sheet export</span>
+  </footer>
+
+  <link rel="stylesheet" href="/assets/mia-2d-fx.css" />
+  <script src="/assets/mia-2d-fx.js"></script>
+  <script src="lib/mia-paint-native-shell.js"></script>
+  <script src="lib/mia-svg-primitives.js"></script>
+  <script src="lib/mia-paint-core.js"></script>
+  <script src="lib/mia-paint-gpu.js"></script>
+  <script src="lib/mia-paint-io-browser.js"></script>
+  <script src="lib/mia-paint-plugin-host.js"></script>
+  <script src="lib/mia-graphics-client.js"></script>
+  <script src="lib/timeline-editor.js"></script>
+  <script src="app.js"></script>
+  <input type="file" id="fileOpenMiapaint" accept=".miapaint,.json,application/gzip" hidden />
+  <input type="file" id="fileImportImage" accept="image/png,image/jpeg,image/webp,image/vnd.adobe.photoshop,.psd" hidden />
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "packs": {
+    "mia_story_fallback": {
+      "meta": {
+        "key": "mia_story_fallback",
+        "speaker": "mia",
+        "intent": "story_request"
+      },
+      "variants": [
+        "{name}, jedna pohádka hned: V malé vesničce žil Kojnožrout, který hlídal misku plnou hvězd. Každý večer ji rozzářil tím, že chat napsal pár hezkých slov. Jednou přišel Spinák a řekl jen „povídej“. MIA se usmála a celý stream zazářil — protože když boss dá povel, pohádka nečeká na gift.",
+        "{name}, posloucháš? Byl jednou jeden stream a v něm MIA s Kojnožroutem. Koj měl hlad na dobrodružství, MIA měla hlas plný příběhů. Spinák ukázal prstem na chat a řekl: „Pohádka.“ A stalo se — bez eventu, bez mince, jen tak. Protože pro šéfa streamu platí jiná pravidla.",
+        "{name}, krátká pohádka: MIA našla v chatu tichý koutek a začala vyprávět o drakovi, co místo ohně chrlil smích. Kojnožrout přisedl k misce a dělal rekvizitu. Když Spinák řekl „jedeme“, pohádka skočila rovnou na jazyk — žádný gift, žádná fronta, prostě hned."
+      ]
+    }
+  }
+}

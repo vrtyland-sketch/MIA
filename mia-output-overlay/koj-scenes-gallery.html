@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<title>MIA · Koj scény</title>
+<style>
+  html, body { margin: 0; background: #07060c; color: #f2ebff; font-family: "Segoe UI", Arial, sans-serif; }
+  h1 { text-align: center; margin: 16px; font-size: 22px; }
+  p { text-align: center; color: #b9a8c9; font-size: 13px; margin: 0 8px 16px; max-width: 720px; margin-left: auto; margin-right: auto; line-height: 1.5; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; padding: 0 16px 24px; max-width: 1400px; margin: 0 auto; }
+  .card { border-radius: 14px; overflow: hidden; border: 2px solid rgba(255,255,255,.1); background: #120e1a; }
+  .card img { width: 100%; aspect-ratio: 9/16; object-fit: cover; display: block; background: #000; }
+  .meta { padding: 10px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; }
+  .link { display: block; padding: 0 10px 10px; font-size: 11px; color: #8aff9d; text-decoration: none; }
+  .link:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<h1>6 scén — gfx knihovna</h1>
+<p>
+  <strong>Runtime Koj</strong> nikdy neukazuje celoplošný obdélník — jen CSS tint + malé PNG accent fragmenty s měkkými hranami.<br />
+  <strong>Celoplošný preview</strong> jen na <code>away-loop-overlay.html?gfx=1</code> (NEJSEM TU / test grafiky).
+</p>
+<div class="grid" id="grid"></div>
+<script>
+const API = location.origin.startsWith("http") ? location.origin : "http://127.0.0.1:3000";
+const SCENES = [
+  { id: "den", label: "Doupatko" },
+  { id: "cave", label: "Jeskyně / loot" },
+  { id: "cozy", label: "Cozy / TV" },
+  { id: "feast", label: "Hostina" },
+  { id: "party", label: "Party" },
+  { id: "night", label: "Noc" }
+];
+document.getElementById("grid").innerHTML = SCENES.map((s) => `
+  <div class="card">
+    <img src="${API}/assets/kojnozrout/scenes/scene-${s.id}.png?v=1" alt="${s.label}" loading="lazy" />
+    <div class="meta">${s.label} · scene-${s.id}</div>
+    <a class="link" href="${API}/away-loop-overlay.html?gfx=1&scene=${s.id}">▶ celoplošný preview (NEJSEM TU)</a>
+  </div>`).join("");
+</script>
+</body>
+</html>

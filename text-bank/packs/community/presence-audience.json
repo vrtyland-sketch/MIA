@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "packs": {
+    "viewer_notice_mia": {
+      "meta": {
+        "key": "viewer_notice_mia",
+        "speaker": "mia"
+      },
+      "variants": [
+        "Vidím, kdo tady drží prostor.",
+        "Někteří z vás tady jedou fakt poctivě.",
+        "Je hezky vidět, kdo tu je aktivní.",
+        "Tohle už není náhodná návštěva. Tohle je přítomnost.",
+        "Někteří diváci tu dneska drží pěkné tempo.",
+        "Komunita si tu sama buduje atmosféru.",
+        "Tady je vidět, že nejste jen do počtu.",
+        "Tohle je přesně ten druh přítomnosti, co má váhu.",
+        "Některé hlasy tu dneska zní opravdu pravidelně.",
+        "Je radost sledovat, jak se diváci zapojují."
+      ]
+    },
+    "viewer_notice_kojnozout": {
+      "meta": {
+        "key": "viewer_notice_kojnozout",
+        "speaker": "kojnozout"
+      },
+      "variants": [
+        "Jo, vidím, kdo tady dělá provoz.",
+        "Někteří z vás jedou pěkně nahlas. To beru.",
+        "Je poznat, kdo dneska nespí.",
+        "Tady už nejste jen do počtu, to je jasný.",
+        "Některý čumáky tu jedou fakt poctivě.",
+        "Jo, registruju, kdo dneska drží tlak.",
+        "Tahle parta se nefláká. To se mi líbí.",
+        "Někteří z vás tu dneska jedou jako motor.",
+        "Já jen že je vidět, kdo to tady táhne.",
+        "Jo, některý lidi dneska fakt makají pro atmosféru."
+      ]
+    },
+    "audience_push_mia": {
+      "meta": {
+        "key": "audience_push_mia",
+        "speaker": "mia"
+      },
+      "variants": [
+        "Kdo další se přidá?",
+        "Tak kdo z vás naváže?",
+        "Pojďte to ještě trochu zvednout.",
+        "Ještě to má prostor růst.",
+        "Tak schválně, kdo pošle další impulz?",
+        "Nenechte to spadnout, jste rozjetí dobře.",
+        "Tahle vlna si říká o pokračování.",
+        "Kdo dneska přidá další krok?",
+        "Ještě to může být silnější.",
+        "Tak kdo bude další?"
+      ]
+    },
+    "audience_push_kojnozout": {
+      "meta": {
+        "key": "audience_push_kojnozout",
+        "speaker": "kojnozout"
+      },
+      "variants": [
+        "Tak kdo přiloží pod kotel?",
+        "Ještě to umí být větší rachot.",
+        "Tak kdo pošle další nášup?",
+        "Jestli tohle myslíte vážně, tak pojďte dál.",
+        "Tak kdo ještě šťouchne do atmosféry?",
+        "Může to být ještě šťavnatější.",
+        "Tak kdo hodí další impuls?",
+        "No tak, ukažte zuby, komunito.",
+        "Ještě to není strop.",
+        "Tak kdo to nakopne znovu?"
+      ]
+    },
+    "chat_presence_mia": {
+      "meta": {
+        "key": "chat_presence_mia",
+        "speaker": "mia"
+      },
+      "variants": [
+        "Někteří z vás tu dneska drží prostor opravdu poctivě.",
+        "Je pěkně vidět, kdo se vrací a kdo drží proud.",
+        "Tady už je znát skutečná přítomnost komunity.",
+        "Některé hlasy tu dneska opravdu nesou večer.",
+        "Tohle už je komunita, co si dělá vlastní atmosféru.",
+        "Je vidět, že tu nejste jen do počtu.",
+        "Někteří z vás dneska drží tah velmi hezky.",
+        "Tahle přítomnost diváků je opravdu cítit.",
+        "Přesně tohle dělá stream živým.",
+        "Tady už je vidět, že komunita dýchá společně."
+      ]
+    },
+    "chat_presence_kojnozout": {
+      "meta": {
+        "key": "chat_presence_kojnozout",
+        "speaker": "kojnozout"
+      },
+      "variants": [
+        "Jo, některý lidi tu dneska fakt jedou.",
+        "Vidím, kdo drží tlak a kdo jen čumí z kouta.",
+        "Některý čumáky tu dneska makají slušně.",
+        "Tady už je pěkně vidět, kdo ten večer táhne.",
+        "Jo, někteří z vás tu jedou jak motor.",
+        "Tohle už je parta, co dělá provoz.",
+        "Já jen že některý jména tu dneska fakt slyším pořád.",
+        "Tady už je znát, kdo drží rytmus.",
+        "Jo, tahle komunita se nefláká.",
+        "Některý lidi tu dneska fakt sypou přítomnost."
+      ]
+    }
+  }
+}

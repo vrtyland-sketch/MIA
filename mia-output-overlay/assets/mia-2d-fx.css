@@ -1,0 +1,230 @@
+/* MIA 2D FX — sdílené overlay efekty (arena · duel · Koj runtime) */
+
+.mia-fx-host {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.mia-fx-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 15;
+}
+
+.mia-fx-flash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 14;
+  background: radial-gradient(circle at var(--flash-x, 50%) var(--flash-y, 42%), var(--flash-color, rgba(255,255,255,.22)), transparent 58%);
+  transition: opacity 0.14s ease;
+}
+
+.mia-fx-flash.on {
+  opacity: 1;
+}
+
+/* Projectile sprite */
+.battle-projectile.mia-fx-raf {
+  animation: none !important;
+  transform: translate(-50%, -50%);
+  will-change: left, top, transform;
+}
+
+.battle-projectile {
+  position: absolute;
+  width: clamp(36px, 10vw, 52px);
+  height: clamp(36px, 10vw, 52px);
+  pointer-events: none;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.45));
+  animation: miaFxFly 0.92s cubic-bezier(0.22, 0.82, 0.28, 1) forwards;
+  z-index: 16;
+  transform-origin: center center;
+}
+
+.battle-projectile img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.battle-projectile.mia-fx-trail::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--proj-accent, rgba(180, 90, 255, 0.35)) 0%, transparent 70%);
+  opacity: 0.55;
+  animation: miaFxTrailGlow 0.92s ease forwards;
+}
+
+@keyframes miaFxFly {
+  0% {
+    transform: translate(0, 0) scale(0.65) rotate(0deg);
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy)) scale(0.88) rotate(var(--mia-fx-rot, 280deg));
+    opacity: 0.08;
+  }
+}
+
+@keyframes miaFxTrailGlow {
+  0% { opacity: 0.65; transform: scale(0.6); }
+  100% { opacity: 0; transform: scale(1.35); }
+}
+
+/* Damage float */
+.battle-damage {
+  position: absolute;
+  font-size: clamp(22px, 4vw, 28px);
+  font-weight: 900;
+  color: #ff6b4a;
+  text-shadow: 0 2px 0 #000, 0 0 12px rgba(255, 80, 60, 0.8);
+  pointer-events: none;
+  animation: miaFxDmgFloat 1.05s ease forwards;
+  z-index: 17;
+}
+
+@keyframes miaFxDmgFloat {
+  0% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -52px) scale(1.18); }
+}
+
+/* Item use — batoh → Koj */
+#itemFxLayer,
+.mia-fx-item-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 18;
+}
+
+.item-fx {
+  position: absolute;
+  width: clamp(44px, 14vw, 88px);
+  height: clamp(44px, 14vw, 88px);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.35);
+  filter: drop-shadow(0 6px 16px rgba(120, 40, 200, 0.45));
+  pointer-events: none;
+  will-change: left, top, transform, opacity;
+}
+
+.item-fx.mia-fx-raf {
+  animation: none !important;
+}
+
+.item-fx img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.item-fx.on {
+  animation: miaFxItemFly 1.15s cubic-bezier(0.22, 0.85, 0.28, 1) forwards;
+}
+
+.item-fx.pop {
+  animation: miaFxItemPop 0.55s ease-out forwards;
+}
+
+@keyframes miaFxItemFly {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.35); left: 18%; top: 22%; }
+  18% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+  72% { opacity: 1; transform: translate(-50%, -50%) scale(0.92); left: 58%; top: 58%; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(0.2); left: 58%; top: 52%; }
+}
+
+@keyframes miaFxItemPop {
+  0% { opacity: 0.85; transform: translate(-50%, -50%) scale(0.7); }
+  45% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); filter: drop-shadow(0 0 18px rgba(180, 90, 255, 0.85)); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.35); }
+}
+
+.duel-proj-fx {
+  position: absolute;
+  width: clamp(36px, 10vw, 56px);
+  height: clamp(36px, 10vw, 56px);
+  pointer-events: none;
+  z-index: 19;
+  opacity: 0;
+  filter: drop-shadow(0 4px 12px rgba(255, 90, 180, 0.55));
+  will-change: left, top, transform, opacity;
+}
+
+.duel-proj-fx.mia-fx-raf {
+  animation: none !important;
+}
+
+.duel-proj-fx img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.duel-proj-fx.on {
+  animation: miaFxDuelProj 0.95s cubic-bezier(0.25, 0.9, 0.35, 1) forwards;
+}
+
+@keyframes miaFxDuelProj {
+  0% { opacity: 0; left: 58%; top: 52%; transform: translate(-50%, -50%) scale(0.5) rotate(0deg); }
+  12% { opacity: 1; }
+  100% { opacity: 0; left: 82%; top: 28%; transform: translate(-50%, -50%) scale(1.05) rotate(320deg); }
+}
+
+/* Fighter pose helpers (arena) */
+.fighter.lunge-left { animation: miaFxLungeL 0.48s cubic-bezier(0.22, 1, 0.36, 1); }
+.fighter.lunge-right { animation: miaFxLungeR 0.48s cubic-bezier(0.22, 1, 0.36, 1); }
+.fighter.shake { animation: miaFxShake 0.42s cubic-bezier(0.36, 0, 0.2, 1); }
+
+@keyframes miaFxLungeL {
+  0% { transform: translateX(0) scale(1); }
+  28% { transform: translateX(62px) scale(1.08); }
+  62% { transform: translateX(18px) scale(1.02); }
+  100% { transform: translateX(0) scale(1); }
+}
+
+@keyframes miaFxLungeR {
+  0% { transform: scaleX(-1) translateX(0) scale(1); }
+  28% { transform: scaleX(-1) translateX(62px) scale(1.08); }
+  62% { transform: scaleX(-1) translateX(18px) scale(1.02); }
+  100% { transform: scaleX(-1) translateX(0) scale(1); }
+}
+
+@keyframes miaFxShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+.fighter.battle-attack img {
+  filter: drop-shadow(0 0 20px rgba(255, 96, 64, 0.55)) drop-shadow(0 12px 18px rgba(0, 0, 0, 0.55));
+}
+
+.fighter.battle-hit img {
+  filter: drop-shadow(0 0 16px rgba(255, 120, 80, 0.45)) drop-shadow(0 12px 18px rgba(0, 0, 0, 0.55));
+}
+
+.fighter.battle-defend img,
+.fighter.battle-buff img {
+  filter: drop-shadow(0 0 18px rgba(80, 230, 140, 0.45)) drop-shadow(0 12px 18px rgba(0, 0, 0, 0.55));
+}
+
+.fighter.battle-win img,
+.fighter.winner img {
+  filter: drop-shadow(0 0 22px gold) drop-shadow(0 12px 18px rgba(0, 0, 0, 0.55));
+}
+
+.fighter.battle-ready img {
+  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.55));
+}

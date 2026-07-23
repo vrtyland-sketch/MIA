@@ -1,0 +1,4073 @@
+{
+  "version": 1,
+  "generatedAt": 1781813171030,
+  "targetMinTotal": 300,
+  "totalCount": 402,
+  "spriteCount": 130,
+  "backgroundCount": 64,
+  "sceneCount": 208,
+  "moodSeedCount": 10,
+  "backgroundSeedCount": 4,
+  "moods": [
+    "idle",
+    "warm",
+    "happy",
+    "hungry",
+    "excited",
+    "eating",
+    "full",
+    "sleepy",
+    "sick",
+    "sad",
+    "annoyed",
+    "laugh",
+    "stressed"
+  ],
+  "eatingVariants": 5,
+  "uniqueHashes": 397,
+  "dirs": {
+    "sprites": "mega/sprites",
+    "backgrounds": "mega/backgrounds",
+    "scenes": "mega/scenes"
+  },
+  "sprites": [
+    {
+      "id": "idle-s00",
+      "mood": "idle",
+      "seed": 0,
+      "type": "sprite",
+      "file": "mega/sprites/koj-idle-s00.png",
+      "bytes": 61937,
+      "sha256": "78ea53ef4149ec4376579f51f8b16fdf8faa3582c154ef507e3725a75e6131f6"
+    },
+    {
+      "id": "idle-s01",
+      "mood": "idle",
+      "seed": 1,
+      "type": "sprite",
+      "file": "mega/sprites/koj-idle-s01.png",
+      "bytes": 62735,
+      "sha256": "818cfe84b2fbc65d0d32021faf6edc7883e074fb7f591f43073d1ac1d1d1c707"
+    },
+    {
+      "id": "idle-s02",
+      "mood": "idle",
+      "seed": 2,
+      "type": "sprite",
+      "file": "mega/sprites/koj-idle-s02.png",
+      "bytes": 62672,
+      "sha256": "3a7c061fee941fd2bedb4b8c4fd265fad0130597f3dfb14de2d9f6b7b2eeb928"
+    },
+    {
+      "id": "idle-s03",
+      "mood": "idle",
+      "seed": 3,
+      "type": "sprite",
+      "file": "mega/sprites/koj-idle-s03.png",
+      "bytes": 63719,
+      "sha256": "7e80904214802ae16e9f2cd74059d8b5b62705c4f8cd3c4ef1f0a0781c124573"
+    },
+    {
+      "id": "idle-s04",
+      "mood": "idle",
+      "seed": 4,
+      "type": "sprite",
+      "file": "mega/sprites/koj-idle-s04.png",
+      "bytes": 63448,
+      "sha256": "f9210b043da5941a7957dd50f95f67d40b0f11491ac95b4f4ba0ca2322321a5d"
+    },
+    {
+      "id": "idle-s05",
+      "mood": "idle",
+      "seed": 5,
+      "type": "sprite",
+      "file": "mega/sprites/koj-idle-s05.png",
+      "bytes": 60875,
+      "sha256": "740bdd72fd6a331994cd3005b809945133b05d18bd4e9ebc6f4388eb5f07e17b"
+    },
+    {
+      "id": "idle-s06",
+      "mood": "idle",
+      "seed": 6,
+      "type": "sprite",
+      "file": "mega/sprites/koj-idle-s06.png",
+      "bytes": 61427,
+      "sha256": "2d48733e8e91208edbb4329272d11c947ebbea136a92c6d9bc2b922c07491c62"
+    },
+    {
+      "id": "idle-s07",
+      "mood": "idle",
+      "seed": 7,
+      "type": "sprite",
+      "file": "mega/sprites/koj-idle-s07.png",
+      "bytes": 62473,
+      "sha256": "bef7cdcce8f378f59b2b430350f1ee677abbfbced6140de1da8e419f81951c71"
+    },
+    {
+      "id": "idle-s08",
+      "mood": "idle",
+      "seed": 8,
+      "type": "sprite",
+      "file": "mega/sprites/koj-idle-s08.png",
+      "bytes": 63754,
+      "sha256": "612e045bda00ed22e85b4732d99e3d2c348dfd886cd498901f0c834b33b5cf24"
+    },
+    {
+      "id": "idle-s09",
+      "mood": "idle",
+      "seed": 9,
+      "type": "sprite",
+      "file": "mega/sprites/koj-idle-s09.png",
+      "bytes": 64224,
+      "sha256": "438ce9f2941141b57967078ec8597745e1da20c0a71588065f1ee09e981dcf80"
+    },
+    {
+      "id": "warm-s00",
+      "mood": "warm",
+      "seed": 0,
+      "type": "sprite",
+      "file": "mega/sprites/koj-warm-s00.png",
+      "bytes": 63847,
+      "sha256": "e6c9e6879c901a4b5c342d69f6a1a5f1f585b86609a6d8d9a7586876001aab96"
+    },
+    {
+      "id": "warm-s01",
+      "mood": "warm",
+      "seed": 1,
+      "type": "sprite",
+      "file": "mega/sprites/koj-warm-s01.png",
+      "bytes": 65010,
+      "sha256": "9bde08b943b5e080ea7b84f4e18888f317a2615146b6ed29a8bc89f19ed47b4f"
+    },
+    {
+      "id": "warm-s02",
+      "mood": "warm",
+      "seed": 2,
+      "type": "sprite",
+      "file": "mega/sprites/koj-warm-s02.png",
+      "bytes": 65351,
+      "sha256": "4797fb3d8ebca56d24cfa012710ecd928fe0f0fe0358fccb0adb39d1121b98fa"
+    },
+    {
+      "id": "warm-s03",
+      "mood": "warm",
+      "seed": 3,
+      "type": "sprite",
+      "file": "mega/sprites/koj-warm-s03.png",
+      "bytes": 66217,
+      "sha256": "0db68604e9a7ab6ffdb46d8e24452a5a45dcd62bf08f4e4d64cc33491a7d6dda"
+    },
+    {
+      "id": "warm-s04",
+      "mood": "warm",
+      "seed": 4,
+      "type": "sprite",
+      "file": "mega/sprites/koj-warm-s04.png",
+      "bytes": 65439,
+      "sha256": "c04890f9ce19cb10bec4f2b2b9cbd8400bb866751a1e55d8fe7adab748699739"
+    },
+    {
+      "id": "warm-s05",
+      "mood": "warm",
+      "seed": 5,
+      "type": "sprite",
+      "file": "mega/sprites/koj-warm-s05.png",
+      "bytes": 62611,
+      "sha256": "0c56ba63e17556f3403224d9aa4eec77a36610caac16697da1a1c63af27b7ce6"
+    },
+    {
+      "id": "warm-s06",
+      "mood": "warm",
+      "seed": 6,
+      "type": "sprite",
+      "file": "mega/sprites/koj-warm-s06.png",
+      "bytes": 63261,
+      "sha256": "3176ad5d07a3bbc9491528ef247fe9c242d0819b851f3739b8068edd85ea7097"
+    },
+    {
+      "id": "warm-s07",
+      "mood": "warm",
+      "seed": 7,
+      "type": "sprite",
+      "file": "mega/sprites/koj-warm-s07.png",
+      "bytes": 64710,
+      "sha256": "1c92c12340ecd7e950d370a001e099ffc50a34c4ed179a0f43ab8538db5a49a4"
+    },
+    {
+      "id": "warm-s08",
+      "mood": "warm",
+      "seed": 8,
+      "type": "sprite",
+      "file": "mega/sprites/koj-warm-s08.png",
+      "bytes": 66185,
+      "sha256": "baa0548d9e5c7de3f488bd414ec7df3860ef1a903d1d097633d6845f73d4f710"
+    },
+    {
+      "id": "warm-s09",
+      "mood": "warm",
+      "seed": 9,
+      "type": "sprite",
+      "file": "mega/sprites/koj-warm-s09.png",
+      "bytes": 66830,
+      "sha256": "7561247d3a7230ec9d91eede27021aedc2787a16aea8009e6a6feeb795aeb2f9"
+    },
+    {
+      "id": "happy-s00",
+      "mood": "happy",
+      "seed": 0,
+      "type": "sprite",
+      "file": "mega/sprites/koj-happy-s00.png",
+      "bytes": 66485,
+      "sha256": "a907fa3e2daaa356b843895ebe202b86c2489e6b02836bf36998bdc3fcc3359e"
+    },
+    {
+      "id": "happy-s01",
+      "mood": "happy",
+      "seed": 1,
+      "type": "sprite",
+      "file": "mega/sprites/koj-happy-s01.png",
+      "bytes": 67119,
+      "sha256": "1a4b06237f5f765c49858f19b11124a1dc9f747b3b67140589c57a53e7df2d49"
+    },
+    {
+      "id": "happy-s02",
+      "mood": "happy",
+      "seed": 2,
+      "type": "sprite",
+      "file": "mega/sprites/koj-happy-s02.png",
+      "bytes": 67403,
+      "sha256": "75fe4f530d06a88375534f852bf88ae79b9807c9f18e3f70a3b342c78b727bd0"
+    },
+    {
+      "id": "happy-s03",
+      "mood": "happy",
+      "seed": 3,
+      "type": "sprite",
+      "file": "mega/sprites/koj-happy-s03.png",
+      "bytes": 67819,
+      "sha256": "b1c686727876e9f4391fac57bc3832878db967e602a4c0ef7dc619d486ac8ae9"
+    },
+    {
+      "id": "happy-s04",
+      "mood": "happy",
+      "seed": 4,
+      "type": "sprite",
+      "file": "mega/sprites/koj-happy-s04.png",
+      "bytes": 67896,
+      "sha256": "2567bd5be6f1dbd7495c4243e81343f1da4cb678e0aca9c2cacd6311baaa8cf1"
+    },
+    {
+      "id": "happy-s05",
+      "mood": "happy",
+      "seed": 5,
+      "type": "sprite",
+      "file": "mega/sprites/koj-happy-s05.png",
+      "bytes": 65237,
+      "sha256": "bba2c8049096e1153d20f7182f21c653896ab28e31990fff709572e3605b3325"
+    },
+    {
+      "id": "happy-s06",
+      "mood": "happy",
+      "seed": 6,
+      "type": "sprite",
+      "file": "mega/sprites/koj-happy-s06.png",
+      "bytes": 65326,
+      "sha256": "77f4bd889088f6434a488c82559906da1bfbbf62d42bfd43079d988038014526"
+    },
+    {
+      "id": "happy-s07",
+      "mood": "happy",
+      "seed": 7,
+      "type": "sprite",
+      "file": "mega/sprites/koj-happy-s07.png",
+      "bytes": 66872,
+      "sha256": "642c094a1ed7ca368d3ca123f2f84f9b2c20d296f63e8f67a02ea297d49785ee"
+    },
+    {
+      "id": "happy-s08",
+      "mood": "happy",
+      "seed": 8,
+      "type": "sprite",
+      "file": "mega/sprites/koj-happy-s08.png",
+      "bytes": 67570,
+      "sha256": "b0f4160b2e06846b1774bc174c944b7f832ba6ba545d00e1f4ddfc8960564ba2"
+    },
+    {
+      "id": "happy-s09",
+      "mood": "happy",
+      "seed": 9,
+      "type": "sprite",
+      "file": "mega/sprites/koj-happy-s09.png",
+      "bytes": 68564,
+      "sha256": "ca606a2c7a44eb0911d1d7e3057cb68211f09eb78d4ca8da1d4f3756cdc303fb"
+    },
+    {
+      "id": "hungry-s00",
+      "mood": "hungry",
+      "seed": 0,
+      "type": "sprite",
+      "file": "mega/sprites/koj-hungry-s00.png",
+      "bytes": 62757,
+      "sha256": "55d5e964286635f1a2690c40db025808ae0e5d2afc33c6f8cd4e17970cde6598"
+    },
+    {
+      "id": "hungry-s01",
+      "mood": "hungry",
+      "seed": 1,
+      "type": "sprite",
+      "file": "mega/sprites/koj-hungry-s01.png",
+      "bytes": 63858,
+      "sha256": "070dd46338a4ad8a193ef62991ac975298fbb83ab2c1ae0833df96db7c85e36b"
+    },
+    {
+      "id": "hungry-s02",
+      "mood": "hungry",
+      "seed": 2,
+      "type": "sprite",
+      "file": "mega/sprites/koj-hungry-s02.png",
+      "bytes": 64677,
+      "sha256": "069c246342337d2fe2c5b26530874f67f564c73ad872b803e8dc16f71bb15f7b"
+    },
+    {
+      "id": "hungry-s03",
+      "mood": "hungry",
+      "seed": 3,
+      "type": "sprite",
+      "file": "mega/sprites/koj-hungry-s03.png",
+      "bytes": 65764,
+      "sha256": "c3fafce337ad70864e9045f64fe98cc215de0ae10409b2a2ad99f63026d96871"
+    },
+    {
+      "id": "hungry-s04",
+      "mood": "hungry",
+      "seed": 4,
+      "type": "sprite",
+      "file": "mega/sprites/koj-hungry-s04.png",
+      "bytes": 66063,
+      "sha256": "3b4284a660223abf2038543ef7bae69f252110f0c7fa0f687331579ff8406d0d"
+    },
+    {
+      "id": "hungry-s05",
+      "mood": "hungry",
+      "seed": 5,
+      "type": "sprite",
+      "file": "mega/sprites/koj-hungry-s05.png",
+      "bytes": 62588,
+      "sha256": "ad0a0be751a2dfc204dd2b58930ce76f34138cc297636413a43f143f0e564a89"
+    },
+    {
+      "id": "hungry-s06",
+      "mood": "hungry",
+      "seed": 6,
+      "type": "sprite",
+      "file": "mega/sprites/koj-hungry-s06.png",
+      "bytes": 63889,
+      "sha256": "36207154ff1806db15d7fb5eae88b404261b8c6c08241dcca1233aab92e3ce0b"
+    },
+    {
+      "id": "hungry-s07",
+      "mood": "hungry",
+      "seed": 7,
+      "type": "sprite",
+      "file": "mega/sprites/koj-hungry-s07.png",
+      "bytes": 64621,
+      "sha256": "bb6e513e659c8d60842537995a05689298c9e649d094b6a31e8a6d585cd711ba"
+    },
+    {
+      "id": "hungry-s08",
+      "mood": "hungry",
+      "seed": 8,
+      "type": "sprite",
+      "file": "mega/sprites/koj-hungry-s08.png",
+      "bytes": 66022,
+      "sha256": "433b4f0c16cc33bef2e7b222c17d85fbf7aa70964c980095e68245cc1c63cb42"
+    },
+    {
+      "id": "hungry-s09",
+      "mood": "hungry",
+      "seed": 9,
+      "type": "sprite",
+      "file": "mega/sprites/koj-hungry-s09.png",
+      "bytes": 66779,
+      "sha256": "1bc1394f9766f6f1edbceab434e9f43bc390b60a57fad43e40c16b0734884cf3"
+    },
+    {
+      "id": "excited-s00",
+      "mood": "excited",
+      "seed": 0,
+      "type": "sprite",
+      "file": "mega/sprites/koj-excited-s00.png",
+      "bytes": 66703,
+      "sha256": "13f9da3fbe2a7139676eb558d9a1519af55d63924a86e330348c8ba5c801e60b"
+    },
+    {
+      "id": "excited-s01",
+      "mood": "excited",
+      "seed": 1,
+      "type": "sprite",
+      "file": "mega/sprites/koj-excited-s01.png",
+      "bytes": 68101,
+      "sha256": "348a8cd543b54c20be0cd33f1a7f0b2fe6efa79d54847464f208ff29a429cf51"
+    },
+    {
+      "id": "excited-s02",
+      "mood": "excited",
+      "seed": 2,
+      "type": "sprite",
+      "file": "mega/sprites/koj-excited-s02.png",
+      "bytes": 69146,
+      "sha256": "03e3392a363b25f47016df4e3b5864206f782a0e67ebe5a733720461abbd8c3e"
+    },
+    {
+      "id": "excited-s03",
+      "mood": "excited",
+      "seed": 3,
+      "type": "sprite",
+      "file": "mega/sprites/koj-excited-s03.png",
+      "bytes": 69926,
+      "sha256": "2da52e8f51ceb29b3d08c4c39232618acbd1e545e0b19fe501f3cac038939c27"
+    },
+    {
+      "id": "excited-s04",
+      "mood": "excited",
+      "seed": 4,
+      "type": "sprite",
+      "file": "mega/sprites/koj-excited-s04.png",
+      "bytes": 70464,
+      "sha256": "0d996a9b8361028b52baec98808c8dc9e35f2ae6b6be2de0f0973ef28075f7cb"
+    },
+    {
+      "id": "excited-s05",
+      "mood": "excited",
+      "seed": 5,
+      "type": "sprite",
+      "file": "mega/sprites/koj-excited-s05.png",
+      "bytes": 67651,
+      "sha256": "bbcebd3ae12ef68611b9d22414fea5b7489bccaaf042144017cad3f2d00ce652"
+    },
+    {
+      "id": "excited-s06",
+      "mood": "excited",
+      "seed": 6,
+      "type": "sprite",
+      "file": "mega/sprites/koj-excited-s06.png",
+      "bytes": 67938,
+      "sha256": "895cde3be04024b821e3b3f611edf1c6521e68a5a2562128c61b97cdee6b459b"
+    },
+    {
+      "id": "excited-s07",
+      "mood": "excited",
+      "seed": 7,
+      "type": "sprite",
+      "file": "mega/sprites/koj-excited-s07.png",
+      "bytes": 68478,
+      "sha256": "1943fc86710ea766a767eebeeeb49cab45e433ce160997a1768491b36e8c7745"
+    },
+    {
+      "id": "excited-s08",
+      "mood": "excited",
+      "seed": 8,
+      "type": "sprite",
+      "file": "mega/sprites/koj-excited-s08.png",
+      "bytes": 68699,
+      "sha256": "77e9240065412c0fe8aa059a7820928ce3e1f5f5b5de705175c7b8458a33c352"
+    },
+    {
+      "id": "excited-s09",
+      "mood": "excited",
+      "seed": 9,
+      "type": "sprite",
+      "file": "mega/sprites/koj-excited-s09.png",
+      "bytes": 69391,
+      "sha256": "706f9ca6556913eb1bf161abaeda694a5737d8c19dede380b54d2bbdce78da91"
+    },
+    {
+      "id": "eating-s00",
+      "mood": "eating",
+      "seed": 0,
+      "type": "sprite",
+      "file": "mega/sprites/koj-eating-s00.png",
+      "bytes": 67915,
+      "sha256": "515576e60da2fdd0255ebecf97440678dc8883f06fd602d51ea1553bb6df88dd"
+    },
+    {
+      "id": "eating-s01",
+      "mood": "eating",
+      "seed": 1,
+      "type": "sprite",
+      "file": "mega/sprites/koj-eating-s01.png",
+      "bytes": 70054,
+      "sha256": "0af4f2c4900086fd1d89e2451d866a4ef7069ae4ad091daeee30a335b766e807"
+    },
+    {
+      "id": "eating-s02",
+      "mood": "eating",
+      "seed": 2,
+      "type": "sprite",
+      "file": "mega/sprites/koj-eating-s02.png",
+      "bytes": 70937,
+      "sha256": "6388d08fc2b1e90d2b0937684058ea23228a66d8906d1a74ef6cbd87afe4019d"
+    },
+    {
+      "id": "eating-s03",
+      "mood": "eating",
+      "seed": 3,
+      "type": "sprite",
+      "file": "mega/sprites/koj-eating-s03.png",
+      "bytes": 72519,
+      "sha256": "28f8b743963d3f666fbc9503c4099cb66ae37c78d963e7ed25fddf56e5f51bf6"
+    },
+    {
+      "id": "eating-s04",
+      "mood": "eating",
+      "seed": 4,
+      "type": "sprite",
+      "file": "mega/sprites/koj-eating-s04.png",
+      "bytes": 73365,
+      "sha256": "65ad316fb2fd28750f3859a3b1090e3b18f364bb162f624ca87e70768717bc0c"
+    },
+    {
+      "id": "eating-s05",
+      "mood": "eating",
+      "seed": 5,
+      "type": "sprite",
+      "file": "mega/sprites/koj-eating-s05.png",
+      "bytes": 67915,
+      "sha256": "515576e60da2fdd0255ebecf97440678dc8883f06fd602d51ea1553bb6df88dd"
+    },
+    {
+      "id": "eating-s06",
+      "mood": "eating",
+      "seed": 6,
+      "type": "sprite",
+      "file": "mega/sprites/koj-eating-s06.png",
+      "bytes": 70054,
+      "sha256": "0af4f2c4900086fd1d89e2451d866a4ef7069ae4ad091daeee30a335b766e807"
+    },
+    {
+      "id": "eating-s07",
+      "mood": "eating",
+      "seed": 7,
+      "type": "sprite",
+      "file": "mega/sprites/koj-eating-s07.png",
+      "bytes": 70937,
+      "sha256": "6388d08fc2b1e90d2b0937684058ea23228a66d8906d1a74ef6cbd87afe4019d"
+    },
+    {
+      "id": "eating-s08",
+      "mood": "eating",
+      "seed": 8,
+      "type": "sprite",
+      "file": "mega/sprites/koj-eating-s08.png",
+      "bytes": 72519,
+      "sha256": "28f8b743963d3f666fbc9503c4099cb66ae37c78d963e7ed25fddf56e5f51bf6"
+    },
+    {
+      "id": "eating-s09",
+      "mood": "eating",
+      "seed": 9,
+      "type": "sprite",
+      "file": "mega/sprites/koj-eating-s09.png",
+      "bytes": 73365,
+      "sha256": "65ad316fb2fd28750f3859a3b1090e3b18f364bb162f624ca87e70768717bc0c"
+    },
+    {
+      "id": "full-s00",
+      "mood": "full",
+      "seed": 0,
+      "type": "sprite",
+      "file": "mega/sprites/koj-full-s00.png",
+      "bytes": 66046,
+      "sha256": "9542218aa1641d887dde2eefe1d66edcc90bda6e8455039c8c6173f0d25d994a"
+    },
+    {
+      "id": "full-s01",
+      "mood": "full",
+      "seed": 1,
+      "type": "sprite",
+      "file": "mega/sprites/koj-full-s01.png",
+      "bytes": 67143,
+      "sha256": "42f1e704384031a77ffd92da61c6196db773139634421482570aea6cef648c73"
+    },
+    {
+      "id": "full-s02",
+      "mood": "full",
+      "seed": 2,
+      "type": "sprite",
+      "file": "mega/sprites/koj-full-s02.png",
+      "bytes": 68319,
+      "sha256": "11b98e071ab279dfc31b785bb6f14d4ce151716912f3b5953fbf522e40364b36"
+    },
+    {
+      "id": "full-s03",
+      "mood": "full",
+      "seed": 3,
+      "type": "sprite",
+      "file": "mega/sprites/koj-full-s03.png",
+      "bytes": 68722,
+      "sha256": "2b47cc1b327e189df4228e29dc00795a62360e6b8382002b095c1e207b3664b9"
+    },
+    {
+      "id": "full-s04",
+      "mood": "full",
+      "seed": 4,
+      "type": "sprite",
+      "file": "mega/sprites/koj-full-s04.png",
+      "bytes": 68851,
+      "sha256": "5bac20716cf63040b3359c7d485bf54d9252623389886461769d7ba283f8566e"
+    },
+    {
+      "id": "full-s05",
+      "mood": "full",
+      "seed": 5,
+      "type": "sprite",
+      "file": "mega/sprites/koj-full-s05.png",
+      "bytes": 67689,
+      "sha256": "9934aab2efd825437a330f2d0abfaba553029533cedd9482d8a6eb927e2a51ea"
+    },
+    {
+      "id": "full-s06",
+      "mood": "full",
+      "seed": 6,
+      "type": "sprite",
+      "file": "mega/sprites/koj-full-s06.png",
+      "bytes": 68644,
+      "sha256": "466b1c4ee5fbbf89cb5550505b3f947ddce2f49b6778711cd8a35854390ad706"
+    },
+    {
+      "id": "full-s07",
+      "mood": "full",
+      "seed": 7,
+      "type": "sprite",
+      "file": "mega/sprites/koj-full-s07.png",
+      "bytes": 67176,
+      "sha256": "55f9d0647ab7ae2a23b8463cdcc45a7407390b0a1f1fcb32a97a37cdf24f2d2e"
+    },
+    {
+      "id": "full-s08",
+      "mood": "full",
+      "seed": 8,
+      "type": "sprite",
+      "file": "mega/sprites/koj-full-s08.png",
+      "bytes": 67627,
+      "sha256": "bec2a96cfdc4e85dc02661c5348b66069dda3308e801512f988542415916d3d4"
+    },
+    {
+      "id": "full-s09",
+      "mood": "full",
+      "seed": 9,
+      "type": "sprite",
+      "file": "mega/sprites/koj-full-s09.png",
+      "bytes": 68493,
+      "sha256": "377c7124ab56740cee239fa5050f5518fd51191821eaecc23b960342f8b6f3d8"
+    },
+    {
+      "id": "sleepy-s00",
+      "mood": "sleepy",
+      "seed": 0,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sleepy-s00.png",
+      "bytes": 54432,
+      "sha256": "b61d60603e5421e5a71705fdfce4f15989cc2e6b7794b4e502889a4ea5739cef"
+    },
+    {
+      "id": "sleepy-s01",
+      "mood": "sleepy",
+      "seed": 1,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sleepy-s01.png",
+      "bytes": 55614,
+      "sha256": "6c764057abde81e885e8b0a61bfba4f913a76f2c54b962a340cfbd8a7809bcc0"
+    },
+    {
+      "id": "sleepy-s02",
+      "mood": "sleepy",
+      "seed": 2,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sleepy-s02.png",
+      "bytes": 56408,
+      "sha256": "15a0c6f2fe8029da14810df50afceb3168e33d1f0609e23267c905be2cf8cb30"
+    },
+    {
+      "id": "sleepy-s03",
+      "mood": "sleepy",
+      "seed": 3,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sleepy-s03.png",
+      "bytes": 57444,
+      "sha256": "15e502e7c5ecbd87c0f67e23b32646136a75c18cf2c6cfed09086edd63a5f7f7"
+    },
+    {
+      "id": "sleepy-s04",
+      "mood": "sleepy",
+      "seed": 4,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sleepy-s04.png",
+      "bytes": 58130,
+      "sha256": "9a17f208c47ef216a8111c1a1b74aafc712ee9e809f841739f5ccb49aa1c0ce0"
+    },
+    {
+      "id": "sleepy-s05",
+      "mood": "sleepy",
+      "seed": 5,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sleepy-s05.png",
+      "bytes": 55127,
+      "sha256": "e639312f3e2a02d93d35462d4a2c1a709dd0c48812901007f9a52777aa98e8f7"
+    },
+    {
+      "id": "sleepy-s06",
+      "mood": "sleepy",
+      "seed": 6,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sleepy-s06.png",
+      "bytes": 56063,
+      "sha256": "a7ad8600de783e3e8f9884c64cb3395bf2661a9c4d394468d42263ecccb03814"
+    },
+    {
+      "id": "sleepy-s07",
+      "mood": "sleepy",
+      "seed": 7,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sleepy-s07.png",
+      "bytes": 55739,
+      "sha256": "1ed4493f34bde1afd2326ffda6a8b31cfb491ab60b1bc34df31bb0c5189c51c2"
+    },
+    {
+      "id": "sleepy-s08",
+      "mood": "sleepy",
+      "seed": 8,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sleepy-s08.png",
+      "bytes": 56352,
+      "sha256": "44e6fd6ef92fb2fbfb374fb8491c7a454355b35b570a150f80f86b58436cb7bb"
+    },
+    {
+      "id": "sleepy-s09",
+      "mood": "sleepy",
+      "seed": 9,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sleepy-s09.png",
+      "bytes": 57324,
+      "sha256": "82288cf8534ed4855096eadb9aa1caeb2866b68be8e2ae3883eebe192c730f62"
+    },
+    {
+      "id": "sick-s00",
+      "mood": "sick",
+      "seed": 0,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sick-s00.png",
+      "bytes": 61289,
+      "sha256": "5b68d0833f9db29d35e05c6375f5071f06fa3779051a381526cf98cf55dc49ba"
+    },
+    {
+      "id": "sick-s01",
+      "mood": "sick",
+      "seed": 1,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sick-s01.png",
+      "bytes": 62319,
+      "sha256": "46ff45bda5eb3e26902f832870789893d81329f250cd6fc8fc6302e3669609b9"
+    },
+    {
+      "id": "sick-s02",
+      "mood": "sick",
+      "seed": 2,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sick-s02.png",
+      "bytes": 63428,
+      "sha256": "90c7ec3497e9334bd946f85bbf3fe4ccb34cca4a40e5902afc64724404c07da1"
+    },
+    {
+      "id": "sick-s03",
+      "mood": "sick",
+      "seed": 3,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sick-s03.png",
+      "bytes": 64567,
+      "sha256": "ca67a54e036f326e3e4b3d70e4989fcc3c03f645b2336086b136f03ee9723b88"
+    },
+    {
+      "id": "sick-s04",
+      "mood": "sick",
+      "seed": 4,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sick-s04.png",
+      "bytes": 65672,
+      "sha256": "86ceeb61b00eaa5345a5267e3079e0949532a44dca60ef972e05088fea1995d6"
+    },
+    {
+      "id": "sick-s05",
+      "mood": "sick",
+      "seed": 5,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sick-s05.png",
+      "bytes": 61387,
+      "sha256": "050238f79ec9805a35149f6d870b5f68d97601c0ad4a08f06d280951046caea8"
+    },
+    {
+      "id": "sick-s06",
+      "mood": "sick",
+      "seed": 6,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sick-s06.png",
+      "bytes": 61959,
+      "sha256": "ed1cd9efdc9a52888275e7f1cb8922f8143c6f74a856a737f61f2ddcf767bd77"
+    },
+    {
+      "id": "sick-s07",
+      "mood": "sick",
+      "seed": 7,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sick-s07.png",
+      "bytes": 63853,
+      "sha256": "6199b1ec851436cf3fc46c9a0c0d21601ff4d955fa42d142e2d7ca39a4774101"
+    },
+    {
+      "id": "sick-s08",
+      "mood": "sick",
+      "seed": 8,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sick-s08.png",
+      "bytes": 64487,
+      "sha256": "c6521f2510fdefae458091eb8b0bc78e109224cc4522a3443fb178f4d18acce7"
+    },
+    {
+      "id": "sick-s09",
+      "mood": "sick",
+      "seed": 9,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sick-s09.png",
+      "bytes": 64771,
+      "sha256": "b451e3b371b160244c07877f897fe6bd97227ee6b0406b55087de0fd5d6f3f2e"
+    },
+    {
+      "id": "sad-s00",
+      "mood": "sad",
+      "seed": 0,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sad-s00.png",
+      "bytes": 58553,
+      "sha256": "3b34adfdc3f9861ceb6d0200685091df375a1fb607f1c36aca08b91305e612cd"
+    },
+    {
+      "id": "sad-s01",
+      "mood": "sad",
+      "seed": 1,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sad-s01.png",
+      "bytes": 59301,
+      "sha256": "a26f57ced612e9988ac59ae2844599a9865a27e77a38f6020ccecb0d7e965fda"
+    },
+    {
+      "id": "sad-s02",
+      "mood": "sad",
+      "seed": 2,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sad-s02.png",
+      "bytes": 59813,
+      "sha256": "0052c205cdeecc256affd12dcbf6c20872ef719174cc7cd4ada49bda757a8ad6"
+    },
+    {
+      "id": "sad-s03",
+      "mood": "sad",
+      "seed": 3,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sad-s03.png",
+      "bytes": 60405,
+      "sha256": "7be4f4de79a1ea70cf3a3c129002d180a9322fe77a8ad93a16267aa5ca1073f7"
+    },
+    {
+      "id": "sad-s04",
+      "mood": "sad",
+      "seed": 4,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sad-s04.png",
+      "bytes": 61405,
+      "sha256": "3cd5aef27b9c4113251a93fa8b9204592a478b9a545c8aee672c33f2fdddc020"
+    },
+    {
+      "id": "sad-s05",
+      "mood": "sad",
+      "seed": 5,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sad-s05.png",
+      "bytes": 58536,
+      "sha256": "1e908e05c70ac7fdfc9954ccbde5acb4c3930f6d22c7a36bd4f30186bcf77cd3"
+    },
+    {
+      "id": "sad-s06",
+      "mood": "sad",
+      "seed": 6,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sad-s06.png",
+      "bytes": 58912,
+      "sha256": "f5f339504bd96e358f66261643fc2c1cf2619af43be12ba1e6068bc40c13d923"
+    },
+    {
+      "id": "sad-s07",
+      "mood": "sad",
+      "seed": 7,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sad-s07.png",
+      "bytes": 60152,
+      "sha256": "fa95d9ce73787b46dc54b9d54a12a75ba80acc7b7ef4852a9b59134feccd2878"
+    },
+    {
+      "id": "sad-s08",
+      "mood": "sad",
+      "seed": 8,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sad-s08.png",
+      "bytes": 60451,
+      "sha256": "4b6bd4f6f720cedc7bd90f42e7ff73991a4db175e50af0afab1bf8994dd1293f"
+    },
+    {
+      "id": "sad-s09",
+      "mood": "sad",
+      "seed": 9,
+      "type": "sprite",
+      "file": "mega/sprites/koj-sad-s09.png",
+      "bytes": 60005,
+      "sha256": "873f851d0adc8f91a017e26805eb2f17fe31040f37e7c03e8af77f10aefff020"
+    },
+    {
+      "id": "annoyed-s00",
+      "mood": "annoyed",
+      "seed": 0,
+      "type": "sprite",
+      "file": "mega/sprites/koj-annoyed-s00.png",
+      "bytes": 68605,
+      "sha256": "041b6e9cd4760a15152338afba6fcc5992815ae46087b8aa0a5cabed5ef67743"
+    },
+    {
+      "id": "annoyed-s01",
+      "mood": "annoyed",
+      "seed": 1,
+      "type": "sprite",
+      "file": "mega/sprites/koj-annoyed-s01.png",
+      "bytes": 69162,
+      "sha256": "17cd7ae6cebae8dc8218415853771140d341299bb117655a35e5ca891a71603e"
+    },
+    {
+      "id": "annoyed-s02",
+      "mood": "annoyed",
+      "seed": 2,
+      "type": "sprite",
+      "file": "mega/sprites/koj-annoyed-s02.png",
+      "bytes": 69186,
+      "sha256": "758cfdd1aa845518cde3511cdc3c53071e27bdc77778c5caf547b7d9f42965d4"
+    },
+    {
+      "id": "annoyed-s03",
+      "mood": "annoyed",
+      "seed": 3,
+      "type": "sprite",
+      "file": "mega/sprites/koj-annoyed-s03.png",
+      "bytes": 69314,
+      "sha256": "c1da15827fcdb1460e66ef619b2463f58a09566254d6ff889f69a298be479c4a"
+    },
+    {
+      "id": "annoyed-s04",
+      "mood": "annoyed",
+      "seed": 4,
+      "type": "sprite",
+      "file": "mega/sprites/koj-annoyed-s04.png",
+      "bytes": 69348,
+      "sha256": "4e613686d5d4057edc2125bc3c5ef19d758b6b7af4fda24a5a9da43da19e7f76"
+    },
+    {
+      "id": "annoyed-s05",
+      "mood": "annoyed",
+      "seed": 5,
+      "type": "sprite",
+      "file": "mega/sprites/koj-annoyed-s05.png",
+      "bytes": 65862,
+      "sha256": "2cc1282d461b52dc77d87464db9669f58cef4d6351793eb755b1562df2c5fd3f"
+    },
+    {
+      "id": "annoyed-s06",
+      "mood": "annoyed",
+      "seed": 6,
+      "type": "sprite",
+      "file": "mega/sprites/koj-annoyed-s06.png",
+      "bytes": 65459,
+      "sha256": "6d09fbda2c62eb2ad0b6ec26167088820ed118ae7ddab49ce4a199ca09862e2d"
+    },
+    {
+      "id": "annoyed-s07",
+      "mood": "annoyed",
+      "seed": 7,
+      "type": "sprite",
+      "file": "mega/sprites/koj-annoyed-s07.png",
+      "bytes": 67733,
+      "sha256": "f7d1912d49bb5122236e0078807bb4a6fc3b39626013b752e163c44f393017c4"
+    },
+    {
+      "id": "annoyed-s08",
+      "mood": "annoyed",
+      "seed": 8,
+      "type": "sprite",
+      "file": "mega/sprites/koj-annoyed-s08.png",
+      "bytes": 68489,
+      "sha256": "d3466477e80a147faa1aed4e759e07179ab9fb2df0fa6516bec82b68bcb2cf41"
+    },
+    {
+      "id": "annoyed-s09",
+      "mood": "annoyed",
+      "seed": 9,
+      "type": "sprite",
+      "file": "mega/sprites/koj-annoyed-s09.png",
+      "bytes": 69716,
+      "sha256": "13526222c23c240e508765e3711d1fd5bae4808bd131522f2629a36ec13bec4e"
+    },
+    {
+      "id": "laugh-s00",
+      "mood": "laugh",
+      "seed": 0,
+      "type": "sprite",
+      "file": "mega/sprites/koj-laugh-s00.png",
+      "bytes": 67471,
+      "sha256": "feed21403f4af3b13592ec28864bbed4d4b6e44aefad9e221a64fc0ca3674176"
+    },
+    {
+      "id": "laugh-s01",
+      "mood": "laugh",
+      "seed": 1,
+      "type": "sprite",
+      "file": "mega/sprites/koj-laugh-s01.png",
+      "bytes": 68069,
+      "sha256": "161f20e4eb5efa5ca113228463ff780bdfaa8876c88f26321fe3f3844f10017c"
+    },
+    {
+      "id": "laugh-s02",
+      "mood": "laugh",
+      "seed": 2,
+      "type": "sprite",
+      "file": "mega/sprites/koj-laugh-s02.png",
+      "bytes": 68097,
+      "sha256": "50b36fae88e805ea585163478c942d6855cfe6c387c72586769f4cc3ad7777cb"
+    },
+    {
+      "id": "laugh-s03",
+      "mood": "laugh",
+      "seed": 3,
+      "type": "sprite",
+      "file": "mega/sprites/koj-laugh-s03.png",
+      "bytes": 67979,
+      "sha256": "8639ec8c7b95b9a45ef1337462d6481f773d297a5eaebe25e02caf82fc597747"
+    },
+    {
+      "id": "laugh-s04",
+      "mood": "laugh",
+      "seed": 4,
+      "type": "sprite",
+      "file": "mega/sprites/koj-laugh-s04.png",
+      "bytes": 68272,
+      "sha256": "1ca45cbac21aac3956949846135aafabcd17785631a0c1880daa1ad741976824"
+    },
+    {
+      "id": "laugh-s05",
+      "mood": "laugh",
+      "seed": 5,
+      "type": "sprite",
+      "file": "mega/sprites/koj-laugh-s05.png",
+      "bytes": 66125,
+      "sha256": "5afd46527297ff60593148906b9223ccae7a499fc69fc5b30588580c6a0f78c6"
+    },
+    {
+      "id": "laugh-s06",
+      "mood": "laugh",
+      "seed": 6,
+      "type": "sprite",
+      "file": "mega/sprites/koj-laugh-s06.png",
+      "bytes": 67208,
+      "sha256": "dc7e9d2e587ee5d8d83d779a44443da81ea240e67b0570ac29b585652e65c80d"
+    },
+    {
+      "id": "laugh-s07",
+      "mood": "laugh",
+      "seed": 7,
+      "type": "sprite",
+      "file": "mega/sprites/koj-laugh-s07.png",
+      "bytes": 68363,
+      "sha256": "66e6f8199cd6783e944ceeccce43abd719cdf193785a890c04065f704f2612b6"
+    },
+    {
+      "id": "laugh-s08",
+      "mood": "laugh",
+      "seed": 8,
+      "type": "sprite",
+      "file": "mega/sprites/koj-laugh-s08.png",
+      "bytes": 69327,
+      "sha256": "4794a4b821de4b0404ff92e787f07d8a2767b4ade2d77193a0f8297884aa95bf"
+    },
+    {
+      "id": "laugh-s09",
+      "mood": "laugh",
+      "seed": 9,
+      "type": "sprite",
+      "file": "mega/sprites/koj-laugh-s09.png",
+      "bytes": 71411,
+      "sha256": "94e59e97307b544aaafacf4ce1d24ca0591e7c9b5f34be5317ef08e4d34f66b0"
+    },
+    {
+      "id": "stressed-s00",
+      "mood": "stressed",
+      "seed": 0,
+      "type": "sprite",
+      "file": "mega/sprites/koj-stressed-s00.png",
+      "bytes": 68082,
+      "sha256": "ceee7181631a4a7666a28567d535be0c1605c628195a922991609702d31ddadc"
+    },
+    {
+      "id": "stressed-s01",
+      "mood": "stressed",
+      "seed": 1,
+      "type": "sprite",
+      "file": "mega/sprites/koj-stressed-s01.png",
+      "bytes": 68840,
+      "sha256": "72a5c61bb847485d11830d71ae6734c78800f3370edda2877ba2a5e9de4f09da"
+    },
+    {
+      "id": "stressed-s02",
+      "mood": "stressed",
+      "seed": 2,
+      "type": "sprite",
+      "file": "mega/sprites/koj-stressed-s02.png",
+      "bytes": 69455,
+      "sha256": "955bf0a51f9b59c3845e172fff95e63f55b392df214f4db61a56505ac923cc72"
+    },
+    {
+      "id": "stressed-s03",
+      "mood": "stressed",
+      "seed": 3,
+      "type": "sprite",
+      "file": "mega/sprites/koj-stressed-s03.png",
+      "bytes": 69964,
+      "sha256": "b90b01941230dbb0aae7c8a7901a4ebc0399bcb4dc260c4b21e9d7034b75b934"
+    },
+    {
+      "id": "stressed-s04",
+      "mood": "stressed",
+      "seed": 4,
+      "type": "sprite",
+      "file": "mega/sprites/koj-stressed-s04.png",
+      "bytes": 69178,
+      "sha256": "0521a83b17e59b59a0e9224dcef2f74d6a44c3065fd73b849b48bf23f2f3d6aa"
+    },
+    {
+      "id": "stressed-s05",
+      "mood": "stressed",
+      "seed": 5,
+      "type": "sprite",
+      "file": "mega/sprites/koj-stressed-s05.png",
+      "bytes": 65374,
+      "sha256": "03d79d9ab68360173dae1ac1b7cd0dd199f2a04144e4f380fa91154d68ad01fe"
+    },
+    {
+      "id": "stressed-s06",
+      "mood": "stressed",
+      "seed": 6,
+      "type": "sprite",
+      "file": "mega/sprites/koj-stressed-s06.png",
+      "bytes": 65357,
+      "sha256": "1884f35715447632755163ac3415bbcf8065855020d728e55bf37fb3d8e66005"
+    },
+    {
+      "id": "stressed-s07",
+      "mood": "stressed",
+      "seed": 7,
+      "type": "sprite",
+      "file": "mega/sprites/koj-stressed-s07.png",
+      "bytes": 67771,
+      "sha256": "a60effb2d1b00b53d3712326489500a0e11201b1b9c98a7952c04f2f039f197e"
+    },
+    {
+      "id": "stressed-s08",
+      "mood": "stressed",
+      "seed": 8,
+      "type": "sprite",
+      "file": "mega/sprites/koj-stressed-s08.png",
+      "bytes": 68913,
+      "sha256": "baf28e7911d19d76b3702a61b05d722a2c9beb362fde4d217a6bac623ce124f3"
+    },
+    {
+      "id": "stressed-s09",
+      "mood": "stressed",
+      "seed": 9,
+      "type": "sprite",
+      "file": "mega/sprites/koj-stressed-s09.png",
+      "bytes": 69924,
+      "sha256": "200a38a67499a11c818666aa88518620c766946999a7ab70957a86909e1fc50b"
+    }
+  ],
+  "backgrounds": [
+    {
+      "id": "flower_support-s00",
+      "program": "flower_support",
+      "seed": 0,
+      "type": "background",
+      "file": "mega/backgrounds/bg-flower_support-s00.png",
+      "bytes": 94933,
+      "sha256": "02a0f45ae7846d58bd518208809dc5b10549173e3ba68c15e16c01e143f3528c"
+    },
+    {
+      "id": "flower_support-s01",
+      "program": "flower_support",
+      "seed": 1,
+      "type": "background",
+      "file": "mega/backgrounds/bg-flower_support-s01.png",
+      "bytes": 92312,
+      "sha256": "7f95de19380e5489004964e39e9638ff45d21a6ab71a4da216bca1140a3eb06a"
+    },
+    {
+      "id": "flower_support-s02",
+      "program": "flower_support",
+      "seed": 2,
+      "type": "background",
+      "file": "mega/backgrounds/bg-flower_support-s02.png",
+      "bytes": 93070,
+      "sha256": "018732efb9c1bbad58045777a08b63df1d7cf6eacf53429839fe338b8d37dc97"
+    },
+    {
+      "id": "flower_support-s03",
+      "program": "flower_support",
+      "seed": 3,
+      "type": "background",
+      "file": "mega/backgrounds/bg-flower_support-s03.png",
+      "bytes": 91167,
+      "sha256": "b15bf8e2ba4cf8212f91ab68c39624d479aa6d95058b4aaaf7029813ced4bc56"
+    },
+    {
+      "id": "flower_burst-s00",
+      "program": "flower_burst",
+      "seed": 0,
+      "type": "background",
+      "file": "mega/backgrounds/bg-flower_burst-s00.png",
+      "bytes": 98331,
+      "sha256": "99c0cf556dcff021973bb589b2e89301f5ca2dcdce5dd59c06efd80a1a0a17bd"
+    },
+    {
+      "id": "flower_burst-s01",
+      "program": "flower_burst",
+      "seed": 1,
+      "type": "background",
+      "file": "mega/backgrounds/bg-flower_burst-s01.png",
+      "bytes": 100217,
+      "sha256": "58f740be7acfa69fe7ff4399b14ec6585a7230cea680dd232cd126750e247918"
+    },
+    {
+      "id": "flower_burst-s02",
+      "program": "flower_burst",
+      "seed": 2,
+      "type": "background",
+      "file": "mega/backgrounds/bg-flower_burst-s02.png",
+      "bytes": 98620,
+      "sha256": "a53de6020401c53a01439d4aeb0e9c7c3e82d207a65e085b721f982826c71bfc"
+    },
+    {
+      "id": "flower_burst-s03",
+      "program": "flower_burst",
+      "seed": 3,
+      "type": "background",
+      "file": "mega/backgrounds/bg-flower_burst-s03.png",
+      "bytes": 100412,
+      "sha256": "68218562633dc2430a4b02dbd37cd63b8dd00c3335ca4812b7942f7df8180db9"
+    },
+    {
+      "id": "heart_ping-s00",
+      "program": "heart_ping",
+      "seed": 0,
+      "type": "background",
+      "file": "mega/backgrounds/bg-heart_ping-s00.png",
+      "bytes": 90322,
+      "sha256": "a7a937da6a6bdcd3102fdb0d4d1e35fc356b05e8a38c9022cf99ce7580f1600e"
+    },
+    {
+      "id": "heart_ping-s01",
+      "program": "heart_ping",
+      "seed": 1,
+      "type": "background",
+      "file": "mega/backgrounds/bg-heart_ping-s01.png",
+      "bytes": 91038,
+      "sha256": "6d3ce90b52e774c6e9138508081585d58f05f0d6c25ea60c5ca4e5a5db04fe2a"
+    },
+    {
+      "id": "heart_ping-s02",
+      "program": "heart_ping",
+      "seed": 2,
+      "type": "background",
+      "file": "mega/backgrounds/bg-heart_ping-s02.png",
+      "bytes": 92705,
+      "sha256": "850047cde17f52ea54281e65e65436bd3970a1c8586145d2ca970a4663c9f25c"
+    },
+    {
+      "id": "heart_ping-s03",
+      "program": "heart_ping",
+      "seed": 3,
+      "type": "background",
+      "file": "mega/backgrounds/bg-heart_ping-s03.png",
+      "bytes": 90170,
+      "sha256": "af951452bfc4338e0f6c4ef913e1aaca9fbb81091f74af6f564a0dfd3a12d708"
+    },
+    {
+      "id": "heart_burst-s00",
+      "program": "heart_burst",
+      "seed": 0,
+      "type": "background",
+      "file": "mega/backgrounds/bg-heart_burst-s00.png",
+      "bytes": 89020,
+      "sha256": "1174b28a6f60de68b99a5e1c4963f333665c6345590f2e86792f37d91a34ef2e"
+    },
+    {
+      "id": "heart_burst-s01",
+      "program": "heart_burst",
+      "seed": 1,
+      "type": "background",
+      "file": "mega/backgrounds/bg-heart_burst-s01.png",
+      "bytes": 91278,
+      "sha256": "08e2203564583064a8f008fa587d2659d323da5935849c679ad4d425da3618f2"
+    },
+    {
+      "id": "heart_burst-s02",
+      "program": "heart_burst",
+      "seed": 2,
+      "type": "background",
+      "file": "mega/backgrounds/bg-heart_burst-s02.png",
+      "bytes": 88512,
+      "sha256": "8be93e9973f704dbb0daf1a3f12d23ce44f9a394a8436f99c30d70dd4b3f763b"
+    },
+    {
+      "id": "heart_burst-s03",
+      "program": "heart_burst",
+      "seed": 3,
+      "type": "background",
+      "file": "mega/backgrounds/bg-heart_burst-s03.png",
+      "bytes": 91579,
+      "sha256": "1fbc2bd61668be0bfb058437d6adb6c5351b3f894a04799fb6d69425e0dc3a20"
+    },
+    {
+      "id": "care_feed-s00",
+      "program": "care_feed",
+      "seed": 0,
+      "type": "background",
+      "file": "mega/backgrounds/bg-care_feed-s00.png",
+      "bytes": 85106,
+      "sha256": "f70758bbf4be466c0fa1abfe7bbfa57736804f12617dab418014f618d4a707ed"
+    },
+    {
+      "id": "care_feed-s01",
+      "program": "care_feed",
+      "seed": 1,
+      "type": "background",
+      "file": "mega/backgrounds/bg-care_feed-s01.png",
+      "bytes": 81838,
+      "sha256": "a3c5238e2ad14c5ee4e7254ac12919fd323beb4a252c4a1ccb020c30b68f2c8d"
+    },
+    {
+      "id": "care_feed-s02",
+      "program": "care_feed",
+      "seed": 2,
+      "type": "background",
+      "file": "mega/backgrounds/bg-care_feed-s02.png",
+      "bytes": 85021,
+      "sha256": "9c5f31e1bd979a8eec14ea9b757bc8ba54b8c8204beb6e2c6b4a3b8b8d1e5b25"
+    },
+    {
+      "id": "care_feed-s03",
+      "program": "care_feed",
+      "seed": 3,
+      "type": "background",
+      "file": "mega/backgrounds/bg-care_feed-s03.png",
+      "bytes": 81514,
+      "sha256": "dbcbeeacaa7026335b55f68671d059cd3fe4c3c95589c4294a904fbefd813a7a"
+    },
+    {
+      "id": "music_pulse-s00",
+      "program": "music_pulse",
+      "seed": 0,
+      "type": "background",
+      "file": "mega/backgrounds/bg-music_pulse-s00.png",
+      "bytes": 96598,
+      "sha256": "4a5503d3795328ac1a48c89a957baf7c3dbd7bbe3a5ccd74c033b327087162ca"
+    },
+    {
+      "id": "music_pulse-s01",
+      "program": "music_pulse",
+      "seed": 1,
+      "type": "background",
+      "file": "mega/backgrounds/bg-music_pulse-s01.png",
+      "bytes": 99041,
+      "sha256": "a2b3b53ce3b3a98678caede1063da752c984ab4882545d8e63593393935329d8"
+    },
+    {
+      "id": "music_pulse-s02",
+      "program": "music_pulse",
+      "seed": 2,
+      "type": "background",
+      "file": "mega/backgrounds/bg-music_pulse-s02.png",
+      "bytes": 97352,
+      "sha256": "5d08753a9ad263e58fbeb528b4f2d1b14f9e362e13aabc153e4e4f9cf428a9c0"
+    },
+    {
+      "id": "music_pulse-s03",
+      "program": "music_pulse",
+      "seed": 3,
+      "type": "background",
+      "file": "mega/backgrounds/bg-music_pulse-s03.png",
+      "bytes": 99411,
+      "sha256": "637b11646389b82e6d316b8066e1f18dd3da26c874c7b41934aa051fc3c1ccac"
+    },
+    {
+      "id": "music_showcase-s00",
+      "program": "music_showcase",
+      "seed": 0,
+      "type": "background",
+      "file": "mega/backgrounds/bg-music_showcase-s00.png",
+      "bytes": 96869,
+      "sha256": "86b61be19174ce337ef1e7736d3fa772d4e49aff08dcc3dde16c8ebf623c11f0"
+    },
+    {
+      "id": "music_showcase-s01",
+      "program": "music_showcase",
+      "seed": 1,
+      "type": "background",
+      "file": "mega/backgrounds/bg-music_showcase-s01.png",
+      "bytes": 94029,
+      "sha256": "bbfd19033c4a8a86ab2d62a8a749a9a7d007960ec107702e36f76f499a25e484"
+    },
+    {
+      "id": "music_showcase-s02",
+      "program": "music_showcase",
+      "seed": 2,
+      "type": "background",
+      "file": "mega/backgrounds/bg-music_showcase-s02.png",
+      "bytes": 95209,
+      "sha256": "fa85513f41bda73edba8fa4d79eda2d4655dea90211483c6448298ec403bcff9"
+    },
+    {
+      "id": "music_showcase-s03",
+      "program": "music_showcase",
+      "seed": 3,
+      "type": "background",
+      "file": "mega/backgrounds/bg-music_showcase-s03.png",
+      "bytes": 93038,
+      "sha256": "1f730fc359e8ff6647b76644f2cb4157714027d67e32e689e2000bf7fa882270"
+    },
+    {
+      "id": "pet_react-s00",
+      "program": "pet_react",
+      "seed": 0,
+      "type": "background",
+      "file": "mega/backgrounds/bg-pet_react-s00.png",
+      "bytes": 100335,
+      "sha256": "bfdf4d988f5fdf7712eba8b1e2baaddcf147689fe2db98f2b5fa9dd024025191"
+    },
+    {
+      "id": "pet_react-s01",
+      "program": "pet_react",
+      "seed": 1,
+      "type": "background",
+      "file": "mega/backgrounds/bg-pet_react-s01.png",
+      "bytes": 97983,
+      "sha256": "3672b5495c5181173d33c89eab5d89bc03df7c1a38f01a481ccbb7cdd71ed4c4"
+    },
+    {
+      "id": "pet_react-s02",
+      "program": "pet_react",
+      "seed": 2,
+      "type": "background",
+      "file": "mega/backgrounds/bg-pet_react-s02.png",
+      "bytes": 100733,
+      "sha256": "d105814e91205b91f0128d1fbf1423d4084a25d5f9a7c27d90955a21f3af50bf"
+    },
+    {
+      "id": "pet_react-s03",
+      "program": "pet_react",
+      "seed": 3,
+      "type": "background",
+      "file": "mega/backgrounds/bg-pet_react-s03.png",
+      "bytes": 97218,
+      "sha256": "8f2c56bd2c7ea83de01b9c7cb4fa1fb96ba53cbc2cbbff82ac2d5fe6b2d4140a"
+    },
+    {
+      "id": "beast_summon-s00",
+      "program": "beast_summon",
+      "seed": 0,
+      "type": "background",
+      "file": "mega/backgrounds/bg-beast_summon-s00.png",
+      "bytes": 101875,
+      "sha256": "bffd8a2c1e6bdbc64b47812d0e74fd28d573efd129719c52540a8205253b5029"
+    },
+    {
+      "id": "beast_summon-s01",
+      "program": "beast_summon",
+      "seed": 1,
+      "type": "background",
+      "file": "mega/backgrounds/bg-beast_summon-s01.png",
+      "bytes": 103813,
+      "sha256": "ad879025bdcbc91255249f5c0e787835b6ff001b31b516809a1110d03f383ac7"
+    },
+    {
+      "id": "beast_summon-s02",
+      "program": "beast_summon",
+      "seed": 2,
+      "type": "background",
+      "file": "mega/backgrounds/bg-beast_summon-s02.png",
+      "bytes": 102424,
+      "sha256": "7c281255532f4afdd378119b0e14c01c6b533e3af173cbf7a3b1eab28f4be4a8"
+    },
+    {
+      "id": "beast_summon-s03",
+      "program": "beast_summon",
+      "seed": 3,
+      "type": "background",
+      "file": "mega/backgrounds/bg-beast_summon-s03.png",
+      "bytes": 104269,
+      "sha256": "a2d9c3ed28fb236c36b9e47b86371dbc0fb9147a09eb7049ebebdb6026f3f10a"
+    },
+    {
+      "id": "travel_motion-s00",
+      "program": "travel_motion",
+      "seed": 0,
+      "type": "background",
+      "file": "mega/backgrounds/bg-travel_motion-s00.png",
+      "bytes": 102938,
+      "sha256": "efc5a3f99e887c354c6e85d9bd7a4a87ae441eb7a36b82361a44c4965f3aad20"
+    },
+    {
+      "id": "travel_motion-s01",
+      "program": "travel_motion",
+      "seed": 1,
+      "type": "background",
+      "file": "mega/backgrounds/bg-travel_motion-s01.png",
+      "bytes": 99824,
+      "sha256": "2065ba21b6a2f15962cf7de6712ab9e602fe86c3318b9e90c12ea04b0739572b"
+    },
+    {
+      "id": "travel_motion-s02",
+      "program": "travel_motion",
+      "seed": 2,
+      "type": "background",
+      "file": "mega/backgrounds/bg-travel_motion-s02.png",
+      "bytes": 102548,
+      "sha256": "115d097080ccb21eb0753dfa82572c189bb8045849b89a93e0e61eadefd73cc3"
+    },
+    {
+      "id": "travel_motion-s03",
+      "program": "travel_motion",
+      "seed": 3,
+      "type": "background",
+      "file": "mega/backgrounds/bg-travel_motion-s03.png",
+      "bytes": 103743,
+      "sha256": "a4c373dfd944fa2a491c972d01e03c6496cc30073a693be4948e1f89ebcdc8a9"
+    },
+    {
+      "id": "celebration_burst-s00",
+      "program": "celebration_burst",
+      "seed": 0,
+      "type": "background",
+      "file": "mega/backgrounds/bg-celebration_burst-s00.png",
+      "bytes": 101603,
+      "sha256": "506c905e2b2aab4e9b8709541ac13c8bc90eb7ebd86c40ee976bcc7621e5b685"
+    },
+    {
+      "id": "celebration_burst-s01",
+      "program": "celebration_burst",
+      "seed": 1,
+      "type": "background",
+      "file": "mega/backgrounds/bg-celebration_burst-s01.png",
+      "bytes": 103632,
+      "sha256": "4dc65ae359068a345fcc534baf70c94f27830210fa9cc42d9529ba7094e9bfb7"
+    },
+    {
+      "id": "celebration_burst-s02",
+      "program": "celebration_burst",
+      "seed": 2,
+      "type": "background",
+      "file": "mega/backgrounds/bg-celebration_burst-s02.png",
+      "bytes": 101684,
+      "sha256": "f90484af70bb8684e47f0b9984c92194b7c0f72872be9fb1677585b91b0e5a10"
+    },
+    {
+      "id": "celebration_burst-s03",
+      "program": "celebration_burst",
+      "seed": 3,
+      "type": "background",
+      "file": "mega/backgrounds/bg-celebration_burst-s03.png",
+      "bytes": 103253,
+      "sha256": "4efb40a20db2ecc2929435075418cb6f37b9c5e96fb087afbbb43d63a40e46ac"
+    },
+    {
+      "id": "power_strike-s00",
+      "program": "power_strike",
+      "seed": 0,
+      "type": "background",
+      "file": "mega/backgrounds/bg-power_strike-s00.png",
+      "bytes": 108693,
+      "sha256": "1e7976ca87e18415c1d0e17b035e0562094e64a604e630b7e4dc7320e8cedd09"
+    },
+    {
+      "id": "power_strike-s01",
+      "program": "power_strike",
+      "seed": 1,
+      "type": "background",
+      "file": "mega/backgrounds/bg-power_strike-s01.png",
+      "bytes": 110938,
+      "sha256": "7e324e15c349df4768859ee7b28e0b40562505061a6b67646e91dab4a2e2a097"
+    },
+    {
+      "id": "power_strike-s02",
+      "program": "power_strike",
+      "seed": 2,
+      "type": "background",
+      "file": "mega/backgrounds/bg-power_strike-s02.png",
+      "bytes": 108616,
+      "sha256": "ea2678e220cdc1677d90547f2e2868bed0c97d84aab9e58b280613edd3963591"
+    },
+    {
+      "id": "power_strike-s03",
+      "program": "power_strike",
+      "seed": 3,
+      "type": "background",
+      "file": "mega/backgrounds/bg-power_strike-s03.png",
+      "bytes": 110893,
+      "sha256": "d65e5cca11c7c9e6d0fbb863272ed22d21df68c906f7846a716750ee48180580"
+    },
+    {
+      "id": "magic_orbit-s00",
+      "program": "magic_orbit",
+      "seed": 0,
+      "type": "background",
+      "file": "mega/backgrounds/bg-magic_orbit-s00.png",
+      "bytes": 101427,
+      "sha256": "8c3594169f2d12b677d948b612a760b9e2bb925f9766010e4f5109588a84a5d8"
+    },
+    {
+      "id": "magic_orbit-s01",
+      "program": "magic_orbit",
+      "seed": 1,
+      "type": "background",
+      "file": "mega/backgrounds/bg-magic_orbit-s01.png",
+      "bytes": 103872,
+      "sha256": "03e96f0b45f6da13abdc33e42a91bb5c88c2cbcd2280a048b365ff5ab04f2f6a"
+    },
+    {
+      "id": "magic_orbit-s02",
+      "program": "magic_orbit",
+      "seed": 2,
+      "type": "background",
+      "file": "mega/backgrounds/bg-magic_orbit-s02.png",
+      "bytes": 102283,
+      "sha256": "4dcccc44709c704545c1cd9b4c1758a93a080be78af716db7ed2e9bf6b719aa5"
+    },
+    {
+      "id": "magic_orbit-s03",
+      "program": "magic_orbit",
+      "seed": 3,
+      "type": "background",
+      "file": "mega/backgrounds/bg-magic_orbit-s03.png",
+      "bytes": 104556,
+      "sha256": "2d72856b46badc3cdeb1f8f843ffa285d3789122d2ef668d718b83aa7214bff6"
+    },
+    {
+      "id": "cinematic_vehicle-s00",
+      "program": "cinematic_vehicle",
+      "seed": 0,
+      "type": "background",
+      "file": "mega/backgrounds/bg-cinematic_vehicle-s00.png",
+      "bytes": 82216,
+      "sha256": "7df64f04d8508603917a6a4a03cb6f153ed4730e57a34b07fb17ebe8869201f8"
+    },
+    {
+      "id": "cinematic_vehicle-s01",
+      "program": "cinematic_vehicle",
+      "seed": 1,
+      "type": "background",
+      "file": "mega/backgrounds/bg-cinematic_vehicle-s01.png",
+      "bytes": 84566,
+      "sha256": "f87d6c7825533557567e4dc46d3ee717a476dcf7d304fcefe6604317aa7a121d"
+    },
+    {
+      "id": "cinematic_vehicle-s02",
+      "program": "cinematic_vehicle",
+      "seed": 2,
+      "type": "background",
+      "file": "mega/backgrounds/bg-cinematic_vehicle-s02.png",
+      "bytes": 82461,
+      "sha256": "b03480ec351b774754b9c6073bd16078c89b0855a3eeb1188d786670a54d02bc"
+    },
+    {
+      "id": "cinematic_vehicle-s03",
+      "program": "cinematic_vehicle",
+      "seed": 3,
+      "type": "background",
+      "file": "mega/backgrounds/bg-cinematic_vehicle-s03.png",
+      "bytes": 84179,
+      "sha256": "fba5ebc0dbcda8c003b7c7aae94587ed5babe7998964ecb052509d5e36949ad0"
+    },
+    {
+      "id": "cinematic_support-s00",
+      "program": "cinematic_support",
+      "seed": 0,
+      "type": "background",
+      "file": "mega/backgrounds/bg-cinematic_support-s00.png",
+      "bytes": 84651,
+      "sha256": "da1b9f3394d50e16238aaf45f27b77a17aab68fd9bf01a05ac818324a927448d"
+    },
+    {
+      "id": "cinematic_support-s01",
+      "program": "cinematic_support",
+      "seed": 1,
+      "type": "background",
+      "file": "mega/backgrounds/bg-cinematic_support-s01.png",
+      "bytes": 86427,
+      "sha256": "cf03b6bf6f329af7117d92338932f7c631eb76b9a7cc8015c9ec6c3af81c85f0"
+    },
+    {
+      "id": "cinematic_support-s02",
+      "program": "cinematic_support",
+      "seed": 2,
+      "type": "background",
+      "file": "mega/backgrounds/bg-cinematic_support-s02.png",
+      "bytes": 84865,
+      "sha256": "02858189dcb7c29ef1c9b0c57b2d7a1f1ef39cf6728f435d800967288fe5a01e"
+    },
+    {
+      "id": "cinematic_support-s03",
+      "program": "cinematic_support",
+      "seed": 3,
+      "type": "background",
+      "file": "mega/backgrounds/bg-cinematic_support-s03.png",
+      "bytes": 86550,
+      "sha256": "e223aca4e107f0171c6c59d721325af1617f8004db03591fb2cf3673e8b9a21b"
+    },
+    {
+      "id": "generic_support-s00",
+      "program": "generic_support",
+      "seed": 0,
+      "type": "background",
+      "file": "mega/backgrounds/bg-generic_support-s00.png",
+      "bytes": 84007,
+      "sha256": "44eea919ebc43b5d9d0579ddf28960a7b249e458ec1c2bd90bbeb020429a8026"
+    },
+    {
+      "id": "generic_support-s01",
+      "program": "generic_support",
+      "seed": 1,
+      "type": "background",
+      "file": "mega/backgrounds/bg-generic_support-s01.png",
+      "bytes": 85634,
+      "sha256": "975140155df8a312edd56807d40109878cda9905e9c4ff657a1d8c8fdcb7305f"
+    },
+    {
+      "id": "generic_support-s02",
+      "program": "generic_support",
+      "seed": 2,
+      "type": "background",
+      "file": "mega/backgrounds/bg-generic_support-s02.png",
+      "bytes": 87454,
+      "sha256": "1a32f6a386870923f2903cbb1790dd20d7ca9edaeffc4d791491ae7c73acdebb"
+    },
+    {
+      "id": "generic_support-s03",
+      "program": "generic_support",
+      "seed": 3,
+      "type": "background",
+      "file": "mega/backgrounds/bg-generic_support-s03.png",
+      "bytes": 83361,
+      "sha256": "55c4dde7efed3b3b2b14e2657b244d30382ab07a6461f949966a177e19f931af"
+    }
+  ],
+  "scenes": [
+    {
+      "id": 1,
+      "mood": "idle",
+      "program": "flower_support",
+      "seed": 1,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0001-idle-flower_support.png",
+      "bytes": 110388,
+      "sha256": "c2bed5fd27e7b4ad50f925dd7da2939d623910e70f8a7ae40341d4c0765a1725"
+    },
+    {
+      "id": 2,
+      "mood": "idle",
+      "program": "flower_burst",
+      "seed": 2,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0002-idle-flower_burst.png",
+      "bytes": 117685,
+      "sha256": "957af7dd8b681dba8ebfc40d836e70bc1c29eb902c7c0c95cadbe4278a8d44d5"
+    },
+    {
+      "id": 3,
+      "mood": "idle",
+      "program": "heart_ping",
+      "seed": 3,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0003-idle-heart_ping.png",
+      "bytes": 117005,
+      "sha256": "44e598fb863cb5e988c42d2868b30f103adeedf2d3efd9cb2bf346d0e152d7de"
+    },
+    {
+      "id": 4,
+      "mood": "idle",
+      "program": "heart_burst",
+      "seed": 4,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0004-idle-heart_burst.png",
+      "bytes": 114933,
+      "sha256": "66dcb9555335ea300c0ddee72002e58ebe5a57c59164147c9fc6b5850703ca12"
+    },
+    {
+      "id": 5,
+      "mood": "idle",
+      "program": "care_feed",
+      "seed": 5,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0005-idle-care_feed.png",
+      "bytes": 105232,
+      "sha256": "a259464cd439b5a15e81c7ca386c3b8771d8b37d5d8005ed584382f979d8e0d2"
+    },
+    {
+      "id": 6,
+      "mood": "idle",
+      "program": "music_pulse",
+      "seed": 6,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0006-idle-music_pulse.png",
+      "bytes": 117652,
+      "sha256": "4914f194b26720d7892bd46a36f72e9a7ee5bb97f0786f17664a77b11715d98e"
+    },
+    {
+      "id": 7,
+      "mood": "idle",
+      "program": "music_showcase",
+      "seed": 7,
+      "layout": "corner",
+      "type": "scene",
+      "file": "mega/scenes/scene-0007-idle-music_showcase.png",
+      "bytes": 108514,
+      "sha256": "7a2435a8268a7141cc7a55df05362466bcfac616849318f6f39f6a508f0088cf"
+    },
+    {
+      "id": 8,
+      "mood": "idle",
+      "program": "pet_react",
+      "seed": 8,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0008-idle-pet_react.png",
+      "bytes": 114015,
+      "sha256": "6493d959cfaf2ed0f3e09a92bb9a1da9bef49e05dc62978b12d405fb396691eb"
+    },
+    {
+      "id": 9,
+      "mood": "idle",
+      "program": "beast_summon",
+      "seed": 9,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0009-idle-beast_summon.png",
+      "bytes": 126117,
+      "sha256": "5c3b6ba364106b38becb9f4300d554a8cb81868b0b75508a2ef04cc4fd0d1f4a"
+    },
+    {
+      "id": 10,
+      "mood": "idle",
+      "program": "travel_motion",
+      "seed": 0,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0010-idle-travel_motion.png",
+      "bytes": 118023,
+      "sha256": "7a365791ffb5839d22f20978ae84687c42cda59323909cca574072d8f4eec80a"
+    },
+    {
+      "id": 11,
+      "mood": "idle",
+      "program": "celebration_burst",
+      "seed": 1,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0011-idle-celebration_burst.png",
+      "bytes": 117963,
+      "sha256": "9616538fc7a5b2d383f73d642025dbc9a25e86e1d81139252ba63168bd7c8727"
+    },
+    {
+      "id": 12,
+      "mood": "idle",
+      "program": "power_strike",
+      "seed": 2,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0012-idle-power_strike.png",
+      "bytes": 128996,
+      "sha256": "60a76075f2be976cb90d361247b9ea8c6f8cd9cdb268ce8a2ae8248d7ddeb6a2"
+    },
+    {
+      "id": 13,
+      "mood": "idle",
+      "program": "magic_orbit",
+      "seed": 3,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0013-idle-magic_orbit.png",
+      "bytes": 126720,
+      "sha256": "7658162086c83d9888fcad0fa97781808f4d256a32ae53ff4625d3751e42dab6"
+    },
+    {
+      "id": 14,
+      "mood": "idle",
+      "program": "cinematic_vehicle",
+      "seed": 4,
+      "layout": "corner",
+      "type": "scene",
+      "file": "mega/scenes/scene-0014-idle-cinematic_vehicle.png",
+      "bytes": 98645,
+      "sha256": "16d0846714537cb5b4802bc2cb51874d68ca315c6cd1ad924f5a2f46fd20d031"
+    },
+    {
+      "id": 15,
+      "mood": "idle",
+      "program": "cinematic_support",
+      "seed": 5,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0015-idle-cinematic_support.png",
+      "bytes": 107384,
+      "sha256": "1b45dbad381441dca0d7b2c397d92e88a3cdf9ff9f28bd6b537db6e45bd1a016"
+    },
+    {
+      "id": 16,
+      "mood": "idle",
+      "program": "generic_support",
+      "seed": 6,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0016-idle-generic_support.png",
+      "bytes": 105583,
+      "sha256": "96cc8c0e664a1b8e4176928d0694e22e06d830789c742dfd41e61e06e8a828ae"
+    },
+    {
+      "id": 17,
+      "mood": "warm",
+      "program": "flower_support",
+      "seed": 7,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0017-warm-flower_support.png",
+      "bytes": 118488,
+      "sha256": "42c06ee6c54b40eb9e29cc652beffcf3f7c5dad9782ded8c779439088ae57e84"
+    },
+    {
+      "id": 18,
+      "mood": "warm",
+      "program": "flower_burst",
+      "seed": 8,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0018-warm-flower_burst.png",
+      "bytes": 118442,
+      "sha256": "45bf1d3f61dc068e146d0143cca11ae51004881c45fd52fe35a5b6a57be941a5"
+    },
+    {
+      "id": 19,
+      "mood": "warm",
+      "program": "heart_ping",
+      "seed": 9,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0019-warm-heart_ping.png",
+      "bytes": 115448,
+      "sha256": "257ad84077215e611558fbdaec25b14e802bc6f7ea8890b93a88d98f6199fbf3"
+    },
+    {
+      "id": 20,
+      "mood": "warm",
+      "program": "heart_burst",
+      "seed": 0,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0020-warm-heart_burst.png",
+      "bytes": 109230,
+      "sha256": "c2e7a4541c6d012456a1ce57f5c3bc5ef4107f85c905cc61db91ad94c9b87e2c"
+    },
+    {
+      "id": 21,
+      "mood": "warm",
+      "program": "care_feed",
+      "seed": 1,
+      "layout": "corner",
+      "type": "scene",
+      "file": "mega/scenes/scene-0021-warm-care_feed.png",
+      "bytes": 94474,
+      "sha256": "d44bc3d86273404178849ec325a10e0ae53047e7498aa8fb4bd19b17d17583b2"
+    },
+    {
+      "id": 22,
+      "mood": "warm",
+      "program": "music_pulse",
+      "seed": 2,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0022-warm-music_pulse.png",
+      "bytes": 118282,
+      "sha256": "3f008f755c94e3b20f6484a371a8704bb84858fe40b855d82a75a79e00232c26"
+    },
+    {
+      "id": 23,
+      "mood": "warm",
+      "program": "music_showcase",
+      "seed": 3,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0023-warm-music_showcase.png",
+      "bytes": 121040,
+      "sha256": "8ad0f2ecbfb90ee6194a744fc4f82e6e095ba2e87dc54ea9b58e0ecc616ecfd5"
+    },
+    {
+      "id": 24,
+      "mood": "warm",
+      "program": "pet_react",
+      "seed": 4,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0024-warm-pet_react.png",
+      "bytes": 119062,
+      "sha256": "624c13402ebd301731fc3028fed90a9bd784cb0b9c4cb735d54484fe5fc63a18"
+    },
+    {
+      "id": 25,
+      "mood": "warm",
+      "program": "beast_summon",
+      "seed": 5,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0025-warm-beast_summon.png",
+      "bytes": 127320,
+      "sha256": "4a33501c9b24740d06c6bc6b4eb849fb1fde3021cff73e9e58a73a60928ccfde"
+    },
+    {
+      "id": 26,
+      "mood": "warm",
+      "program": "travel_motion",
+      "seed": 6,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0026-warm-travel_motion.png",
+      "bytes": 121841,
+      "sha256": "549fa1c3035a16f852250ddb3cc9dd61a1eef2d18d4505e3233749ed04b42ac3"
+    },
+    {
+      "id": 27,
+      "mood": "warm",
+      "program": "celebration_burst",
+      "seed": 7,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0027-warm-celebration_burst.png",
+      "bytes": 128812,
+      "sha256": "051c71f7d4ef9adb33d94fe5717eee251a9b9cb25e06bdbe5d59399676befc95"
+    },
+    {
+      "id": 28,
+      "mood": "warm",
+      "program": "power_strike",
+      "seed": 8,
+      "layout": "corner",
+      "type": "scene",
+      "file": "mega/scenes/scene-0028-warm-power_strike.png",
+      "bytes": 125576,
+      "sha256": "a5f3aa561129632466a7a8357e2fbc0c3906fde425f092ff957c420f731ddec0"
+    },
+    {
+      "id": 29,
+      "mood": "warm",
+      "program": "magic_orbit",
+      "seed": 9,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0029-warm-magic_orbit.png",
+      "bytes": 125119,
+      "sha256": "9b6d2c78b046926928a6ee60cab37585fe5577c8118d67476e3d0cd382d0d514"
+    },
+    {
+      "id": 30,
+      "mood": "warm",
+      "program": "cinematic_vehicle",
+      "seed": 0,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0030-warm-cinematic_vehicle.png",
+      "bytes": 102818,
+      "sha256": "99196bfb2492b9a6fd886ec5acbcd263971a51dba88adfdaa6aa8595dd4c09d5"
+    },
+    {
+      "id": 31,
+      "mood": "warm",
+      "program": "cinematic_support",
+      "seed": 1,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0031-warm-cinematic_support.png",
+      "bytes": 101991,
+      "sha256": "a9b45bb95546cc4b3bb85a7c6a611a974bed1ea6a955a8dbe64f1d28f51b3416"
+    },
+    {
+      "id": 32,
+      "mood": "warm",
+      "program": "generic_support",
+      "seed": 2,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0032-warm-generic_support.png",
+      "bytes": 106533,
+      "sha256": "06f032961aae68fd430cd9a84731cd74ec493921e0581eb6408030068aad2833"
+    },
+    {
+      "id": 33,
+      "mood": "happy",
+      "program": "flower_support",
+      "seed": 3,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0033-happy-flower_support.png",
+      "bytes": 117504,
+      "sha256": "dc326534c324310c24e8f485902bc03f28e35d0b5b8da08c10597af0a8fb09e6"
+    },
+    {
+      "id": 34,
+      "mood": "happy",
+      "program": "flower_burst",
+      "seed": 4,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0034-happy-flower_burst.png",
+      "bytes": 121389,
+      "sha256": "3436e0bf4adb3db306c449bf512be9ecf510da6bc7426f63990cf7eecfb3091c"
+    },
+    {
+      "id": 35,
+      "mood": "happy",
+      "program": "heart_ping",
+      "seed": 5,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0035-happy-heart_ping.png",
+      "bytes": 115180,
+      "sha256": "dea8e186ebab5be05028d7ed0d10c8d4aabc9094a107b3acb0bdaa673d907c2a"
+    },
+    {
+      "id": 36,
+      "mood": "happy",
+      "program": "heart_burst",
+      "seed": 6,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0036-happy-heart_burst.png",
+      "bytes": 113585,
+      "sha256": "afe1e92a82b461dd435cd3f339f661993b1ddb17d0e833a2cee173213439b075"
+    },
+    {
+      "id": 37,
+      "mood": "happy",
+      "program": "care_feed",
+      "seed": 7,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0037-happy-care_feed.png",
+      "bytes": 109505,
+      "sha256": "ed8bfdfd562806b23e5bd1db82adeede740c2794091c95bbf7712336c9ff72e8"
+    },
+    {
+      "id": 38,
+      "mood": "happy",
+      "program": "music_pulse",
+      "seed": 8,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0038-happy-music_pulse.png",
+      "bytes": 116803,
+      "sha256": "80dde6cecd8dd429854406f839ec91a21557f39a19dab7ad3f74381824e10f56"
+    },
+    {
+      "id": 39,
+      "mood": "happy",
+      "program": "music_showcase",
+      "seed": 9,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0039-happy-music_showcase.png",
+      "bytes": 118584,
+      "sha256": "684479475d79f9de1c5eadf6b9e9afea681954d7034f4b866bb490166f061533"
+    },
+    {
+      "id": 40,
+      "mood": "happy",
+      "program": "pet_react",
+      "seed": 0,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0040-happy-pet_react.png",
+      "bytes": 116368,
+      "sha256": "31ab6630898fa72618fd143b642547144d36068fb2ce29775327bfc04ec3cd80"
+    },
+    {
+      "id": 41,
+      "mood": "happy",
+      "program": "beast_summon",
+      "seed": 1,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0041-happy-beast_summon.png",
+      "bytes": 119858,
+      "sha256": "047b4c33a0fdd5ef5c8e855fd14aba24d4d35db1339e6f72ab050bfafa11615b"
+    },
+    {
+      "id": 42,
+      "mood": "happy",
+      "program": "travel_motion",
+      "seed": 2,
+      "layout": "corner",
+      "type": "scene",
+      "file": "mega/scenes/scene-0042-happy-travel_motion.png",
+      "bytes": 114123,
+      "sha256": "e6f6895e7375cc476da882ec5b4e4434c17765f372008dd9e9475767d2c5e00d"
+    },
+    {
+      "id": 43,
+      "mood": "happy",
+      "program": "celebration_burst",
+      "seed": 3,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0043-happy-celebration_burst.png",
+      "bytes": 128508,
+      "sha256": "3b42c19bbe56f8432a5d28443a299e024bdfdb7fd6a4c54f385f9199da1b29b3"
+    },
+    {
+      "id": 44,
+      "mood": "happy",
+      "program": "power_strike",
+      "seed": 4,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0044-happy-power_strike.png",
+      "bytes": 134406,
+      "sha256": "dfbe0c8e2453d6d5f32876858d063d4505c0abfe0758fe9153d17c25c4e1875d"
+    },
+    {
+      "id": 45,
+      "mood": "happy",
+      "program": "magic_orbit",
+      "seed": 5,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0045-happy-magic_orbit.png",
+      "bytes": 128566,
+      "sha256": "1021aa035e84cd86bcd9dfa436d72b5b9453fc96c64bd8edfd3d460ad9e86def"
+    },
+    {
+      "id": 46,
+      "mood": "happy",
+      "program": "cinematic_vehicle",
+      "seed": 6,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0046-happy-cinematic_vehicle.png",
+      "bytes": 107113,
+      "sha256": "2bae65bb38be8311189e9498a9a5c65f979f2d03c74fcb4af9de33bd488170db"
+    },
+    {
+      "id": 47,
+      "mood": "happy",
+      "program": "cinematic_support",
+      "seed": 7,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0047-happy-cinematic_support.png",
+      "bytes": 111099,
+      "sha256": "c5404301d09b283a3a93fd9957a1c9ee483ae80ac66254db28f9efc5d1e466c5"
+    },
+    {
+      "id": 48,
+      "mood": "happy",
+      "program": "generic_support",
+      "seed": 8,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0048-happy-generic_support.png",
+      "bytes": 105690,
+      "sha256": "0e38156bd53fe9b22264ace3df045ad0054ca9248591c28fe986234a9f0c7d1a"
+    },
+    {
+      "id": 49,
+      "mood": "hungry",
+      "program": "flower_support",
+      "seed": 9,
+      "layout": "corner",
+      "type": "scene",
+      "file": "mega/scenes/scene-0049-hungry-flower_support.png",
+      "bytes": 107203,
+      "sha256": "2ba9ca1e5540d7326db8347e72bb8e49bcceae55b339a6537f6bfd68444657ac"
+    },
+    {
+      "id": 50,
+      "mood": "hungry",
+      "program": "flower_burst",
+      "seed": 0,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0050-hungry-flower_burst.png",
+      "bytes": 115488,
+      "sha256": "9f48287eff43e1dc007394d454fe5340fbbfd2c28732b5b0ded94e74544158af"
+    },
+    {
+      "id": 51,
+      "mood": "hungry",
+      "program": "heart_ping",
+      "seed": 1,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0051-hungry-heart_ping.png",
+      "bytes": 106849,
+      "sha256": "0c9f86805a9755960babb2778f9122bb3124f49c49ddef8fa8a504ea28381e69"
+    },
+    {
+      "id": 52,
+      "mood": "hungry",
+      "program": "heart_burst",
+      "seed": 2,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0052-hungry-heart_burst.png",
+      "bytes": 110703,
+      "sha256": "53089a0af0d0056bc80b72e84a4878899d8dddb3e7487059b58313572119c8d5"
+    },
+    {
+      "id": 53,
+      "mood": "hungry",
+      "program": "care_feed",
+      "seed": 3,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0053-hungry-care_feed.png",
+      "bytes": 109913,
+      "sha256": "fe4a53bff324eed4d7ce8918bb1774003c849583db2da2b4bacdedb3e1b8f3fe"
+    },
+    {
+      "id": 54,
+      "mood": "hungry",
+      "program": "music_pulse",
+      "seed": 4,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0054-hungry-music_pulse.png",
+      "bytes": 123246,
+      "sha256": "44237e8c9881adb5a88a81813c8bbd012598a68805409a12131dde073777ebda"
+    },
+    {
+      "id": 55,
+      "mood": "hungry",
+      "program": "music_showcase",
+      "seed": 5,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0055-hungry-music_showcase.png",
+      "bytes": 120267,
+      "sha256": "9e57bc54b8023e2a650daec3c9bf2bf0323db29ed33d90a90fdccbaaee8f50a5"
+    },
+    {
+      "id": 56,
+      "mood": "hungry",
+      "program": "pet_react",
+      "seed": 6,
+      "layout": "corner",
+      "type": "scene",
+      "file": "mega/scenes/scene-0056-hungry-pet_react.png",
+      "bytes": 112335,
+      "sha256": "4fad6211cc658577031b3cd2a83cac210e222b9cf9d190fa7c43bcab211052de"
+    },
+    {
+      "id": 57,
+      "mood": "hungry",
+      "program": "beast_summon",
+      "seed": 7,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0057-hungry-beast_summon.png",
+      "bytes": 126640,
+      "sha256": "3c3f3d40e240d43b7be98fc909f9173f6ea6bae7d36583429049bc8eaae8c846"
+    },
+    {
+      "id": 58,
+      "mood": "hungry",
+      "program": "travel_motion",
+      "seed": 8,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0058-hungry-travel_motion.png",
+      "bytes": 122017,
+      "sha256": "c7ed39fab042a020c3ca6ffc570c0a5e72b8f798ba9e19123555a46fa70658e6"
+    },
+    {
+      "id": 59,
+      "mood": "hungry",
+      "program": "celebration_burst",
+      "seed": 9,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0059-hungry-celebration_burst.png",
+      "bytes": 123785,
+      "sha256": "fb18c9a76c3f2cb532dd173faa7a073b74b48e46a127357679f778ddaa204492"
+    },
+    {
+      "id": 60,
+      "mood": "hungry",
+      "program": "power_strike",
+      "seed": 0,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0060-hungry-power_strike.png",
+      "bytes": 125272,
+      "sha256": "ad8b17bf60979762accc873429900a07937e345d32567bf9c1812d10f58779ec"
+    },
+    {
+      "id": 61,
+      "mood": "hungry",
+      "program": "magic_orbit",
+      "seed": 1,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0061-hungry-magic_orbit.png",
+      "bytes": 120834,
+      "sha256": "c84bcdfa8034b50a0cd9793f0441532a976f57cfe9a59d8cf2bf03920bd459a2"
+    },
+    {
+      "id": 62,
+      "mood": "hungry",
+      "program": "cinematic_vehicle",
+      "seed": 2,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0062-hungry-cinematic_vehicle.png",
+      "bytes": 106900,
+      "sha256": "bcf63e3596d85797b4c2df792235b247cd0cb153c6dbbe8b299079a0e280a5cd"
+    },
+    {
+      "id": 63,
+      "mood": "hungry",
+      "program": "cinematic_support",
+      "seed": 3,
+      "layout": "corner",
+      "type": "scene",
+      "file": "mega/scenes/scene-0063-hungry-cinematic_support.png",
+      "bytes": 100387,
+      "sha256": "c2e8fdd1bc8e203f9f180d577221c8c751dfb34c25a58952304b1667b318fe9a"
+    },
+    {
+      "id": 64,
+      "mood": "hungry",
+      "program": "generic_support",
+      "seed": 4,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0064-hungry-generic_support.png",
+      "bytes": 111277,
+      "sha256": "a699d60feef31ab9ec3da6209511226e38714f35ce0fc27d54901138eef79074"
+    },
+    {
+      "id": 65,
+      "mood": "excited",
+      "program": "flower_support",
+      "seed": 5,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0065-excited-flower_support.png",
+      "bytes": 116888,
+      "sha256": "fbfe5dd83e711d7331c3d54755ad37d73e5194fd1dc81fd26ee6e5e9255d7f8f"
+    },
+    {
+      "id": 66,
+      "mood": "excited",
+      "program": "flower_burst",
+      "seed": 6,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0066-excited-flower_burst.png",
+      "bytes": 122257,
+      "sha256": "1b3ce672639173d2d33250088dde52a2ff3737430059fde0747a85435f875572"
+    },
+    {
+      "id": 67,
+      "mood": "excited",
+      "program": "heart_ping",
+      "seed": 7,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0067-excited-heart_ping.png",
+      "bytes": 117623,
+      "sha256": "7b9bc0e055741ab93901bea6c3964552a509e3e4915eabdd02add06fab0b7bd6"
+    },
+    {
+      "id": 68,
+      "mood": "excited",
+      "program": "heart_burst",
+      "seed": 8,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0068-excited-heart_burst.png",
+      "bytes": 112870,
+      "sha256": "c95c0f56b135c517e9777fc7239b96036b80e8384fc0953336ba7d17494265d3"
+    },
+    {
+      "id": 69,
+      "mood": "excited",
+      "program": "care_feed",
+      "seed": 9,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0069-excited-care_feed.png",
+      "bytes": 110207,
+      "sha256": "168021f7ce64ccad634d97e2e6bdd9bfed543fb2db159e9a7431b35e139f6008"
+    },
+    {
+      "id": 70,
+      "mood": "excited",
+      "program": "music_pulse",
+      "seed": 0,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0070-excited-music_pulse.png",
+      "bytes": 118971,
+      "sha256": "56d36cb0c89e1c5f88c5d4ebedbc9314b21a5f8eb9565a93519f3902da1499de"
+    },
+    {
+      "id": 71,
+      "mood": "excited",
+      "program": "music_showcase",
+      "seed": 1,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0071-excited-music_showcase.png",
+      "bytes": 115435,
+      "sha256": "02182535a3546b2b86485e9735bfa2a72652f6146231b20aa84144bfbd285e13"
+    },
+    {
+      "id": 72,
+      "mood": "excited",
+      "program": "pet_react",
+      "seed": 2,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0072-excited-pet_react.png",
+      "bytes": 120123,
+      "sha256": "79064fe8d797bf33870fe57a12e4c14565aff3f64263142e6164867fd03ee000"
+    },
+    {
+      "id": 73,
+      "mood": "excited",
+      "program": "beast_summon",
+      "seed": 3,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0073-excited-beast_summon.png",
+      "bytes": 132633,
+      "sha256": "6b87f3c386a8f45064b7d3fcc8f60887e577049a96998c2fbf5368876dd0eb1a"
+    },
+    {
+      "id": 74,
+      "mood": "excited",
+      "program": "travel_motion",
+      "seed": 4,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0074-excited-travel_motion.png",
+      "bytes": 125731,
+      "sha256": "aa2f96a12d724aa73d6a13ea0d2afccb1c397361f5108a65ed95059b83081c83"
+    },
+    {
+      "id": 75,
+      "mood": "excited",
+      "program": "celebration_burst",
+      "seed": 5,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0075-excited-celebration_burst.png",
+      "bytes": 128044,
+      "sha256": "a1eed322a386acf89f8a5836d63cabf3e72f169ec7720dbfa4206e693f0e1686"
+    },
+    {
+      "id": 76,
+      "mood": "excited",
+      "program": "power_strike",
+      "seed": 6,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0076-excited-power_strike.png",
+      "bytes": 134729,
+      "sha256": "766a0c88be790bddb0b62c5c419c4596a2c1a168db522ac0f19774eede494ca2"
+    },
+    {
+      "id": 77,
+      "mood": "excited",
+      "program": "magic_orbit",
+      "seed": 7,
+      "layout": "corner",
+      "type": "scene",
+      "file": "mega/scenes/scene-0077-excited-magic_orbit.png",
+      "bytes": 118555,
+      "sha256": "0c1af7cb7364e04b3a69bed647d5361cd50f2511d5052795788fd37b679a1840"
+    },
+    {
+      "id": 78,
+      "mood": "excited",
+      "program": "cinematic_vehicle",
+      "seed": 8,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0078-excited-cinematic_vehicle.png",
+      "bytes": 105977,
+      "sha256": "c2387d96f724f9b97e4f1e166f5e816cbae6c6c2591f8855a325ebf99b2a7b4a"
+    },
+    {
+      "id": 79,
+      "mood": "excited",
+      "program": "cinematic_support",
+      "seed": 9,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0079-excited-cinematic_support.png",
+      "bytes": 111590,
+      "sha256": "3660b1b1624ecb55d14858123f42bbe18b8a84b9ed8e25965802e939db1e8cb7"
+    },
+    {
+      "id": 80,
+      "mood": "excited",
+      "program": "generic_support",
+      "seed": 0,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0080-excited-generic_support.png",
+      "bytes": 107241,
+      "sha256": "d981b18e1522a24a5765129adc095210c26571d5850ea09778e754f30c110fdd"
+    },
+    {
+      "id": 81,
+      "mood": "eating",
+      "program": "flower_support",
+      "seed": 1,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0081-eating-flower_support.png",
+      "bytes": 111569,
+      "sha256": "82d1cb78c342501a52bb3fb3c4db0029b01e2dfefcae2df981c68aedbaeb6b69"
+    },
+    {
+      "id": 82,
+      "mood": "eating",
+      "program": "flower_burst",
+      "seed": 2,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0082-eating-flower_burst.png",
+      "bytes": 119924,
+      "sha256": "e57006c62412b57906628cee6c96cdbf487417220fc7b23bd952154c84de59e5"
+    },
+    {
+      "id": 83,
+      "mood": "eating",
+      "program": "heart_ping",
+      "seed": 3,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0083-eating-heart_ping.png",
+      "bytes": 120485,
+      "sha256": "2ae5a806052ae6fed4c6877407f7c90490878ec9daf90163d67bbdceda6cf23a"
+    },
+    {
+      "id": 84,
+      "mood": "eating",
+      "program": "heart_burst",
+      "seed": 4,
+      "layout": "corner",
+      "type": "scene",
+      "file": "mega/scenes/scene-0084-eating-heart_burst.png",
+      "bytes": 109069,
+      "sha256": "3cb9b4af633feffac615bd6747a73523c8ea192f3f0d972ec97ce0712a92aa5c"
+    },
+    {
+      "id": 85,
+      "mood": "eating",
+      "program": "care_feed",
+      "seed": 5,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0085-eating-care_feed.png",
+      "bytes": 106769,
+      "sha256": "a02c31b57b86d18aea68ac41f3edf1fea4d43c54272161be53ddce23ca2e79ff"
+    },
+    {
+      "id": 86,
+      "mood": "eating",
+      "program": "music_pulse",
+      "seed": 6,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0086-eating-music_pulse.png",
+      "bytes": 120899,
+      "sha256": "a8624d223d5abcb760cc73a9a5d65e23c3c0d0fdb19bbdcba7bc6039414d77a9"
+    },
+    {
+      "id": 87,
+      "mood": "eating",
+      "program": "music_showcase",
+      "seed": 7,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0087-eating-music_showcase.png",
+      "bytes": 123229,
+      "sha256": "c3e9f8b397511ed967b55f9c1c36964b631149523f9eef8e0da75da5dd9fecf2"
+    },
+    {
+      "id": 88,
+      "mood": "eating",
+      "program": "pet_react",
+      "seed": 8,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0088-eating-pet_react.png",
+      "bytes": 118129,
+      "sha256": "167a63d43179739df5e805d0c050b8d431f78f7e2c34a8ee2e47742711afc6f2"
+    },
+    {
+      "id": 89,
+      "mood": "eating",
+      "program": "beast_summon",
+      "seed": 9,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0089-eating-beast_summon.png",
+      "bytes": 128488,
+      "sha256": "90b8c8ef72757259212f27207acac33c5512c2f70c590708c76fc2ed3921f15d"
+    },
+    {
+      "id": 90,
+      "mood": "eating",
+      "program": "travel_motion",
+      "seed": 0,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0090-eating-travel_motion.png",
+      "bytes": 121427,
+      "sha256": "a25ae4e70eec8fac4937671477442237702f20c63ff9122096b853edc5958e4d"
+    },
+    {
+      "id": 91,
+      "mood": "eating",
+      "program": "celebration_burst",
+      "seed": 1,
+      "layout": "corner",
+      "type": "scene",
+      "file": "mega/scenes/scene-0091-eating-celebration_burst.png",
+      "bytes": 114991,
+      "sha256": "35939b09aa72a4417260955c72f9d8135a2e98d778aedaafa707e7540dba5402"
+    },
+    {
+      "id": 92,
+      "mood": "eating",
+      "program": "power_strike",
+      "seed": 2,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0092-eating-power_strike.png",
+      "bytes": 131738,
+      "sha256": "06e0d374211184ece7fe530db1168e6b1cb9cc44e15062242e6adcdd065836bb"
+    },
+    {
+      "id": 93,
+      "mood": "eating",
+      "program": "magic_orbit",
+      "seed": 3,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0093-eating-magic_orbit.png",
+      "bytes": 132084,
+      "sha256": "c82613610e3b4d660a95a6d552a09cf7a17bf061f55e849d7dab288fefe59e55"
+    },
+    {
+      "id": 94,
+      "mood": "eating",
+      "program": "cinematic_vehicle",
+      "seed": 4,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0094-eating-cinematic_vehicle.png",
+      "bytes": 109218,
+      "sha256": "7f5c3993eeb8130f1cd510e6e73d85e0e10d6e0cce8918b3ab184dd4486a7212"
+    },
+    {
+      "id": 95,
+      "mood": "eating",
+      "program": "cinematic_support",
+      "seed": 5,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0095-eating-cinematic_support.png",
+      "bytes": 109945,
+      "sha256": "694997f603eb4c3678995f15deb169f0cc52bdbc38967e3b37c4b987a3f24d3f"
+    },
+    {
+      "id": 96,
+      "mood": "eating",
+      "program": "generic_support",
+      "seed": 6,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0096-eating-generic_support.png",
+      "bytes": 108673,
+      "sha256": "9b1dd9718c5269e8bda6d21ae9ba7466d32194408850ac20419d427f95cac528"
+    },
+    {
+      "id": 97,
+      "mood": "full",
+      "program": "flower_support",
+      "seed": 7,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0097-full-flower_support.png",
+      "bytes": 117683,
+      "sha256": "b4c891b0b6bec031282e088d578029e1f07019f624836883052a63a6ce600c01"
+    },
+    {
+      "id": 98,
+      "mood": "full",
+      "program": "flower_burst",
+      "seed": 8,
+      "layout": "corner",
+      "type": "scene",
+      "file": "mega/scenes/scene-0098-full-flower_burst.png",
+      "bytes": 111690,
+      "sha256": "9aca7a9e869f9722c9abda4383ee5959a9d597f04640a008320dfd5bbc041a04"
+    },
+    {
+      "id": 99,
+      "mood": "full",
+      "program": "heart_ping",
+      "seed": 9,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0099-full-heart_ping.png",
+      "bytes": 114620,
+      "sha256": "28b22490d797e06d2f6de662c8a86a9adfc9f2299ab459264c18f0b51b85aa39"
+    },
+    {
+      "id": 100,
+      "mood": "full",
+      "program": "heart_burst",
+      "seed": 0,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0100-full-heart_burst.png",
+      "bytes": 108249,
+      "sha256": "ebe29e435c0babb9c85bc5a739d5c36a178da2a0e55e3e7e8b671b97497de5fb"
+    },
+    {
+      "id": 101,
+      "mood": "full",
+      "program": "care_feed",
+      "seed": 1,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0101-full-care_feed.png",
+      "bytes": 97935,
+      "sha256": "9ec4cb151062b8a1fd7ef319e77b622fb8fd82d96a8b1b11846647dc0ea04924"
+    },
+    {
+      "id": 102,
+      "mood": "full",
+      "program": "music_pulse",
+      "seed": 2,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0102-full-music_pulse.png",
+      "bytes": 116193,
+      "sha256": "730256de6f6c6df08f9c3e19300ec9170264c9d7939adbf0ebaab7be15379978"
+    },
+    {
+      "id": 103,
+      "mood": "full",
+      "program": "music_showcase",
+      "seed": 3,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0103-full-music_showcase.png",
+      "bytes": 119554,
+      "sha256": "7401deb590c3920fa7fd17d2e30c055f33157f4fc101e9e5e030cf7aa3a506c8"
+    },
+    {
+      "id": 104,
+      "mood": "full",
+      "program": "pet_react",
+      "seed": 4,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0104-full-pet_react.png",
+      "bytes": 118447,
+      "sha256": "f1511b8706d297aa5454a1c9f07b6775675f8c06bf71627d9546fb82bdd07af7"
+    },
+    {
+      "id": 105,
+      "mood": "full",
+      "program": "beast_summon",
+      "seed": 5,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0105-full-beast_summon.png",
+      "bytes": 127542,
+      "sha256": "f9ee8bc74aa008428eaef75b0febdb9425df75a1fa3d6e1bd6c96446c4bf20c6"
+    },
+    {
+      "id": 106,
+      "mood": "full",
+      "program": "travel_motion",
+      "seed": 6,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0106-full-travel_motion.png",
+      "bytes": 121375,
+      "sha256": "f0a3bfbf2231569264058a35a57db3a6ee657df045f3e4ca13a95f753b178a4a"
+    },
+    {
+      "id": 107,
+      "mood": "full",
+      "program": "celebration_burst",
+      "seed": 7,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0107-full-celebration_burst.png",
+      "bytes": 127467,
+      "sha256": "23c667532dd6e39286a2f42d3612ec9c6023a6be6cfc45cd26cd092b15be0d84"
+    },
+    {
+      "id": 108,
+      "mood": "full",
+      "program": "power_strike",
+      "seed": 8,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0108-full-power_strike.png",
+      "bytes": 130463,
+      "sha256": "b8b9ca1d20184f7d825a8abceb2707c5081b557262ff2f569196557d86ee20f8"
+    },
+    {
+      "id": 109,
+      "mood": "full",
+      "program": "magic_orbit",
+      "seed": 9,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0109-full-magic_orbit.png",
+      "bytes": 123586,
+      "sha256": "ee245063d4b0bd2901f9669545fe487a3cd674fbc43821fd62595a5af401fc00"
+    },
+    {
+      "id": 110,
+      "mood": "full",
+      "program": "cinematic_vehicle",
+      "seed": 0,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0110-full-cinematic_vehicle.png",
+      "bytes": 99529,
+      "sha256": "7c3cc220fbc77fe98b54d791b356f3081642694029b9a0a2be8ecb0de7014476"
+    },
+    {
+      "id": 111,
+      "mood": "full",
+      "program": "cinematic_support",
+      "seed": 1,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0111-full-cinematic_support.png",
+      "bytes": 100126,
+      "sha256": "b66a39c3f0dbf59d2a525e0f1f025a157e6e0f76ec5968e100bacf440ca8df76"
+    },
+    {
+      "id": 112,
+      "mood": "full",
+      "program": "generic_support",
+      "seed": 2,
+      "layout": "corner",
+      "type": "scene",
+      "file": "mega/scenes/scene-0112-full-generic_support.png",
+      "bytes": 97579,
+      "sha256": "a465f74d3d0e7a9e774d9365c0e6a7a65ef3dafdf9e573615abf015c99b14879"
+    },
+    {
+      "id": 113,
+      "mood": "sleepy",
+      "program": "flower_support",
+      "seed": 3,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0113-sleepy-flower_support.png",
+      "bytes": 112717,
+      "sha256": "6c2d8638be41cedeed7664ac65a3f4a6aa7bb481c595b0b59d616e5abfdd8c22"
+    },
+    {
+      "id": 114,
+      "mood": "sleepy",
+      "program": "flower_burst",
+      "seed": 4,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0114-sleepy-flower_burst.png",
+      "bytes": 117251,
+      "sha256": "cdaf41e59c07545f14bc45e68457b28bcf4962d7e7ec517b9019e1ad4669975f"
+    },
+    {
+      "id": 115,
+      "mood": "sleepy",
+      "program": "heart_ping",
+      "seed": 5,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0115-sleepy-heart_ping.png",
+      "bytes": 109856,
+      "sha256": "e21fa2b1915b1d4c0045e766656133cadea4fc053be3378e8de5db5e632f4ffd"
+    },
+    {
+      "id": 116,
+      "mood": "sleepy",
+      "program": "heart_burst",
+      "seed": 6,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0116-sleepy-heart_burst.png",
+      "bytes": 109644,
+      "sha256": "945b2723ea435e20de953ae52c675c1b417d6ca76950811911e39547077e5d6f"
+    },
+    {
+      "id": 117,
+      "mood": "sleepy",
+      "program": "care_feed",
+      "seed": 7,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0117-sleepy-care_feed.png",
+      "bytes": 105238,
+      "sha256": "bd7508aea547bb57739da7417d3cd23fc9ad58a3b1f4edc668b6442fbf9f1396"
+    },
+    {
+      "id": 118,
+      "mood": "sleepy",
+      "program": "music_pulse",
+      "seed": 8,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0118-sleepy-music_pulse.png",
+      "bytes": 113973,
+      "sha256": "f4d6e3c6dc0b7c10e8e040301ecfe87d5c5bb45a824acd1f1aee4062b1ef9cd1"
+    },
+    {
+      "id": 119,
+      "mood": "sleepy",
+      "program": "music_showcase",
+      "seed": 9,
+      "layout": "corner",
+      "type": "scene",
+      "file": "mega/scenes/scene-0119-sleepy-music_showcase.png",
+      "bytes": 107766,
+      "sha256": "8409f08c85979723191836c0389461f2a7ce777d578540a3e268bcebedd0fde0"
+    },
+    {
+      "id": 120,
+      "mood": "sleepy",
+      "program": "pet_react",
+      "seed": 0,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0120-sleepy-pet_react.png",
+      "bytes": 110518,
+      "sha256": "c63b9992054be868f96c22dd5b056e06777539388e202053e382f1c92517d6b5"
+    },
+    {
+      "id": 121,
+      "mood": "sleepy",
+      "program": "beast_summon",
+      "seed": 1,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0121-sleepy-beast_summon.png",
+      "bytes": 117713,
+      "sha256": "f6c9e24d20266431c39332de58a03c927091046c4fd20adb4b570bf89603258a"
+    },
+    {
+      "id": 122,
+      "mood": "sleepy",
+      "program": "travel_motion",
+      "seed": 2,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0122-sleepy-travel_motion.png",
+      "bytes": 118008,
+      "sha256": "783f5b7211ce4a6f0b611d8bb0ae6c120dc93107541b2fd6cc4d1a0d53f37e43"
+    },
+    {
+      "id": 123,
+      "mood": "sleepy",
+      "program": "celebration_burst",
+      "seed": 3,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0123-sleepy-celebration_burst.png",
+      "bytes": 124097,
+      "sha256": "59cb2d38b1b8f0d2fce506cd23c9931db124baf0239114b2ee85bdf2c3ab9fe5"
+    },
+    {
+      "id": 124,
+      "mood": "sleepy",
+      "program": "power_strike",
+      "seed": 4,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0124-sleepy-power_strike.png",
+      "bytes": 130990,
+      "sha256": "e6272eacda2c25600b5437220c236f63d49a10be39f116c626526025563c6022"
+    },
+    {
+      "id": 125,
+      "mood": "sleepy",
+      "program": "magic_orbit",
+      "seed": 5,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0125-sleepy-magic_orbit.png",
+      "bytes": 124168,
+      "sha256": "381dcb3d0700858dbedf42237b1a1134337de7e35f6cc1954ad1ac2fbddd955c"
+    },
+    {
+      "id": 126,
+      "mood": "sleepy",
+      "program": "cinematic_vehicle",
+      "seed": 6,
+      "layout": "corner",
+      "type": "scene",
+      "file": "mega/scenes/scene-0126-sleepy-cinematic_vehicle.png",
+      "bytes": 95300,
+      "sha256": "d69b73a7c95f269357be0361dec8744ff4ce3fc0692454fb34687146570befbd"
+    },
+    {
+      "id": 127,
+      "mood": "sleepy",
+      "program": "cinematic_support",
+      "seed": 7,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0127-sleepy-cinematic_support.png",
+      "bytes": 106437,
+      "sha256": "6aea25e11d88e499ce4bafd3a70211f51d28b6d2fe98406d7f60df28fb51c0e0"
+    },
+    {
+      "id": 128,
+      "mood": "sleepy",
+      "program": "generic_support",
+      "seed": 8,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0128-sleepy-generic_support.png",
+      "bytes": 102837,
+      "sha256": "c86b6c64c992232d811d949778e1d4ce522b35fd1042a038d4e3540bf5307b56"
+    },
+    {
+      "id": 129,
+      "mood": "sick",
+      "program": "flower_support",
+      "seed": 9,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0129-sick-flower_support.png",
+      "bytes": 114972,
+      "sha256": "1a8b9b6176ddb7475c031a88058d82337c0b986afbfc84b217c70385eaaa0e6e"
+    },
+    {
+      "id": 130,
+      "mood": "sick",
+      "program": "flower_burst",
+      "seed": 0,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0130-sick-flower_burst.png",
+      "bytes": 115286,
+      "sha256": "ad94f6bf4000af6b5eeb5e0d9af8bae61761fa6b4242505a986bc7e7539f1e54"
+    },
+    {
+      "id": 131,
+      "mood": "sick",
+      "program": "heart_ping",
+      "seed": 1,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0131-sick-heart_ping.png",
+      "bytes": 106953,
+      "sha256": "eeb751263b6dacfcf99f5b067bf03b963ebaf24a7afb7764e0d7048adae7aebf"
+    },
+    {
+      "id": 132,
+      "mood": "sick",
+      "program": "heart_burst",
+      "seed": 2,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0132-sick-heart_burst.png",
+      "bytes": 110764,
+      "sha256": "43fe504b9ff5c3675d21053547ae8301dd954dfa952c1e187969a038a7278b85"
+    },
+    {
+      "id": 133,
+      "mood": "sick",
+      "program": "care_feed",
+      "seed": 3,
+      "layout": "corner",
+      "type": "scene",
+      "file": "mega/scenes/scene-0133-sick-care_feed.png",
+      "bytes": 97714,
+      "sha256": "533fff5719560a32e1ea1af823a3723b7d7b07dc8468a6204e2f985daecffac3"
+    },
+    {
+      "id": 134,
+      "mood": "sick",
+      "program": "music_pulse",
+      "seed": 4,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0134-sick-music_pulse.png",
+      "bytes": 120424,
+      "sha256": "e926dfa15d95c6f1cbbd5fa98785bf615f69628eed6ee7e017e2f1b855b281cc"
+    },
+    {
+      "id": 135,
+      "mood": "sick",
+      "program": "music_showcase",
+      "seed": 5,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0135-sick-music_showcase.png",
+      "bytes": 118610,
+      "sha256": "4d63163badc98ee7d90038551c3a55856c7cf8f7a40294a3fb88cf900fc4db16"
+    },
+    {
+      "id": 136,
+      "mood": "sick",
+      "program": "pet_react",
+      "seed": 6,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0136-sick-pet_react.png",
+      "bytes": 117653,
+      "sha256": "5d368560ffab51fc595706be4f27980186141d29c6a53628cb738767b54afd19"
+    },
+    {
+      "id": 137,
+      "mood": "sick",
+      "program": "beast_summon",
+      "seed": 7,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0137-sick-beast_summon.png",
+      "bytes": 128644,
+      "sha256": "5feaf3c1a01276e43f7a2e47bd88ca183a275b2c9bd79ab550f2de5b3e6ebccd"
+    },
+    {
+      "id": 138,
+      "mood": "sick",
+      "program": "travel_motion",
+      "seed": 8,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0138-sick-travel_motion.png",
+      "bytes": 119388,
+      "sha256": "f57b8108b9ad4cfa286bcb63f7c2d9fb631ecb5630c3bd65f510ba1499166f9f"
+    },
+    {
+      "id": 139,
+      "mood": "sick",
+      "program": "celebration_burst",
+      "seed": 9,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0139-sick-celebration_burst.png",
+      "bytes": 125222,
+      "sha256": "76054c575a44077943f4cbd28fbe53db832e8a1355b5e423430aa2a9cc23fae8"
+    },
+    {
+      "id": 140,
+      "mood": "sick",
+      "program": "power_strike",
+      "seed": 0,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0140-sick-power_strike.png",
+      "bytes": 126650,
+      "sha256": "a9676f3566d0e4362cb1d17a7e036efdedc1b3b70f99814101068bc0c2bd6c3c"
+    },
+    {
+      "id": 141,
+      "mood": "sick",
+      "program": "magic_orbit",
+      "seed": 1,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0141-sick-magic_orbit.png",
+      "bytes": 120616,
+      "sha256": "9c35a9db458974eb42f18b37789d134e212e1d8f684745b49c7c7409fa56f622"
+    },
+    {
+      "id": 142,
+      "mood": "sick",
+      "program": "cinematic_vehicle",
+      "seed": 2,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0142-sick-cinematic_vehicle.png",
+      "bytes": 105933,
+      "sha256": "7470a863b5454a377f3cb0df28d645032e181210777b7f9c847bb2bd8641babd"
+    },
+    {
+      "id": 143,
+      "mood": "sick",
+      "program": "cinematic_support",
+      "seed": 3,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0143-sick-cinematic_support.png",
+      "bytes": 111650,
+      "sha256": "55c128875ff045f7ec0e46e5d32e0ec6dae4151548cd72da4c017aff2904c278"
+    },
+    {
+      "id": 144,
+      "mood": "sick",
+      "program": "generic_support",
+      "seed": 4,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0144-sick-generic_support.png",
+      "bytes": 108352,
+      "sha256": "679da249c7c857aae762f0ea88c60f95b980e903f2b2f8697d40a556edd77303"
+    },
+    {
+      "id": 145,
+      "mood": "sad",
+      "program": "flower_support",
+      "seed": 5,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0145-sad-flower_support.png",
+      "bytes": 110674,
+      "sha256": "e82f29d15d96b5206dc790d7ead45ab14668aded682187693afcaa42b5b49edf"
+    },
+    {
+      "id": 146,
+      "mood": "sad",
+      "program": "flower_burst",
+      "seed": 6,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0146-sad-flower_burst.png",
+      "bytes": 116956,
+      "sha256": "9816275f2eb241ba317b6621309869c5cce0aea7330aaf8767d4135abb46041f"
+    },
+    {
+      "id": 147,
+      "mood": "sad",
+      "program": "heart_ping",
+      "seed": 7,
+      "layout": "corner",
+      "type": "scene",
+      "file": "mega/scenes/scene-0147-sad-heart_ping.png",
+      "bytes": 103799,
+      "sha256": "85d8c1f9149d24f153959ea03b193e293831c4104a9b88124b39c66c08efb55c"
+    },
+    {
+      "id": 148,
+      "mood": "sad",
+      "program": "heart_burst",
+      "seed": 8,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0148-sad-heart_burst.png",
+      "bytes": 108941,
+      "sha256": "5c6720533d15c346b505d3589f82b62b0369325ba03c9338f149e353a0c2b685"
+    },
+    {
+      "id": 149,
+      "mood": "sad",
+      "program": "care_feed",
+      "seed": 9,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0149-sad-care_feed.png",
+      "bytes": 106152,
+      "sha256": "bc91dbec25a66a5cf86f2cdbe9ee3659e2135022944166577589bdf2cc9fbd72"
+    },
+    {
+      "id": 150,
+      "mood": "sad",
+      "program": "music_pulse",
+      "seed": 0,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0150-sad-music_pulse.png",
+      "bytes": 114051,
+      "sha256": "2b2c38d5250ae5c6bf98505253c822be5662ed78876ba53d488a3788466f6d9f"
+    },
+    {
+      "id": 151,
+      "mood": "sad",
+      "program": "music_showcase",
+      "seed": 1,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0151-sad-music_showcase.png",
+      "bytes": 110809,
+      "sha256": "b0de59ad2c8cb1b8442e1a035a14a155c4e604e21b1081b8fe2357b2b2e221c5"
+    },
+    {
+      "id": 152,
+      "mood": "sad",
+      "program": "pet_react",
+      "seed": 2,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0152-sad-pet_react.png",
+      "bytes": 114223,
+      "sha256": "5b4b363360ace06cf75e6936c043b39e37af6ccf2b52611ac5d4410eb5d850e4"
+    },
+    {
+      "id": 153,
+      "mood": "sad",
+      "program": "beast_summon",
+      "seed": 3,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0153-sad-beast_summon.png",
+      "bytes": 127171,
+      "sha256": "5ab176d4ad5f27ac32363d68d365eec56948673cdb75444b56ea1879c54e398c"
+    },
+    {
+      "id": 154,
+      "mood": "sad",
+      "program": "travel_motion",
+      "seed": 4,
+      "layout": "corner",
+      "type": "scene",
+      "file": "mega/scenes/scene-0154-sad-travel_motion.png",
+      "bytes": 114887,
+      "sha256": "ff9ff1ff292ddf93198222033d834c072c923aa02bd0673580e910e1d79f2c04"
+    },
+    {
+      "id": 155,
+      "mood": "sad",
+      "program": "celebration_burst",
+      "seed": 5,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0155-sad-celebration_burst.png",
+      "bytes": 122161,
+      "sha256": "ae19d5c6cac6ee9af11663c48da5aab30d155fcc6b8b74641d0376982efec1a8"
+    },
+    {
+      "id": 156,
+      "mood": "sad",
+      "program": "power_strike",
+      "seed": 6,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0156-sad-power_strike.png",
+      "bytes": 129610,
+      "sha256": "b649375aed803083c8e9aef12e92ad8fc1f6b04e9bb62667263424070486cfca"
+    },
+    {
+      "id": 157,
+      "mood": "sad",
+      "program": "magic_orbit",
+      "seed": 7,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0157-sad-magic_orbit.png",
+      "bytes": 125902,
+      "sha256": "29b8c9e1cf2e12d04261ab113fda63a81c3ca674116f1bd49b3c7f637f112da0"
+    },
+    {
+      "id": 158,
+      "mood": "sad",
+      "program": "cinematic_vehicle",
+      "seed": 8,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0158-sad-cinematic_vehicle.png",
+      "bytes": 101563,
+      "sha256": "376d888565b1b1c7d063c3e5f0f3c6b3578236f4a676462ff113a564f8162104"
+    },
+    {
+      "id": 159,
+      "mood": "sad",
+      "program": "cinematic_support",
+      "seed": 9,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0159-sad-cinematic_support.png",
+      "bytes": 106981,
+      "sha256": "c7bc6253d815618f94a82ff25199c92693706d9bc0d8651b0b350ebc08a2c394"
+    },
+    {
+      "id": 160,
+      "mood": "sad",
+      "program": "generic_support",
+      "seed": 0,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0160-sad-generic_support.png",
+      "bytes": 101868,
+      "sha256": "ba053b914b28f9a3fd02d6361ec8a858b69074232e2facc26c365f9a33ebc3ca"
+    },
+    {
+      "id": 161,
+      "mood": "annoyed",
+      "program": "flower_support",
+      "seed": 1,
+      "layout": "corner",
+      "type": "scene",
+      "file": "mega/scenes/scene-0161-annoyed-flower_support.png",
+      "bytes": 104014,
+      "sha256": "edffe327f144fe2ca6de6c38bff14a9e3eed8716318e34ca525d938c793e6d78"
+    },
+    {
+      "id": 162,
+      "mood": "annoyed",
+      "program": "flower_burst",
+      "seed": 2,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0162-annoyed-flower_burst.png",
+      "bytes": 118897,
+      "sha256": "6ebb702b34123372ccf19ee3480a0f017b472933dbb96bd23ab50fd975d3e04f"
+    },
+    {
+      "id": 163,
+      "mood": "annoyed",
+      "program": "heart_ping",
+      "seed": 3,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0163-annoyed-heart_ping.png",
+      "bytes": 117279,
+      "sha256": "8af5fca170bfdd9cd1761a2ef5cb0dc7dcc05e7db6f7deb4fd1dd70b037820c0"
+    },
+    {
+      "id": 164,
+      "mood": "annoyed",
+      "program": "heart_burst",
+      "seed": 4,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0164-annoyed-heart_burst.png",
+      "bytes": 115631,
+      "sha256": "1cec84ec07fe523502ca1021532a3535f308d04fddeb2c7d328248f0158d18d6"
+    },
+    {
+      "id": 165,
+      "mood": "annoyed",
+      "program": "care_feed",
+      "seed": 5,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0165-annoyed-care_feed.png",
+      "bytes": 109441,
+      "sha256": "1b7a9e43f5d0d12ffe767d435c485b71f2bd885649e1e6d8d15d366a8edcf953"
+    },
+    {
+      "id": 166,
+      "mood": "annoyed",
+      "program": "music_pulse",
+      "seed": 6,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0166-annoyed-music_pulse.png",
+      "bytes": 122101,
+      "sha256": "4e4e1da8b8e5707dd6d7606c7a176d5254e223d0ccc642ca2371769f2f389a93"
+    },
+    {
+      "id": 167,
+      "mood": "annoyed",
+      "program": "music_showcase",
+      "seed": 7,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0167-annoyed-music_showcase.png",
+      "bytes": 123237,
+      "sha256": "e9abbffd859e6d557040e0a83d8ce1226255599a4f8ae327abff5c086e7ebc7a"
+    },
+    {
+      "id": 168,
+      "mood": "annoyed",
+      "program": "pet_react",
+      "seed": 8,
+      "layout": "corner",
+      "type": "scene",
+      "file": "mega/scenes/scene-0168-annoyed-pet_react.png",
+      "bytes": 112897,
+      "sha256": "cb2ba3c16e6cf9b8755cea918e1561f99fc2cc7d823a1e7d273080fd87bcfab7"
+    },
+    {
+      "id": 169,
+      "mood": "annoyed",
+      "program": "beast_summon",
+      "seed": 9,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0169-annoyed-beast_summon.png",
+      "bytes": 127611,
+      "sha256": "bb89e7efa5efa5147ca273414e52d47121193c73f630505518cda36e7b338b92"
+    },
+    {
+      "id": 170,
+      "mood": "annoyed",
+      "program": "travel_motion",
+      "seed": 0,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0170-annoyed-travel_motion.png",
+      "bytes": 119764,
+      "sha256": "2d01587015ac7a89b78cc39251d1172eb2e4f61caa7ab71f0c82b8ae35776870"
+    },
+    {
+      "id": 171,
+      "mood": "annoyed",
+      "program": "celebration_burst",
+      "seed": 1,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0171-annoyed-celebration_burst.png",
+      "bytes": 117700,
+      "sha256": "370c683843112c99a6331e175eebd9885a0855093d00736445e44e3329574504"
+    },
+    {
+      "id": 172,
+      "mood": "annoyed",
+      "program": "power_strike",
+      "seed": 2,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0172-annoyed-power_strike.png",
+      "bytes": 131137,
+      "sha256": "58ed95f4c568eb5bcd6e5d5b99ebf7648dfd6bdf189c9d04fdc2228eadc0aa66"
+    },
+    {
+      "id": 173,
+      "mood": "annoyed",
+      "program": "magic_orbit",
+      "seed": 3,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0173-annoyed-magic_orbit.png",
+      "bytes": 131209,
+      "sha256": "706c0c4dcad88f70229a1445c83cbc829209f74c358136dcec33c1e3cfdab228"
+    },
+    {
+      "id": 174,
+      "mood": "annoyed",
+      "program": "cinematic_vehicle",
+      "seed": 4,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0174-annoyed-cinematic_vehicle.png",
+      "bytes": 109240,
+      "sha256": "b515d969055888158b738179a786f4ed383656e028e5894e72f67dee4e4de142"
+    },
+    {
+      "id": 175,
+      "mood": "annoyed",
+      "program": "cinematic_support",
+      "seed": 5,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0175-annoyed-cinematic_support.png",
+      "bytes": 111932,
+      "sha256": "304f99822d53f719153456b00b839e0fbdbbfe286a74da05d904e36f5442e938"
+    },
+    {
+      "id": 176,
+      "mood": "annoyed",
+      "program": "generic_support",
+      "seed": 6,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0176-annoyed-generic_support.png",
+      "bytes": 109904,
+      "sha256": "bcc4035b3f65f0b4ecaeeba6db9b4eeefab4eab5368314e7e9d11671bfc4a4aa"
+    },
+    {
+      "id": 177,
+      "mood": "laugh",
+      "program": "flower_support",
+      "seed": 7,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0177-laugh-flower_support.png",
+      "bytes": 120022,
+      "sha256": "139ea06fa52e1f6ee259a65c535454620bec7a35577a8af41c4fc8ae658548cc"
+    },
+    {
+      "id": 178,
+      "mood": "laugh",
+      "program": "flower_burst",
+      "seed": 8,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0178-laugh-flower_burst.png",
+      "bytes": 119954,
+      "sha256": "0b4302d2ea4c83f051f5d1c91c9da46768a491010eea7a1c0fe6b877bbc52260"
+    },
+    {
+      "id": 179,
+      "mood": "laugh",
+      "program": "heart_ping",
+      "seed": 9,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0179-laugh-heart_ping.png",
+      "bytes": 117347,
+      "sha256": "5975c06e71033a3cc9399c5eae06d8961360cd56e79f73ce59336d721f37b62b"
+    },
+    {
+      "id": 180,
+      "mood": "laugh",
+      "program": "heart_burst",
+      "seed": 0,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0180-laugh-heart_burst.png",
+      "bytes": 110661,
+      "sha256": "1db039a48ca35236bb426eee0c4fe6adde783e3ebbafb02fd96669222a8ff2f6"
+    },
+    {
+      "id": 181,
+      "mood": "laugh",
+      "program": "care_feed",
+      "seed": 1,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0181-laugh-care_feed.png",
+      "bytes": 103166,
+      "sha256": "70dab21746ec72ea89c086d157ee31a3b88e61f4f141022b882b893581826369"
+    },
+    {
+      "id": 182,
+      "mood": "laugh",
+      "program": "music_pulse",
+      "seed": 2,
+      "layout": "corner",
+      "type": "scene",
+      "file": "mega/scenes/scene-0182-laugh-music_pulse.png",
+      "bytes": 114022,
+      "sha256": "c46130eebe9ae188105dae95069e71e4033c96ab17185f3ffad397befbf7ed08"
+    },
+    {
+      "id": 183,
+      "mood": "laugh",
+      "program": "music_showcase",
+      "seed": 3,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0183-laugh-music_showcase.png",
+      "bytes": 126782,
+      "sha256": "94e341b1d9bef15c3d76cfd0a86e760da72ab19013f415e04a3661de784548d8"
+    },
+    {
+      "id": 184,
+      "mood": "laugh",
+      "program": "pet_react",
+      "seed": 4,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0184-laugh-pet_react.png",
+      "bytes": 125248,
+      "sha256": "4b629d9a07099dedd19e7b4baf6f07d108712de1f57235912f5f8804360e1ce5"
+    },
+    {
+      "id": 185,
+      "mood": "laugh",
+      "program": "beast_summon",
+      "seed": 5,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0185-laugh-beast_summon.png",
+      "bytes": 130963,
+      "sha256": "66faa68ec1fc0ec04dc7602b2f6c72fedb43a9f20811799d1984131162149f01"
+    },
+    {
+      "id": 186,
+      "mood": "laugh",
+      "program": "travel_motion",
+      "seed": 6,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0186-laugh-travel_motion.png",
+      "bytes": 126060,
+      "sha256": "d830f1c19d2422e67efbaeb8da8e1eaf0332da3bd5501d60ab3fc496ed4c44a7"
+    },
+    {
+      "id": 187,
+      "mood": "laugh",
+      "program": "celebration_burst",
+      "seed": 7,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0187-laugh-celebration_burst.png",
+      "bytes": 128042,
+      "sha256": "1dcad947218103fc43894e734d8a66d57355cb81f90844c6ec2c835122d8bcb3"
+    },
+    {
+      "id": 188,
+      "mood": "laugh",
+      "program": "power_strike",
+      "seed": 8,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0188-laugh-power_strike.png",
+      "bytes": 131797,
+      "sha256": "1da5049ff40ead758ed5927b4528c94904cad2cba614c0275a9e2f7fa49ff267"
+    },
+    {
+      "id": 189,
+      "mood": "laugh",
+      "program": "magic_orbit",
+      "seed": 9,
+      "layout": "corner",
+      "type": "scene",
+      "file": "mega/scenes/scene-0189-laugh-magic_orbit.png",
+      "bytes": 119125,
+      "sha256": "824bb57f834cb2d42e2474a39c54966d92d032ac278018801d89f39be5b1767e"
+    },
+    {
+      "id": 190,
+      "mood": "laugh",
+      "program": "cinematic_vehicle",
+      "seed": 0,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0190-laugh-cinematic_vehicle.png",
+      "bytes": 105921,
+      "sha256": "2adcebfe89a4811dccef55c5b316c7c4f9fddf8a0025f3d1e376f6bba0de14b3"
+    },
+    {
+      "id": 191,
+      "mood": "laugh",
+      "program": "cinematic_support",
+      "seed": 1,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0191-laugh-cinematic_support.png",
+      "bytes": 105828,
+      "sha256": "fbeb1ab275a2c024757c741abf442a13d6f38d3f38620828e4c4efa58b74ddfe"
+    },
+    {
+      "id": 192,
+      "mood": "laugh",
+      "program": "generic_support",
+      "seed": 2,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0192-laugh-generic_support.png",
+      "bytes": 110980,
+      "sha256": "8b57795d100117f08b577b47861a3387c6ab16a06a83958912050903f084d5c0"
+    },
+    {
+      "id": 193,
+      "mood": "stressed",
+      "program": "flower_support",
+      "seed": 3,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0193-stressed-flower_support.png",
+      "bytes": 118996,
+      "sha256": "a4a6a1eadc2d67819cbf9c192011d29c114067012fb207aff47dff5aeeffd45a"
+    },
+    {
+      "id": 194,
+      "mood": "stressed",
+      "program": "flower_burst",
+      "seed": 4,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0194-stressed-flower_burst.png",
+      "bytes": 122908,
+      "sha256": "411434c118080682badc5f33f68a752f598e0aed898c3a08db37990037383733"
+    },
+    {
+      "id": 195,
+      "mood": "stressed",
+      "program": "heart_ping",
+      "seed": 5,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0195-stressed-heart_ping.png",
+      "bytes": 115992,
+      "sha256": "2bcac0b731d49bf6879f91fb7648b2b70e1ce7f9f097af4ac11484a914db0f9e"
+    },
+    {
+      "id": 196,
+      "mood": "stressed",
+      "program": "heart_burst",
+      "seed": 6,
+      "layout": "corner",
+      "type": "scene",
+      "file": "mega/scenes/scene-0196-stressed-heart_burst.png",
+      "bytes": 105267,
+      "sha256": "a37af2fd16566666157416a13157c4d5587c58f519a8b6ddda5eb3b3b9e80ffe"
+    },
+    {
+      "id": 197,
+      "mood": "stressed",
+      "program": "care_feed",
+      "seed": 7,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0197-stressed-care_feed.png",
+      "bytes": 111836,
+      "sha256": "188af4d68160ca17c32939884fd79b5309a0f2a6c1035529e018d54270740bc9"
+    },
+    {
+      "id": 198,
+      "mood": "stressed",
+      "program": "music_pulse",
+      "seed": 8,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0198-stressed-music_pulse.png",
+      "bytes": 119554,
+      "sha256": "26a0226d147326204f09b33262d84875b7214bd81f510ff12485e8149ff0880c"
+    },
+    {
+      "id": 199,
+      "mood": "stressed",
+      "program": "music_showcase",
+      "seed": 9,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0199-stressed-music_showcase.png",
+      "bytes": 120922,
+      "sha256": "761d6bb44b29175bd9b9dfd592422e4d95c8246ba1118990daa60b19baf64af9"
+    },
+    {
+      "id": 200,
+      "mood": "stressed",
+      "program": "pet_react",
+      "seed": 0,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0200-stressed-pet_react.png",
+      "bytes": 117183,
+      "sha256": "3964df06c2b254f90c0b9a6d5cc60349ee86344a206d8f305e06b83b4945a6cc"
+    },
+    {
+      "id": 201,
+      "mood": "stressed",
+      "program": "beast_summon",
+      "seed": 1,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0201-stressed-beast_summon.png",
+      "bytes": 121545,
+      "sha256": "729647cbc6609059776c75a16d8b825e6246855852a1f210f0894f95851e453f"
+    },
+    {
+      "id": 202,
+      "mood": "stressed",
+      "program": "travel_motion",
+      "seed": 2,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0202-stressed-travel_motion.png",
+      "bytes": 124088,
+      "sha256": "fd203b1dbe6fac42a4fde72f14fe9d5f91242403a078acf76a04edbde838a08b"
+    },
+    {
+      "id": 203,
+      "mood": "stressed",
+      "program": "celebration_burst",
+      "seed": 3,
+      "layout": "corner",
+      "type": "scene",
+      "file": "mega/scenes/scene-0203-stressed-celebration_burst.png",
+      "bytes": 116504,
+      "sha256": "4a25f15384e948fa1d1da37d337f05228060035b84ec89aeddcff4d130196b9a"
+    },
+    {
+      "id": 204,
+      "mood": "stressed",
+      "program": "power_strike",
+      "seed": 4,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0204-stressed-power_strike.png",
+      "bytes": 135560,
+      "sha256": "789718c1903a30f424a739f4d8f1aed5a59ff58da24c5cadb08d9fe667fffa16"
+    },
+    {
+      "id": 205,
+      "mood": "stressed",
+      "program": "magic_orbit",
+      "seed": 5,
+      "layout": "hero",
+      "type": "scene",
+      "file": "mega/scenes/scene-0205-stressed-magic_orbit.png",
+      "bytes": 130485,
+      "sha256": "988c65a6a6a95c1473bab820ed01df8d2dd0cac8b0b5bb603a8be069efda5711"
+    },
+    {
+      "id": 206,
+      "mood": "stressed",
+      "program": "cinematic_vehicle",
+      "seed": 6,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0206-stressed-cinematic_vehicle.png",
+      "bytes": 108994,
+      "sha256": "a0c17043add3c968514795f442edced6c9814a450c442a302787bc1d6522d5fe"
+    },
+    {
+      "id": 207,
+      "mood": "stressed",
+      "program": "cinematic_support",
+      "seed": 7,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0207-stressed-cinematic_support.png",
+      "bytes": 113856,
+      "sha256": "76253f5dd1de870db7521d09e186b1bf778550895e604981d9138ca6cc4edd29"
+    },
+    {
+      "id": 208,
+      "mood": "stressed",
+      "program": "generic_support",
+      "seed": 8,
+      "layout": "center",
+      "type": "scene",
+      "file": "mega/scenes/scene-0208-stressed-generic_support.png",
+      "bytes": 108072,
+      "sha256": "25726b1d906997ac99676dbcaa05e79b39b7580011e7afcd188bde5f96b6bb2c"
+    }
+  ]
+}

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="theme-color" content="#0b0b16" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<title>MIA — Remote Dev</title>
+<style>
+  :root { --bg:#0b0b16; --card:#161427; --accent:#8b5cf6; --ok:#22c55e; --warn:#f59e0b; --fail:#ef4444; --txt:#ece9ff; --muted:#9a93c7; --mic:#ef4444; }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { margin:0; background:var(--bg); color:var(--txt); font-family:-apple-system,Segoe UI,Roboto,sans-serif; padding:14px 14px 48px; }
+  h1 { font-size:18px; margin:4px 0 6px; }
+  .lead { font-size:13px; color:var(--muted); line-height:1.45; margin:0 0 12px; }
+  .card { background:var(--card); border-radius:14px; padding:12px; margin-bottom:12px; }
+  .card h2 { font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin:0 0 10px; }
+  label { font-size:12px; color:var(--muted); display:block; margin:6px 0 4px; }
+  input, textarea { width:100%; background:#100e1f; border:1px solid #342c54; border-radius:10px; color:var(--txt); padding:12px; font-size:16px; font-family:inherit; }
+  textarea { min-height:88px; resize:vertical; }
+  .row { display:flex; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
+  .row > * { flex:1; min-width:100px; }
+  button { font-size:15px; font-weight:700; color:var(--txt); background:#241f3d; border:1px solid #342c54; border-radius:12px; padding:14px 10px; cursor:pointer; }
+  button:active { transform:scale(.97); }
+  button.accent { background:var(--accent); border-color:var(--accent); }
+  button.mic { min-height:108px; font-size:18px; line-height:1.3; }
+  button.mic.live { background:var(--mic); border-color:#fecaca; box-shadow:0 0 24px rgba(239,68,68,.45); }
+  button.secondary { background:#1a1730; font-size:13px; padding:10px; }
+  .hint { font-size:12px; color:var(--muted); line-height:1.45; }
+  .hint.ok { color:var(--ok); }
+  .hint.fail { color:var(--fail); }
+  #log { font-size:12px; color:var(--muted); background:#0e0c1c; border-radius:10px; padding:10px; min-height:64px; max-height:240px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
+  .job { background:#100e1f; border:1px solid #2a2444; border-radius:10px; padding:10px; margin-bottom:8px; }
+  .job strong { display:block; margin-bottom:4px; }
+  .badge { display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; font-weight:700; background:rgba(139,92,246,.2); color:#c4b5fd; }
+</style>
+</head>
+<body>
+<h1>MIA — Remote Dev 🎤</h1>
+<p class="lead">
+  Domácí PC: MIA + Cursor + <code>npm run remote:dev-watch</code>.
+  Z telefonu diktuješ — watcher na PC otevře prompt a dá toast.
+</p>
+
+<div class="card">
+  <h2>Token</h2>
+  <input id="secret" type="text" placeholder="MIA_INGEST_SECRET" autocomplete="off" spellcheck="false" />
+  <div class="row" style="margin-top:8px;">
+    <button type="button" class="secondary" id="saveSecret">Uložit token</button>
+    <button type="button" class="secondary" id="refresh">Obnovit stav</button>
+  </div>
+  <div id="authHint" class="hint" style="margin-top:8px;">Token z .env — stejný jako u dálkového ovládání.</div>
+</div>
+
+<div class="card">
+  <h2>Programovat</h2>
+  <button type="button" class="mic accent" id="micBtn">🎤 Drž a mluv</button>
+  <div id="micHint" class="hint" style="margin-top:8px;">Používá vestavěné diktování Androidu / prohlížeče.</div>
+  <label style="margin-top:12px;">Nebo napiš / uprav text</label>
+  <textarea id="taskText" placeholder="Např. Dokonči gift mapu CARE throttle a spusť testy."></textarea>
+  <div class="row" style="margin-top:8px;">
+    <button type="button" class="accent" id="sendBtn">Odeslat Cursoru</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Rychlé akce</h2>
+  <div class="row">
+    <button type="button" class="secondary" data-quick="Spusť testy gift mapy">Testy gift mapy</button>
+    <button type="button" class="secondary" data-quick="Jaký je stav gift mapy?">Stav gift mapy</button>
+  </div>
+  <div class="row">
+    <button type="button" class="secondary" data-quick="Spusť rychlý preflight">Preflight</button>
+    <button type="button" class="secondary" data-quick="Shrň poslední změny gift mapy a co zbývá">Shrnutí</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Fronta / poslední úkol</h2>
+  <div id="statusBox" class="hint">Načítám…</div>
+  <div id="jobs" style="margin-top:10px;"></div>
+</div>
+
+<div class="card">
+  <h2>Log</h2>
+  <div id="log"></div>
+</div>
+
+<p class="hint">
+  Tip: pro plnou plochu PC použij RustDesk/AnyDesk. Remote Dev je hlas → úkol pro Cursor, ne vzdálená plocha.
+  <a href="/mia-remote.html" style="color:#c4b5fd;">← zpět na dálkové ovládání</a>
+</p>
+
+<script>
+const secretEl = document.getElementById("secret");
+const taskText = document.getElementById("taskText");
+const logEl = document.getElementById("log");
+const statusBox = document.getElementById("statusBox");
+const jobsEl = document.getElementById("jobs");
+const authHint = document.getElementById("authHint");
+const micBtn = document.getElementById("micBtn");
+const micHint = document.getElementById("micHint");
+
+const STORAGE_KEY = "mia_remote_secret";
+
+function log(msg) {
+  const line = `[${new Date().toLocaleTimeString()}] ${msg}`;
+  logEl.textContent = `${line}\n${logEl.textContent}`.slice(0, 4000);
+}
+
+function getSecret() {
+  return (secretEl.value || localStorage.getItem(STORAGE_KEY) || "").trim();
+}
+
+function authHeaders() {
+  const secret = getSecret();
+  const headers = { "Content-Type": "application/json" };
+  if (secret) {
+    headers["X-MIA-Ingest-Secret"] = secret;
+    headers["X-Ingest-Secret"] = secret;
+  }
+  return headers;
+}
+
+async function api(path, options = {}) {
+  const res = await fetch(path, {
+    ...options,
+    headers: { ...authHeaders(), ...(options.headers || {}) }
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const err = data.error || data.message || res.statusText;
+    throw new Error(err);
+  }
+  return data;
+}
+
+async function refresh() {
+  try {
+    const auth = await fetch("/mia/remote/auth", { headers: authHeaders() }).then((r) => r.json());
+    authHint.textContent = auth.ok ? "Token OK — Remote Dev povoleno." : (auth.message || "Neplatný token.");
+    authHint.className = auth.ok ? "hint ok" : "hint fail";
+
+    const st = await api("/mia/remote/dev/status");
+    const latest = st.latest;
+    statusBox.innerHTML = latest
+      ? `<span class="badge">${latest.status}</span> <strong>${latest.kind}</strong><br>${escapeHtml(latest.text).slice(0, 180)}`
+      : "Fronta je prázdná.";
+    jobsEl.innerHTML = (st.jobs || []).slice(0, 5).map((j) => `
+      <div class="job">
+        <strong>${escapeHtml(j.kind)} · ${escapeHtml(j.status)}</strong>
+        <div class="hint">${escapeHtml(j.text).slice(0, 160)}</div>
+        ${j.result?.summary ? `<div class="hint ok">${escapeHtml(String(j.result.summary).slice(-240))}</div>` : ""}
+      </div>
+    `).join("") || "<div class='hint'>Žádné úkoly.</div>";
+  } catch (err) {
+    statusBox.textContent = err.message || String(err);
+    statusBox.className = "hint fail";
+  }
+}
+
+function escapeHtml(s) {
+  return String(s || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+async function sendTask(text, source) {
+  const payload = { text: String(text || "").trim(), source: source || "text" };
+  if (!payload.text) {
+    log("Prázdný úkol.");
+    return;
+  }
+  log(`Odesílám (${payload.source}): ${payload.text}`);
+  try {
+    const data = await api("/mia/remote/dev/command", {
+      method: "POST",
+      body: JSON.stringify(payload)
+    });
+    log(data.hint || data.job?.status || "ok");
+    if (data.job?.result?.summary) log(data.job.result.summary.slice(-300));
+    taskText.value = "";
+    await refresh();
+  } catch (err) {
+    log(`Chyba: ${err.message || err}`);
+  }
+}
+
+document.getElementById("saveSecret").onclick = () => {
+  localStorage.setItem(STORAGE_KEY, getSecret());
+  log("Token uložen.");
+  refresh();
+};
+
+document.getElementById("refresh").onclick = () => refresh();
+document.getElementById("sendBtn").onclick = () => sendTask(taskText.value, "text");
+
+document.querySelectorAll("[data-quick]").forEach((btn) => {
+  btn.onclick = () => sendTask(btn.getAttribute("data-quick"), "quick");
+});
+
+// Web Speech API (Android Chrome / Samsung Internet)
+let recognition = null;
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+if (SpeechRecognition) {
+  recognition = new SpeechRecognition();
+  recognition.lang = "cs-CZ";
+  recognition.interimResults = true;
+  recognition.continuous = false;
+
+  recognition.onresult = (ev) => {
+    let text = "";
+    for (let i = 0; i < ev.results.length; i += 1) {
+      text += ev.results[i][0].transcript;
+    }
+    taskText.value = text.trim();
+  };
+  recognition.onerror = (ev) => {
+    micHint.textContent = `Mikrofon: ${ev.error || "chyba"}`;
+    micBtn.classList.remove("live");
+  };
+  recognition.onend = () => {
+    micBtn.classList.remove("live");
+    micBtn.textContent = "🎤 Drž a mluv";
+    if (taskText.value.trim()) {
+      sendTask(taskText.value, "voice");
+    }
+  };
+
+  const startMic = () => {
+    try {
+      recognition.start();
+      micBtn.classList.add("live");
+      micBtn.textContent = "🔴 Mluv… pusť pro odeslání";
+      micHint.textContent = "Poslouchám (cs-CZ).";
+    } catch (_err) {
+      micHint.textContent = "Mikrofon už běží nebo není dostupný.";
+    }
+  };
+  const stopMic = () => {
+    try { recognition.stop(); } catch (_err) { /* ignore */ }
+  };
+
+  micBtn.addEventListener("pointerdown", (e) => { e.preventDefault(); startMic(); });
+  micBtn.addEventListener("pointerup", (e) => { e.preventDefault(); stopMic(); });
+  micBtn.addEventListener("pointerleave", () => stopMic());
+} else {
+  micBtn.disabled = true;
+  micHint.textContent = "Tento prohlížeč neumí Web Speech API — napiš úkol ručně, nebo použij klávesnici s diktováním Androidu do textového pole.";
+}
+
+// Token z URL (mia-fold redirect style)
+const params = new URLSearchParams(location.search);
+const urlSecret = params.get("mia_secret");
+if (urlSecret) {
+  secretEl.value = urlSecret;
+  localStorage.setItem(STORAGE_KEY, urlSecret);
+} else {
+  secretEl.value = localStorage.getItem(STORAGE_KEY) || "";
+}
+
+refresh();
+setInterval(refresh, 8000);
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "enabled": true,
+  "obsSceneSwitch": true,
+  "sceneMapKeys": {
+    "main": "default",
+    "solo1": "idle",
+    "solo2": "lobby",
+    "solo3": "mia"
+  },
+  "scenes": {
+    "main": "",
+    "solo": {
+      "1": "",
+      "2": "",
+      "3": ""
+    }
+  },
+  "thresholds": {
+    "enterQuietMs": 0,
+    "exitChatActivityMs": 8000,
+    "minSceneHoldMs": 45000,
+    "sceneSwitchCooldownMs": 30000
+  },
+  "safety": {
+    "blockDuringGiftVideo": true,
+    "blockDuringVoice": true,
+    "blockDuringSupportRoute": true
+  }
+}

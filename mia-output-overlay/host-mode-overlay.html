@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <title>MIA Host Mode</title>
+  <link rel="stylesheet" href="/tiktok-viewer-zones.css" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: transparent;
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+
+    #panel {
+      position: fixed;
+      inset: 0;
+      display: none;
+      pointer-events: none;
+      color: #fff;
+    }
+
+    #panel.visible {
+      display: block;
+    }
+
+    #veil {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(176, 124, 255, 0.22), transparent 42%),
+        linear-gradient(180deg, rgba(24, 8, 48, 0.55), rgba(8, 12, 24, 0.18) 45%, transparent 72%);
+    }
+
+    #topBar {
+      position: absolute;
+      top: var(--tt-safe-top, 24px);
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 22px;
+      border-radius: 999px;
+      background: rgba(48, 0, 88, 0.88);
+      border: 1px solid rgba(176, 124, 255, 0.45);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.38);
+    }
+
+    #badge {
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #ffd86f;
+    }
+
+    #title {
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: 0.3px;
+    }
+
+    #stats {
+      font-size: 12px;
+      font-weight: 700;
+      opacity: 0.82;
+    }
+
+    #ninjaWrap {
+      position: absolute;
+      top: 120px;
+      right: 48px;
+      width: min(420px, 34vw);
+      aspect-ratio: 16 / 9;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 2px solid rgba(176, 124, 255, 0.42);
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.42);
+      background: rgba(0, 0, 0, 0.55);
+      display: none;
+    }
+
+    #ninjaWrap.visible {
+      display: block;
+    }
+
+    #ninjaWrap iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #000;
+    }
+
+    #prompt {
+      position: absolute;
+      left: 50%;
+      bottom: 120px;
+      transform: translateX(-50%);
+      max-width: min(760px, 88vw);
+      padding: 16px 22px;
+      border-radius: 18px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.35;
+      background: rgba(8, 12, 24, 0.82);
+      border: 1px solid rgba(255, 214, 111, 0.28);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+      display: none;
+    }
+
+    #prompt.visible {
+      display: block;
+    }
+
+    #sub {
+      margin-top: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      opacity: 0.78;
+    }
+  </style>
+</head>
+<body>
+  <div id="panel">
+    <div id="veil"></div>
+    <div id="topBar">
+      <div id="badge">HOST</div>
+      <div id="title">NEJSEM TU · MIA HOST</div>
+      <div id="stats"></div>
+    </div>
+    <div id="ninjaWrap"><iframe id="ninjaFrame" title="Host camera" allow="autoplay;camera;microphone"></iframe></div>
+    <div id="prompt">
+      <div id="promptText"></div>
+      <div id="sub"></div>
+    </div>
+  </div>
+
+  <script>
+    const POLL_MS = 500;
+    const panel = document.getElementById("panel");
+    const title = document.getElementById("title");
+    const badge = document.getElementById("badge");
+    const stats = document.getElementById("stats");
+    const ninjaWrap = document.getElementById("ninjaWrap");
+    const ninjaFrame = document.getElementById("ninjaFrame");
+    const prompt = document.getElementById("prompt");
+    const promptText = document.getElementById("promptText");
+    const sub = document.getElementById("sub");
+
+    let lastNinjaUrl = "";
+
+    function render(panelData) {
+      const visible = Boolean(panelData?.overlayVisible || panelData?.awayActive);
+      panel.classList.toggle("visible", visible);
+      if (!visible) {
+        ninjaWrap.classList.remove("visible");
+        prompt.classList.remove("visible");
+        return;
+      }
+
+      title.textContent = panelData.label || "NEJSEM TU · MIA HOST";
+      badge.textContent = panelData.badge || "HOST";
+      const viewers = Number(panelData?.audience?.viewerCount || 0);
+      stats.textContent = viewers > 0 ? `${viewers} diváků` : "MIA drží stream";
+
+      const ninjaUrl = panelData.ninjaEmbedUrl || "";
+      if (ninjaUrl && ninjaUrl !== lastNinjaUrl) {
+        lastNinjaUrl = ninjaUrl;
+        ninjaFrame.src = ninjaUrl;
+      }
+      ninjaWrap.classList.toggle("visible", Boolean(ninjaUrl));
+
+      const giftWait = panelData.giftWait || panelData.capybara || null;
+      const waitLine =
+        giftWait?.waitPrompt ||
+        (giftWait?.active
+          ? `Po ${giftWait.giftName || "dárku"} čekám na komentář — napiš do chatu.`
+          : "");
+      if (waitLine) {
+        promptText.textContent = waitLine;
+        sub.textContent = giftWait?.gifter
+          ? `Po dárku od ${giftWait.gifter}`
+          : "AWAY režim · MIA odpovídá místo streamera";
+        prompt.classList.add("visible");
+      } else {
+        prompt.classList.remove("visible");
+      }
+    }
+
+    async function tick() {
+      try {
+        const res = await fetch("/overlay-state?_=" + Date.now(), { cache: "no-store" });
+        const data = await res.json();
+        render(data?.hostPanel || {
+          awayActive: data?.hostMode?.awayActive,
+          overlayVisible: data?.hostMode?.awayActive,
+          label: data?.hostMode?.label,
+          badge: data?.hostMode?.badge,
+          ninjaEmbedUrl: null,
+          capybara: data?.capybaraFlow,
+          giftWait: data?.hostPanel?.giftWait || data?.capybaraFlow,
+          audience: data?.streamState?.audience
+        });
+      } catch (_err) {
+        panel.classList.remove("visible");
+      }
+    }
+
+    tick();
+    setInterval(tick, POLL_MS);
+  </script>
+</body>
+</html>

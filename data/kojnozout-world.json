@@ -1,0 +1,544 @@
+{
+  "version": 1,
+  "updatedAt": 1783627047963,
+  "backpack": {
+    "users": {
+      "test_user_123": {
+        "userLabel": "Test User 123",
+        "items": [
+          {
+            "id": "granule",
+            "label": "Granule",
+            "power": 7,
+            "source": "gift_map",
+            "ts": 1783203111980
+          },
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "comment",
+            "ts": 1783203105739
+          },
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "comment",
+            "ts": 1783203099716
+          },
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "comment",
+            "ts": 1783203091588
+          },
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "comment",
+            "ts": 1783203086617
+          },
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "comment",
+            "ts": 1783203081696
+          },
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "comment",
+            "ts": 1783203075839
+          },
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "comment",
+            "ts": 1783203072206
+          }
+        ],
+        "miaPointsBanked": 0
+      },
+      "rose_fan": {
+        "userLabel": "Rose Fan",
+        "items": [
+          {
+            "id": "boost",
+            "label": "Boost",
+            "power": 12,
+            "source": "gift",
+            "ts": 1781410656353
+          }
+        ],
+        "miaPointsBanked": 0
+      },
+      "debug_podporovatel": {
+        "userLabel": "Debug podporovatel",
+        "items": [
+          {
+            "id": "jablko",
+            "label": "Jablko",
+            "power": 5,
+            "source": "gift",
+            "ts": 1781636432727
+          },
+          {
+            "id": "feast",
+            "label": "Hostina",
+            "power": 18,
+            "source": "gift",
+            "ts": 1781411235978
+          }
+        ],
+        "miaPointsBanked": 0
+      },
+      "debug_uživatel": {
+        "userLabel": "Debug uživatel",
+        "items": [
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "comment",
+            "ts": 1781636471877
+          },
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "comment",
+            "ts": 1781411246199
+          }
+        ],
+        "miaPointsBanked": 0
+      },
+      "vasaspinak": {
+        "userLabel": "VasaSpinak",
+        "items": [
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "comment",
+            "ts": 1783181444808
+          },
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "comment",
+            "ts": 1783181409981
+          },
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "comment",
+            "ts": 1782573497250
+          },
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "comment",
+            "ts": 1782482661868
+          },
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "comment",
+            "ts": 1782482592571
+          },
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "comment",
+            "ts": 1782482218613
+          },
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "comment",
+            "ts": 1782482198875
+          }
+        ],
+        "miaPointsBanked": 0
+      },
+      "divák": {
+        "userLabel": "divák",
+        "items": [
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "comment",
+            "ts": 1782836941250
+          },
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "comment",
+            "ts": 1782836445319
+          },
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "comment",
+            "ts": 1781415688546
+          }
+        ],
+        "miaPointsBanked": 0
+      },
+      "test_user": {
+        "userLabel": "Test User",
+        "items": [
+          {
+            "id": "granule",
+            "label": "Granule",
+            "power": 7,
+            "source": "gift",
+            "ts": 1781415770464
+          },
+          {
+            "id": "shield",
+            "label": "Štít",
+            "power": 8,
+            "source": "gift",
+            "ts": 1781415739519
+          }
+        ],
+        "miaPointsBanked": 0
+      },
+      "tester": {
+        "userLabel": "Tester",
+        "items": [
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "comment",
+            "ts": 1781852360627
+          },
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "comment",
+            "ts": 1781416598002
+          }
+        ],
+        "miaPointsBanked": 0
+      },
+      "test": {
+        "userLabel": "Test",
+        "items": [
+          {
+            "id": "jablko",
+            "label": "Jablko",
+            "power": 5,
+            "source": "gift",
+            "ts": 1781904817530
+          }
+        ],
+        "miaPointsBanked": 0
+      },
+      "audittest": {
+        "userLabel": "AuditTest",
+        "items": [
+          {
+            "id": "snack",
+            "label": "Svačina",
+            "power": 6,
+            "source": "gift",
+            "ts": 1781905171276
+          },
+          {
+            "id": "jablko",
+            "label": "Jablko",
+            "power": 5,
+            "source": "gift",
+            "ts": 1781905171193
+          }
+        ],
+        "miaPointsBanked": 0
+      },
+      "liveaudit": {
+        "userLabel": "LiveAudit",
+        "items": [
+          {
+            "id": "snack",
+            "label": "Svačina",
+            "power": 6,
+            "source": "gift_map",
+            "ts": 1783578171775
+          },
+          {
+            "id": "boost",
+            "label": "Boost",
+            "power": 12,
+            "source": "chat_reward",
+            "ts": 1783452682783
+          },
+          {
+            "id": "granule",
+            "label": "Granule",
+            "power": 7,
+            "source": "gift",
+            "ts": 1783180661433
+          },
+          {
+            "id": "snack",
+            "label": "Svačina",
+            "power": 6,
+            "source": "gift",
+            "ts": 1783157862804
+          },
+          {
+            "id": "snack",
+            "label": "Svačina",
+            "power": 6,
+            "source": "gift",
+            "ts": 1783156476800
+          },
+          {
+            "id": "snack",
+            "label": "Svačina",
+            "power": 6,
+            "source": "gift",
+            "ts": 1783155424057
+          },
+          {
+            "id": "shield",
+            "label": "Štít",
+            "power": 8,
+            "source": "gift",
+            "ts": 1783130443595
+          },
+          {
+            "id": "jablko",
+            "label": "Jablko",
+            "power": 5,
+            "source": "gift",
+            "ts": 1783129595620
+          }
+        ],
+        "miaPointsBanked": 0
+      },
+      "t": {
+        "userLabel": "T",
+        "items": [
+          {
+            "id": "jablko",
+            "label": "Jablko",
+            "power": 5,
+            "source": "gift",
+            "ts": 1781906306649
+          }
+        ],
+        "miaPointsBanked": 0
+      },
+      "audit_user": {
+        "userLabel": "Audit User",
+        "items": [
+          {
+            "id": "granule",
+            "label": "Granule",
+            "power": 7,
+            "source": "gift",
+            "ts": 1781995747805
+          },
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "comment",
+            "ts": 1781995733103
+          }
+        ],
+        "miaPointsBanked": 0
+      },
+      "t1_divák": {
+        "userLabel": "T1 Divák",
+        "items": [
+          {
+            "id": "snack",
+            "label": "Svačina",
+            "power": 6,
+            "source": "gift",
+            "ts": 1782836945651
+          },
+          {
+            "id": "snack",
+            "label": "Svačina",
+            "power": 6,
+            "source": "gift",
+            "ts": 1782836448524
+          }
+        ],
+        "miaPointsBanked": 0
+      },
+      "t3_divák": {
+        "userLabel": "T3 Divák",
+        "items": [
+          {
+            "id": "feast",
+            "label": "Hostina",
+            "power": 18,
+            "source": "gift",
+            "ts": 1782836952190
+          },
+          {
+            "id": "feast",
+            "label": "Hostina",
+            "power": 18,
+            "source": "gift",
+            "ts": 1782836452884
+          }
+        ],
+        "miaPointsBanked": 0
+      },
+      "t5_divák": {
+        "userLabel": "T5 Divák",
+        "items": [
+          {
+            "id": "feast",
+            "label": "Hostina",
+            "power": 18,
+            "source": "gift",
+            "ts": 1782836961601
+          },
+          {
+            "id": "feast",
+            "label": "Hostina",
+            "power": 18,
+            "source": "gift",
+            "ts": 1782836457474
+          }
+        ],
+        "miaPointsBanked": 0
+      },
+      "langtester": {
+        "userLabel": "LangTester",
+        "items": [
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "comment",
+            "ts": 1783098092376
+          },
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "comment",
+            "ts": 1783096933104
+          },
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "comment",
+            "ts": 1783096695686
+          },
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "comment",
+            "ts": 1783096510485
+          }
+        ],
+        "miaPointsBanked": 0
+      },
+      "liveauditcare": {
+        "userLabel": "LiveAuditCare",
+        "items": [
+          {
+            "id": "kartac",
+            "label": "Kartáč",
+            "power": 4,
+            "source": "care",
+            "ts": 1783627045413
+          },
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "care",
+            "ts": 1783584962925
+          },
+          {
+            "id": "kartac",
+            "label": "Kartáč",
+            "power": 4,
+            "source": "care",
+            "ts": 1783578173191
+          },
+          {
+            "id": "kartac",
+            "label": "Kartáč",
+            "power": 4,
+            "source": "care",
+            "ts": 1783452411334
+          },
+          {
+            "id": "cheer",
+            "label": "Povzbuzovačka",
+            "power": 4,
+            "source": "care",
+            "ts": 1783180662702
+          }
+        ],
+        "miaPointsBanked": 0
+      }
+    },
+    "totalItems": 2011,
+    "updatedAt": 1783627045413
+  },
+  "duel": {
+    "active": false,
+    "phase": "finished",
+    "startedAt": 1783131524953,
+    "endsAt": 1783131824953,
+    "durationMs": 300000,
+    "localSide": {
+      "label": "Náš Kojnožrout",
+      "streamId": "local",
+      "miaPoints": 0,
+      "giftPoints": 0,
+      "chatPoints": 0,
+      "likePoints": 0,
+      "followPoints": 0,
+      "sharePoints": 0,
+      "itemBonusPoints": 0,
+      "contributors": {}
+    },
+    "opponentSide": {
+      "label": "Turnaj platforem",
+      "streamId": "opponent",
+      "miaPoints": 0,
+      "giftPoints": 0,
+      "chatPoints": 0,
+      "likePoints": 0,
+      "followPoints": 0,
+      "sharePoints": 0,
+      "itemBonusPoints": 0,
+      "contributors": {}
+    },
+    "peerUrl": "",
+    "winner": "draw",
+    "lastEventAt": 0
+  }
+}

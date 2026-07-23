@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "packs": {
+    "template_named_soft_mia": {
+      "meta": {
+        "key": "template_named_soft_mia",
+        "speaker": "mia"
+      },
+      "variants": [
+        "{name}, jsem tady a vnímám tě.",
+        "{name}, slyším tě.",
+        "{name}, registruju tě.",
+        "{name}, dávám pozor.",
+        "{name}, klidně pokračuj."
+      ]
+    },
+    "template_named_soft_koj": {
+      "meta": {
+        "key": "template_named_soft_koj"
+      },
+      "variants": [
+        "{name}, slyším tě.",
+        "{name}, registruju tě.",
+        "{name}, jsem tady.",
+        "{name}, číhám a poslouchám.",
+        "{name}, klidně pokračuj."
+      ]
+    }
+  }
+}

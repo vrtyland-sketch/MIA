@@ -1,0 +1,217 @@
+{
+  "generatedAt": "2026-07-05T03:33:58.521Z",
+  "ok": 30,
+  "total": 30,
+  "items": [
+    {
+      "area": "Prop bowl.png — průhlednost",
+      "ok": true,
+      "detail": "alpha 68.4%, rohy průhledné — v OBS bez obdélníku",
+      "fix": "npm run prepare:props",
+      "severity": "ok"
+    },
+    {
+      "area": "Prop ball.png — průhlednost",
+      "ok": true,
+      "detail": "alpha 69.8%, rohy průhledné — v OBS bez obdélníku",
+      "fix": "npm run prepare:props",
+      "severity": "ok"
+    },
+    {
+      "area": "Prop mic.png — průhlednost",
+      "ok": true,
+      "detail": "alpha 77.9%, rohy průhledné — v OBS bez obdélníku",
+      "fix": "npm run prepare:props",
+      "severity": "ok"
+    },
+    {
+      "area": "Prop hand.png — průhlednost",
+      "ok": true,
+      "detail": "alpha 84.1%, rohy průhledné — v OBS bez obdélníku",
+      "fix": "npm run prepare:props",
+      "severity": "ok"
+    },
+    {
+      "area": "Item snack — ikona batohu",
+      "ok": true,
+      "detail": "1462656 B · alpha 64% — malovaný PNG OK",
+      "fix": "npm run generate:koj-2d-factory -- --force",
+      "severity": "ok"
+    },
+    {
+      "area": "Item box — ikona batohu",
+      "ok": true,
+      "detail": "1413407 B · alpha 69% — malovaný PNG OK",
+      "fix": "npm run generate:koj-2d-factory -- --force",
+      "severity": "ok"
+    },
+    {
+      "area": "Item lektvar — ikona batohu",
+      "ok": true,
+      "detail": "1321856 B · alpha 76% — malovaný PNG OK",
+      "fix": "npm run generate:koj-2d-factory -- --force",
+      "severity": "ok"
+    },
+    {
+      "area": "Item jablko — ikona batohu",
+      "ok": true,
+      "detail": "1457335 B · alpha 74% — malovaný PNG OK",
+      "fix": "npm run generate:koj-2d-factory -- --force",
+      "severity": "ok"
+    },
+    {
+      "area": "Runtime — žádné celoplošné scene PNG",
+      "ok": true,
+      "detail": "Scény = CSS tint + volitelné accent fragmenty, ne cover",
+      "fix": null,
+      "severity": "ok"
+    },
+    {
+      "area": "Runtime — props object-fit contain",
+      "ok": true,
+      "detail": "Props bez obdélníku kolem PNG",
+      "fix": null,
+      "severity": "ok"
+    },
+    {
+      "area": "Runtime — propLayer uvnitř spriteLayer",
+      "ok": true,
+      "detail": "Míč/miska/mic se pohybují s Kojem (corner-rest, wander)",
+      "fix": null,
+      "severity": "ok"
+    },
+    {
+      "area": "Runtime — jeden aktivní hračka (+ miska)",
+      "ok": true,
+      "detail": "Priorita: hlazení > mic > míč; miska jen u misky/jídla",
+      "fix": null,
+      "severity": "ok"
+    },
+    {
+      "area": "Runtime — wander vs props",
+      "ok": true,
+      "detail": "Při míči/mic Koj nechodí — rekvizita neujede",
+      "fix": null,
+      "severity": "ok"
+    },
+    {
+      "area": "NEJSEM TU — celoplošné gfx preview",
+      "ok": true,
+      "detail": "Velká pozadí jen na away-loop?gfx=1 — správné oddělení od runtime Koje",
+      "fix": null,
+      "severity": "ok"
+    },
+    {
+      "area": "Arena battle — platformní sprite z /arena/status",
+      "ok": true,
+      "detail": "Bojové pózy z battle.sprites (platformní formy)",
+      "fix": null,
+      "severity": "ok"
+    },
+    {
+      "area": "Arena team bar — roster preview",
+      "ok": true,
+      "detail": "4 žrouti s avatar PNG",
+      "fix": null,
+      "severity": "ok"
+    },
+    {
+      "area": "Arena VS badge — malovaný PNG",
+      "ok": true,
+      "detail": "vs-badge.png v battle overlay",
+      "fix": null,
+      "severity": "ok"
+    },
+    {
+      "area": "Overlay kojnozrout-runtime.html",
+      "ok": true,
+      "detail": "soubor OK",
+      "fix": null,
+      "severity": "ok"
+    },
+    {
+      "area": "Overlay kojnozrout-bowl-overlay.html",
+      "ok": true,
+      "detail": "soubor OK",
+      "fix": null,
+      "severity": "ok"
+    },
+    {
+      "area": "Overlay kojnozrout-backpack-overlay.html",
+      "ok": true,
+      "detail": "soubor OK",
+      "fix": null,
+      "severity": "ok"
+    },
+    {
+      "area": "Overlay arena-overlay.html",
+      "ok": true,
+      "detail": "soubor OK",
+      "fix": null,
+      "severity": "ok"
+    },
+    {
+      "area": "Overlay arena-battle-overlay.html",
+      "ok": true,
+      "detail": "soubor OK",
+      "fix": null,
+      "severity": "ok"
+    },
+    {
+      "area": "Overlay arena-battle-test-overlay.html",
+      "ok": true,
+      "detail": "soubor OK",
+      "fix": null,
+      "severity": "ok"
+    },
+    {
+      "area": "Overlay away-loop-overlay.html",
+      "ok": true,
+      "detail": "soubor OK",
+      "fix": null,
+      "severity": "ok"
+    },
+    {
+      "area": "Overlay koj-scenes-gallery.html",
+      "ok": true,
+      "detail": "soubor OK",
+      "fix": null,
+      "severity": "ok"
+    },
+    {
+      "area": "Overlay koj-props-gallery.html",
+      "ok": true,
+      "detail": "soubor OK",
+      "fix": null,
+      "severity": "ok"
+    },
+    {
+      "area": "Live /kojnozrout-runtime.html",
+      "ok": true,
+      "detail": "HTTP 200",
+      "fix": null,
+      "severity": "ok"
+    },
+    {
+      "area": "Live /away-loop-overlay.html?gfx=1&scene=cave",
+      "ok": true,
+      "detail": "HTTP 200",
+      "fix": null,
+      "severity": "ok"
+    },
+    {
+      "area": "Live /arena-battle-test-overlay.html",
+      "ok": true,
+      "detail": "HTTP 200",
+      "fix": null,
+      "severity": "ok"
+    },
+    {
+      "area": "Live /overlay-state",
+      "ok": true,
+      "detail": "HTTP 200",
+      "fix": null,
+      "severity": "ok"
+    }
+  ]
+}

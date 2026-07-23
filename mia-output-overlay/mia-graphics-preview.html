@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MIA Graphics Preview</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: transparent;
+    }
+    #frame {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+    }
+    #preview {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: none;
+    }
+    #badge {
+      position: fixed;
+      left: 8px;
+      bottom: 8px;
+      font: 12px/1.2 Segoe UI, sans-serif;
+      color: rgba(255, 255, 255, 0.45);
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="frame">
+    <img id="preview" alt="" />
+  </div>
+  <div id="badge">MIA Graphics Preview</div>
+  <script src="mia-graphics-preview.js"></script>
+</body>
+</html>

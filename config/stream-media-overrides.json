@@ -1,0 +1,40 @@
+{
+  "version": 2,
+  "description": "OBS sloty — tier po vizuálním review 2026-07-04",
+  "pinnedSlots": {
+    "T1_VIDEO_01": "videos/hailuo_1769712635.mp4",
+    "T1_VIDEO_02": "videos/hailuo_1769864687 (1).mp4",
+    "T1_VIDEO_03": "videos/hailuo_1769864687.mp4",
+    "T1_VIDEO_04": "videos/hailuo_1769867013.mp4",
+    "T1_VIDEO_05": "videos/hailuo_1769867637.mp4",
+    "T1_VIDEO_06": "videos/hailuo_1769880564.mp4",
+    "T2_VIDEO_05": "videos/VID-20260201-WA0011.mp4",
+    "T2_VIDEO_06": "videos/VID-20260201-WA0009.mp4",
+    "T2_VIDEO_07": "videos/VID-20260305-WA0020.mp4",
+    "T2_VIDEO_08": "videos/VID-20260318-WA0186.mp4",
+    "T2_VIDEO_09": "videos/lv_0_20260131151957.mp4",
+    "T2_VIDEO_10": "videos_2/lv_0_20260411124814.mp4",
+    "T3_VIDEO_09": "videos_2/VID-20260318-WA0333.mp4",
+    "T3_VIDEO_10": "videos_2/2026-06-25-152308764.mp4",
+    "T3_VIDEO_11": "videos/lv_7518394866301209909_20260302101327.mp4",
+    "T3_VIDEO_12": "videos/lv_7518585147663322421_20260305173214.mp4",
+    "T3_VIDEO_13": "videos/VID-20260401-WA0022.mp4",
+    "T3_VIDEO_14": "videos/VID-20260305-WA0019.mp4",
+    "T4_VIDEO_13": "videos_2/lv_0_20260411115550.mp4",
+    "T4_VIDEO_14": "videos_2/2026-04-19-121304490.mp4",
+    "T4_VIDEO_15": "videos_2/VID-20260419-WA0070.mp4",
+    "T4_VIDEO_16": "videos_2/2026-06-30-170837281.mp4",
+    "T4_VIDEO_17": "videos_2/VID-20260504-WA0001.mp4",
+    "T4_VIDEO_18": "videos/lv_7569904188230995253_20260217112138.mp4",
+    "T5_VIDEO_19": "videos_2/lv_0_20260411115935.mp4",
+    "T5_VIDEO_20": "videos_2/lv_0_20260411120454.mp4",
+    "T5_VIDEO_21": "videos_2/2026-06-21-201620647.mp4",
+    "PROFILE_VIDEO_01": "videos_2/VID-20260318-WA0328.mp4",
+    "PROFILE_VIDEO_02": "videos_2/VID-20260419-WA0095.mp4",
+    "PROFILE_VIDEO_03": "videos/VID-20260201-WA0015.mp4",
+    "PROFILE_VIDEO_04": "videos/VID-20260201-WA0019.mp4"
+  },
+  "blockedRel": [
+    "videos_2/VID-20260419-WA0070.mp4"
+  ]
+}
