@@ -50,6 +50,21 @@
   /**
    * Belly HUD during spam wave — miaPoints only, no coin/value fields.
    */
+  function buildComboMomentBellyContent(combo = {}, now = Date.now()) {
+    if (!isLiveMoment(combo, now)) return null;
+    const title = safe(combo.title) || safe(combo.kind).toUpperCase() || "COMBO";
+    const subParts = [];
+    const subtext = safe(combo.subtext);
+    if (subtext) subParts.push(subtext);
+    const count = toNumber(combo.count, 0);
+    if (count > 0) subParts.push(`×${count}`);
+    return {
+      main: title,
+      sub: subParts.join(" · ") || "combo",
+      accent: safe(combo.accent) || "#ffb400"
+    };
+  }
+
   function buildSpamWaveBellyContent(spam = {}) {
     if (!spam || !spam.active) return null;
     const target = Math.max(
@@ -436,7 +451,9 @@
       const inactiveMs =
         lastProjectActivityAt > 0 ? now - lastProjectActivityAt : BELLY_IDLE_AFTER_MS + 1;
       const waveContent = buildSpamWaveBellyContent(data?.spamSession);
-      const wantWaveHud = Boolean(waveContent) && !media.bellyUrl && !forceIdle;
+      const comboContent = waveContent ? null : buildComboMomentBellyContent(data?.comboMoment, now);
+      const bellyHudContent = waveContent || comboContent;
+      const wantWaveHud = Boolean(bellyHudContent) && !media.bellyUrl && !forceIdle;
       const wantIdle =
         forceIdle ||
         wantWaveHud ||
@@ -475,8 +492,14 @@
         return;
       }
 
-      let idle = wantWaveHud && waveContent
-        ? { page: "wave", main: waveContent.main, sub: waveContent.sub, wave: waveContent }
+      let idle = wantWaveHud && bellyHudContent
+        ? {
+            page: waveContent ? "wave" : "combo",
+            main: bellyHudContent.main,
+            sub: bellyHudContent.sub,
+            wave: waveContent || null,
+            combo: comboContent || null
+          }
         : resolveBellyIdleContent(now);
       if (forceIdlePage && BELLY_IDLE_PAGES.includes(forceIdlePage)) {
         const d = new Date(now);
@@ -499,13 +522,19 @@
       kojBellyScreen.classList.add("on", "mode-idle");
       kojBellyScreen.classList.remove("mode-gift");
       kojBellyScreen.classList.toggle("mode-wave", Boolean(idle.wave));
+      kojBellyScreen.classList.toggle("mode-combo", Boolean(idle.combo));
       if (idle.wave) {
         kojBellyScreen.style.setProperty("--belly-wave-pct", `${idle.wave.progressPct}%`);
         kojBellyScreen.classList.toggle("wave-urgent", Boolean(idle.wave.urgent));
         kojBellyScreen.classList.toggle("wave-confirmed", Boolean(idle.wave.confirmed));
       } else {
-        kojBellyScreen.classList.remove("mode-wave", "wave-urgent", "wave-confirmed");
+        kojBellyScreen.classList.remove("wave-urgent", "wave-confirmed");
         kojBellyScreen.style.removeProperty("--belly-wave-pct");
+      }
+      if (idle.combo) {
+        kojBellyScreen.style.setProperty("--belly-combo-accent", idle.combo.accent || "#ffb400");
+      } else {
+        kojBellyScreen.style.removeProperty("--belly-combo-accent");
       }
     }
 
@@ -513,6 +542,7 @@
       BELLY_IDLE_AFTER_MS,
       BELLY_IDLE_PAGES,
       buildSpamWaveBellyContent,
+      buildComboMomentBellyContent,
       resolveMediaUrl: (raw) => resolveMediaUrl(raw, apiBase),
       resolveProjectorMedia: (data, now) => resolveProjectorMedia(data, now, apiBase),
       resolveBellyIdleContent,
@@ -528,6 +558,7 @@
     BELLY_IDLE_CYCLE_MS,
     BELLY_IDLE_PAGES,
     buildSpamWaveBellyContent,
+    buildComboMomentBellyContent,
     create,
     resolveMediaUrl,
     isLiveMoment,

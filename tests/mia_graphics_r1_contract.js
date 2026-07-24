@@ -19,9 +19,9 @@ const manifest = require("../scripts/MIA_OBS_LIVE_MANIFEST");
 const { stripValueFieldsForPublic } = require("../scripts/MIA_OVERLAY_PUBLIC_RESPONSE");
 const { create: createKojRuntimeStage } = require("../mia-output-overlay/lib/koj-runtime-stage");
 const { resolveScene } = require("../mia-output-overlay/lib/koj-runtime-scene");
-const { buildSpamWaveBellyContent } = require("../mia-output-overlay/lib/koj-runtime-belly");
+const { buildSpamWaveBellyContent, buildComboMomentBellyContent } = require("../mia-output-overlay/lib/koj-runtime-belly");
 
-const KOJ_SPLIT_BUST = "44-r1-combo";
+const KOJ_SPLIT_BUST = "45-r1-combo-belly";
 
 function test(name, fn) {
   try {
@@ -77,7 +77,7 @@ test("R1 status doc lists acceptance gates and dual bust layers", () => {
   assert.ok(doc.includes("R1-C how to verify"));
 });
 
-test("dual bust invariant: OBS manifest 36/37; split runtime libs 44-r1-combo", () => {
+test("dual bust invariant: OBS manifest 36/37; split runtime libs 45-r1-combo-belly", () => {
   assert.equal(manifest.GFX_CACHE_BUST, "36-koj-unify");
   assert.equal(manifest.GIFT_ANIM_CACHE_BUST, "37-stream-polish");
 
@@ -87,7 +87,7 @@ test("dual bust invariant: OBS manifest 36/37; split runtime libs 44-r1-combo", 
 
   const html = fs.readFileSync(RUNTIME_HTML, "utf8");
   assert.match(html, new RegExp(`ASSET_CACHE_V = "${KOJ_SPLIT_BUST}"`));
-  const bustRefs = html.match(/44-r1-combo/g) || [];
+  const bustRefs = html.match(new RegExp(KOJ_SPLIT_BUST.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g")) || [];
   assert.ok(bustRefs.length >= 20, "split libs cache-bust consistently");
   assert.ok(!html.includes("37-stream-polish"), "gift bust must not leak into koj runtime html");
 });
@@ -152,6 +152,21 @@ test("resolveScene and belly HUD use miaPoints fields only", () => {
   });
   assert.ok(String(belly.main).includes("T2"), "belly shows next reward tier");
   assert.ok(!JSON.stringify(belly).toLowerCase().includes("coin"));
+
+  const comboBelly = buildComboMomentBellyContent(
+    {
+      title: "SOLO COMBO",
+      subtext: "rapid gifts",
+      count: 4,
+      holdUntilTs: now + 5000
+    },
+    now
+  );
+  assert.ok(comboBelly);
+  assert.equal(comboBelly.main, "SOLO COMBO");
+  assert.ok(comboBelly.sub.includes("rapid gifts"));
+  assert.match(comboBelly.sub, /4/);
+  assert.ok(!JSON.stringify(comboBelly).toLowerCase().includes("coin"));
 
   const spamPublic = stripValueFieldsForPublic({
     spamSession: {

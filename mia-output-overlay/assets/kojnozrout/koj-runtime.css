@@ -1056,6 +1056,17 @@ html, body {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.55; }
 }
+
+#kojBellyScreen.mode-combo #kojBellyIdle .belly-idle-main {
+  color: var(--belly-combo-accent, #ffb400);
+  text-shadow: 0 0 12px color-mix(in srgb, var(--belly-combo-accent, #ffb400) 55%, transparent);
+}
+
+#kojBellyScreen.mode-combo #kojBellyIdle .belly-idle-sub {
+  opacity: 0.92;
+  letter-spacing: 0.08em;
+}
+
 #kojBellyScreen .belly-glass {
   position: absolute;
   inset: 0;

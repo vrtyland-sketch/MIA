@@ -1,10 +1,10 @@
-# MIA Graphics ó Phase R1 Status
+# MIA Graphics ù Phase R1 Status
 
 **Datum:** 2026-07-24  
-**Roadmap:** [`MIA_ENGINE_2_0_ROADMAP.md`](./MIA_ENGINE_2_0_ROADMAP.md) ß4  
+**Roadmap:** [`MIA_ENGINE_2_0_ROADMAP.md`](./MIA_ENGINE_2_0_ROADMAP.md) ù4  
 **Freeze baseline:** `v=32-gfx-whole` ([`GRAPHICS_CHECKPOINT_v32.md`](./GRAPHICS_CHECKPOINT_v32.md))  
 **Active runtime bust:** `v=36-koj-unify` (speech / bowl / manifest URLs)  
-**Koj split bust:** `v=44-r1-combo` (`kojnozrout-runtime.html` + split libs)  
+**Koj split bust:** `v=45-r1-combo-belly` (`kojnozrout-runtime.html` + split libs)  
 **Gift overlay bust:** `v=37-stream-polish` (beze zm?ny)
 
 ---
@@ -21,13 +21,13 @@
 
 ### R1-C how to verify (manual stream gate)
 
-Manual stream = jedna ûiv· OBS session, kde ?lov?k vizu·ln? potvrdÌ chov·nÌ overlay? (automatickÈ testy to nenahradÌ).
+Manual stream = jedna ùivù OBS session, kde ?lov?k vizuùln? potvrdù chovùnù overlay? (automatickù testy to nenahradù).
 
-1. **Start server** ó `node index.js` (nebo `npm start`); po?kej na zelen˝ health / OBS WS connect.
-2. **Open overlays** ó v OBS na?ti runtime (`MIA_KOJ_RUNTIME` / `KOJNOZROUT_RUNTIME`), speech, bowl, gift anim (`37-stream-polish`); voliteln? `npm run obs:refresh-overlays`.
-3. **Trigger combo/wave test** ó poöli d·rky / spam wave (admin debug nebo TikFinity ingest), a? vznikne `comboMoment` nebo aktivnÌ `spamSession`.
-4. **Belly HUD** ó na b?iöe Koje: progress bar spam wave (`NN% ? T2`), countdown v subtextu, **û·dnÈ** coin/gift value; stage t?Ìdy `combo` / `spam-wave` / p?i vysokÈm progress `combo-pulse`.
-5. **Pass/fail** ó **PASS:** party scene p?i combo/wave, mood/FX reaguje i b?hem gift animace, gift video rotace per-tier beze zm?ny (index `rotationIndexByTier`); **FAIL:** zamrznut˝ mood, chyb?jÌcÌ wave HUD, nebo coin/value na overlayi.
+1. **Start server** ù `node index.js` (nebo `npm start`); po?kej na zelenù health / OBS WS connect.
+2. **Open overlays** ù v OBS na?ti runtime (`MIA_KOJ_RUNTIME` / `KOJNOZROUT_RUNTIME`), speech, bowl, gift anim (`37-stream-polish`); voliteln? `npm run obs:refresh-overlays`.
+3. **Trigger combo/wave test** ù poùli dùrky / spam wave (admin debug nebo TikFinity ingest), a? vznikne `comboMoment` nebo aktivnù `spamSession`.
+4. **Belly HUD** ù na b?iùe Koje: progress bar spam wave (`NN% ? T2`), countdown v subtextu, **ùùdnù** coin/gift value; stage t?ùdy `combo` / `spam-wave` / p?i vysokùm progress `combo-pulse`.
+5. **Pass/fail** ù **PASS:** party scene p?i combo/wave, mood/FX reaguje i b?hem gift animace, gift video rotace per-tier beze zm?ny (index `rotationIndexByTier`); **FAIL:** zamrznutù mood, chyb?jùcù wave HUD, nebo coin/value na overlayi.
 
 ---
 
@@ -35,20 +35,21 @@ Manual stream = jedna ûiv· OBS session, kde ?lov?k vizu·ln? potvrdÌ chov·nÌ over
 
 ### Improved (cb717643 + follow-up)
 
-- **Stage mood during gift FX:** `applyStageMood` + `syncComboVisual` run every poll tick ó no longer skipped when `animationReaction` is active.
+- **Stage mood during gift FX:** `applyStageMood` + `syncComboVisual` run every poll tick ù no longer skipped when `animationReaction` is active.
 - **Combo / spam wave on Koj stage:** `syncComboVisual` adds `combo`, `spam-wave`, `combo-pulse`, `combo-urgent` from `comboMoment` / `spamSession` (miaPoints progress only).
 - **Party scene fallback:** `resolveScene` switches to `party` when combo moment or spam wave is live.
 - **Belly HUD wave:** `buildSpamWaveBellyContent` shows progress bar + countdown on Koj belly during active spam wave (no coin fields).
-- **Split cache bust:** `43-koj-split` ? `44-r1-combo` on runtime HTML + split libs only (36 / 37 unchanged).
-- **R1 acceptance contract:** `tests/mia_graphics_r1_contract.js` ó dual bust invariant, combo CSS selectors, pulse/urgent thresholds, public spamSession strip (preflight fast).
+- **Split cache bust:** `43-koj-split` ? `44-r1-combo` ? `45-r1-combo-belly` on runtime HTML + split libs only (36 / 37 unchanged).
+- **Combo belly HUD:** `buildComboMomentBellyContent` ó title/subtext/count on belly during combo moment (no coins).
+- **R1 acceptance contract:** `tests/mia_graphics_r1_contract.js` ù dual bust invariant, combo CSS selectors, pulse/urgent thresholds, public spamSession strip (preflight fast).
 
 ### Still open for R1
 
 | Area | Note |
 |------|------|
-| Manual stream gate (R1-C) | One full session with OBS overlays ó team sign-off |
-| Battle / duel / walk pose art pass | LOW ó v36 doc gaps; motion via cycles/FX |
-| Graphics freeze window doc | Formal ÑE1 wiring freezeì paragraph after R1-C |
+| Manual stream gate (R1-C) | One full session with OBS overlays ù team sign-off |
+| Battle / duel / walk pose art pass | LOW ù v36 doc gaps; motion via cycles/FX |
+| Graphics freeze window doc | Formal ùE1 wiring freezeù paragraph after R1-C |
 | Optional tag | `v0.1.1-graphics` after R1-C |
 
 ---
@@ -59,7 +60,7 @@ Manual stream = jedna ûiv· OBS session, kde ?lov?k vizu·ln? potvrdÌ chov·nÌ over
 |-------|------|
 | Speech / bowl / manifest | `36-koj-unify` |
 | Gift overlay / desk | `37-stream-polish` |
-| Koj runtime split | `44-r1-combo` |
+| Koj runtime split | `45-r1-combo-belly` |
 
 Refresh after deploy: `npm run obs:refresh-overlays`
 
