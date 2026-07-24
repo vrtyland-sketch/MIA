@@ -1,7 +1,8 @@
 # MIA GitHub Migration Audit
 
 **Date/time:** 2026-07-23 21:01 CEST (overnight automation run)  
-**Continued at:** 2026-07-24 03:21 CEST ù Engine 2.0 roadmap + scaffold  
+**Continued at:** 2026-07-24 03:21 CEST ? Engine 2.0 roadmap + scaffold  
+**Mega audit:** 2026-07-24 ~15:50 CEST ? [`MIA_MEGA_AUDIT_2026-07-24.md`](./MIA_MEGA_AUDIT_2026-07-24.md)  
 **Local repo:** `C:\MIA`  
 **Operator:** overnight agent (blanket approval)
 
@@ -13,10 +14,11 @@
 |------|--------|
 | **master push** | **OK** |
 | **Tag `v0.1-stream-core`** | **OK** |
-| **Private repo** | **NO** ù still Public (browser login required; `gh` not installed) |
-| **Preflight tests** | **OK** (155/155 fast at overnight; re-run after roadmap commit) |
-| **Engine 2.0 doc** | Created ù see ù8 |
-| **Engine 2.0 roadmap** | Created ù see ù12 |
+| **Private repo** | **YES** (operator confirmed 2026-07-24; SSH fetch OK) |
+| **SSH remote** | **OK** ? `git@github.com:vrtyland-sketch/MIA.git` |
+| **Preflight tests** | **OK** (157/157 fast at mega audit 2026-07-24) |
+| **Engine 2.0 doc** | Created ? see ß8 |
+| **Engine 2.0 roadmap** | Created ? see ß12 |
 
 ---
 
@@ -24,15 +26,14 @@
 
 | Field | Value |
 |-------|-------|
-| Remote URL (active) | `https://github.com/vrtyland-sketch/MIA.git` |
-| SSH URL (optional) | `git@github.com:vrtyland-sketch/MIA.git` |
-| Auth method used | **HTTPS** (Git Credential Manager) |
-| SSH key file | `C:\Users\Lenovo\.ssh\id_ed25519_mia` |
-| SSH pubkey (not yet on GitHub) | `ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFsN0D/Xun8iz+yaKVi1Vhr6HAkifU1ZY0TYTXaDn6qE mia-push-vrtyland-sketch` |
-| SSH test | **FAIL** ù `Permission denied (publickey)` |
+| Remote URL (active) | `git@github.com:vrtyland-sketch/MIA.git` |
+| HTTPS URL (legacy) | `https://github.com/vrtyland-sketch/MIA.git` |
+| Auth method used | **SSH** (`id_ed25519_mia`) |
+| SSH test | **OK** ? `git fetch origin` succeeds |
 | Default branch (GitHub) | `master` |
+| Local HEAD (2026-07-24) | `ddab7eb0` ? synced with `origin/master` |
 
-**Note:** Remote was briefly switched to SSH during the run; reverted to HTTPS for successful tag push.
+**Note:** Remote was HTTPS during first push; switched to SSH after key added to GitHub.
 
 ---
 
@@ -40,24 +41,24 @@
 
 | Ref | Local SHA | Remote SHA | Result |
 |-----|-----------|------------|--------|
-| `master` | `903c1d882bc95ca43f5b34417fe2b346d660dc04` | `903c1d882bc95ca43f5b34417fe2b346d660dc04` | **OK** (first push, no force) |
+| `master` | `ddab7eb0` (2026-07-24) | `ddab7eb0` | **OK** (graphics day slices 0?11) |
 | `v0.1-stream-core` (annotated) | `903c1d88` ? tag object `70b3e859` | present on origin | **OK** |
 | `backup/pre-github-full` | `cdfa42a575679bc27034ce9a7c3d31550eaf5209` | **not pushed** (intentional) | OK |
 
 Upstream: `master` tracks `origin/master`.
 
-GitHub URL: https://github.com/vrtyland-sketch/MIA
+GitHub URL: https://github.com/vrtyland-sketch/MIA (private ? login required)
 
 ---
 
 ## 4. History slim strategy
 
-Instead of an in-place `filter-branch` rewrite (prior run was incomplete / `.git-rewrite` cleared), **master** is a **single orphan commit** containing the slim working tree.
+Instead of an in-place `filter-branch` rewrite (prior run was incomplete / `.git-rewrite` cleared), **master** started as a **single orphan commit** containing the slim working tree; subsequent graphics-day commits appended on top.
 
 | Branch | Role | Commits | Max blob |
 |--------|------|---------|----------|
-| `master` | GitHub push target | 1 (`903c1d88`) | **2.7 MB** (`gift-creatures/universe/surge.png`) |
-| `backup/pre-github-full` | Full local history archive | 33+ (HEAD `cdfa42a5`) | **171 MB** (`incoming-images/videos_2/ù`) |
+| `master` | GitHub push target | slim history + R1 slices | **2.7 MB** (`gift-creatures/universe/surge.png`) |
+| `backup/pre-github-full` | Full local history archive | 33+ (HEAD `cdfa42a5`) | **171 MB** (`incoming-images/videos_2/?`) |
 
 **No blob >100 MB** in `master` reachable history. Verified.
 
@@ -70,7 +71,7 @@ Instead of an in-place `filter-branch` rewrite (prior run was incomplete / `.git
 | Local disk pack (all refs) | **5.38 GiB** | Dominated by `backup/pre-github-full` + old objects |
 | Local garbage (tmp pack) | ~3.02 GiB | Residual from interrupted pack; safe to `git gc` later |
 | `master` bundle estimate | **~115 MB** | What GitHub received |
-| GitHub repo size (API) | 0 KB | API lag / fresh push |
+| GitHub repo size (API) | lag | Fresh push / private repo |
 
 Push sends only objects reachable from `master`; backup branch objects stay local.
 
@@ -91,18 +92,18 @@ Removed from **master tree** (files remain on disk where noted):
 | `mia-output-overlay/assets/animation-bank/` | Bulky sprite banks |
 | `mia-output-overlay/assets/kojnozrout/` | Large mood/prop banks |
 
-`.gitignore` entries (lines 38ù41) enforce the same for future commits.
+`.gitignore` entries enforce the same for future commits.
 
 **Not committed:** live `data/*.json` state, `.env`, `secrets/local/`, `_canon_import/`, `shared/mia-*-core/` (untracked canon scaffold).
 
 ---
 
-## 7. Tests (post-push)
+## 7. Tests (post-push / mega audit)
 
 | Suite | Exit | Result |
 |-------|------|--------|
 | `node --check index.js` | 0 | **PASS** |
-| `npm run test:preflight:fast` | 0 | **PASS** ù 155 passed, 0 failed |
+| `npm run test:preflight:fast` | 0 | **PASS** ? 157 passed, 0 failed (2026-07-24) |
 
 Stream guardrails unchanged: TikFinity ? MIA ? OBS; overlay exposes `miaPoints` only (no coin/gift value).
 
@@ -114,7 +115,7 @@ Because preflight passed, architecture doc added:
 
 - [`docs/MIA_ENGINE_2_0_ARCHITECTURE.md`](./MIA_ENGINE_2_0_ARCHITECTURE.md)
 
-**Explicit:** Graphics / Koj product work remains priority. Engine 2.0 is design-first; no overnight `index.js` split.
+**Explicit:** Graphics / Koj product work remains priority. Engine 2.0 is design-first; no overnight `index.js` split. **`MIA_ENGINE2_STUB` default OFF** ? not wired.
 
 ---
 
@@ -122,19 +123,20 @@ Because preflight passed, architecture doc added:
 
 | # | Blocker | Owner | Action |
 |---|---------|-------|--------|
-| 1 | Repo still **Public** | Human | GitHub ? Settings ? Danger zone ? Private (2026-07-24: browser needs login; `gh` not on PATH) |
-| 2 | SSH key not on GitHub | Human (optional) | Add pubkey at https://github.com/settings/keys ? switch remote to SSH if preferred |
-| 3 | Local pack bloat | Optional | After confirming backup, run `git gc --prune=now` (backup branch keeps old objects) |
-| 4 | `.gitignore` merge conflict in working tree | Fixed locally | Resolved conflict markers; not yet on GitHub unless committed |
+| 1 | ~~Repo Public~~ | ~~Human~~ | **DONE** ? Private confirmed 2026-07-24 |
+| 2 | ~~SSH key not on GitHub~~ | ~~Human~~ | **DONE** ? SSH remote active |
+| 3 | Local pack bloat | Optional | After confirming backup, run `git gc --prune=now` |
+| 4 | R1-C manual OBS gate | Human | See [`MIA_GRAPHICS_R1_STATUS.md`](./MIA_GRAPHICS_R1_STATUS.md) |
+| 5 | `.gitignore` local edits | Optional | Working tree change; not blocking audit |
 
 ---
 
 ## 10. Recommended next steps
 
-1. **Set repo Private** (Settings ? Danger zone) ó manual login required.
-2. Optionally add SSH key and `git remote set-url origin git@github.com:vrtyland-sketch/MIA.git`.
-3. Continue **graphics / Koj** sprint (Phase R1) ó primary product priority.
-4. When R1 gate passes: Phase **E1** ó GameState stub + OBS Router boundary behind `MIA_ENGINE2_STUB=0` (default OFF).
+1. **Mega audit** ? follow [`MIA_MEGA_AUDIT_2026-07-24.md`](./MIA_MEGA_AUDIT_2026-07-24.md) walk order.
+2. Complete **R1-C** manual OBS session ? primary product gate.
+3. After R1-C: optional tag **`v0.1.1-graphics`** (wait ? do not tag before sign-off).
+4. Phase **E1** ? GameState stub + OBS Router boundary behind `MIA_ENGINE2_STUB=0` (default OFF).
 5. When ready for canon import: separate commit for `shared/mia-*-core/` (not mixed with live `data/`).
 6. Tag **`v0.1-stream-core`** remains rollback checkpoint before Engine 2.0 wiring.
 
@@ -144,11 +146,13 @@ Because preflight passed, architecture doc added:
 
 | Item | Result |
 |------|--------|
-| Git sync | `master` @ `402b8ce3` matches `origin/master` |
-| Private repo attempt | **Not done** ó GitHub settings require login; `gh` CLI not installed |
-| New docs | [`MIA_ENGINE_2_0_ROADMAP.md`](./MIA_ENGINE_2_0_ROADMAP.md) |
-| Scaffold | `engine2/` ó GameState stub + OBS boundary README (not wired to `index.js`) |
+| Git sync | `master` @ `ddab7eb0` matches `origin/master` |
+| Private repo | **YES** ? operator confirmed; SSH fetch OK |
+| SSH remote | `git@github.com:vrtyland-sketch/MIA.git` |
+| New docs | [`MIA_ENGINE_2_0_ROADMAP.md`](./MIA_ENGINE_2_0_ROADMAP.md), [`MIA_MEGA_AUDIT_2026-07-24.md`](./MIA_MEGA_AUDIT_2026-07-24.md) |
+| Scaffold | `engine2/` ? GameState stub + OBS boundary README (not wired to `index.js`) |
 | Contract test | `tests/mia_engine2_roadmap_contract.js` added to preflight fast |
+| Graphics day | 11 slices pushed ? see [`MIA_GRAPHICS_DAYLOG.md`](./MIA_GRAPHICS_DAYLOG.md) |
 
 ---
 

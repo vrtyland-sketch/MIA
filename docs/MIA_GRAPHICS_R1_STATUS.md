@@ -1,7 +1,9 @@
 # MIA Graphics ? Phase R1 Status
 
 **Datum:** 2026-07-24  
-**Roadmap:** [`MIA_ENGINE_2_0_ROADMAP.md`](./MIA_ENGINE_2_0_ROADMAP.md) ?4  
+**Mega audit:** [`MIA_MEGA_AUDIT_2026-07-24.md`](./MIA_MEGA_AUDIT_2026-07-24.md)  
+**GitHub:** Private YES · SSH OK · `master` @ `ddab7eb0` synced  
+**Roadmap:** [`MIA_ENGINE_2_0_ROADMAP.md`](./MIA_ENGINE_2_0_ROADMAP.md) §4  
 **Freeze baseline:** `v=32-gfx-whole` ([`GRAPHICS_CHECKPOINT_v32.md`](./GRAPHICS_CHECKPOINT_v32.md))  
 **Active runtime bust:** `v=36-koj-unify` (speech / bowl / manifest URLs)  
 **Koj split bust:** `v=48-r1-duel-walk-polish` (`kojnozrout-runtime.html` + split libs)  
@@ -15,7 +17,7 @@
 |---|--------|---------------|--------|
 | **R1-A** | Koj runtime contract suites green | `node tests/kojnozout_runtime_split_contract.js` + `node tests/koj_public_snapshot_contract.js` + `node tests/mia_graphics_r1_contract.js` | ? automated |
 | **R1-B** | Public overlay exposes **miaPoints only** (no coins/gift value) | `node tests/overlay_public_response_contract.js` + `node tests/mia_graphics_r1_contract.js` (spamSession strip) | ? automated |
-| **R1-C** | Stable stream session: Koj mood/scene/combo wave react during gifts + spam wave; gift video rotation per-tier unchanged | Manual OBS session (checklist below) + `npm run test:preflight:fast` | ? manual gate open |
+| **R1-C** | Stable stream session: Koj mood/scene/combo wave react during gifts + spam wave; gift video rotation per-tier unchanged | Manual OBS session (checklist below) + `npm run test:preflight:fast` | ⏳ **manual gate open** |
 
 **Gate to E1:** R1 lead confirms one stable stream session (R1-C) ? optional tag `v0.1.1-graphics`.
 
@@ -52,7 +54,7 @@ Manual stream = jedna ?iv? OBS session, kde ?lov?k vizu?ln? potvrd? chov?n? over
 
 | Area | Note |
 |------|------|
-| Manual stream gate (R1-C) | One full session with OBS overlays ? team sign-off |
+| Manual stream gate (R1-C) | One full OBS session — 5-step checklist in § R1-C below; **blocks `v0.1.1-graphics` tag** |
 | Battle / duel / walk pose art pass | LOW ? v36 doc gaps; motion via cycles/FX |
 | Graphics freeze window doc | Formal ?E1 wiring freeze? paragraph after R1-C |
 | Optional tag | `v0.1.1-graphics` after R1-C |

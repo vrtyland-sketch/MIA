@@ -27,9 +27,14 @@ Append-only session notes for graphics/R1 work.
 
 **Pre-baseline (same R1 arc):** `cb717643` — Koj combo/spam wave polish on runtime split.
 
+### GitHub / audit (2026-07-24)
+
+- **Private repo:** YES (operator confirmed; SSH `git@github.com:vrtyland-sketch/MIA.git` OK)
+- **Mega audit entry:** [`MIA_MEGA_AUDIT_2026-07-24.md`](./MIA_MEGA_AUDIT_2026-07-24.md)
+
 ### Open backlog
 
-- R1-C manual stream sign-off (OBS)
+- **R1-C manual stream sign-off (OBS)** — only human gate; exact checklist in [`MIA_GRAPHICS_R1_STATUS.md`](./MIA_GRAPHICS_R1_STATUS.md) § R1-C
 - Battle/duel/walk **art** pass (LOW — CSS/runtime polish done in slice 11)
 - Graphics freeze window doc after R1-C
-- Optional tag `v0.1.1-graphics` after R1-C
+- Optional tag `v0.1.1-graphics` after R1-C (**wait** — do not tag before R1-C)
