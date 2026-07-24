@@ -290,6 +290,44 @@ test("sleepy koj ignores gift video reaction", () => {
   assert.equal(snap.spriteAsset, "sleepy");
 });
 
+test("spam milestone combo sets celebrationFocus and avoids wave-left chat flop", () => {
+  const now = Date.now();
+  const extras = {
+    comboMoment: {
+      kind: "SPAM_MILESTONE",
+      source: "spam_reward",
+      holdUntilTs: now + 8000
+    }
+  };
+  assert.equal(display.isSpeechOrStoryMoment(extras, now), true);
+  const snap = display.buildKojDisplaySnapshot(
+    { mood: "happy", behavior: "play_with_chat", lastPingAt: now - 500, bowlPercent: 40 },
+    { need: "happy" },
+    now,
+    extras
+  );
+  assert.equal(snap.celebrationFocus, true);
+  assert.notEqual(snap.spriteAsset, "wave-left");
+  assert.notEqual(snap.spriteAsset, "wave-right");
+});
+
+test("ambient wave pose is replaced during speech bubble window", () => {
+  const now = Date.now();
+  const mood = display.resolveAmbientSpriteMood(
+    "idle",
+    {},
+    now,
+    {
+      kojnozoutOverlay: {
+        text: "Ahoj komunito!",
+        holdUntilTs: now + 5000
+      }
+    }
+  );
+  assert.notEqual(mood, "wave");
+  assert.notEqual(mood, "wave-left");
+});
+
 test("ambient warm mood rotates sprite poses", () => {
   const a = display.resolveAmbientSpriteMood("warm", {}, 0);
   const b = display.resolveAmbientSpriteMood("warm", {}, 12000);
@@ -313,6 +351,25 @@ test("buildKojDisplaySnapshot always includes moodEmoji string", () => {
   );
   assert.equal(typeof snap.moodEmoji, "string");
   assert.ok(snap.moodEmoji.length > 0);
+});
+
+test("isSpeechOrStoryMoment detects active overlay and story visual", () => {
+  const now = Date.now();
+  assert.equal(
+    display.isSpeechOrStoryMoment(
+      { storyVisual: { active: true, holdUntilTs: now + 5000 } },
+      now
+    ),
+    true
+  );
+  assert.equal(
+    display.isSpeechOrStoryMoment(
+      { miaOverlay: { text: "Ahoj", holdUntilTs: now + 3000 } },
+      now
+    ),
+    true
+  );
+  assert.equal(display.isSpeechOrStoryMoment({}, now), false);
 });
 
 test("video reaction holds briefly after playback ends", () => {

@@ -8,10 +8,12 @@ Append-only session notes for graphics/R1 work.
 
 **Baseline:** `0b6fdc65`  
 **Preflight:** green throughout session  
-**Split bust trail:** `44-r1-combo` ? `45-r1-combo-belly` ? `46-r1-live-hype` ? `47-r1-tech-hype` ? `48-r1-duel-walk-polish`
+**Split bust trail:** `44-r1-combo` ? … ? `48-r1-duel-walk-polish` ? `49-r1-milestone-polish`
 
 | # | Commit | Slice | Pushed |
 |---|--------|-------|--------|
+| — | *(pending)* | Milestone pre-speech: hide avatar strip, stop wave flop, short hand gesture | — |
+
 | 0 | `0b6fdc65` | R1 acceptance contract + R1-C checklist | yes |
 | 1 | `1f52ff98` | Combo moment belly HUD | yes |
 | 2 | `c942fc53` | Dashboard manifest cache-bust links | yes |

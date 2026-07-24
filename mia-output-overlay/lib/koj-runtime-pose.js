@@ -132,6 +132,61 @@
     return typeof v === "string" && v.trim() ? v.trim() : "";
   }
 
+  function toNumber(v, fallback = 0) {
+    const n = Number(v);
+    return Number.isFinite(n) ? n : fallback;
+  }
+
+  function isMomentLive(moment, now = Date.now()) {
+    if (!moment || typeof moment !== "object") return false;
+    const holdUntil = toNumber(moment.holdUntilTs || moment.expiresAt || moment.until, 0);
+    if (holdUntil > 0) return holdUntil > now;
+    return Boolean(moment.active);
+  }
+
+  function overlayHasSpeechText(overlay, now = Date.now()) {
+    if (!overlay || typeof overlay !== "object") return false;
+    const text = safe(overlay.text || overlay.overlay_text || overlay.speech_text);
+    if (!text) return false;
+    const holdUntil = toNumber(overlay.holdUntilTs, 0);
+    return holdUntil === 0 || holdUntil > now;
+  }
+
+  function isSpeechStoryMoment(data, now = Date.now()) {
+    if (data?.kojDisplay?.celebrationFocus === true) return true;
+    if (isMomentLive(data?.storyVisual, now)) return true;
+    if (isMomentLive(data?.giftVisual, now)) return true;
+    const vp = data?.voicePlayback;
+    if (vp && safe(vp.textPreview || vp.translated)) {
+      const holdUntil = toNumber(vp.holdUntilTs, 0);
+      if (holdUntil > now) return true;
+      const updatedAt = toNumber(vp.updatedAt, 0);
+      if (updatedAt > 0 && now - updatedAt < 12000) return true;
+    }
+    if (overlayHasSpeechText(data?.miaOverlay, now)) return true;
+    if (overlayHasSpeechText(data?.kojnozoutOverlay, now)) return true;
+    if (overlayHasSpeechText(data?.kojnozroutOverlay, now)) return true;
+    const combo = data?.comboMoment;
+    if (isMomentLive(combo, now)) {
+      const kind = safe(combo.kind).toUpperCase();
+      const source = safe(combo.source).toLowerCase();
+      if (
+        kind === "SPAM_MILESTONE" ||
+        kind === "ACHIEVEMENT" ||
+        source === "achievement" ||
+        source === "spam_reward"
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function isWaveSpriteKey(key = "") {
+    const k = safe(key).toLowerCase();
+    return k === "wave" || k.startsWith("wave-");
+  }
+
   /** Soft Neon cyborg: rest/sleep/cozy banks must stay on idle/warm/happy — never purple curl. */
   function forceCyborgRestFrames(poseCycles) {
     const cycles = Array.isArray(poseCycles) ? poseCycles : [];
@@ -361,6 +416,7 @@
       const key = resolvePropKey(data);
       const displayMood = resolvePropDisplayMood(data);
       const speaking = isKojSpeaking(data, now);
+      const speechMoment = isSpeechStoryMoment(data, now);
       const vr = data?.kojVideoReaction || kd.videoReaction;
       const blocked =
         key === "sleepy" || key === "sick" || key === "sad" || (vr && vr.active);
@@ -370,9 +426,14 @@
 
       const forcedProp = itemUse?.active ? safe(itemUse.prop).toLowerCase() : "";
       const wantHand =
-        forcedProp === "hand" || carePetting || (!blocked && HAND_KEYS.has(key));
+        forcedProp === "hand" || carePetting || (!blocked && !speechMoment && HAND_KEYS.has(key));
       const wantMic =
-        !forcedProp && !blocked && !wantHand && (speaking || wantsMicProp(key, displayMood));
+        !forcedProp &&
+        !blocked &&
+        !wantHand &&
+        !speechMoment &&
+        !isWaveSpriteKey(key) &&
+        (speaking || wantsMicProp(key, displayMood));
       const wantBall =
         forcedProp === "ball" ||
         (!forcedProp && !blocked && !wantHand && !wantMic && wantsBallProp(key, displayMood));

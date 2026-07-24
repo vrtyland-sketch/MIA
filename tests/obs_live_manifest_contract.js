@@ -45,14 +45,14 @@ test("buildSplitUrls busts speech / runtime / bowl with GFX_CACHE_BUST; gift wit
   assert.match(urls.giftAnimation, new RegExp(`gift-animation-overlay\\.html\\?${giftBust}`));
   assert.equal(manifest.GFX_CACHE_BUST, "36-koj-unify");
   assert.equal(manifest.GIFT_ANIM_CACHE_BUST, "37-stream-polish");
-  assert.equal(manifest.KOJ_SPLIT_CACHE_BUST, "48-r1-duel-walk-polish");
+  assert.equal(manifest.KOJ_SPLIT_CACHE_BUST, "49-r1-milestone-polish");
 });
 
 test("buildLiveManifest exposes cache bust fields for studio desks", () => {
   const live = manifest.buildLiveManifest({ port: 3000 });
   assert.equal(live.gfxCacheBust, "36-koj-unify");
   assert.equal(live.giftAnimCacheBust, "37-stream-polish");
-  assert.equal(live.kojSplitCacheBust, "48-r1-duel-walk-polish");
+  assert.equal(live.kojSplitCacheBust, "49-r1-milestone-polish");
 });
 
 test("buildSplitUrls includes viewerStrip", () => {

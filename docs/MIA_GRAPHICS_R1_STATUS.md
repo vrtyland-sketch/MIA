@@ -6,7 +6,7 @@
 **Roadmap:** [`MIA_ENGINE_2_0_ROADMAP.md`](./MIA_ENGINE_2_0_ROADMAP.md) §4  
 **Freeze baseline:** `v=32-gfx-whole` ([`GRAPHICS_CHECKPOINT_v32.md`](./GRAPHICS_CHECKPOINT_v32.md))  
 **Active runtime bust:** `v=36-koj-unify` (speech / bowl / manifest URLs)  
-**Koj split bust:** `v=48-r1-duel-walk-polish` (`kojnozrout-runtime.html` + split libs)  
+**Koj split bust:** `v=49-r1-milestone-polish` (`kojnozrout-runtime.html` + split libs)  
 **Gift overlay bust:** `v=37-stream-polish` (beze zm?ny)
 
 ---
@@ -43,7 +43,7 @@ Manual stream = jedna ?iv? OBS session, kde ?lov?k vizu?ln? potvrd? chov?n? over
 - **Belly HUD wave:** `buildSpamWaveBellyContent` shows progress bar + countdown on Koj belly during active spam wave (no coin fields).
 - **Split cache bust:** `43-koj-split` ? `44-r1-combo` ? `45-r1-combo-belly` on runtime HTML + split libs only (36 / 37 unchanged).
 - **Combo belly HUD:** `buildComboMomentBellyContent` ? title/subtext/count on belly during combo moment (no coins).
-- **Live motion hype:** `KojLiveMotion.isHype` boosts sway during combo/spam stage classes (split bust trail through `48-r1-duel-walk-polish`).
+- **Live motion hype:** `KojLiveMotion.isHype` boosts sway during combo/spam stage classes (split bust trail through `49-r1-milestone-polish`).
 - **Duel/battle/walk CSS polish:** Soft Neon purple rim on duel/battle; walk-frame contact shadow (slice 11, no new art).
 - **Tech-energy hype:** `MiaTechEnergy.isHype` on Koj runtime + speech holo + gift overlay idle stage.
 - **Speech holo parity:** `#miaHolo` combo-pulse/urgent CSS + `syncMiaHoloHype`; bubble `combo-hype` rim during wave.
@@ -67,7 +67,7 @@ Manual stream = jedna ?iv? OBS session, kde ?lov?k vizu?ln? potvrd? chov?n? over
 |-------|------|
 | Speech / bowl / manifest | `36-koj-unify` |
 | Gift overlay / desk | `37-stream-polish` |
-| Koj runtime split | `48-r1-duel-walk-polish` |
+| Koj runtime split | `49-r1-milestone-polish` |
 
 Refresh after deploy: `npm run obs:refresh-overlays`
 

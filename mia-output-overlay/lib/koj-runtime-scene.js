@@ -57,6 +57,44 @@
     return Boolean(moment.active);
   }
 
+  function overlayHasSpeechText(overlay, now = Date.now()) {
+    if (!overlay || typeof overlay !== "object") return false;
+    const text = safe(overlay.text || overlay.overlay_text || overlay.speech_text);
+    if (!text) return false;
+    const holdUntil = toNumber(overlay.holdUntilTs, 0);
+    return holdUntil === 0 || holdUntil > now;
+  }
+
+  /** Hide viewer chips during milestone flash / speech bubble (server flag + client fallback). */
+  function isCelebrationFocus(data = {}, now = Date.now()) {
+    if (data?.kojDisplay?.celebrationFocus === true) return true;
+    if (isMomentLive(data?.storyVisual, now)) return true;
+    if (isMomentLive(data?.giftVisual, now)) return true;
+    const vp = data?.voicePlayback;
+    if (vp && safe(vp.textPreview || vp.translated)) {
+      if (toNumber(vp.holdUntilTs, 0) > now) return true;
+      const updatedAt = toNumber(vp.updatedAt, 0);
+      if (updatedAt > 0 && now - updatedAt < 12000) return true;
+    }
+    if (overlayHasSpeechText(data?.miaOverlay, now)) return true;
+    if (overlayHasSpeechText(data?.kojnozoutOverlay, now)) return true;
+    if (overlayHasSpeechText(data?.kojnozroutOverlay, now)) return true;
+    const combo = data?.comboMoment;
+    if (isMomentLive(combo, now)) {
+      const kind = safe(combo?.kind).toUpperCase();
+      const source = safe(combo?.source).toLowerCase();
+      if (
+        kind === "SPAM_MILESTONE" ||
+        kind === "ACHIEVEMENT" ||
+        source === "achievement" ||
+        source === "spam_reward"
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   function resolveScene(displayMood, data, now = Date.now()) {
     const mood = safe(displayMood).toLowerCase();
     const vr = data?.kojVideoReaction || data?.kojDisplay?.videoReaction;
@@ -203,6 +241,16 @@
 
     function renderViewers(data) {
       if (!viewerStrip) return;
+      const now = Date.now();
+      if (isCelebrationFocus(data, now)) {
+        if (lastViewerSignature !== "__hidden__") {
+          lastViewerSignature = "__hidden__";
+          viewerStrip.innerHTML = "";
+          viewerStrip.classList.add("hidden");
+        }
+        return;
+      }
+      viewerStrip.classList.remove("hidden");
       const participants = Array.isArray(data?.recentParticipants)
         ? data.recentParticipants
         : [];
@@ -237,6 +285,8 @@
         const avatar = safe(p?.avatarUrl);
         const img = createElement("img");
         img.alt = label;
+        img.decoding = "async";
+        img.referrerPolicy = "no-referrer";
         img.src = avatar || DEFAULT_FOLLOWER;
         img.onerror = () => {
           if (img.src.indexOf(DEFAULT_FOLLOWER) === -1) {
@@ -263,6 +313,7 @@
       syncSceneAccents,
       syncScene,
       renderViewers,
+      isCelebrationFocus,
       getCurrentScene: () => currentScene,
       initials,
       isDonorParticipant
@@ -277,6 +328,7 @@
     create,
     resolveScene,
     isMomentLive,
+    isCelebrationFocus,
     initials,
     isDonorParticipant
   };

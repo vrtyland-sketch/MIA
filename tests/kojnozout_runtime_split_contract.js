@@ -39,7 +39,8 @@ const {
   create: createKojRuntimeScene,
   resolveScene,
   initials,
-  isDonorParticipant
+  isDonorParticipant,
+  isCelebrationFocus
 } = require("../mia-output-overlay/lib/koj-runtime-scene");
 const {
   create: createKojRuntimePose,
@@ -120,7 +121,7 @@ test("runtime html loads sprite engine and cache-busts split libs", () => {
   );
   assert.ok(html.includes("koj-runtime-sprite.js"), "loads koj-runtime-sprite.js");
   assert.ok(html.includes("KojRuntimeSprite.create"), "creates sprite engine");
-  assert.ok(html.includes("48-r1-duel-walk-polish"), "cache bust 48-r1-duel-walk-polish");
+  assert.ok(html.includes("49-r1-milestone-polish"), "cache bust 49-r1-milestone-polish");
   assert.ok(!html.includes("const textureCache = new Map()"), "texture cache lives in lib");
   assert.ok(!html.includes("crossfadeHideTimer"), "crossfade timer lives in lib");
 });
@@ -138,7 +139,7 @@ test("sprite engine builds mood/asset urls and shares mutable state", () => {
   };
   const engine = createKojRuntimeSprite({
     apiBase: "http://127.0.0.1:3000",
-    cacheV: "48-r1-duel-walk-polish",
+    cacheV: "49-r1-milestone-polish",
     sharedState: shared,
     spriteA: { style: {}, classList: { add() {}, remove() {}, contains() { return false; } } },
     spriteB: { style: {}, classList: { add() {}, remove() {}, contains() { return false; } } },
@@ -150,7 +151,7 @@ test("sprite engine builds mood/asset urls and shares mutable state", () => {
     engine.moodAsset("idle"),
     "assets/kojnozrout/moods/kojnozout-idle.png"
   );
-  assert.ok(engine.assetUrl("assets/kojnozrout/moods/kojnozout-idle.png").includes("v=48-r1-duel-walk-polish"));
+  assert.ok(engine.assetUrl("assets/kojnozrout/moods/kojnozout-idle.png").includes("v=49-r1-milestone-polish"));
   assert.equal(engine.minSwapMs("sleepy"), 3200);
   assert.equal(engine.minSwapMs("eating"), 650);
   shared.currentImgUrl = "x";
@@ -282,6 +283,12 @@ test("scene helpers map mood to backdrop and mark donors without coin values", (
     sceneAccentsEl: { innerHTML: "", appendChild() {} },
     viewerStrip: {
       innerHTML: "",
+      classList: {
+        _c: new Set(),
+        add(...xs) { xs.forEach((x) => this._c.add(x)); },
+        remove(...xs) { xs.forEach((x) => this._c.delete(x)); },
+        contains(x) { return this._c.has(x); }
+      },
       appendChild(node) { appended.push(node); }
     },
     assetUrl: (p) => `http://127.0.0.1:3000/${p}`,
@@ -317,6 +324,60 @@ test("scene helpers map mood to backdrop and mark donors without coin values", (
   assert.equal(appended.length, 1);
   assert.ok(String(appended[0].className).includes("donor"));
   assert.ok(!JSON.stringify(appended[0]).toLowerCase().includes("coin"));
+});
+
+test("scene hides viewer strip during speech/story moment", () => {
+  const now = Date.now();
+  assert.equal(
+    isCelebrationFocus(
+      { miaOverlay: { text: "Milník!", holdUntilTs: now + 5000 } },
+      now
+    ),
+    true
+  );
+  const classList = {
+    _c: new Set(),
+    add(...xs) { xs.forEach((x) => this._c.add(x)); },
+    remove(...xs) { xs.forEach((x) => this._c.delete(x)); },
+    toggle(x, on) { if (on) this._c.add(x); else this._c.delete(x); },
+    contains(x) { return this._c.has(x); }
+  };
+  const appended = [];
+  const scene = createKojRuntimeScene({
+    stageEl: { classList },
+    sceneLayer: { classList },
+    sceneAccentsEl: { innerHTML: "", appendChild() {} },
+    viewerStrip: {
+      innerHTML: "x",
+      className: "",
+      classList: {
+        _c: new Set(),
+        add(x) { this._c.add(x); },
+        remove(x) { this._c.delete(x); },
+        contains(x) { return this._c.has(x); }
+      },
+      appendChild(node) { appended.push(node); }
+    },
+    assetUrl: (p) => `http://127.0.0.1:3000/${p}`,
+    getSearch: () => "",
+    createElement: (tag) => ({
+      tagName: tag,
+      className: "",
+      title: "",
+      alt: "",
+      src: "",
+      textContent: "",
+      style: { setProperty() {}, width: "", bottom: "", objectPosition: "" },
+      classList: { add() {}, remove() {} },
+      appendChild() {},
+      remove() {}
+    })
+  });
+  scene.renderViewers({
+    recentParticipants: [{ userLabel: "Ada", userId: "u1", type: "chat" }],
+    miaOverlay: { text: "Děkujeme!", holdUntilTs: now + 6000 }
+  });
+  assert.equal(appended.length, 0);
 });
 
 test("runtime html loads pose/props engine", () => {

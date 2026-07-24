@@ -74,6 +74,51 @@ function isMomentActive(moment, now = Date.now()) {
   return Boolean(moment.active);
 }
 
+function overlayHasSpeechText(overlay, now = Date.now()) {
+  if (!overlay || typeof overlay !== "object") return false;
+  const text = safeString(overlay.text || overlay.overlay_text || overlay.speech_text);
+  if (!text) return false;
+  const holdUntil = toNumber(overlay.holdUntilTs, 0);
+  return holdUntil === 0 || holdUntil > now;
+}
+
+/** Combo flash before speech bubble (first spam/achievement milestone). */
+function isMilestoneCelebrationPending(extras = {}, now = Date.now()) {
+  const combo = extras.comboMoment;
+  if (!isMomentActive(combo, now)) return false;
+  const kind = safeString(combo.kind).toUpperCase();
+  const source = safeString(combo.source).toLowerCase();
+  return (
+    kind === "SPAM_MILESTONE" ||
+    kind === "ACHIEVEMENT" ||
+    source === "achievement" ||
+    source === "spam_reward"
+  );
+}
+
+/** Milestone / speech bubble window — suppress ambient wave + viewer chips. */
+function isSpeechOrStoryMoment(extras = {}, now = Date.now()) {
+  if (isMilestoneCelebrationPending(extras, now)) return true;
+  if (isMomentActive(extras.storyVisual, now)) return true;
+  if (isMomentActive(extras.giftVisual, now)) return true;
+  const vp = extras.voicePlayback;
+  if (vp && safeString(vp.textPreview)) {
+    const holdUntil = toNumber(vp.holdUntilTs, 0);
+    if (holdUntil > now) return true;
+    const updatedAt = toNumber(vp.updatedAt, 0);
+    if (updatedAt > 0 && now - updatedAt < 12000) return true;
+  }
+  if (overlayHasSpeechText(extras.miaOverlay, now)) return true;
+  if (overlayHasSpeechText(extras.kojnozoutOverlay, now)) return true;
+  if (overlayHasSpeechText(extras.kojnozroutOverlay, now)) return true;
+  return false;
+}
+
+function isWaveSpriteKey(key = "") {
+  const k = safeString(key).toLowerCase();
+  return k === "wave" || k.startsWith("wave-");
+}
+
 function resolveBowlMeta(state = {}) {
   return state?.bowl?.meta && typeof state.bowl.meta === "object" ? state.bowl.meta : {};
 }
@@ -114,7 +159,7 @@ function resolveOverlayMomentMood(extras = {}, now = Date.now()) {
   return null;
 }
 
-function resolveBehaviorContextMood(state = {}, now = Date.now()) {
+function resolveBehaviorContextMood(state = {}, now = Date.now(), extras = {}) {
   const behavior = safeString(state.behavior).toLowerCase();
   const stage = safeString(state.stage || state?.bowl?.stage).toLowerCase();
   const meta = resolveBowlMeta(state);
@@ -143,7 +188,8 @@ function resolveBehaviorContextMood(state = {}, now = Date.now()) {
     return "hop";
   }
   if (behavior === "play_with_chat" && now - lastPingAt < CONTEXT_PULSE_MS.chat) {
-    return Math.floor(now / 900) % 2 === 0 ? "wave-left" : "wave-right";
+    if (isSpeechOrStoryMoment(extras, now)) return "thanks-bow";
+    return "wave";
   }
   if (
     (behavior === "support_feed" || behavior === "big_feed") &&
@@ -175,7 +221,7 @@ function pickFromPool(pool, state = {}, now = Date.now()) {
   return pool[(tick + offset) % pool.length];
 }
 
-function resolveAmbientSpriteMood(baseMood, state = {}, now = Date.now()) {
+function resolveAmbientSpriteMood(baseMood, state = {}, now = Date.now(), extras = {}) {
   const base = safeString(baseMood).toLowerCase() || "idle";
   const tier = safeString(state.evolutionTier || state?.evolution?.tier).toLowerCase();
   const behavior = safeString(state.behavior).toLowerCase();
@@ -192,7 +238,11 @@ function resolveAmbientSpriteMood(baseMood, state = {}, now = Date.now()) {
   }
 
   const pool = AMBIENT_POSE_POOLS[base];
-  return pickFromPool(pool, state, now) || base;
+  const picked = pickFromPool(pool, state, now) || base;
+  if (isSpeechOrStoryMoment(extras, now) && isWaveSpriteKey(picked)) {
+    return "thanks-bow";
+  }
+  return picked;
 }
 
 function resolveCommunityChatMood(extras = {}, now = Date.now()) {
@@ -211,15 +261,25 @@ function resolveContextualDisplayMood(baseMood, state = {}, extras = {}, now = D
   const overlayMood = resolveOverlayMomentMood(extras, now);
   if (overlayMood) return overlayMood;
 
-  const behaviorMood = resolveBehaviorContextMood(state, now);
-  if (behaviorMood) return behaviorMood;
+  const behaviorMood = resolveBehaviorContextMood(state, now, extras);
+  if (behaviorMood) {
+    if (isSpeechOrStoryMoment(extras, now) && isWaveSpriteKey(behaviorMood)) {
+      return "thanks-bow";
+    }
+    return behaviorMood;
+  }
 
   const communitySprite = resolveCommunityChatMood(extras, now);
-  if (communitySprite) return communitySprite;
+  if (communitySprite) {
+    if (isSpeechOrStoryMoment(extras, now) && isWaveSpriteKey(communitySprite)) {
+      return "thanks-bow";
+    }
+    return communitySprite;
+  }
 
   if (VITAL_LOCKED_MOODS.has(base)) return base;
 
-  return resolveAmbientSpriteMood(base, state, now);
+  return resolveAmbientSpriteMood(base, state, now, extras);
 }
 
 function resolveKojDisplayMood(state = {}, care = {}, now = Date.now()) {
@@ -708,6 +768,7 @@ function buildKojDisplaySnapshot(state = {}, care = {}, now = Date.now(), extras
           elapsedMs: reaction.elapsedMs
         }
       : { active: false, phase: "idle" },
+    celebrationFocus: isSpeechOrStoryMoment(extras, now),
     updatedAt: now
   };
 }
@@ -720,6 +781,9 @@ module.exports = {
   isSleepingState,
   isFeedingPulse,
   isMomentActive,
+  isSpeechOrStoryMoment,
+  isMilestoneCelebrationPending,
+  isWaveSpriteKey,
   resolveKojDisplayMood,
   resolveContextualDisplayMood,
   resolveBehaviorContextMood,

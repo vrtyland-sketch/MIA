@@ -11,7 +11,7 @@
       height: 100%;
       overflow: hidden;
       background: transparent;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: "Exo 2", "Segoe UI", sans-serif;
     }
 
     #strip {
@@ -20,32 +20,41 @@
       bottom: 28px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 10px 14px;
+      gap: 8px;
+      padding: 8px 12px;
       border-radius: 999px;
-      background: rgba(0, 0, 0, 0.58);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(4, 18, 24, 0.62);
+      border: 1px solid rgba(120, 255, 220, 0.22);
       backdrop-filter: blur(10px);
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+      box-shadow:
+        0 8px 22px rgba(0, 0, 0, 0.32),
+        0 0 18px rgba(100, 235, 200, 0.1);
       max-width: calc(100% - 56px);
       overflow: hidden;
+      transition: opacity 280ms ease, visibility 280ms ease;
+    }
+
+    #strip.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
     }
 
     .avatar {
       position: relative;
-      width: 42px;
-      height: 42px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       flex: 0 0 auto;
       overflow: hidden;
-      background: linear-gradient(135deg, rgba(155, 92, 255, 0.85), rgba(0, 234, 255, 0.75));
-      border: 2px solid rgba(255, 255, 255, 0.22);
+      background: linear-gradient(160deg, rgba(42, 74, 82, 0.95), rgba(18, 32, 40, 0.98));
+      border: 1.5px solid rgba(120, 255, 220, 0.42);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #fff;
-      font-size: 14px;
-      font-weight: 900;
+      color: #e8fffa;
+      font-size: 11px;
+      font-weight: 800;
       text-transform: uppercase;
     }
 
@@ -53,28 +62,29 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center 32%;
       display: block;
     }
 
     .avatar.gift {
-      border-color: rgba(255, 214, 111, 0.95);
-      box-shadow: 0 0 0 2px rgba(255, 214, 111, 0.18);
+      border-color: rgba(255, 208, 96, 0.72);
+      box-shadow: 0 0 0 1px rgba(255, 208, 96, 0.28);
     }
 
     .avatar.gift::after {
       content: attr(data-tier);
       position: absolute;
-      right: -4px;
-      bottom: -5px;
-      min-width: 18px;
-      padding: 1px 4px;
+      right: -3px;
+      bottom: -4px;
+      min-width: 16px;
+      padding: 1px 3px;
       border-radius: 999px;
-      font-size: 9px;
+      font-size: 8px;
       font-weight: 900;
       line-height: 1.2;
       text-align: center;
       color: #111;
-      background: rgba(255, 214, 111, 0.95);
+      background: rgba(255, 208, 96, 0.95);
       filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
     }
 
@@ -86,17 +96,17 @@
       padding: 0;
     }
 
-    .avatar.tiktok { border-color: rgba(255, 45, 85, 0.55); }
-    .avatar.kick { border-color: rgba(0, 255, 102, 0.55); }
+    .avatar.tiktok { border-color: rgba(255, 45, 85, 0.45); }
+    .avatar.kick { border-color: rgba(0, 255, 102, 0.45); }
 
     .label {
-      color: rgba(255, 255, 255, 0.72);
-      font-size: 11px;
+      color: rgba(200, 245, 235, 0.78);
+      font-size: 10px;
       font-weight: 800;
       letter-spacing: 0.35px;
       text-transform: uppercase;
       white-space: nowrap;
-      margin-right: 4px;
+      margin-right: 2px;
     }
   </style>
 </head>
@@ -109,6 +119,54 @@
 
     function safeText(value, fallback = "") {
       return typeof value === "string" && value.trim() ? value.trim() : fallback;
+    }
+
+    function toNumber(value, fallback = 0) {
+      const n = Number(value);
+      return Number.isFinite(n) ? n : fallback;
+    }
+
+    function isMomentLive(moment, now = Date.now()) {
+      if (!moment || typeof moment !== "object") return false;
+      const holdUntil = toNumber(moment.holdUntilTs || moment.expiresAt || moment.until, 0);
+      if (holdUntil > 0) return holdUntil > now;
+      return Boolean(moment.active);
+    }
+
+    function overlayHasSpeechText(overlay, now = Date.now()) {
+      if (!overlay || typeof overlay !== "object") return false;
+      const text = safeText(overlay.text || overlay.overlay_text || overlay.speech_text);
+      if (!text) return false;
+      const holdUntil = toNumber(overlay.holdUntilTs, 0);
+      return holdUntil === 0 || holdUntil > now;
+    }
+
+    function shouldHideStrip(data, now = Date.now()) {
+      if (data?.kojDisplay?.celebrationFocus === true) return true;
+      if (isMomentLive(data?.storyVisual, now)) return true;
+      if (isMomentLive(data?.giftVisual, now)) return true;
+      const vp = data?.voicePlayback;
+      if (vp && safeText(vp.textPreview || vp.translated)) {
+        if (toNumber(vp.holdUntilTs, 0) > now) return true;
+        if (toNumber(vp.updatedAt, 0) > 0 && now - toNumber(vp.updatedAt, 0) < 12000) return true;
+      }
+      if (overlayHasSpeechText(data?.miaOverlay, now)) return true;
+      if (overlayHasSpeechText(data?.kojnozoutOverlay, now)) return true;
+      if (overlayHasSpeechText(data?.kojnozroutOverlay, now)) return true;
+      const combo = data?.comboMoment;
+      if (isMomentLive(combo, now)) {
+        const kind = safeText(combo.kind).toUpperCase();
+        const source = safeText(combo.source).toLowerCase();
+        if (
+          kind === "SPAM_MILESTONE" ||
+          kind === "ACHIEVEMENT" ||
+          source === "achievement" ||
+          source === "spam_reward"
+        ) {
+          return true;
+        }
+      }
+      return false;
     }
 
     function initials(name) {
@@ -135,18 +193,16 @@
           tier: safeText(item.tier).toUpperCase(),
           ts: Number(item.ts || 0)
         }))
-        .slice(0, 8);
+        .slice(0, 6);
     }
 
-    function buildSignature(list) {
-      return JSON.stringify(
-        list.map((item) => ({
-          u: item.user,
-          a: item.avatarUrl,
-          t: item.type,
-          p: item.platform
-        }))
-      );
+    function buildSignature(list, hidden) {
+      return JSON.stringify({ hidden, list: list.map((item) => ({
+        u: item.user,
+        a: item.avatarUrl,
+        t: item.type,
+        p: item.platform
+      })) });
     }
 
     function render(list) {
@@ -182,6 +238,7 @@
           img.alt = item.user;
           img.referrerPolicy = "no-referrer";
           img.loading = "lazy";
+          img.decoding = "async";
           img.onerror = () => {
             if (avatarUrl !== DEFAULT_AVATAR) {
               img.src = DEFAULT_AVATAR;
@@ -201,12 +258,24 @@
 
     async function tick() {
       try {
-        const res = await fetch("/overlay-state?_=" + Date.now(), { cache: "no-store" });
+        const now = Date.now();
+        const res = await fetch("/overlay-state?_=" + now, { cache: "no-store" });
         if (!res.ok) throw new Error("overlay-state " + res.status);
 
         const data = await res.json();
+        const hidden = shouldHideStrip(data, now);
+        strip.classList.toggle("hidden", hidden);
+        if (hidden) {
+          if (lastSignature !== "__hidden__") {
+            lastSignature = "__hidden__";
+            strip.innerHTML = "";
+            strip.style.display = "none";
+          }
+          return;
+        }
+
         const participants = normalizeParticipants(data?.recentParticipants || []);
-        const signature = buildSignature(participants);
+        const signature = buildSignature(participants, false);
 
         if (signature !== lastSignature) {
           lastSignature = signature;

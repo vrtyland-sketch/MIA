@@ -21,7 +21,7 @@ const { create: createKojRuntimeStage } = require("../mia-output-overlay/lib/koj
 const { resolveScene } = require("../mia-output-overlay/lib/koj-runtime-scene");
 const { buildSpamWaveBellyContent, buildComboMomentBellyContent } = require("../mia-output-overlay/lib/koj-runtime-belly");
 
-const KOJ_SPLIT_BUST = "48-r1-duel-walk-polish";
+const KOJ_SPLIT_BUST = "49-r1-milestone-polish";
 
 function test(name, fn) {
   try {
@@ -77,7 +77,7 @@ test("R1 status doc lists acceptance gates and dual bust layers", () => {
   assert.ok(doc.includes("R1-C how to verify"));
 });
 
-test("dual bust invariant: OBS manifest 36/37; split runtime libs 48-r1-duel-walk-polish", () => {
+test("dual bust invariant: OBS manifest 36/37; split runtime libs 49-r1-milestone-polish", () => {
   assert.equal(manifest.GFX_CACHE_BUST, "36-koj-unify");
   assert.equal(manifest.GIFT_ANIM_CACHE_BUST, "37-stream-polish");
   assert.equal(manifest.KOJ_SPLIT_CACHE_BUST, KOJ_SPLIT_BUST);
