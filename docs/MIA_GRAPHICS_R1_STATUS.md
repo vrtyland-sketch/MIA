@@ -41,7 +41,11 @@ Manual stream = jedna ?iv? OBS session, kde ?lov?k vizu?ln? potvrd? chov?n? over
 - **Belly HUD wave:** `buildSpamWaveBellyContent` shows progress bar + countdown on Koj belly during active spam wave (no coin fields).
 - **Split cache bust:** `43-koj-split` ? `44-r1-combo` ? `45-r1-combo-belly` on runtime HTML + split libs only (36 / 37 unchanged).
 - **Combo belly HUD:** `buildComboMomentBellyContent` ? title/subtext/count on belly during combo moment (no coins).
-- **R1 acceptance contract:** `tests/mia_graphics_r1_contract.js` ? dual bust invariant, combo CSS selectors, pulse/urgent thresholds, public spamSession strip (preflight fast).
+- **Live motion hype:** `KojLiveMotion.isHype` boosts sway during combo/spam stage classes (split bust `46-r1-live-hype` -> `47-r1-tech-hype`).
+- **Tech-energy hype:** `MiaTechEnergy.isHype` on Koj runtime + speech holo + gift overlay idle stage.
+- **Speech holo parity:** `#miaHolo` combo-pulse/urgent CSS + `syncMiaHoloHype`; bubble `combo-hype` rim during wave.
+- **Dashboard operator:** `spamHype` row shows wave/pulse/urgent % from miaPoints progress.
+- **R1 acceptance contract:** `tests/mia_graphics_r1_contract.js` ? dual bust invariant, combo CSS selectors, pulse/urgent thresholds, public spamSession strip, speech/gift hype wiring (preflight fast).
 
 ### Still open for R1
 
