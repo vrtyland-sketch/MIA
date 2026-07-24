@@ -82,6 +82,16 @@ html, body {
     inset 0 1px 0 rgba(180, 210, 255, 0.14);
   border-color: rgba(140, 190, 255, 0.48);
 }
+#box.show.combo-hype {
+  border-color: rgba(200, 130, 255, 0.52);
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.48),
+    0 0 18px rgba(180, 100, 255, 0.28),
+    inset 0 1px 0 rgba(220, 180, 255, 0.16);
+}
+#box.show.combo-hype.combo-urgent {
+  animation: bubbleEnter 520ms cubic-bezier(0.22, 1, 0.36, 1) both, holoFlicker 0.7s ease-in-out infinite;
+}
 
 /* Ocásek bubliny → směrem k ústům MIA (vlevo) */
 #box.owner-mia::before {
@@ -873,7 +883,12 @@ function syncMiaHoloHype(data, now) {
   if (!miaHolo) return;
   const spam = data?.spamSession;
   const spamActive = Boolean(spam?.active);
+  const comboLive = isMomentLive(data?.comboMoment, now);
+  const hypeLive = comboLive || spamActive;
   miaHolo.classList.toggle("spam-wave", spamActive);
+  if (box) {
+    box.classList.toggle("combo-hype", hypeLive && box.classList.contains("show"));
+  }
   if (spamActive) {
     const target = Math.max(
       1,
@@ -888,8 +903,10 @@ function syncMiaHoloHype(data, now) {
     const pulse = Boolean(spam.spamConfirmed) && progressPct >= 72;
     miaHolo.classList.toggle("combo-pulse", pulse);
     miaHolo.classList.toggle("combo-urgent", urgent);
+    if (box) box.classList.toggle("combo-urgent", urgent);
   } else {
     miaHolo.classList.remove("combo-pulse", "combo-urgent");
+    if (box) box.classList.remove("combo-urgent");
   }
 }
 
@@ -1039,6 +1056,7 @@ function setStatus(mode, label) {
 function hideBox() {
   box.style.display = "none";
   box.className = "";
+  box.classList.remove("combo-hype", "combo-urgent");
   setMiaAura(false);
   title.textContent = "MIA";
   text.textContent = "";

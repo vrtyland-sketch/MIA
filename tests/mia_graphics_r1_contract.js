@@ -121,6 +121,8 @@ test("speech overlay wires combo/spam hype for MiaTechEnergy + holo motion", () 
   assert.match(speech, /syncMiaHoloHype\(data,\s*now\)/);
   assert.match(speech, /#miaHolo\.mood-combo\.combo-pulse/);
   assert.match(speech, /#miaHolo\.mood-combo\.combo-urgent/);
+  assert.match(speech, /#box\.show\.combo-hype/);
+  assert.match(speech, /box\.classList\.toggle\("combo-hype"/);
   assert.match(holoMotion, /isHype/);
   assert.match(holoMotion, /lerp\(1,\s*1\.14,\s*hype\)/);
 });
