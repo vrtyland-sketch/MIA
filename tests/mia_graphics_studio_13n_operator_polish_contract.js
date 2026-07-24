@@ -60,6 +60,9 @@ async function test(name, fn) {
     assert.match(dash, /lastPreviewedBankClipId/);
     assert.match(dash, /preview_required/);
     assert.match(dash, /12x[–-]13[a-z]/);
+    assert.match(dash, /syncManifestLinks/);
+    assert.match(dash, /gfxCacheBust/);
+    assert.match(dash, /linkKojRuntime/);
   });
 
   console.log("mia_graphics_studio_13n_operator_polish_contract: all passed");

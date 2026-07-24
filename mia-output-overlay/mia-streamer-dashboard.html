@@ -177,6 +177,7 @@
       <h2>OBS layout</h2>
       <div class="row"><span>Vision</span><strong id="visionMode">—</strong></div>
       <div class="row"><span>Koj pozice</span><strong id="visionKoj">—</strong></div>
+      <div class="row"><span>Overlay bust</span><strong id="gfxCacheBust" class="mono">—</strong></div>
       <div class="actions">
         <button class="btn" type="button" id="btnFixLayout">Srovnat layout</button>
         <button class="btn" type="button" id="btnRefreshOverlays">Refresh overlay cache</button>
@@ -224,7 +225,7 @@
         <button class="btn" type="button" id="btnTestMode">Toggle test mode</button>
         <button class="btn" type="button" id="btnShowcase">MIA pusť testy</button>
         <button class="btn" type="button" id="btnKojStates">Koj stavy (slide)</button>
-        <a class="btn" href="/kojnozrout-runtime.html" target="_blank">Koj runtime</a>
+        <a class="btn" id="linkKojRuntime" href="/kojnozrout-runtime.html" target="_blank">Koj runtime</a>
       </div>
       <div id="feed"></div>
     </section>
@@ -398,6 +399,38 @@
     const healthDot = document.getElementById("healthDot");
     const healthLabel = document.getElementById("healthLabel");
     const clock = document.getElementById("clock");
+    let manifestSplitUrls = null;
+
+    function runtimeUrlWithQuery(query = "") {
+      const base = manifestSplitUrls?.runtime || "/kojnozrout-runtime.html?v=36-koj-unify";
+      if (!query) return base;
+      const sep = base.includes("?") ? "&" : "?";
+      return `${base}${sep}${query.replace(/^\?/, "")}`;
+    }
+
+    async function syncManifestLinks() {
+      try {
+        const res = await fetch("/obs/live-manifest", { cache: "no-store" });
+        if (!res.ok) return;
+        const data = await res.json();
+        manifestSplitUrls = data.manifest?.splitUrls || null;
+        const runtimeLink = document.getElementById("linkKojRuntime");
+        if (runtimeLink && manifestSplitUrls?.runtime) {
+          runtimeLink.href = manifestSplitUrls.runtime;
+        }
+        const bustEl = document.getElementById("gfxCacheBust");
+        if (bustEl && manifestSplitUrls) {
+          const pick = (url) => {
+            const m = String(url || "").match(/[?&]v=([^&]+)/);
+            return m ? m[1] : "?";
+          };
+          bustEl.textContent =
+            `runtime ${pick(manifestSplitUrls.runtime)} · gift ${pick(manifestSplitUrls.giftAnimation)} · split libs in HTML`;
+        }
+      } catch (_err) {
+        /* manifest optional when server booting */
+      }
+    }
 
     function setHealth(ok, label) {
       healthDot.className = "dot " + (ok ? "ok" : "bad");
@@ -863,7 +896,7 @@
         sheetLink.href = clip.sheetUrl;
         sheetLink.textContent = "Sheet PNG";
       } else {
-        sheetLink.href = "/kojnozrout-runtime.html?animBank=1";
+        sheetLink.href = runtimeUrlWithQuery("animBank=1");
         sheetLink.textContent = "Koj ?animBank=1";
       }
       updateProductionChecklist();
@@ -1301,6 +1334,7 @@
     });
 
     setInterval(refresh, 1200);
+    syncManifestLinks();
     refresh();
     refreshBank();
   </script>
