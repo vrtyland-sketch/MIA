@@ -19,17 +19,73 @@
 | **R1-B** | Public overlay exposes **miaPoints only** (no coins/gift value) | `node tests/overlay_public_response_contract.js` + `node tests/mia_graphics_r1_contract.js` (spamSession strip) | ? automated |
 | **R1-C** | Stable stream session: Koj mood/scene/combo wave react during gifts + spam wave; gift video rotation per-tier unchanged | Manual OBS session (checklist below) + `npm run test:preflight:fast` | ⏳ **manual gate open** |
 
-**Gate to E1:** R1 lead confirms one stable stream session (R1-C) ? optional tag `v0.1.1-graphics`.
+**Gate to E1:** R1 lead confirms one stable stream session (R1-C) → optional tag `v0.1.1-graphics`.
 
-### R1-C how to verify (manual stream gate)
+---
 
-Manual stream = jedna ?iv? OBS session, kde ?lov?k vizu?ln? potvrd? chov?n? overlay? (automatick? testy to nenahrad?).
+## RC freeze (2026-07-24)
 
-1. **Start server** ? `node index.js` (nebo `npm start`); po?kej na zelen? health / OBS WS connect.
-2. **Open overlays** ? v OBS na?ti runtime (`MIA_KOJ_RUNTIME` / `KOJNOZROUT_RUNTIME`), speech, bowl, gift anim (`37-stream-polish`); voliteln? `npm run obs:refresh-overlays`.
-3. **Trigger combo/wave test** ? po?li d?rky / spam wave (admin debug nebo TikFinity ingest), a? vznikne `comboMoment` nebo aktivn? `spamSession`.
-4. **Belly HUD** ? na b?i?e Koje: progress bar spam wave (`NN% ? T2`), countdown v subtextu, **??dn?** coin/gift value; stage t??dy `combo` / `spam-wave` / p?i vysok?m progress `combo-pulse`.
-5. **Pass/fail** ? **PASS:** party scene p?i combo/wave, mood/FX reaguje i b?hem gift animace, gift video rotace per-tier beze zm?ny (index `rotationIndexByTier`); **FAIL:** zamrznut? mood, chyb?j?c? wave HUD, nebo coin/value na overlayi.
+**MIA je stream release candidate.** Do úspěšného R1-C v OBS **nepřidávat velké featury** — žádný Engine wiring, žádný poker, žádné nové šílenosti.
+
+| Co | Stav |
+|----|------|
+| Automatické testy | ✅ 157/157 (`preflight:fast`) |
+| Tag `v0.1-stream-core` | ✅ rollback checkpoint |
+| Tag `v0.1.1-graphics` | ⏳ **čeká na R1-C PASS** |
+| Engine 2.0 první blok | 🔒 až po tagu |
+
+**Po R1-C PASS:** commit `Complete R1-C OBS validation` → tag `v0.1.1-graphics` → push tag → teprve pak Engine první slice (4 moduly).
+
+Výsledek zapisovat do [`MIA_R1C_OBS_RESULT.md`](./MIA_R1C_OBS_RESULT.md). Plán: [`MIA_RC_NEXT_STEPS.md`](./MIA_RC_NEXT_STEPS.md).
+
+---
+
+### R1-C — 10-krokový OBS checklist (exact)
+
+Jedna kontrolovaná OBS session. Automatické testy to **nenahrazují** — vizuální + audio gate před grafickým tagem.
+
+| # | Kroky | Co ověřit |
+|---|--------|-----------|
+| 1 | Spustit běžný runtime | `node index.js` nebo `npm start`; zelený health / OBS WS connect |
+| 2 | Ověřit speech overlay **`36`** | Hologram + bublina, bust `36-koj-unify` |
+| 3 | Ověřit gift overlay **`37`** | Animace dárků, bust `37-stream-polish` |
+| 4 | Ověřit Kojnožrout **`49-r1-milestone-polish`** | Runtime split, belly HUD, scény |
+| 5 | Poslat testovací chat | MIA reaguje, bublina OK |
+| 6 | Poslat malý, střední a velký gift | T1–T4 animace, rotace per-tier (`rotationIndexByTier` beze resetu) |
+| 7 | Ověřit combo/spam HUD | Belly progress, countdown, **jen `miaPoints`** — žádné coins/gift value |
+| 8 | Ověřit bowl, inventář a battle obraz | Vizuálně srozumitelné, bez rozbitého layoutu |
+| 9 | Poslechnout oba hlasy uchem | MIA + Koj — žádná dvojitá echo, žádný překryv |
+| 10 | Zkontrolovat OBS layout | Nic není oříznuté, skryté nebo přes sebe |
+
+Volitelně před session: `npm run obs:refresh-overlays` · po session: `npm run test:preflight:fast`.
+
+#### Výsledek — šablona (vyplnit po session)
+
+```text
+R1-C PASS
+Speech 36: OK
+Gift 37: OK
+Koj 49: OK
+Chat: OK
+Gift tiers: OK
+Combo/spam: OK
+Battle/inventory: OK
+Audio: OK
+OBS layout: OK
+```
+
+**FAIL:** nahradit `PASS` za `FAIL` a u konkrétní řádky napsat problém (např. `Combo/spam: FAIL — chybí belly HUD`).
+
+#### Po R1-C PASS (operátor)
+
+```powershell
+# NEPOUŽÍVAT git add . — data/ a live stav nepatří do commitu
+git add docs/MIA_R1C_OBS_RESULT.md
+git commit -m "Complete R1-C OBS validation"
+git push
+git tag v0.1.1-graphics
+git push origin v0.1.1-graphics
+```
 
 ---
 
@@ -54,10 +110,10 @@ Manual stream = jedna ?iv? OBS session, kde ?lov?k vizu?ln? potvrd? chov?n? over
 
 | Area | Note |
 |------|------|
-| Manual stream gate (R1-C) | One full OBS session — 5-step checklist in § R1-C below; **blocks `v0.1.1-graphics` tag** |
-| Battle / duel / walk pose art pass | LOW ? v36 doc gaps; motion via cycles/FX |
-| Graphics freeze window doc | Formal ?E1 wiring freeze? paragraph after R1-C |
-| Optional tag | `v0.1.1-graphics` after R1-C |
+| Manual stream gate (R1-C) | One full OBS session — **10-step checklist** in § R1-C above; **blocks `v0.1.1-graphics` tag** |
+| RC freeze doc | ✅ [`MIA_RC_NEXT_STEPS.md`](./MIA_RC_NEXT_STEPS.md) + result stub [`MIA_R1C_OBS_RESULT.md`](./MIA_R1C_OBS_RESULT.md) |
+| Battle / duel / walk pose art pass | LOW — v36 doc gaps; motion via cycles/FX |
+| Optional tag | `v0.1.1-graphics` after R1-C PASS only |
 
 ---
 

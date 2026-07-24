@@ -1,10 +1,12 @@
-# MIA Mega Audit ó 2026-07-24
+# MIA Mega Audit ù 2026-07-24
 
 **Single entry point** for human mega audit after private GitHub migration + graphics day completion.
 
 **Local repo:** `C:\MIA`  
 **Audit run:** 2026-07-24 ~15:50 CEST  
 **Operator brief:** repo set Private; SSH remote active; Engine 2.0 stub OFF.
+
+**RC freeze (2026-07-24):** MIA = **stream release candidate**. **No big features until R1-C OBS pass.** See [`MIA_RC_NEXT_STEPS.md`](./MIA_RC_NEXT_STEPS.md).
 
 ---
 
@@ -15,16 +17,16 @@
 | **Private repo** | **YES** (operator confirmed 2026-07-24) |
 | **Remote (active)** | `git@github.com:vrtyland-sketch/MIA.git` (SSH) |
 | **Default branch** | `master` |
-| **Local HEAD** | `ddab7eb0b80fc41eee4eae2c8788c746111f7ba0` ó `docs: mark graphics day slice 11 pushed.` |
-| **Sync** | `master...origin/master` ó **in sync** (no ahead/behind after `git fetch`) |
-| **Tag `v0.1-stream-core`** | `70b3e859` ? commit `903c1d882bc95ca43f5b34417fe2b346d660dc04` (`chore: slim tree for GitHub push`) ó present on `origin` |
-| **Backup branch** | `backup/pre-github-full` @ `cdfa42a5` ó **local only**, not pushed (intentional) |
+| **Local HEAD** | `ddab7eb0b80fc41eee4eae2c8788c746111f7ba0` ù `docs: mark graphics day slice 11 pushed.` |
+| **Sync** | `master...origin/master` ù **in sync** (no ahead/behind after `git fetch`) |
+| **Tag `v0.1-stream-core`** | `70b3e859` ? commit `903c1d882bc95ca43f5b34417fe2b346d660dc04` (`chore: slim tree for GitHub push`) ù present on `origin` |
+| **Backup branch** | `backup/pre-github-full` @ `cdfa42a5` ù **local only**, not pushed (intentional) |
 
 ### Verification notes
 
 - **SSH:** `git fetch origin` OK via `git@github.com:vrtyland-sketch/MIA.git`.
 - **Unauthenticated API** (audit run): `GET api.github.com/repos/vrtyland-sketch/MIA` returned `"private": false`. If Settings already show Private, treat as API/cache lag and spot-check logged-out 404 on repo URL.
-- **`gh` CLI:** not on PATH ó visibility confirmed via operator + SSH sync, not `gh repo view`.
+- **`gh` CLI:** not on PATH ù visibility confirmed via operator + SSH sync, not `gh repo view`.
 
 **Prior migration doc:** [`MIA_GITHUB_MIGRATION_AUDIT.md`](./MIA_GITHUB_MIGRATION_AUDIT.md)
 
@@ -37,14 +39,14 @@
 
 | Metric | Value |
 |--------|-------|
-| Slices pushed | **11** (commits `1f52ff98` Ö `5dd36829`, baseline `0b6fdc65`) |
+| Slices pushed | **11** (commits `1f52ff98` ù `5dd36829`, baseline `0b6fdc65`) |
 | Speech / bowl / manifest bust | `v=36-koj-unify` |
 | Gift overlay bust | `v=37-stream-polish` |
 | Koj split runtime bust | `v=48-r1-duel-walk-polish` |
-| R1-A / R1-B (automated) | **PASS** ó contract suites in preflight fast |
-| R1-C (manual OBS) | **OPEN** ó see ß6 |
+| R1-A / R1-B (automated) | **PASS** ù contract suites in preflight fast |
+| R1-C (manual OBS) | **OPEN** ù see ù6 |
 
-**Tag recommendation:** **`v0.1.1-graphics` ó wait for R1-C** (one stable OBS stream sign-off). `v0.1-stream-core` remains rollback checkpoint before Engine 2.0 wiring.
+**Tag recommendation:** **`v0.1.1-graphics` ù wait for R1-C** (one stable OBS stream sign-off). `v0.1-stream-core` remains rollback checkpoint before Engine 2.0 wiring.
 
 ---
 
@@ -68,9 +70,9 @@
 |------|--------|
 | Architecture | [`MIA_ENGINE_2_0_ARCHITECTURE.md`](./MIA_ENGINE_2_0_ARCHITECTURE.md) |
 | Roadmap | [`MIA_ENGINE_2_0_ROADMAP.md`](./MIA_ENGINE_2_0_ROADMAP.md) |
-| Scaffold | `engine2/` ó GameState stub + OBS boundary README |
-| **`MIA_ENGINE2_STUB`** | **Default OFF** ó not wired in `index.js` |
-| Contract | `tests/mia_engine2_roadmap_contract.js` ó in preflight fast |
+| Scaffold | `engine2/` ù GameState stub + OBS boundary README |
+| **`MIA_ENGINE2_STUB`** | **Default OFF** ù not wired in `index.js` |
+| Contract | `tests/mia_engine2_roadmap_contract.js` ù in preflight fast |
 
 **Rule:** No big-bang `index.js` split. E1 wiring only after R1-C gate.
 
@@ -81,7 +83,7 @@
 | Command | Exit | Result |
 |---------|------|--------|
 | `node --check index.js` | **0** | **PASS** |
-| `npm run test:preflight:fast` | **0** | **PASS ó 157 passed, 0 failed** |
+| `npm run test:preflight:fast` | **0** | **PASS ù 157 passed, 0 failed** |
 
 Re-run anytime:
 
@@ -99,20 +101,27 @@ Finished at (UTC): `2026-07-24T13:48:55.494Z`
 
 | Gate | Owner | Action |
 |------|-------|--------|
-| **R1-C OBS manual** | Human | One full OBS session ó checklist in [`MIA_GRAPHICS_R1_STATUS.md`](./MIA_GRAPHICS_R1_STATUS.md) ß R1-C |
-| **Live `data/*.json`** | ó | Modified/untracked runtime state ó **do not commit** |
+| **R1-C OBS manual** | Human | One full OBS session ù checklist in [`MIA_GRAPHICS_R1_STATUS.md`](./MIA_GRAPHICS_R1_STATUS.md) ù R1-C |
+| **Live `data/*.json`** | ù | Modified/untracked runtime state ù **do not commit** |
 | **`_canon_import/`, `shared/mia-*-core/`** | Future | Separate canon import commit when planned |
-| **`backup/pre-github-full`** | Local | Full history archive ó never push |
+| **`backup/pre-github-full`** | Local | Full history archive ù never push |
 | **Optional tag `v0.1.1-graphics`** | After R1-C | Wait for stream sign-off |
 | **Private API spot-check** | Human | If API still shows public, confirm Settings ? Danger zone ? Private |
 
-### R1-C checklist (exact)
+### R1-C checklist (exact ó 10 steps)
 
-1. Start server ó `node index.js` or `npm start`; wait for health / OBS WS connect.
-2. Load OBS overlays ó Koj runtime (`48-r1-duel-walk-polish`), speech/bowl (`36-koj-unify`), gift anim (`37-stream-polish`); optional `npm run obs:refresh-overlays`.
-3. Trigger combo/wave ó gifts or spam wave via TikFinity ingest / admin debug until `comboMoment` or active `spamSession`.
-4. Belly HUD ó spam wave progress (`NN% ∑ T2`), countdown, **no** coin/gift value; stage classes `combo` / `spam-wave` / `combo-pulse` at high progress.
-5. **PASS:** party scene on combo/wave, mood/FX during gift anim, per-tier video rotation unchanged (`rotationIndexByTier` no reset). **FAIL:** frozen mood, missing wave HUD, or coin/value on overlay.
+1. Spustit b?ûn˝ runtime (`node index.js` / `npm start`).
+2. Ov??it speech overlay **`36`** (`36-koj-unify`).
+3. Ov??it gift overlay **`37`** (`37-stream-polish`).
+4. Ov??it Kojnoûrout **`49-r1-milestone-polish`**.
+5. Poslat testovacÌ chat.
+6. Poslat mal˝, st?ednÌ a velk˝ gift.
+7. Ov??it combo/spam HUD (jen `miaPoints`, û·dnÈ coins).
+8. Ov??it bowl, invent·? a battle obraz.
+9. Poslechnout oba hlasy uchem.
+10. Zkontrolovat, ûe nic nenÌ o?ÌznutÈ, skrytÈ nebo p?es sebe.
+
+**Result template:** [`MIA_R1C_OBS_RESULT.md`](./MIA_R1C_OBS_RESULT.md) ∑ RC plan: [`MIA_RC_NEXT_STEPS.md`](./MIA_RC_NEXT_STEPS.md).
 
 ---
 
@@ -121,7 +130,7 @@ Finished at (UTC): `2026-07-24T13:48:55.494Z`
 | Rule | Verified |
 |------|----------|
 | TikFinity ? MIA ? OBS (OBS render-only) | Architecture + contracts |
-| Overlay public API: **`miaPoints` only** ó no coins/gift value | `overlay_public_response_contract`, `mia_graphics_r1_contract` |
+| Overlay public API: **`miaPoints` only** ù no coins/gift value | `overlay_public_response_contract`, `mia_graphics_r1_contract` |
 | Dual voice default **OFF** | Live DoD + runtime config |
 | Gift video rotation per-tier (`rotationIndexByTier`, no tier index reset) | R1 contracts + R1-C manual |
 | No big-bang `index.js` refactor | Engine 2.0 roadmap; stub not imported |
@@ -137,19 +146,19 @@ Finished at (UTC): `2026-07-24T13:48:55.494Z`
 2. Confirm GitHub Settings ? repo **Private** (logged-out 404 test).
 3. `git remote -v` ? SSH URL; `git fetch`; `git status -sb` ? clean sync on `master`.
 4. Note HEAD `ddab7eb0` and tag `v0.1-stream-core` @ `903c1d88`.
-5. Skim [`MIA_GITHUB_MIGRATION_AUDIT.md`](./MIA_GITHUB_MIGRATION_AUDIT.md) ó slim history, no backup push.
-6. Open [`MIA_GRAPHICS_DAYLOG.md`](./MIA_GRAPHICS_DAYLOG.md) ó 11 slices table.
-7. Open [`MIA_GRAPHICS_R1_STATUS.md`](./MIA_GRAPHICS_R1_STATUS.md) ó bust layers 36/37/48.
+5. Skim [`MIA_GITHUB_MIGRATION_AUDIT.md`](./MIA_GITHUB_MIGRATION_AUDIT.md) ù slim history, no backup push.
+6. Open [`MIA_GRAPHICS_DAYLOG.md`](./MIA_GRAPHICS_DAYLOG.md) ù 11 slices table.
+7. Open [`MIA_GRAPHICS_R1_STATUS.md`](./MIA_GRAPHICS_R1_STATUS.md) ù bust layers 36/37/48.
 8. Run `node --check index.js` ? exit 0.
 9. Run `npm run test:preflight:fast` ? 157/157 green.
 10. Spot-check `tests/mia_graphics_r1_contract.js` output in preflight log.
-11. Confirm `engine2/` exists; grep `index.js` ó no `engine2/` import.
+11. Confirm `engine2/` exists; grep `index.js` ù no `engine2/` import.
 12. Read [`MIA_ENGINE_2_0_ROADMAP.md`](./MIA_ENGINE_2_0_ROADMAP.md) Phase R1 vs E1 boundary.
 13. Review [`MIA_PRESTREAM_DOD.md`](./MIA_PRESTREAM_DOD.md) open items (ucho, etc.).
 14. Review [`MIA_LIVE_DOD.md`](./MIA_LIVE_DOD.md) + [`MIA_LIVE_DOD_RESULTS.md`](./MIA_LIVE_DOD_RESULTS.md).
-15. Verify dirty tree: `data/**` modified ó **not staged**; `_canon_import/` untracked.
+15. Verify dirty tree: `data/**` modified ù **not staged**; `_canon_import/` untracked.
 16. Confirm `backup/pre-github-full` local only.
-17. Schedule **R1-C** OBS session (ß6 checklist).
+17. Schedule **R1-C** OBS session (ù6 checklist).
 18. After R1-C PASS ? optional tag `v0.1.1-graphics`; then consider E1 stub behind `MIA_ENGINE2_STUB=0`.
 
 ---
@@ -169,4 +178,4 @@ node tests/mia_engine2_roadmap_contract.js
 
 ---
 
-*Generated for mega audit readiness ó docs-only commit; no runtime or live data changes.*
+*Generated for mega audit readiness ù docs-only commit; no runtime or live data changes.*
