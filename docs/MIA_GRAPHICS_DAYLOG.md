@@ -4,21 +4,23 @@ Append-only session notes for graphics/R1 work.
 
 ---
 
-## 2026-07-24 — Full graphics day (session start)
+## 2026-07-24 — Full graphics day
 
-**Baseline:** `0b6fdc65` (R1 acceptance contract + R1-C checklist)  
-**Preflight:** green throughout session
+**Baseline:** `0b6fdc65`  
+**Preflight:** green throughout session  
+**Split bust trail:** `44-r1-combo` ? `45-r1-combo-belly` ? `46-r1-live-hype`
 
 | # | Commit | Slice |
 |---|--------|-------|
-| 1 | `1f52ff98` | Combo moment belly HUD + bust `45-r1-combo-belly` |
+| 1 | `1f52ff98` | Combo moment belly HUD |
 | 2 | `c942fc53` | Dashboard manifest cache-bust links |
 | 3 | `4f9a205b` | Gift Animation Desk manifest bust sync |
-| 4 | (pending) | Rig desk bust labels + combo belly split contract |
+| 4 | `5024a7c4` | Rig desk bust labels + combo belly split contract |
+| 5 | (pending) | Koj live motion hype during combo/spam wave |
 
-### Open backlog (next slices)
+### Open backlog
 
 - MIA avatar cyber/tech FX polish
-- Koj live motion / Soft Neon living motion tuning
 - R1-C manual stream sign-off
 - Battle/duel/walk pose art pass (LOW)
+- Graphics freeze window doc after R1-C

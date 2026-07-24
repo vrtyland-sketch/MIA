@@ -120,7 +120,7 @@ test("runtime html loads sprite engine and cache-busts split libs", () => {
   );
   assert.ok(html.includes("koj-runtime-sprite.js"), "loads koj-runtime-sprite.js");
   assert.ok(html.includes("KojRuntimeSprite.create"), "creates sprite engine");
-  assert.ok(html.includes("45-r1-combo-belly"), "cache bust 45-r1-combo-belly");
+  assert.ok(html.includes("46-r1-live-hype"), "cache bust 46-r1-live-hype");
   assert.ok(!html.includes("const textureCache = new Map()"), "texture cache lives in lib");
   assert.ok(!html.includes("crossfadeHideTimer"), "crossfade timer lives in lib");
 });
@@ -138,7 +138,7 @@ test("sprite engine builds mood/asset urls and shares mutable state", () => {
   };
   const engine = createKojRuntimeSprite({
     apiBase: "http://127.0.0.1:3000",
-    cacheV: "45-r1-combo-belly",
+    cacheV: "46-r1-live-hype",
     sharedState: shared,
     spriteA: { style: {}, classList: { add() {}, remove() {}, contains() { return false; } } },
     spriteB: { style: {}, classList: { add() {}, remove() {}, contains() { return false; } } },
@@ -150,7 +150,7 @@ test("sprite engine builds mood/asset urls and shares mutable state", () => {
     engine.moodAsset("idle"),
     "assets/kojnozrout/moods/kojnozout-idle.png"
   );
-  assert.ok(engine.assetUrl("assets/kojnozrout/moods/kojnozout-idle.png").includes("v=45-r1-combo-belly"));
+  assert.ok(engine.assetUrl("assets/kojnozrout/moods/kojnozout-idle.png").includes("v=46-r1-live-hype"));
   assert.equal(engine.minSwapMs("sleepy"), 3200);
   assert.equal(engine.minSwapMs("eating"), 650);
   shared.currentImgUrl = "x";
@@ -541,6 +541,16 @@ test("belly buildComboMomentBellyContent exposes title without coin fields", () 
   assert.equal(model.main, "SOLO COMBO");
   assert.match(model.sub, /rapid gifts/);
   assert.ok(!JSON.stringify(model).toLowerCase().includes("coin"));
+});
+
+test("runtime html wires live motion hype from combo stage classes", () => {
+  const fs = require("fs");
+  const html = fs.readFileSync(
+    path.resolve(__dirname, "..", "mia-output-overlay", "kojnozrout-runtime.html"),
+    "utf8"
+  );
+  assert.ok(html.includes("isHype:"), "live motion reads combo/spam stage classes");
+  assert.ok(html.includes("combo-urgent"), "urgent spam wave boosts motion");
 });
 
 test("runtime html loads fx engine for animation/item effects", () => {

@@ -7,26 +7,26 @@
 <script src="/assets/kojnozrout/pose-catalog.js"></script>
 <script src="/mia-svg-primitives.js"></script>
 <script src="/koj-vector.js"></script>
-<link rel="stylesheet" href="/tiktok-viewer-zones.css?v=45-r1-combo-belly" />
-<link rel="stylesheet" href="/mia-soft-neon-world.css?v=45-r1-combo-belly" />
-<link rel="stylesheet" href="/assets/mia-2d-fx.css?v=45-r1-combo-belly" />
-<script src="/assets/mia-2d-fx.js?v=45-r1-combo-belly"></script>
-<script src="/assets/mia-animation-player.js?v=45-r1-combo-belly"></script>
-<script src="/assets/mia-sound-cues.js?v=45-r1-combo-belly"></script>
-<script src="/lib/koj-body-anchors.js?v=45-r1-combo-belly"></script>
-<script src="/lib/mia-rig-anchors.js?v=45-r1-combo-belly"></script>
-<script src="/lib/mia-part-rig.js?v=45-r1-combo-belly"></script>
-<script src="/lib/koj-live-motion.js?v=45-r1-combo-belly"></script>
-<script src="/lib/mia-tech-energy.js?v=45-r1-combo-belly"></script>
-<script src="/lib/koj-runtime-walk.js?v=45-r1-combo-belly"></script>
-<script src="/lib/overlay-poll.js?v=45-r1-combo-belly"></script>
-<script src="/lib/koj-runtime-sprite.js?v=45-r1-combo-belly"></script>
-<script src="/lib/koj-runtime-belly.js?v=45-r1-combo-belly"></script>
-<script src="/lib/koj-runtime-scene.js?v=45-r1-combo-belly"></script>
-<script src="/lib/koj-runtime-pose.js?v=45-r1-combo-belly"></script>
-<script src="/lib/koj-runtime-stage.js?v=45-r1-combo-belly"></script>
-<script src="/lib/koj-runtime-fx.js?v=45-r1-combo-belly"></script>
-<link rel="stylesheet" href="/assets/kojnozrout/koj-runtime.css?v=45-r1-combo-belly" />
+<link rel="stylesheet" href="/tiktok-viewer-zones.css?v=46-r1-live-hype" />
+<link rel="stylesheet" href="/mia-soft-neon-world.css?v=46-r1-live-hype" />
+<link rel="stylesheet" href="/assets/mia-2d-fx.css?v=46-r1-live-hype" />
+<script src="/assets/mia-2d-fx.js?v=46-r1-live-hype"></script>
+<script src="/assets/mia-animation-player.js?v=46-r1-live-hype"></script>
+<script src="/assets/mia-sound-cues.js?v=46-r1-live-hype"></script>
+<script src="/lib/koj-body-anchors.js?v=46-r1-live-hype"></script>
+<script src="/lib/mia-rig-anchors.js?v=46-r1-live-hype"></script>
+<script src="/lib/mia-part-rig.js?v=46-r1-live-hype"></script>
+<script src="/lib/koj-live-motion.js?v=46-r1-live-hype"></script>
+<script src="/lib/mia-tech-energy.js?v=46-r1-live-hype"></script>
+<script src="/lib/koj-runtime-walk.js?v=46-r1-live-hype"></script>
+<script src="/lib/overlay-poll.js?v=46-r1-live-hype"></script>
+<script src="/lib/koj-runtime-sprite.js?v=46-r1-live-hype"></script>
+<script src="/lib/koj-runtime-belly.js?v=46-r1-live-hype"></script>
+<script src="/lib/koj-runtime-scene.js?v=46-r1-live-hype"></script>
+<script src="/lib/koj-runtime-pose.js?v=46-r1-live-hype"></script>
+<script src="/lib/koj-runtime-stage.js?v=46-r1-live-hype"></script>
+<script src="/lib/koj-runtime-fx.js?v=46-r1-live-hype"></script>
+<link rel="stylesheet" href="/assets/kojnozrout/koj-runtime.css?v=46-r1-live-hype" />
 </head>
 <body>
 
@@ -47,10 +47,10 @@
         <img id="spriteA" class="sprite-slot" alt="" />
         <img id="spriteB" class="sprite-slot" alt="" />
         <div id="propLayer" aria-hidden="true">
-          <img id="propBowl" class="koj-prop" src="/assets/kojnozrout/props/bowl.png?v=45-r1-combo-belly" alt="" onerror="this.classList.remove('on')" />
-          <img id="propBall" class="koj-prop" src="/assets/kojnozrout/props/ball.png?v=45-r1-combo-belly" alt="" onerror="this.classList.remove('on')" />
-          <img id="propMic" class="koj-prop" src="/assets/kojnozrout/props/mic.png?v=45-r1-combo-belly" alt="" onerror="this.classList.remove('on')" />
-          <img id="propHand" class="koj-prop" src="/assets/kojnozrout/props/hand.png?v=45-r1-combo-belly" alt="" onerror="this.classList.remove('on')" />
+          <img id="propBowl" class="koj-prop" src="/assets/kojnozrout/props/bowl.png?v=46-r1-live-hype" alt="" onerror="this.classList.remove('on')" />
+          <img id="propBall" class="koj-prop" src="/assets/kojnozrout/props/ball.png?v=46-r1-live-hype" alt="" onerror="this.classList.remove('on')" />
+          <img id="propMic" class="koj-prop" src="/assets/kojnozrout/props/mic.png?v=46-r1-live-hype" alt="" onerror="this.classList.remove('on')" />
+          <img id="propHand" class="koj-prop" src="/assets/kojnozrout/props/hand.png?v=46-r1-live-hype" alt="" onerror="this.classList.remove('on')" />
         </div>
         <div id="kojProjectorHost" aria-hidden="true">
           <div id="kojBellyScreen">
@@ -98,7 +98,7 @@ const MIN_SWAP_EATING_MS = 650;
 const MIN_SWAP_SLEEPY_MS = 3200;
 const BOOT_SPRITE_KEY = "idle";
 const BOOT_SPRITE_PATH = "assets/kojnozrout/moods/kojnozout-idle.png";
-const ASSET_CACHE_V = "45-r1-combo-belly";
+const ASSET_CACHE_V = "46-r1-live-hype";
 
 const spriteA = document.getElementById("spriteA");
 const spriteB = document.getElementById("spriteB");
@@ -571,6 +571,11 @@ function ensureKojLiveMotion() {
     el: spriteLayerEl,
     rig,
     isSpeaking: () => stageEl.classList.contains("speaking"),
+    isHype: () =>
+      stageEl.classList.contains("combo") ||
+      stageEl.classList.contains("spam-wave") ||
+      stageEl.classList.contains("combo-pulse") ||
+      stageEl.classList.contains("combo-urgent"),
     isEnabled: kojLiveMotionEnabled,
     onTick: () => {
       syncProjectorLayout();

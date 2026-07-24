@@ -4,7 +4,7 @@
 **Roadmap:** [`MIA_ENGINE_2_0_ROADMAP.md`](./MIA_ENGINE_2_0_ROADMAP.md) ù4  
 **Freeze baseline:** `v=32-gfx-whole` ([`GRAPHICS_CHECKPOINT_v32.md`](./GRAPHICS_CHECKPOINT_v32.md))  
 **Active runtime bust:** `v=36-koj-unify` (speech / bowl / manifest URLs)  
-**Koj split bust:** `v=45-r1-combo-belly` (`kojnozrout-runtime.html` + split libs)  
+**Koj split bust:** `v=46-r1-live-hype` (`kojnozrout-runtime.html` + split libs)  
 **Gift overlay bust:** `v=37-stream-polish` (beze zm?ny)
 
 ---
@@ -40,7 +40,7 @@ Manual stream = jedna ùivù OBS session, kde ?lov?k vizuùln? potvrdù chovùnù over
 - **Party scene fallback:** `resolveScene` switches to `party` when combo moment or spam wave is live.
 - **Belly HUD wave:** `buildSpamWaveBellyContent` shows progress bar + countdown on Koj belly during active spam wave (no coin fields).
 - **Split cache bust:** `43-koj-split` ? `44-r1-combo` ? `45-r1-combo-belly` on runtime HTML + split libs only (36 / 37 unchanged).
-- **Combo belly HUD:** `buildComboMomentBellyContent` ó title/subtext/count on belly during combo moment (no coins).
+- **Combo belly HUD:** `buildComboMomentBellyContent` ù title/subtext/count on belly during combo moment (no coins).
 - **R1 acceptance contract:** `tests/mia_graphics_r1_contract.js` ù dual bust invariant, combo CSS selectors, pulse/urgent thresholds, public spamSession strip (preflight fast).
 
 ### Still open for R1
@@ -60,7 +60,7 @@ Manual stream = jedna ùivù OBS session, kde ?lov?k vizuùln? potvrdù chovùnù over
 |-------|------|
 | Speech / bowl / manifest | `36-koj-unify` |
 | Gift overlay / desk | `37-stream-polish` |
-| Koj runtime split | `45-r1-combo-belly` |
+| Koj runtime split | `46-r1-live-hype` |
 
 Refresh after deploy: `npm run obs:refresh-overlays`
 

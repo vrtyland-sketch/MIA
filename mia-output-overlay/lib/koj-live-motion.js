@@ -45,6 +45,10 @@
     }
 
     const isSpeaking = typeof opts.isSpeaking === "function" ? opts.isSpeaking : () => false;
+    const isHype =
+      typeof opts.isHype === "function"
+        ? opts.isHype
+        : () => false;
     const isEnabled = typeof opts.isEnabled === "function" ? opts.isEnabled : () => true;
 
     const phase = {
@@ -125,7 +129,8 @@
       updateSpeakAmp(now);
       const t = now / 1000;
       const s = speakAmp;
-      const A = LIVE_AMP;
+      const hype = isHype() ? 1 : 0;
+      const A = LIVE_AMP * lerp(1, 1.14, hype);
 
       const breath = Math.sin(t * 1.08 + phase.breath);
       const weight = Math.sin(t * 0.34 + phase.weight);
@@ -146,7 +151,7 @@
       const speakRot = Math.sin(t * 2.1 + phase.sway) * 0.35 * s;
 
       const tickPulse = samplePulse(now);
-      const liveMul = lerp(1, 1.18, s);
+      const liveMul = lerp(1, 1.18, s) * lerp(1, 1.1, hype);
 
       const tx = (weightX + leanX) * liveMul;
       const ty = (breath * 0.12 * A + leanY + tickPulse.y) * liveMul;
@@ -160,9 +165,10 @@
       const headYaw =
         yawWave * 2.4 * liveMul +
         Math.sin(t * 2.4 + phase.yaw) * 1.1 * s +
+        Math.sin(t * 3.6 + phase.yaw) * 0.9 * hype +
         tickPulse.headYaw;
       const headNod =
-        nodWave * 1.6 * liveMul + Math.sin(t * 2.8 + phase.nod) * 0.85 * s;
+        nodWave * 1.6 * liveMul + Math.sin(t * 2.8 + phase.nod) * 0.85 * s + hype * 0.35;
 
       if (rig) {
         const headPart = rig.getPart("head");
