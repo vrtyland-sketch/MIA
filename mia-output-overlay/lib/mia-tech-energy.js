@@ -26,6 +26,7 @@
 
     const density = clamp(Number(opts.density) || 1, 0.35, 1.6);
     const speakingFn = typeof opts.isSpeaking === "function" ? opts.isSpeaking : () => false;
+    const hypeFn = typeof opts.isHype === "function" ? opts.isHype : () => false;
     const hotspots = Array.isArray(opts.hotspots) ? opts.hotspots.slice() : [
       { x: 0.52, y: 0.22, w: 0.18, h: 0.14 }, // eye / face
       { x: 0.5, y: 0.58, w: 0.28, h: 0.2 }     // belly / core
@@ -132,14 +133,16 @@
       const dt = Math.min(0.05, (now - last) / 1000 || 0.016);
       last = now;
       const speaking = speakingFn();
-      const rate = density * (speaking ? 1.45 : 0.85);
+      const hype = hypeFn();
+      const boost = speaking || hype;
+      const rate = density * (speaking ? 1.45 : 0.85) * (hype ? 1.28 : 1);
 
-      if (Math.random() < dt * 4.2 * rate) spawnSpark(speaking);
+      if (Math.random() < dt * 4.2 * rate) spawnSpark(boost);
       if (Math.random() < dt * 1.6 * rate) spawnElectron();
-      if (Math.random() < dt * 1.1 * rate) spawnEmber(speaking);
+      if (Math.random() < dt * 1.1 * rate) spawnEmber(boost);
       if (now >= nextArcAt) {
-        spawnArc(speaking);
-        nextArcAt = now + (speaking ? 2200 : 4800) + Math.random() * 3500;
+        spawnArc(boost);
+        nextArcAt = now + (boost ? 1900 : 4800) + Math.random() * 3500;
       }
 
       ctx.clearRect(0, 0, w, h);
