@@ -252,7 +252,7 @@
         </div>
         <p class="status" style="margin-top:14px">
           OBS Browser Source (1920×1080, transparent, Shutdown when not visible = OFF):<br />
-          <code>http://127.0.0.1:3000/gift-animation-overlay.html?v=37-stream-polish</code><br />
+          <code id="obsGiftOverlayUrl">http://127.0.0.1:3000/gift-animation-overlay.html?v=37-stream-polish</code><br />
           Scéna: <code>SPINAK_ENGINE_GIFTS</code> · zdroj: <code>MIA_GIFT_ANIMATION</code>
           (<code>npm run obs:apply-hands</code> · <code>npm run obs:refresh-overlays</code>)
         </p>
@@ -265,14 +265,41 @@
     </div>
 
     <div class="links">
-      <span class="status">gift overlay <code>v=37-stream-polish</code></span>
+      <span class="status">gift overlay <code id="giftBustLabel">v=37-stream-polish</code></span>
       <span class="status">docs: <code>docs/MIA_GRAPHICS_WHOLE.md</code> · <code>docs/SOFT_NEON_RIG_DESK.md</code></span>
     </div>
   </div>
 
 <script>
 (function () {
-  const BUST = "37-stream-polish";
+  let BUST = "37-stream-polish";
+
+  function updateBustLabels() {
+    const bustCode = "v=" + BUST;
+    const bustLabel = $("giftBustLabel");
+    if (bustLabel) bustLabel.textContent = bustCode;
+    const obsUrl = $("obsGiftOverlayUrl");
+    if (obsUrl) {
+      obsUrl.textContent =
+        "http://127.0.0.1:3000/gift-animation-overlay.html?v=" + BUST;
+    }
+  }
+
+  async function syncManifestBust() {
+    try {
+      const res = await fetch("/obs/live-manifest", { cache: "no-store" });
+      if (!res.ok) return;
+      const data = await res.json();
+      const giftUrl = data.manifest?.splitUrls?.giftAnimation;
+      const m = String(giftUrl || "").match(/[?&]v=([^&]+)/);
+      if (m && m[1]) {
+        BUST = m[1];
+        updateBustLabels();
+      }
+    } catch (_err) {
+      /* server booting */
+    }
+  }
   const $ = (id) => document.getElementById(id);
   const status = $("status");
   const briefEl = $("brief");
@@ -415,6 +442,8 @@
   };
 
   loadCfg();
+  updateBustLabels();
+  syncManifestBust();
 })();
 </script>
 </body>

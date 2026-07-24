@@ -127,6 +127,18 @@ async function main() {
     assert.equal(hit.extraWords, "zlatý lev");
   });
 
+  await test("gift animation desk syncs bust from live manifest", () => {
+    const fs = require("fs");
+    const path = require("path");
+    const desk = fs.readFileSync(
+      path.join(__dirname, "..", "mia-output-overlay", "mia-paint", "gift-animation-desk.html"),
+      "utf8"
+    );
+    assert.match(desk, /syncManifestBust/);
+    assert.match(desk, /giftBustLabel/);
+    assert.match(desk, /obsGiftOverlayUrl/);
+  });
+
   console.log("gift_animation_generate_contract: all passed");
 }
 
