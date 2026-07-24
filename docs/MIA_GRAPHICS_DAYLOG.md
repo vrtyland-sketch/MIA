@@ -23,7 +23,7 @@ Append-only session notes for graphics/R1 work.
 | 8 | `20d3ac63` | Gift overlay tech sparks during combo/spam | yes |
 | 9 | `d79ee790` | Dashboard spam wave hype operator label | yes |
 | 10 | `defb76cd` | Speech bubble combo-hype glow | yes |
-| 11 | *(pending)* | Duel/battle/walk CSS polish + split bust 48 + manifest KOJ_SPLIT | pending |
+| 11 | `5dd36829` | Duel/battle/walk CSS polish + split bust 48 + manifest KOJ_SPLIT | yes |
 
 **Pre-baseline (same R1 arc):** `cb717643` — Koj combo/spam wave polish on runtime split.
 
