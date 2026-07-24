@@ -43,6 +43,10 @@
     }
 
     const isSpeaking = typeof opts.isSpeaking === "function" ? opts.isSpeaking : () => false;
+    const isHype =
+      typeof opts.isHype === "function"
+        ? opts.isHype
+        : () => false;
     const isEnabled = typeof opts.isEnabled === "function" ? opts.isEnabled : () => true;
 
     const phase = {
@@ -158,7 +162,8 @@
       updateSpeakAmp(now);
       const t = now / 1000;
       const s = speakAmp;
-      const A = LIVE_AMP;
+      const hype = isHype() ? 1 : 0;
+      const A = LIVE_AMP * lerp(1, 1.14, hype);
 
       const breath = Math.sin(t * 1.05 + phase.breath);
       const weight = Math.sin(t * 0.36 + phase.weight);
@@ -185,7 +190,7 @@
 
       const tickSrv = sampleServo(now);
       const tickPulse = samplePulse(now);
-      const liveMul = lerp(1, 1.2, s);
+      const liveMul = lerp(1, 1.2, s) * lerp(1, 1.1, hype);
 
       const tx = (weightX + leanX + tickSrv.x) * liveMul;
       const ty = (breath * 0.1 * A + leanY + tickSrv.y + tickPulse.y) * liveMul;
@@ -198,10 +203,11 @@
       const headYaw =
         yawWave * 2.2 * liveMul +
         Math.sin(t * 2.5 + phase.yaw) * 1.2 * s +
+        Math.sin(t * 3.6 + phase.yaw) * 0.9 * hype +
         tickPulse.headYaw +
         tickSrv.rot * 2;
       const headNod =
-        nodWave * 1.5 * liveMul + Math.sin(t * 2.9 + phase.nod) * 0.9 * s;
+        nodWave * 1.5 * liveMul + Math.sin(t * 2.9 + phase.nod) * 0.9 * s + hype * 0.35;
 
       if (rig) {
         // Root uses % like legacy holo for layout stability inside #miaMotion
