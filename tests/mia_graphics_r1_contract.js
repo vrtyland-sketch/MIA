@@ -99,6 +99,32 @@ test("koj runtime css exposes combo/spam wave stage selectors", () => {
   }
 });
 
+test("gift overlay wires overlayHype for MiaTechEnergy during combo/spam", () => {
+  const gift = fs.readFileSync(path.join(OVERLAY, "gift-animation-overlay.html"), "utf8");
+  assert.match(gift, /let overlayHype = false/);
+  assert.match(gift, /isHype:\s*\(\)\s*=>\s*overlayHype/);
+  assert.match(gift, /overlayHype = playing \|\| spamActive \|\| comboLive/);
+});
+
+test("streamer dashboard exposes spam wave hype operator label", () => {
+  const dash = fs.readFileSync(path.join(OVERLAY, "mia-streamer-dashboard.html"), "utf8");
+  assert.match(dash, /id="spamHype"/);
+  assert.match(dash, /hypeLabel = `pulse \$\{spamProgress\}%`/);
+});
+
+test("speech overlay wires combo/spam hype for MiaTechEnergy + holo motion", () => {
+  const speech = fs.readFileSync(path.join(OVERLAY, "speech-overlay.html"), "utf8");
+  const holoMotion = fs.readFileSync(path.join(OVERLAY, "lib", "mia-holo-motion.js"), "utf8");
+  assert.match(speech, /function syncMiaHoloHype/);
+  assert.match(speech, /function miaHoloIsHype/);
+  assert.match(speech, /isHype:\s*miaHoloIsHype/);
+  assert.match(speech, /syncMiaHoloHype\(data,\s*now\)/);
+  assert.match(speech, /#miaHolo\.mood-combo\.combo-pulse/);
+  assert.match(speech, /#miaHolo\.mood-combo\.combo-urgent/);
+  assert.match(holoMotion, /isHype/);
+  assert.match(holoMotion, /lerp\(1,\s*1\.14,\s*hype\)/);
+});
+
 test("syncComboVisual toggles pulse at 72% and urgent within 5s window", () => {
   const classList = mockClassList();
   const style = { props: {}, setProperty(k, v) { this.props[k] = v; }, removeProperty(k) { delete this.props[k]; } };

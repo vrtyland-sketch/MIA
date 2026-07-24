@@ -203,6 +203,7 @@
       <div class="row"><span>Spam session</span><strong id="spamActive">—</strong></div>
       <div class="row"><span>Body / dárky</span><strong id="spamPoints">—</strong></div>
       <div class="row"><span>Okno</span><strong id="spamWindow">—</strong></div>
+      <div class="row"><span>Wave hype</span><strong id="spamHype">—</strong></div>
       <div class="row"><span>Poslední combo</span><strong id="comboNow">—</strong></div>
       <div class="actions">
         <a class="btn" href="/combo-overlay.html" target="_blank">Combo overlay</a>
@@ -485,6 +486,31 @@
           `${spam.totalPoints || 0} bodů · ${spam.eventCount || 0} dárků · ${spam.participantCount || 0} lidí`;
         document.getElementById("spamWindow").textContent =
           `${spam.remainingWindowSec || 0}s · next ${spam.nextRewardTier || "—"}`;
+        const spamTarget = Math.max(
+          1,
+          Number(spam.targetRewardPoints || spam.pointsToNextReward || 1)
+        );
+        const spamProgress = Math.min(
+          100,
+          Math.round((Number(spam.totalPoints || 0) / spamTarget) * 100)
+        );
+        let hypeLabel = "off";
+        if (spam.active) {
+          if (
+            spam.spamConfirmed &&
+            Number(spam.remainingWindowSec || 0) > 0 &&
+            Number(spam.remainingWindowSec || 0) <= 5
+          ) {
+            hypeLabel = `urgent ${spamProgress}%`;
+          } else if (spam.spamConfirmed && spamProgress >= 72) {
+            hypeLabel = `pulse ${spamProgress}%`;
+          } else {
+            hypeLabel = `wave ${spamProgress}%`;
+          }
+        } else if (overlay.comboMoment) {
+          hypeLabel = "combo";
+        }
+        document.getElementById("spamHype").textContent = hypeLabel;
 
         const combo = overlay.comboMoment;
         document.getElementById("comboNow").textContent =

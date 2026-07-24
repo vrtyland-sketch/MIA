@@ -17,10 +17,12 @@ Append-only session notes for graphics/R1 work.
 | 3 | `4f9a205b` | Gift Animation Desk manifest bust sync | yes |
 | 4 | `5024a7c4` | Rig desk bust labels + combo belly contract | yes |
 | 5 | `70419b51` | Koj live motion hype during combo/spam | **local — push pending** |
-| 6 | (pending) | Tech-energy hype sparks on combo/wave | pending |
+| 6 | `6bc38f29` | Tech-energy hype sparks on combo/wave | **local — push pending** |
+| 7 | (pending) | Speech holo hype (tech FX + motion + CSS) | pending |
+| 8 | (pending) | Gift overlay tech sparks during combo/spam | pending |
+| 9 | (pending) | Dashboard spam wave hype operator label | pending |
 
 ### Open backlog
 
-- MIA avatar cyber/tech FX polish (speech overlay parity)
 - R1-C manual stream sign-off
 - Battle/duel/walk pose art pass (LOW)
