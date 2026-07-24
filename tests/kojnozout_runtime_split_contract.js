@@ -31,7 +31,8 @@ const {
   resolveMediaUrl,
   formatBellyClock,
   weatherLabelFromCode,
-  measureSpriteLayoutBox
+  measureSpriteLayoutBox,
+  buildSpamWaveBellyContent
 } = require("../mia-output-overlay/lib/koj-runtime-belly");
 const {
   create: createKojRuntimeScene,
@@ -52,8 +53,11 @@ const {
   isKojSpeaking,
   STAGE_MOOD_CLASSES
 } = require("../mia-output-overlay/lib/koj-runtime-stage");
+const {
+  create: createKojRuntimeFx
+} = require("../mia-output-overlay/lib/koj-runtime-fx");
 
-console.log("\n---- KOJ RUNTIME SPLIT PHASE A–F ----\n");
+console.log("\n---- KOJ RUNTIME SPLIT PHASE A–G ----\n");
 
 test("overlay poll scheduler exposes in-flight and backoff knobs", () => {
   let runs = 0;
@@ -104,6 +108,7 @@ test("split assets exist beside runtime html", () => {
   assert.ok(fs.existsSync(path.join(root, "lib", "koj-runtime-scene.js")));
   assert.ok(fs.existsSync(path.join(root, "lib", "koj-runtime-pose.js")));
   assert.ok(fs.existsSync(path.join(root, "lib", "koj-runtime-stage.js")));
+  assert.ok(fs.existsSync(path.join(root, "lib", "koj-runtime-fx.js")));
 });
 
 test("runtime html loads sprite engine and cache-busts split libs", () => {
@@ -114,7 +119,7 @@ test("runtime html loads sprite engine and cache-busts split libs", () => {
   );
   assert.ok(html.includes("koj-runtime-sprite.js"), "loads koj-runtime-sprite.js");
   assert.ok(html.includes("KojRuntimeSprite.create"), "creates sprite engine");
-  assert.ok(html.includes("42-koj-split"), "cache bust 42-koj-split");
+  assert.ok(html.includes("44-r1-combo"), "cache bust 44-r1-combo");
   assert.ok(!html.includes("const textureCache = new Map()"), "texture cache lives in lib");
   assert.ok(!html.includes("crossfadeHideTimer"), "crossfade timer lives in lib");
 });
@@ -132,7 +137,7 @@ test("sprite engine builds mood/asset urls and shares mutable state", () => {
   };
   const engine = createKojRuntimeSprite({
     apiBase: "http://127.0.0.1:3000",
-    cacheV: "42-koj-split",
+    cacheV: "44-r1-combo",
     sharedState: shared,
     spriteA: { style: {}, classList: { add() {}, remove() {}, contains() { return false; } } },
     spriteB: { style: {}, classList: { add() {}, remove() {}, contains() { return false; } } },
@@ -144,7 +149,7 @@ test("sprite engine builds mood/asset urls and shares mutable state", () => {
     engine.moodAsset("idle"),
     "assets/kojnozrout/moods/kojnozout-idle.png"
   );
-  assert.ok(engine.assetUrl("assets/kojnozrout/moods/kojnozout-idle.png").includes("v=42-koj-split"));
+  assert.ok(engine.assetUrl("assets/kojnozrout/moods/kojnozout-idle.png").includes("v=44-r1-combo"));
   assert.equal(engine.minSwapMs("sleepy"), 3200);
   assert.equal(engine.minSwapMs("eating"), 650);
   shared.currentImgUrl = "x";
@@ -403,6 +408,7 @@ test("runtime html loads stage mood/wander engine", () => {
   assert.ok(html.includes("KojRuntimeStage.create"), "creates stage engine");
   assert.ok(!html.includes("let isWandering"), "wander state lives in lib");
   assert.ok(html.includes("applyStageMood") && html.includes("syncSpeakingVisual"), "orchestrator still calls stage helpers");
+  assert.ok(html.includes("syncComboVisual"), "orchestrator syncs combo/spam wave visuals");
 });
 
 test("stage helpers map moods, speaking, and wander without inventing coins", () => {
@@ -459,5 +465,140 @@ test("stage helpers map moods, speaking, and wander without inventing coins", ()
   assert.ok(!JSON.stringify({ mood: "idle" }).toLowerCase().includes("coin"));
 });
 
-console.log("\n---- KOJ RUNTIME SPLIT PHASE A–F SUMMARY ----\n");
+test("stage syncComboVisual applies spam wave classes without coin fields", () => {
+  const now = Date.now();
+  const classList = {
+    _c: new Set(),
+    add(...xs) { xs.forEach((x) => this._c.add(x)); },
+    remove(...xs) { xs.forEach((x) => this._c.delete(x)); },
+    toggle(x, on) { if (on) this._c.add(x); else this._c.delete(x); },
+    contains(x) { return this._c.has(x); }
+  };
+  const style = { setProperty() {}, removeProperty() {} };
+  const stage = createKojRuntimeStage({
+    stageEl: { classList, style },
+    resolvePropKey: () => "idle",
+    playsWithProp: () => false,
+    isCalmWanderMood: () => false,
+    shouldForceWander: () => false,
+    setLastStepDurMs: () => {},
+    getLiveMotion: () => null,
+    random: () => 0.5
+  });
+  stage.syncComboVisual(
+    {
+      spamSession: {
+        active: true,
+        spamConfirmed: true,
+        totalPoints: 600,
+        targetRewardPoints: 750,
+        remainingWindowSec: 8
+      }
+    },
+    now
+  );
+  assert.ok(classList.contains("combo"));
+  assert.ok(classList.contains("spam-wave"));
+  assert.ok(!JSON.stringify({ spamSession: { totalPoints: 600 } }).toLowerCase().includes("coin"));
+});
+
+test("scene resolveScene prefers party for comboMoment and spamSession", () => {
+  const now = Date.now();
+  assert.equal(
+    resolveScene("idle", { comboMoment: { active: true, holdUntilTs: now + 5000 } }, now),
+    "party"
+  );
+  assert.equal(resolveScene("idle", { spamSession: { active: true } }, now), "party");
+});
+
+test("belly buildSpamWaveBellyContent exposes miaPoints progress only", () => {
+  const model = buildSpamWaveBellyContent({
+    active: true,
+    spamConfirmed: true,
+    totalPoints: 420,
+    targetRewardPoints: 750,
+    remainingWindowSec: 6,
+    nextRewardTier: "T2"
+  });
+  assert.equal(model.main, "56% → T2");
+  assert.match(model.sub, /420 bodů/);
+  assert.equal(model.progressPct, 56);
+  assert.ok(!JSON.stringify(model).toLowerCase().includes("coin"));
+});
+
+test("runtime html loads fx engine for animation/item effects", () => {
+  const fs = require("fs");
+  const html = fs.readFileSync(
+    path.resolve(__dirname, "..", "mia-output-overlay", "kojnozrout-runtime.html"),
+    "utf8"
+  );
+  assert.ok(html.includes("koj-runtime-fx.js"), "loads koj-runtime-fx.js");
+  assert.ok(html.includes("KojRuntimeFx.create"), "creates fx engine");
+  assert.ok(!html.includes("let lastAnimationToken"), "animation token lives in lib");
+  assert.ok(!html.includes("let animationBusy"), "animation busy flag lives in lib");
+  assert.ok(
+    html.includes("syncAnimationReaction") && html.includes("syncItemUse"),
+    "orchestrator still calls fx helpers"
+  );
+  assert.equal((html.match(/function spawnItemFx\(/g) || []).length, 1, "single spawnItemFx alias");
+});
+
+test("fx engine toggles gift stage class and fires item fx without coins", () => {
+  const classList = {
+    _c: new Set(),
+    add(...xs) { xs.forEach((x) => this._c.add(x)); },
+    remove(...xs) { xs.forEach((x) => this._c.delete(x)); },
+    toggle(x, on) { if (on) this._c.add(x); else this._c.delete(x); },
+    contains(x) { return this._c.has(x); }
+  };
+  const spawned = [];
+  const fx = createKojRuntimeFx({
+    stageEl: { classList },
+    spriteDock: {},
+    animFxLayer: {},
+    itemFxLayer: {},
+    apiBase: "http://127.0.0.1:3000",
+    getSearch: () => "",
+    getAnimationPlayerApi: () => ({
+      spawnParticles() {},
+      MiaAnimationPlayer: null
+    }),
+    getSoundCuesApi: () => ({ playSoundCue() {} }),
+    getMia2dFxApi: () => ({
+      init() {
+        return {
+          then(fn) {
+            fn();
+            return { catch() {} };
+          }
+        };
+      },
+      playItemUse(_layer, payload) {
+        spawned.push(payload);
+      }
+    })
+  });
+  const now = Date.now();
+  const active = fx.syncAnimationReaction(
+    {
+      animationReaction: {
+        active: true,
+        holdUntilTs: now + 5000,
+        updatedAt: now,
+        animationId: "gift-spark",
+        giftKey: "rose"
+      }
+    },
+    now
+  );
+  assert.equal(active, false);
+  assert.ok(classList.contains("gift"));
+
+  fx.spawnItemFx("apple", { projectile: "orb" });
+  assert.equal(spawned.length, 1);
+  assert.equal(spawned[0].itemId, "apple");
+  assert.ok(!JSON.stringify(spawned[0]).toLowerCase().includes("coin"));
+});
+
+console.log("\n---- KOJ RUNTIME SPLIT PHASE A–G SUMMARY ----\n");
 if (process.exitCode) process.exit(process.exitCode);

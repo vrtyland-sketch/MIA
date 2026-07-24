@@ -1,0 +1,1191 @@
+/* Koj runtime styles — extracted from kojnozrout-runtime.html (split phase A) */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+}
+
+#stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+#spriteDock {
+  position: absolute;
+  /* Pravý dolní dock — větší silueta, čitelná vedle MIA na portrait canvasu. */
+  right: 1%;
+  left: auto;
+  bottom: var(--tt-pad, 0);
+  transform: none;
+  width: min(96%, 360px);
+  height: calc(100% - var(--tt-safe-top, 0px));
+  max-height: 94%;
+}
+
+#spriteLayer {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 100%;
+}
+
+/* Part-rig mounts: body holds sprites+belly. Whole-sprite mode (v26) —
+   no interim head clip/mask (that caused the “rozpůlený” seam). */
+#kojBodyMount {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 72%;
+  pointer-events: none;
+}
+#kojHeadLayer {
+  display: none !important;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100px;
+  height: 100px;
+  pointer-events: none;
+  z-index: 3;
+  overflow: hidden;
+  opacity: 0;
+}
+#kojHeadLayer.ready {
+  opacity: 0;
+}
+/* v26-koj-WHOLE: do NOT soft-cut body head — single unbroken sprite. */
+#stage.koj-part-rig #kojBodyMount .sprite-slot {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+#kojHeadLayer img {
+  display: none;
+}
+
+/* Idle dýchání: JS KojLiveMotion (stejný jazyk jako MiaHoloMotion).
+   CSS fallback jen když JS není — sleepy zůstává keyframe. */
+#stage.calm-idle:not(.koj-live-motion) #spriteLayer,
+#stage.full:not(.koj-live-motion) #spriteLayer {
+  animation: kojBreatheLayer 4.8s ease-in-out infinite;
+}
+#stage.koj-live-motion.calm-idle #spriteLayer,
+#stage.koj-live-motion.full #spriteLayer {
+  animation: none;
+}
+#stage.sleepy #spriteLayer {
+  animation: kojSleepLayer 5.8s ease-in-out infinite;
+}
+
+#vectorHost {
+  position: absolute;
+  inset: 0;
+  display: none;
+  pointer-events: none;
+  z-index: 2;
+}
+#stage.vector-mode #vectorHost { display: block; }
+#stage.vector-mode #spriteLayer,
+#stage.vector-mode #cssMascot,
+#stage.vector-mode #blinkLid { display: none !important; }
+
+.sprite-slot,
+#cssMascot {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  transform-origin: 50% 100%;
+  pointer-events: none;
+}
+
+.sprite-slot {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  opacity: 0;
+  /* Soft Neon purple rim + floor shadow — readable on black OBS stage */
+  filter:
+    drop-shadow(0 0 10px rgba(170, 130, 255, 0.42))
+    drop-shadow(0 0 22px rgba(100, 200, 255, 0.18))
+    drop-shadow(0 12px 18px rgba(0, 0, 0, 0.32))
+    brightness(1.08)
+    saturate(1.06);
+  transition: opacity 820ms cubic-bezier(0.45, 0.05, 0.25, 1),
+              filter 620ms ease,
+              max-height 680ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.sprite-slot.visible {
+  opacity: 1;
+}
+
+.sprite-slot.visible.fading-out {
+  opacity: 0;
+}
+
+#cssMascot {
+  display: none !important;
+  width: 68%;
+  max-width: 220px;
+  aspect-ratio: 0.86;
+  align-items: center;
+  justify-content: center;
+  border-radius: 48% 48% 42% 42%;
+  background: linear-gradient(160deg, rgba(138, 255, 157, 0.95), rgba(56, 180, 100, 0.88));
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+  font-size: clamp(44px, 38vw, 96px);
+  line-height: 1;
+  opacity: 0;
+  transition: opacity 460ms ease;
+}
+
+#cssMascot.visible {
+  display: flex;
+  opacity: 1;
+}
+
+#stage.calm-idle .sprite-slot.visible,
+#stage.calm-idle #cssMascot.visible {
+  animation: none;
+}
+
+#stage.sleepy .sprite-slot.visible,
+#stage.sleepy #cssMascot.visible {
+  animation: none;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.26)) brightness(0.92) saturate(0.95);
+}
+
+#stage.sick .sprite-slot.visible,
+#stage.sick #cssMascot.visible {
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.28)) hue-rotate(-18deg) saturate(0.75);
+}
+
+#stage.speaking .sprite-slot.visible,
+#stage.speaking #cssMascot.visible {
+  animation: kojSpeak 0.55s ease-in-out infinite;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.28)) brightness(1.06);
+}
+
+#stage.gift-watch .sprite-slot.visible,
+#stage.gift-watch #cssMascot.visible {
+  animation: kojBob 2.4s ease-in-out infinite;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.28)) brightness(1.04);
+}
+
+#stage.groove .sprite-slot.visible,
+#stage.groove #cssMascot.visible {
+  animation: kojGroove 1.05s ease-in-out infinite;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.28)) brightness(1.05);
+}
+
+#stage.dance .sprite-slot.visible,
+#stage.dance #cssMascot.visible {
+  animation: kojDance 0.7s ease-in-out infinite;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.28)) brightness(1.05);
+}
+
+#stage.hype .sprite-slot.visible,
+#stage.hype #cssMascot.visible {
+  animation: kojHype 0.46s ease-in-out infinite;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.28)) brightness(1.06);
+}
+
+#stage.celebrate .sprite-slot.visible,
+#stage.celebrate #cssMascot.visible {
+  animation: kojCelebrate 0.85s ease-in-out infinite;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.28)) brightness(1.05);
+}
+
+#stage.gift .sprite-slot.visible,
+#stage.gift #cssMascot.visible,
+#stage.combo .sprite-slot.visible,
+#stage.combo #cssMascot.visible {
+  animation: kojGift 1.1s ease-in-out infinite;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.28)) brightness(1.05);
+}
+
+#stage.spam-wave.scene-party #sceneBackdrop,
+#stage.spam-wave #sceneLayer.scene-party #sceneBackdrop {
+  animation: kojWaveGlow 2.4s ease-in-out infinite;
+}
+
+#stage.combo-pulse .sprite-slot.visible,
+#stage.combo-pulse #cssMascot.visible {
+  animation: kojGift 0.72s ease-in-out infinite;
+  filter: drop-shadow(0 12px 22px rgba(255, 180, 60, 0.35)) brightness(1.1);
+}
+
+#stage.combo-urgent .sprite-slot.visible,
+#stage.combo-urgent #cssMascot.visible {
+  animation: kojGift 0.48s ease-in-out infinite;
+}
+
+@keyframes kojWaveGlow {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.08); }
+}
+
+#stage.battle-active .sprite-slot.visible,
+#stage.battle-active #cssMascot.visible {
+  animation: kojBattleStrike 0.42s ease-in-out infinite;
+  filter: drop-shadow(0 14px 32px rgba(255, 80, 80, 0.48)) brightness(1.08);
+}
+
+#stage.battle-hit-stage .sprite-slot.visible,
+#stage.battle-hit-stage #cssMascot.visible {
+  animation: kojBattleHit 0.28s ease-in-out infinite;
+  filter: drop-shadow(0 10px 24px rgba(255, 120, 80, 0.42)) saturate(0.92);
+}
+
+@keyframes kojBattleStrike {
+  0%, 100% { transform: translateX(-50%) translateY(0) rotate(0deg) scale(1); }
+  35% { transform: translateX(calc(-50% - 18px)) translateY(-14px) rotate(-8deg) scale(1.05); }
+  70% { transform: translateX(calc(-50% + 6px)) translateY(-6px) rotate(4deg) scale(1.02); }
+}
+
+@keyframes kojBattleHit {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  25% { transform: translateX(calc(-50% - 12px)) rotate(-4deg); }
+  75% { transform: translateX(calc(-50% + 12px)) rotate(4deg); }
+}
+
+#stage.duel .sprite-slot.visible,
+#stage.duel #cssMascot.visible {
+  animation: kojDuel 0.9s ease-in-out infinite;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.3)) brightness(1.04);
+}
+
+#stage.eating .sprite-slot.visible,
+#stage.eating #cssMascot.visible {
+  animation: kojEat 0.65s ease-in-out infinite;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.28)) brightness(1.04);
+}
+
+#stage.stressed .sprite-slot.visible,
+#stage.stressed #cssMascot.visible,
+#stage.annoyed .sprite-slot.visible,
+#stage.annoyed #cssMascot.visible {
+  animation: kojBob 2.8s ease-in-out infinite;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.28)) saturate(0.92);
+}
+
+/* Pohyb řídí vrstva (kojBreatheLayer); slot jen filtr, ať se dýchání nezdvojí. */
+#stage.full .sprite-slot.visible,
+#stage.full #cssMascot.visible {
+  animation: none;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.28)) brightness(1.04);
+}
+
+@keyframes kojBob {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-10px); }
+}
+
+@keyframes kojSleep {
+  0%, 100% { transform: translateX(-50%) translateY(4px) scale(0.98); }
+  50% { transform: translateX(-50%) translateY(0) scale(1); }
+}
+
+@keyframes kojSpeak {
+  0%, 100% { transform: translateX(-50%) translateY(0) scale(1); }
+  50% { transform: translateX(-50%) translateY(-6px) scale(1.04); }
+}
+
+@keyframes kojGroove {
+  0%, 100% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+  25% { transform: translateX(calc(-50% - 6px)) translateY(-8px) rotate(-4deg); }
+  75% { transform: translateX(calc(-50% + 6px)) translateY(-8px) rotate(4deg); }
+}
+
+@keyframes kojDance {
+  0%, 100% { transform: translateX(-50%) translateY(0) rotate(0deg) scale(1); }
+  20% { transform: translateX(calc(-50% - 12px)) translateY(-14px) rotate(-8deg) scale(1.03); }
+  40% { transform: translateX(-50%) translateY(-6px) rotate(0deg) scale(1.01); }
+  60% { transform: translateX(calc(-50% + 12px)) translateY(-14px) rotate(8deg) scale(1.03); }
+  80% { transform: translateX(-50%) translateY(-4px) rotate(0deg) scale(1); }
+}
+
+@keyframes kojHype {
+  0%, 100% { transform: translateX(-50%) translateY(0) rotate(-6deg) scale(1.02); }
+  25% { transform: translateX(calc(-50% - 16px)) translateY(-18px) rotate(6deg) scale(1.06); }
+  50% { transform: translateX(-50%) translateY(-8px) rotate(-4deg) scale(1.04); }
+  75% { transform: translateX(calc(-50% + 16px)) translateY(-18px) rotate(8deg) scale(1.06); }
+}
+
+@keyframes kojCelebrate {
+  0%, 100% { transform: translateX(-50%) translateY(0) scale(1); }
+  35% { transform: translateX(-50%) translateY(-16px) scale(1.07) rotate(-3deg); }
+  70% { transform: translateX(-50%) translateY(-6px) scale(1.03) rotate(3deg); }
+}
+
+@keyframes kojGift {
+  0%, 100% { transform: translateX(-50%) translateY(0) scale(1); }
+  50% { transform: translateX(-50%) translateY(-12px) scale(1.05); }
+}
+
+@keyframes kojDuel {
+  0%, 100% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+  25% { transform: translateX(calc(-50% - 10px)) translateY(-10px) rotate(-6deg); }
+  75% { transform: translateX(calc(-50% + 10px)) translateY(-10px) rotate(6deg); }
+}
+
+@keyframes kojEat {
+  0%, 100% { transform: translateX(-50%) translateY(0) scale(1); }
+  40% { transform: translateX(-50%) translateY(-4px) scale(1.03) rotate(2deg); }
+  60% { transform: translateX(-50%) translateY(-2px) scale(0.98) rotate(-2deg); }
+}
+
+/* Idle dýchání řídí celá vrstva (#spriteLayer · kojBreatheLayer),
+   takže jednotlivé sloty necháme bez vlastní animace — jinak by se pohyb zdvojil. */
+#stage.calm-idle .sprite-slot.visible,
+#stage.calm-idle #cssMascot.visible {
+  animation: none;
+}
+
+@keyframes kojBreathe {
+  0%, 100% { transform: translateX(-50%) translateY(0) scale(1); }
+  35% { transform: translateX(calc(-50% - 2px)) translateY(-3px) scale(1.012, 0.992); }
+  70% { transform: translateX(calc(-50% + 2px)) translateY(-6px) scale(0.992, 1.012); }
+}
+
+/* Varianty pro celou vrstvu (#spriteLayer) — žádný translateX(-50%),
+   vrstva je už vycentrovaná přes #spriteDock. Jen vertikální dýchání + scale. */
+@keyframes kojBreatheLayer {
+  /* Fallback: silnější squash, méně float (stejný feel jako JS) */
+  0%, 100% { transform: translateY(0) rotate(0deg) scale(1, 1); }
+  30% { transform: translateY(-2px) rotate(-0.45deg) scale(1.018, 0.986); }
+  55% { transform: translateY(-4px) rotate(0.4deg) scale(0.986, 1.02); }
+  80% { transform: translateY(-1px) rotate(-0.2deg) scale(1.01, 0.994); }
+}
+
+@keyframes kojSleepLayer {
+  0%, 100% { transform: translateY(4px) scale(0.98); }
+  50% { transform: translateY(0) scale(1); }
+}
+
+/* ===== Přirozená chůze — Koj se prochází sem a tam po displeji =====
+   Koj je kulaté zvíře → přirozený pohyb je KOLÍBÁNÍ (waddle), ne klouzání:
+   - vrstva (#spriteLayer) ho posouvá horizontálně a na krajích otočí (scaleX),
+   - slot dělá waddle: houpe se L↔P, s každým krokem se nadzvedne a při dopadu
+     se lehce zmáčkne (squash & stretch), takže statický PNG vypadá, že kráčí,
+   - pod nohama „dýchá" kontaktní stín v rytmu kroků = dodává váhu a došlap.
+   Musí být AŽ ZA pravidly calm-idle, aby chůze přebila idle dýchání. */
+#stage.wander #spriteLayer {
+  animation: kojWalk var(--koj-walk-dur, 17s) cubic-bezier(0.37, 0, 0.21, 1) infinite;
+}
+#stage.wander .sprite-slot.visible {
+  /* jeden plný cyklus = levý + pravý krok */
+  animation: kojWaddle var(--koj-step-dur, 0.78s) ease-in-out infinite;
+  transform-origin: 50% 100%;
+}
+/* walk-a/b už simulují krok — vypnout CSS waddle, nechat jen horizontální traverse */
+#stage.wander.pose-walk-frames .sprite-slot.visible {
+  animation: none;
+  transform: translateX(-50%);
+}
+/* Vícesnímkové cykly vs video CSS — jeden autor pohybu (snímky, ne slot animace) */
+#stage.pose-frames-active.groove .sprite-slot.visible,
+#stage.pose-frames-active.dance .sprite-slot.visible,
+#stage.pose-frames-active.hype .sprite-slot.visible {
+  animation: none;
+}
+/* L→P kolíbání s nadzvednutím a squash/stretch při došlapu */
+@keyframes kojWaddle {
+  0%   { transform: translateX(-50%) translateY(0)    rotate(-4.2deg) scale(1.00, 1.00); }
+  25%  { transform: translateX(-50%) translateY(-8px) rotate(0deg)    scale(0.978, 1.032); }
+  50%  { transform: translateX(-50%) translateY(0)    rotate(4.2deg)  scale(1.038, 0.962); }
+  75%  { transform: translateX(-50%) translateY(-8px) rotate(0deg)    scale(0.978, 1.032); }
+  100% { transform: translateX(-50%) translateY(0)    rotate(-4.2deg) scale(1.00, 1.00); }
+}
+
+/* kontaktní stín pod nohama — viditelný jen při chůzi, pulzuje s došlapem */
+#walkShadow {
+  position: absolute;
+  left: 50%;
+  bottom: 1%;
+  width: 46%;
+  height: 7%;
+  transform: translateX(-50%) scaleX(1);
+  border-radius: 50%;
+  background: radial-gradient(ellipse 60% 50% at 50% 50%,
+    rgba(0, 0, 0, 0.34), rgba(0, 0, 0, 0.14) 55%, transparent 78%);
+  filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 320ms ease;
+}
+#stage.wander #walkShadow {
+  opacity: 1;
+  animation: kojWalkShadow var(--koj-step-dur, 0.78s) ease-in-out infinite;
+}
+@keyframes kojWalkShadow {
+  /* širší a tmavší při došlapu (0/50/100 %), užší při nadzvednutí (25/75 %) */
+  0%   { transform: translateX(-50%) scaleX(1.06); opacity: 0.42; }
+  25%  { transform: translateX(-50%) scaleX(0.86); opacity: 0.24; }
+  50%  { transform: translateX(-50%) scaleX(1.06); opacity: 0.42; }
+  75%  { transform: translateX(-50%) scaleX(0.86); opacity: 0.24; }
+  100% { transform: translateX(-50%) scaleX(1.06); opacity: 0.42; }
+}
+@keyframes kojWalk {
+  /* Úzký wander uvnitř docku — nelez do středu canvasu / MIA zóny */
+  0%   { transform: translateX(-8%) scaleX(1); }
+  5%   { transform: translateX(-8%) scaleX(1); }
+  45%  { transform: translateX(8%)  scaleX(1); }
+  49%  { transform: translateX(8%)  scaleX(1); }
+  51%  { transform: translateX(8%)  scaleX(-1); }
+  55%  { transform: translateX(8%)  scaleX(-1); }
+  95%  { transform: translateX(-8%) scaleX(-1); }
+  97%  { transform: translateX(-8%) scaleX(-1); }
+  99%  { transform: translateX(-8%) scaleX(1); }
+  100% { transform: translateX(-8%) scaleX(1); }
+}
+
+/* ===== Odpočinek u misky — Koj se odsune k rohu a lehne si vedle své misky.
+   Žádné pozadí, jen čistý sprite + miska PNG. Bowl zůstává vpravo dole,
+   Koj se posune mírně doleva, takže leží „u misky v rohu". ===== */
+#stage.corner-rest #spriteLayer {
+  animation: none;
+  transform: translateX(-16%) scale(0.95);
+  transition: transform 720ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+#stage.corner-rest.sleepy #spriteLayer {
+  animation: kojRestByBowl 5.4s ease-in-out infinite;
+}
+#stage.corner-rest.annoyed #spriteLayer {
+  /* stráž u misky — bdělé, mírné pootočení k misce */
+  animation: kojGuardByBowl 3.8s ease-in-out infinite;
+}
+@keyframes kojRestByBowl {
+  0%, 100% { transform: translateX(-16%) translateY(3px) scale(0.94); }
+  50% { transform: translateX(-16%) translateY(0) scale(0.96); }
+}
+@keyframes kojGuardByBowl {
+  0%, 100% { transform: translateX(-16%) translateY(0) scale(0.96) rotate(0deg); }
+  50% { transform: translateX(-16%) translateY(-3px) scale(0.97) rotate(1.5deg); }
+}
+
+#stage.corner-rest.hungry #spriteLayer {
+  animation: kojHungryByBowl 2.8s ease-in-out infinite;
+}
+#stage.corner-rest.eating #spriteLayer {
+  animation: kojEatByBowl 0.72s ease-in-out infinite;
+}
+@keyframes kojHungryByBowl {
+  0%, 100% { transform: translateX(-16%) translateY(0) scale(0.95); }
+  50% { transform: translateX(-14%) translateY(-4px) scale(0.96); }
+}
+@keyframes kojEatByBowl {
+  0%, 100% { transform: translateX(-16%) translateY(0) scale(0.94); }
+  40% { transform: translateX(-16%) translateY(-3px) scale(0.96) rotate(1deg); }
+  60% { transform: translateX(-16%) translateY(-1px) scale(0.93) rotate(-1deg); }
+}
+
+/* ===== Předměty / hračky (čisté PNG, pohybují se s Kojem) ===== */
+#propLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+.koj-prop {
+  position: absolute;
+  opacity: 0;
+  transition: opacity 380ms ease;
+  pointer-events: none;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.32));
+  will-change: opacity, transform;
+  /* PNG musí být skutečná alpha — žádný obdélník kolem objektu */
+  display: block;
+  object-fit: contain;
+  object-position: center bottom;
+  height: auto;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+.koj-prop.on { opacity: 1; }
+
+/* Míč — u nohou, poskakuje, když si Koj hraje */
+#propBall {
+  left: 8%;
+  bottom: 0;
+  width: clamp(56px, 16vw, 96px);
+  max-height: 14vh;
+  transform-origin: 50% 100%;
+}
+#propBall.on {
+  opacity: 1;
+  animation: propBallBounce 0.72s ease-in-out infinite;
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.42));
+}
+#stage.prop-ball .sprite-slot.visible {
+  animation: kojPlayBall 0.55s ease-in-out infinite;
+}
+@keyframes kojPlayBall {
+  0%, 100% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+  50% { transform: translateX(-50%) translateY(-8px) rotate(-3deg); }
+}
+@keyframes propBallBounce {
+  0%, 100% { transform: translateY(0) scale(1, 1); }
+  40% { transform: translateY(-32%) scale(0.94, 1.06); }
+  55% { transform: translateY(-32%) scale(0.94, 1.06); }
+  75% { transform: translateY(0) scale(1.08, 0.92); }
+}
+
+/* Mikrofon — u boku, jako by ho Koj držel a zpíval / chatoval */
+#propMic {
+  right: 2%;
+  bottom: 22%;
+  width: clamp(52px, 14vw, 88px);
+  max-height: 22vh;
+  transform-origin: 50% 100%;
+}
+#propMic.on {
+  opacity: 1;
+  animation: propMicSing 0.95s ease-in-out infinite;
+  filter: drop-shadow(0 10px 18px rgba(0,0,0,0.4));
+}
+#stage.prop-mic .sprite-slot.visible {
+  animation: kojMicBounce 0.68s ease-in-out infinite;
+}
+@keyframes kojMicBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0) scale(1); }
+  50% { transform: translateX(-50%) translateY(-5px) scale(1.03); }
+}
+@keyframes propMicSing {
+  0%, 100% { transform: rotate(-10deg) translateY(0) scale(1); }
+  50% { transform: rotate(-2deg) translateY(-6px) scale(1.04); }
+}
+
+/* Miska — u nohou vpravo, jen samotná miska bez rámu */
+#propBowl {
+  right: 6%;
+  bottom: 0;
+  width: clamp(68px, 20vw, 118px);
+  max-height: 18vh;
+  transform-origin: 50% 100%;
+  opacity: 0;
+  transition: opacity 460ms ease, transform 460ms ease;
+}
+#propBowl.on { opacity: 1; }
+/* jemné "páry" z misky když u ní leží — žádná mlhovina, jen lehké zavlnění */
+#stage.corner-rest #propBowl {
+  right: auto;
+  left: 54%;
+  bottom: 0;
+  width: clamp(60px, 17vw, 104px);
+}
+#stage.corner-rest #propBowl.on { animation: propBowlBreath 4.6s ease-in-out infinite; }
+@keyframes propBowlBreath {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-2%) scale(1.015); }
+}
+
+/* Ruka — sjede shora a hladí Koje po hlavě (drbání/hlazení) */
+#propHand {
+  left: 50%;
+  top: 0;
+  width: clamp(72px, 18vw, 110px);
+  max-height: 24vh;
+  transform: translateX(-50%) translateY(-35%);
+}
+#propHand.on { animation: propHandPet 1.35s ease-in-out infinite; }
+@keyframes propHandPet {
+  0% { transform: translateX(-50%) translateY(-40%); }
+  20% { transform: translateX(-50%) translateY(0%); }
+  40% { transform: translateX(-54%) translateY(2%); }
+  60% { transform: translateX(-46%) translateY(0%); }
+  80% { transform: translateX(-52%) translateY(2%); }
+  100% { transform: translateX(-50%) translateY(0%); }
+}
+
+/* mrkání — krátký překryv víček, aby Koj "žil" i v klidu */
+#blinkLid {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 70%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(ellipse 60% 14% at 50% 38%, rgba(0,0,0,0.10), transparent 70%);
+  mix-blend-mode: multiply;
+}
+#stage.alive #blinkLid { animation: kojBlink 6.2s ease-in-out infinite; }
+@keyframes kojBlink {
+  0%, 92%, 100% { opacity: 0; }
+  94%, 97% { opacity: 0.55; }
+}
+
+/* Scéna za Kojem — NIKDY celoplošný obdélník PNG.
+   Jen CSS tint (#sceneBackdrop) + volitelné malé accent fragmenty s feather maskou.
+   Velké scene PNG patří na away-loop (NEJSEM TU) pro preview grafiky. */
+#sceneLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+#spriteDock { z-index: 2; }
+
+/* Celoplošná pozadí vypnuta — zůstávají jen pro away-loop / gfx test */
+.scene-bg { display: none !important; }
+
+#sceneAccents {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.scene-accent {
+  position: absolute;
+  height: auto;
+  max-height: 42vh;
+  opacity: 0;
+  transition: opacity 900ms ease, transform 900ms ease;
+  pointer-events: none;
+  object-fit: cover;
+  -webkit-mask-image: radial-gradient(ellipse 78% 72% at 50% 62%, #000 22%, transparent 74%);
+  mask-image: radial-gradient(ellipse 78% 72% at 50% 62%, #000 22%, transparent 74%);
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.28));
+}
+.scene-accent.visible {
+  opacity: var(--accent-op, 0.42);
+}
+.scene-accent.left { left: -2%; bottom: 0; }
+.scene-accent.right { right: -2%; bottom: 0; }
+.scene-accent.center {
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+}
+.scene-accent.top {
+  left: 50%;
+  top: 8%;
+  transform: translateX(-50%);
+  max-height: 28vh;
+}
+
+#stage.scene-accents .scene-prop { opacity: 0 !important; }
+
+/* Podlaha — jemný scénový stín (bez Soft Neon mint pad) */
+#sceneFloor {
+  position: absolute;
+  left: 50%;
+  bottom: var(--tt-pad, 0);
+  transform: translateX(-50%);
+  width: 78%;
+  height: 26%;
+  filter: blur(2px);
+  background:
+    radial-gradient(ellipse 60% 42% at 50% 100%,
+      var(--koj-floor-shadow, rgba(0, 20, 28, 0.42)),
+      transparent 72%);
+}
+#stage.scene-cave { --koj-floor-shadow: rgba(20, 40, 70, 0.48); }
+#stage.scene-night { --koj-floor-shadow: rgba(10, 20, 45, 0.52); }
+#stage.scene-feast { --koj-floor-shadow: rgba(40, 50, 30, 0.4); }
+#stage.scene-party { --koj-floor-shadow: rgba(30, 50, 70, 0.42); }
+#stage.scene-cozy { --koj-floor-shadow: rgba(25, 40, 45, 0.42); }
+
+#stage.scene-accents #sceneBackdrop { opacity: 1 !important; }
+
+.scene-prop {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 700ms ease, transform 700ms ease;
+  line-height: 1;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.4));
+}
+#sceneLayer.show .scene-prop { opacity: 1; }
+
+/* themed backdrop tinting */
+#sceneBackdrop {
+  position: absolute;
+  inset: 0;
+  opacity: 0.0;
+  transition: opacity 900ms ease, background 900ms ease;
+  -webkit-mask: radial-gradient(ellipse 72% 80% at 50% 78%, #000 35%, transparent 78%);
+  mask: radial-gradient(ellipse 72% 80% at 50% 78%, #000 35%, transparent 78%);
+}
+#sceneLayer.show #sceneBackdrop { opacity: 1; }
+
+/* --- DEN (Tech Energy AI lab) --- */
+.scene-den #sceneBackdrop {
+  background:
+    radial-gradient(120% 80% at 50% 120%, rgba(30, 40, 80, 0.36), transparent 70%),
+    radial-gradient(80% 60% at 50% 0%, rgba(80, 60, 140, 0.2), transparent 70%),
+    linear-gradient(180deg, rgba(6, 10, 24, 0.35), rgba(2, 6, 14, 0.55));
+}
+
+/* --- CAVE (loot / poklad / quest) --- */
+.scene-cave #sceneBackdrop {
+  background:
+    radial-gradient(100% 70% at 50% 120%, rgba(20,30,60,0.55), transparent 72%),
+    radial-gradient(70% 50% at 50% 30%, rgba(90,60,160,0.28), transparent 75%),
+    linear-gradient(180deg, rgba(8,10,24,0.55), rgba(4,6,16,0.7));
+}
+.scene-cave .prop-crystal-l { left: 8%; bottom: 6%; font-size: 12vh; transform: rotate(-12deg); }
+.scene-cave .prop-crystal-r { right: 8%; bottom: 4%; font-size: 14vh; transform: rotate(10deg); }
+.scene-cave .prop-loot { left: 50%; bottom: 3%; transform: translateX(-50%); font-size: 10vh; }
+.scene-cave .prop-spark-1 { left: 22%; top: 24%; font-size: 5vh; animation: twinkle 2.4s ease-in-out infinite; }
+.scene-cave .prop-spark-2 { right: 24%; top: 32%; font-size: 4vh; animation: twinkle 3.1s ease-in-out infinite 0.6s; }
+.scene-cave .prop-spark-3 { left: 60%; top: 18%; font-size: 3.4vh; animation: twinkle 2.8s ease-in-out infinite 1.1s; }
+
+/* --- COZY (chill / TV / deka) --- */
+.scene-cozy #sceneBackdrop {
+  background:
+    radial-gradient(90% 60% at 50% 120%, rgba(120,80,50,0.4), transparent 70%),
+    radial-gradient(60% 50% at 22% 50%, rgba(120,180,255,0.16), transparent 70%),
+    linear-gradient(180deg, rgba(30,22,18,0.35), rgba(18,14,12,0.5));
+}
+.scene-cozy .prop-tv { left: 6%; bottom: 10%; font-size: 13vh; }
+.scene-cozy .prop-tv-glow {
+  left: 4%; bottom: 8%; width: 30%; height: 34%;
+  background: radial-gradient(ellipse at 50% 50%, rgba(140,200,255,0.5), transparent 70%);
+  filter: blur(6px); font-size: 0;
+  animation: tvFlicker 3.4s ease-in-out infinite;
+}
+.scene-cozy .prop-lamp { right: 8%; bottom: 12%; font-size: 9vh; }
+.scene-cozy .prop-blanket { left: 50%; bottom: 1%; transform: translateX(-50%); font-size: 11vh; opacity: 0.92; }
+
+/* --- FEAST (jídlo / plná miska) --- */
+.scene-feast #sceneBackdrop {
+  background:
+    radial-gradient(100% 70% at 50% 120%, rgba(120,90,40,0.45), transparent 72%),
+    radial-gradient(60% 50% at 50% 40%, rgba(255,190,90,0.18), transparent 75%);
+}
+.scene-feast .prop-bowl { left: 50%; bottom: 2%; transform: translateX(-50%); font-size: 12vh; }
+.scene-feast .prop-food-l { left: 20%; bottom: 8%; font-size: 6vh; }
+.scene-feast .prop-food-r { right: 20%; bottom: 10%; font-size: 5vh; }
+
+/* --- PARTY (oslava / combo / hype) --- */
+.scene-party #sceneBackdrop {
+  background:
+    radial-gradient(80% 60% at 50% 0%, rgba(255,120,200,0.2), transparent 70%),
+    radial-gradient(80% 60% at 50% 120%, rgba(120,120,255,0.25), transparent 72%);
+}
+.scene-party .prop-confetti-1 { left: 16%; top: 10%; font-size: 6vh; animation: floatUp 3.2s ease-in-out infinite; }
+.scene-party .prop-confetti-2 { right: 18%; top: 16%; font-size: 5vh; animation: floatUp 2.6s ease-in-out infinite 0.5s; }
+.scene-party .prop-confetti-3 { left: 50%; top: 6%; font-size: 5vh; animation: floatUp 3.6s ease-in-out infinite 1s; }
+.scene-party .prop-lights { left: 50%; bottom: 4%; transform: translateX(-50%); font-size: 8vh; }
+
+/* --- NIGHT (spánek) --- */
+.scene-night #sceneBackdrop {
+  background:
+    radial-gradient(100% 80% at 50% 120%, rgba(20,24,48,0.55), transparent 72%),
+    linear-gradient(180deg, rgba(8,10,26,0.6), rgba(4,6,18,0.75));
+}
+.scene-night .prop-moon { right: 10%; top: 10%; font-size: 9vh; }
+.scene-night .prop-star-1 { left: 18%; top: 16%; font-size: 3vh; animation: twinkle 3s ease-in-out infinite; }
+.scene-night .prop-star-2 { left: 40%; top: 10%; font-size: 2.4vh; animation: twinkle 2.4s ease-in-out infinite 0.7s; }
+.scene-night .prop-star-3 { right: 30%; top: 22%; font-size: 2.8vh; animation: twinkle 2.8s ease-in-out infinite 1.3s; }
+.scene-night .prop-zzz { left: 58%; top: 30%; font-size: 5vh; animation: floatUp 4s ease-in-out infinite; }
+
+/* ===== Strip avatarů diváků (recentParticipants) =====
+   POZOR na skladbu v OBS: miska (MIA_BOWL) sedí nad runtime overlayem a její
+   spodní část (procenta/meta) zasahuje do horní části runtime. Proto strip
+   nekotvíme k hornímu okraji (lezl by do procent), ale posuneme ho NÍŽ — pod
+   misku, nad Koje — kde nic nepřekáží. Offset jde doladit přes --koj-viewer-top. */
+#viewerStrip {
+  position: absolute;
+  top: var(--koj-viewer-top, 38%);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 5px;
+  max-width: 94%;
+  padding: 3px 5px;
+  z-index: 3;
+  pointer-events: none;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+.viewer-chip {
+  position: relative;
+  width: clamp(26px, 7vw, 38px);
+  height: clamp(26px, 7vw, 38px);
+  border-radius: 50%;
+  overflow: hidden;
+  flex: 0 0 auto;
+  border: 2px solid rgba(140, 255, 220, 0.55);
+  background: linear-gradient(160deg, #2a4a52, #122028);
+  box-shadow:
+    0 0 10px rgba(100, 235, 200, 0.25),
+    0 3px 10px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: clamp(12px, 3vw, 18px);
+  font-weight: 700;
+  font-family: system-ui, sans-serif;
+  animation: chipIn 420ms ease;
+}
+.viewer-chip img { width: 100%; height: 100%; object-fit: cover; }
+.viewer-chip.donor {
+  border-color: #ffd060;
+  box-shadow: 0 0 0 2px rgba(255,208,96,0.6), 0 3px 12px rgba(255,180,0,0.45);
+}
+.viewer-chip .gift-badge {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  font-size: clamp(10px, 2.6vw, 15px);
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.6));
+}
+@keyframes chipIn { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: scale(1); } }
+
+@keyframes twinkle { 0%, 100% { opacity: 0.3; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.1); } }
+@keyframes tvFlicker { 0%, 100% { opacity: 0.45; } 45% { opacity: 0.75; } 70% { opacity: 0.35; } }
+@keyframes floatUp { 0% { transform: translateY(6px); opacity: 0.4; } 50% { opacity: 1; } 100% { transform: translateY(-10px); opacity: 0.4; } }
+
+#stage.item-use-active .sprite-slot.visible {
+  animation: itemKojReact 0.55s ease-out;
+}
+#stage.item-use-food .sprite-slot.visible { animation: itemKojMunch 0.7s ease-in-out 2; }
+#stage.item-use-duel .sprite-slot.visible { animation: propBallBounce 0.55s ease-in-out 3; }
+#stage.item-use-heal .sprite-slot.visible,
+#stage.item-use-care .sprite-slot.visible { animation: propHandPet 1.1s ease-in-out 2; }
+#stage.item-use-comfort .sprite-slot.visible { animation: propBallBounce 0.62s ease-in-out 3; }
+@keyframes itemKojReact {
+  0%, 100% { transform: translateY(0) scale(1); }
+  40% { transform: translateY(-4%) scale(1.04); }
+}
+@keyframes itemKojMunch {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(2%) scale(0.98); }
+}
+#stage.anim-sheet-active .sprite-slot,
+#stage.anim-sheet-active #cssMascot,
+#stage.anim-sheet-active #vectorHost {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+#animFxLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  overflow: hidden;
+}
+
+/* --- Cyborg translucent glass belly + soft optional projector (v23) --- */
+#kojProjectorHost {
+  position: absolute;
+  /* Sized/positioned in JS over the visible sprite slot. */
+  left: 0;
+  top: 0;
+  width: 100px;
+  height: 100px;
+  pointer-events: none;
+  z-index: 5;
+  overflow: visible;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+#kojProjectorHost.ready {
+  opacity: 1;
+}
+
+#kojBellyScreen {
+  position: absolute;
+  /* Defaults overwritten every frame from KojBodyAnchors.belly (cx,cy,w,h). */
+  left: 32%;
+  top: 43.5%;
+  width: 36%;
+  height: 28%;
+  border-radius: 48%;
+  overflow: hidden;
+  opacity: 0;
+  /* Scale via nested child only — host must not fight body/rig transforms. */
+  transform: none;
+  transition: opacity 380ms ease;
+  /* See-through dark glass + violet-tech rim (no mint bloom) */
+  background:
+    radial-gradient(
+      ellipse at 50% 36%,
+      rgba(50, 40, 90, 0.22) 0%,
+      rgba(8, 12, 28, 0.42) 55%,
+      rgba(4, 8, 16, 0.52) 100%
+    );
+  box-shadow:
+    0 0 0 2px rgba(170, 140, 255, 0.62),
+    inset 0 0 12px rgba(80, 120, 200, 0.14),
+    inset 0 1px 0 rgba(200, 190, 255, 0.22);
+  backdrop-filter: blur(1.5px) saturate(1.15);
+  -webkit-backdrop-filter: blur(1.5px) saturate(1.15);
+}
+#kojBellyScreen.on {
+  opacity: 1;
+}
+#kojBellyScreen.on .belly-scale {
+  transform: scale(1);
+}
+#kojBellyScreen:not(.on) .belly-scale {
+  transform: scale(0.92);
+}
+#kojBellyScreen .belly-scale {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 50%;
+  transition: transform 440ms cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+#kojBellyScreen.mode-gift {
+  background:
+    radial-gradient(
+      ellipse at 50% 40%,
+      rgba(30, 28, 55, 0.28) 0%,
+      rgba(6, 10, 22, 0.55) 100%
+    );
+}
+#kojBellyScreen.mode-idle {
+  background:
+    radial-gradient(
+      ellipse at 48% 32%,
+      rgba(40, 36, 80, 0.18) 0%,
+      rgba(8, 12, 28, 0.48) 62%,
+      rgba(3, 8, 16, 0.56) 100%
+    );
+}
+#kojBellyScreen img#kojBellyImg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: saturate(1.12) brightness(1.08) contrast(1.04);
+  opacity: 0;
+  transition: opacity 280ms ease;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+#kojBellyScreen.mode-gift img#kojBellyImg {
+  opacity: 0.92;
+}
+#kojBellyIdle {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2%;
+  padding: 8% 10%;
+  opacity: 0;
+  transition: opacity 280ms ease;
+  pointer-events: none;
+  text-align: center;
+  font-family: "Segoe UI", "Bahnschrift", system-ui, sans-serif;
+  color: rgba(220, 210, 255, 0.95);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
+}
+#kojBellyScreen.mode-idle #kojBellyIdle {
+  opacity: 1;
+}
+#kojBellyIdle .belly-idle-main {
+  font-size: clamp(11px, 4.8vw, 28px);
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  line-height: 1.05;
+  white-space: nowrap;
+}
+#kojBellyIdle .belly-idle-sub {
+  font-size: clamp(8px, 2.4vw, 14px);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  opacity: 0.82;
+  text-transform: uppercase;
+}
+
+#kojBellyScreen.mode-wave::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 10%;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(40, 60, 90, 0.55);
+  z-index: 6;
+  pointer-events: none;
+}
+
+#kojBellyScreen.mode-wave::before {
+  content: "";
+  position: absolute;
+  left: 8%;
+  width: var(--belly-wave-pct, 0%);
+  max-width: 84%;
+  bottom: 10%;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(0, 234, 255, 0.85), rgba(180, 120, 255, 0.9));
+  box-shadow: 0 0 8px rgba(0, 234, 255, 0.45);
+  z-index: 7;
+  pointer-events: none;
+  transition: width 320ms ease;
+}
+
+#kojBellyScreen.mode-wave.wave-confirmed::before {
+  background: linear-gradient(90deg, rgba(255, 208, 96, 0.9), rgba(255, 120, 200, 0.85));
+}
+
+#kojBellyScreen.mode-wave.wave-urgent::after {
+  animation: bellyWaveUrgent 0.8s ease-in-out infinite;
+}
+
+@keyframes bellyWaveUrgent {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+#kojBellyScreen .belly-glass {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(220, 210, 255, 0.18) 0%,
+      transparent 28%,
+      transparent 62%,
+      rgba(60, 80, 140, 0.1) 100%
+    );
+  mix-blend-mode: screen;
+  opacity: 0.75;
+}
+#kojBellyScreen .belly-scan {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(160, 180, 255, 0.12) 48%,
+    transparent 58%
+  );
+  animation: kojBellyScan 3.6s linear infinite;
+  opacity: 0.55;
+  pointer-events: none;
+}
+@keyframes kojBellyScan {
+  0% { transform: translateY(-60%); }
+  100% { transform: translateY(120%); }
+}
+
+/* Soft optional eye projector — secondary to belly focus */
+#kojEyeBeam {
+  position: absolute;
+  left: 54%;
+  top: 16%;
+  width: 42%;
+  height: 36%;
+  opacity: 0;
+  transform-origin: 10% 22%;
+  transition: opacity 320ms ease;
+  background: radial-gradient(
+      circle at 12% 28%,
+      rgba(180, 150, 255, 0.16) 0%,
+      rgba(120, 160, 255, 0.06) 22%,
+      transparent 48%
+    ),
+    linear-gradient(
+      128deg,
+      rgba(160, 140, 255, 0.12) 0%,
+      rgba(100, 160, 255, 0.04) 34%,
+      transparent 100%
+    );
+  clip-path: polygon(8% 14%, 22% 2%, 100% 40%, 100% 72%, 14% 36%);
+  filter: none;
+  mix-blend-mode: screen;
+}
+#kojEyeBeam.on {
+  opacity: 0.32;
+  animation: kojEyeBeamPulse 2.2s ease-in-out infinite;
+}
+@keyframes kojEyeBeamPulse {
+  0%, 100% { opacity: 0.2; filter: none; }
+  50% { opacity: 0.38; filter: none; }
+}
+
+#kojHoloPlate {
+  position: absolute;
+  left: 72%;
+  top: 4%;
+  width: 28%;
+  max-width: 88px;
+  aspect-ratio: 1;
+  opacity: 0;
+  transform: perspective(480px) rotateY(-14deg) rotateX(6deg) scale(0.86);
+  transition: opacity 400ms ease, transform 480ms cubic-bezier(0.2, 0.9, 0.2, 1);
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(12, 36, 42, 0.28);
+  backdrop-filter: blur(2px);
+  box-shadow:
+    0 0 0 1px rgba(170, 150, 255, 0.28),
+    inset 0 0 10px rgba(80, 100, 180, 0.1);
+}
+#kojHoloPlate.on {
+  opacity: 0.55;
+  transform: perspective(480px) rotateY(-10deg) rotateX(4deg) scale(1);
+  animation: kojHoloFloat 3.1s ease-in-out infinite;
+}
+#kojHoloPlate img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.72;
+  filter: saturate(1.05) contrast(1.02);
+}
+#kojHoloPlate .holo-grid {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 4px,
+      rgba(160, 180, 255, 0.04) 4px 5px
+    );
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+@keyframes kojHoloFloat {
+  0%, 100% { transform: perspective(480px) rotateY(-10deg) rotateX(4deg) translateY(0) scale(1); }
+  50% { transform: perspective(480px) rotateY(-8deg) rotateX(3deg) translateY(-3%) scale(1.015); }
+}
+
+#stage.anim-sheet-active #kojProjectorHost {
+  z-index: 6;
+}
+
+/* Subtle tech particles layer (eye + belly hotspots) */
+#kojTechFx {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 4;
+  mix-blend-mode: screen;
+  opacity: 0.92;
+}

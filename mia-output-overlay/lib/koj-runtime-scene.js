@@ -45,10 +45,26 @@
     return typeof v === "string" && v.trim() ? v.trim() : "";
   }
 
-  function resolveScene(displayMood, data) {
+  function toNumber(v, fallback = 0) {
+    const n = Number(v);
+    return Number.isFinite(n) ? n : fallback;
+  }
+
+  function isMomentLive(moment, now = Date.now()) {
+    if (!moment || typeof moment !== "object") return false;
+    const holdUntil = toNumber(moment.holdUntilTs || moment.expiresAt || moment.until, 0);
+    if (holdUntil > 0) return holdUntil > now;
+    return Boolean(moment.active);
+  }
+
+  function resolveScene(displayMood, data, now = Date.now()) {
     const mood = safe(displayMood).toLowerCase();
     const vr = data?.kojVideoReaction || data?.kojDisplay?.videoReaction;
     if (vr?.active) return "cozy";
+
+    if (isMomentLive(data?.comboMoment, now) || data?.spamSession?.active) {
+      return "party";
+    }
 
     const serverScene = safe(data?.scene || data?.kojDisplay?.scene).toLowerCase();
     if (SCENE_CLASSES.includes(`scene-${serverScene}`)) return serverScene;
@@ -173,9 +189,8 @@
     }
 
     function syncScene(displayMood, data, now) {
-      void now;
       if (!sceneLayer || !stageEl) return;
-      const scene = resolveScene(displayMood, data);
+      const scene = resolveScene(displayMood, data, now);
       if (scene !== currentScene) {
         sceneLayer.classList.remove(...SCENE_CLASSES);
         sceneLayer.classList.add(`scene-${scene}`, "show");
@@ -261,6 +276,7 @@
     DEFAULT_FOLLOWER,
     create,
     resolveScene,
+    isMomentLive,
     initials,
     isDonorParticipant
   };

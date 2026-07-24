@@ -33,6 +33,18 @@
     return typeof v === "string" && v.trim() ? v.trim() : "";
   }
 
+  function toNumber(v, fallback = 0) {
+    const n = Number(v);
+    return Number.isFinite(n) ? n : fallback;
+  }
+
+  function isMomentLive(moment, now = Date.now()) {
+    if (!moment || typeof moment !== "object") return false;
+    const holdUntil = toNumber(moment.holdUntilTs || moment.expiresAt || moment.until, 0);
+    if (holdUntil > 0) return holdUntil > now;
+    return Boolean(moment.active);
+  }
+
   function resolveDisplayMood(state, care) {
     const need = safe(care?.need).toLowerCase();
     if (state?.isSleeping || need === "sleepy") return "sleepy";
@@ -269,15 +281,48 @@
       else stageEl.classList.add("gift-watch");
     }
 
+    /** Combo/spam wave stage FX — runs after applyStageMood (combo class may be re-added). */
+    function syncComboVisual(data, now) {
+      if (!stageEl) return;
+      const spam = data?.spamSession;
+      const spamActive = Boolean(spam?.active);
+      const comboLive = isMomentLive(data?.comboMoment, now);
+      stageEl.classList.toggle("spam-wave", spamActive);
+      if (comboLive || spamActive) {
+        stageEl.classList.add("combo");
+      }
+      if (spamActive) {
+        const target = Math.max(
+          1,
+          toNumber(spam.targetRewardPoints, toNumber(spam.pointsToNextReward, 1))
+        );
+        const current = Math.max(0, toNumber(spam.totalPoints, 0));
+        const progressPct = Math.min(100, Math.round((current / target) * 100));
+        const urgent =
+          Boolean(spam.spamConfirmed) &&
+          toNumber(spam.remainingWindowSec, 0) > 0 &&
+          toNumber(spam.remainingWindowSec, 0) <= 5;
+        const pulse = Boolean(spam.spamConfirmed) && progressPct >= 72;
+        stageEl.classList.toggle("combo-pulse", pulse);
+        stageEl.classList.toggle("combo-urgent", urgent);
+        stageEl.style.setProperty("--koj-wave-pct", `${progressPct}%`);
+      } else {
+        stageEl.classList.remove("combo-pulse", "combo-urgent");
+        stageEl.style.removeProperty("--koj-wave-pct");
+      }
+    }
+
     return {
       STAGE_MOOD_CLASSES,
       resolveDisplayMood,
       isKojSpeaking,
+      isMomentLive,
       applyStageMood,
       startWanderVariation,
       stopWanderVariation,
       syncSpeakingVisual,
       syncVideoReactionVisual,
+      syncComboVisual,
       isWandering: () => isWandering
     };
   }
@@ -286,6 +331,7 @@
     STAGE_MOOD_CLASSES,
     resolveDisplayMood,
     isKojSpeaking,
+    isMomentLive,
     create
   };
 });

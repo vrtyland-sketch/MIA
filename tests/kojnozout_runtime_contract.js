@@ -65,6 +65,13 @@ function run() {
     "lib",
     "koj-runtime-stage.js"
   );
+  const runtimeFxPath = path.resolve(
+    __dirname,
+    "..",
+    "mia-output-overlay",
+    "lib",
+    "koj-runtime-fx.js"
+  );
   const runtime = fs.readFileSync(runtimePath, "utf8");
   const runtimeCss = fs.existsSync(runtimeCssPath)
     ? fs.readFileSync(runtimeCssPath, "utf8")
@@ -84,7 +91,10 @@ function run() {
   const runtimeStage = fs.existsSync(runtimeStagePath)
     ? fs.readFileSync(runtimeStagePath, "utf8")
     : "";
-  const runtimeBundle = `${runtime}\n${runtimeCss}\n${runtimeSprite}\n${runtimeBelly}\n${runtimeScene}\n${runtimePose}\n${runtimeStage}`;
+  const runtimeFx = fs.existsSync(runtimeFxPath)
+    ? fs.readFileSync(runtimeFxPath, "utf8")
+    : "";
+  const runtimeBundle = `${runtime}\n${runtimeCss}\n${runtimeSprite}\n${runtimeBelly}\n${runtimeScene}\n${runtimePose}\n${runtimeStage}\n${runtimeFx}`;
 
   assert.ok(runtime.includes("sprite-slot") || runtimeCss.includes("sprite-slot"), "runtime uses img sprite slots");
   // Koj = čisté PNG bez mlhovin: žádná aura ani ambient částice.
@@ -149,6 +159,14 @@ function run() {
   assert.ok(
     fs.existsSync(path.resolve(__dirname, "..", "mia-output-overlay", "lib", "koj-runtime-stage.js")),
     "koj-runtime-stage.js present"
+  );
+  assert.ok(
+    runtime.includes("koj-runtime-fx.js") && runtime.includes("KojRuntimeFx"),
+    "runtime loads koj-runtime-fx.js"
+  );
+  assert.ok(
+    fs.existsSync(path.resolve(__dirname, "..", "mia-output-overlay", "lib", "koj-runtime-fx.js")),
+    "koj-runtime-fx.js present"
   );
   // Přirozená chůze: kolíbání (waddle) + došlapový stín místo klouzání statického PNG.
   assert.ok(runtimeBundle.includes("kojWaddle"), "runtime walk uses waddle (rock + squash), not flat slide");

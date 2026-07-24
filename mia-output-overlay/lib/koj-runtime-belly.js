@@ -42,6 +42,36 @@
     return typeof v === "string" && v.trim() ? v.trim() : "";
   }
 
+  function toNumber(v, fallback = 0) {
+    const n = Number(v);
+    return Number.isFinite(n) ? n : fallback;
+  }
+
+  /**
+   * Belly HUD during spam wave — miaPoints only, no coin/value fields.
+   */
+  function buildSpamWaveBellyContent(spam = {}) {
+    if (!spam || !spam.active) return null;
+    const target = Math.max(
+      1,
+      toNumber(spam.targetRewardPoints, toNumber(spam.pointsToNextReward, 1))
+    );
+    const current = Math.max(0, toNumber(spam.totalPoints, 0));
+    const progressPct = Math.min(100, Math.round((current / target) * 100));
+    const remainingSec = Math.max(0, toNumber(spam.remainingWindowSec, 0));
+    const nextTier = safe(spam.nextRewardTier).toUpperCase();
+    const main = nextTier ? `${progressPct}% → ${nextTier}` : `${progressPct}%`;
+    const metaParts = [`🌊 vlna`, `${current} bodů`];
+    if (remainingSec > 0) metaParts.push(`${remainingSec}s`);
+    return {
+      main,
+      sub: metaParts.join(" · "),
+      progressPct,
+      urgent: Boolean(spam.spamConfirmed) && remainingSec > 0 && remainingSec <= 5,
+      confirmed: Boolean(spam.spamConfirmed)
+    };
+  }
+
   function resolveMediaUrl(raw, apiBase) {
     const u = safe(raw);
     if (!u) return "";
@@ -405,8 +435,12 @@
 
       const inactiveMs =
         lastProjectActivityAt > 0 ? now - lastProjectActivityAt : BELLY_IDLE_AFTER_MS + 1;
+      const waveContent = buildSpamWaveBellyContent(data?.spamSession);
+      const wantWaveHud = Boolean(waveContent) && !media.bellyUrl && !forceIdle;
       const wantIdle =
-        forceIdle || (!media.bellyUrl && inactiveMs >= BELLY_IDLE_AFTER_MS);
+        forceIdle ||
+        wantWaveHud ||
+        (!media.bellyUrl && inactiveMs >= BELLY_IDLE_AFTER_MS);
       const wantGift = Boolean(media.bellyUrl) && !forceIdle;
 
       if (wantGift) {
@@ -441,7 +475,9 @@
         return;
       }
 
-      let idle = resolveBellyIdleContent(now);
+      let idle = wantWaveHud && waveContent
+        ? { page: "wave", main: waveContent.main, sub: waveContent.sub, wave: waveContent }
+        : resolveBellyIdleContent(now);
       if (forceIdlePage && BELLY_IDLE_PAGES.includes(forceIdlePage)) {
         const d = new Date(now);
         if (forceIdlePage === "date") {
@@ -462,11 +498,21 @@
       if (kojBellyIdleSub) kojBellyIdleSub.textContent = idle.sub || "";
       kojBellyScreen.classList.add("on", "mode-idle");
       kojBellyScreen.classList.remove("mode-gift");
+      kojBellyScreen.classList.toggle("mode-wave", Boolean(idle.wave));
+      if (idle.wave) {
+        kojBellyScreen.style.setProperty("--belly-wave-pct", `${idle.wave.progressPct}%`);
+        kojBellyScreen.classList.toggle("wave-urgent", Boolean(idle.wave.urgent));
+        kojBellyScreen.classList.toggle("wave-confirmed", Boolean(idle.wave.confirmed));
+      } else {
+        kojBellyScreen.classList.remove("mode-wave", "wave-urgent", "wave-confirmed");
+        kojBellyScreen.style.removeProperty("--belly-wave-pct");
+      }
     }
 
     return {
       BELLY_IDLE_AFTER_MS,
       BELLY_IDLE_PAGES,
+      buildSpamWaveBellyContent,
       resolveMediaUrl: (raw) => resolveMediaUrl(raw, apiBase),
       resolveProjectorMedia: (data, now) => resolveProjectorMedia(data, now, apiBase),
       resolveBellyIdleContent,
@@ -481,6 +527,7 @@
     BELLY_IDLE_AFTER_MS,
     BELLY_IDLE_CYCLE_MS,
     BELLY_IDLE_PAGES,
+    buildSpamWaveBellyContent,
     create,
     resolveMediaUrl,
     isLiveMoment,

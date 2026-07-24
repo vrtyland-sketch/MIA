@@ -7,25 +7,26 @@
 <script src="/assets/kojnozrout/pose-catalog.js"></script>
 <script src="/mia-svg-primitives.js"></script>
 <script src="/koj-vector.js"></script>
-<link rel="stylesheet" href="/tiktok-viewer-zones.css?v=42-koj-split" />
-<link rel="stylesheet" href="/mia-soft-neon-world.css?v=42-koj-split" />
-<link rel="stylesheet" href="/assets/mia-2d-fx.css?v=42-koj-split" />
-<script src="/assets/mia-2d-fx.js?v=42-koj-split"></script>
-<script src="/assets/mia-animation-player.js?v=42-koj-split"></script>
-<script src="/assets/mia-sound-cues.js?v=42-koj-split"></script>
-<script src="/lib/koj-body-anchors.js?v=42-koj-split"></script>
-<script src="/lib/mia-rig-anchors.js?v=42-koj-split"></script>
-<script src="/lib/mia-part-rig.js?v=42-koj-split"></script>
-<script src="/lib/koj-live-motion.js?v=42-koj-split"></script>
-<script src="/lib/mia-tech-energy.js?v=42-koj-split"></script>
-<script src="/lib/koj-runtime-walk.js?v=42-koj-split"></script>
-<script src="/lib/overlay-poll.js?v=42-koj-split"></script>
-<script src="/lib/koj-runtime-sprite.js?v=42-koj-split"></script>
-<script src="/lib/koj-runtime-belly.js?v=42-koj-split"></script>
-<script src="/lib/koj-runtime-scene.js?v=42-koj-split"></script>
-<script src="/lib/koj-runtime-pose.js?v=42-koj-split"></script>
-<script src="/lib/koj-runtime-stage.js?v=42-koj-split"></script>
-<link rel="stylesheet" href="/assets/kojnozrout/koj-runtime.css?v=42-koj-split" />
+<link rel="stylesheet" href="/tiktok-viewer-zones.css?v=44-r1-combo" />
+<link rel="stylesheet" href="/mia-soft-neon-world.css?v=44-r1-combo" />
+<link rel="stylesheet" href="/assets/mia-2d-fx.css?v=44-r1-combo" />
+<script src="/assets/mia-2d-fx.js?v=44-r1-combo"></script>
+<script src="/assets/mia-animation-player.js?v=44-r1-combo"></script>
+<script src="/assets/mia-sound-cues.js?v=44-r1-combo"></script>
+<script src="/lib/koj-body-anchors.js?v=44-r1-combo"></script>
+<script src="/lib/mia-rig-anchors.js?v=44-r1-combo"></script>
+<script src="/lib/mia-part-rig.js?v=44-r1-combo"></script>
+<script src="/lib/koj-live-motion.js?v=44-r1-combo"></script>
+<script src="/lib/mia-tech-energy.js?v=44-r1-combo"></script>
+<script src="/lib/koj-runtime-walk.js?v=44-r1-combo"></script>
+<script src="/lib/overlay-poll.js?v=44-r1-combo"></script>
+<script src="/lib/koj-runtime-sprite.js?v=44-r1-combo"></script>
+<script src="/lib/koj-runtime-belly.js?v=44-r1-combo"></script>
+<script src="/lib/koj-runtime-scene.js?v=44-r1-combo"></script>
+<script src="/lib/koj-runtime-pose.js?v=44-r1-combo"></script>
+<script src="/lib/koj-runtime-stage.js?v=44-r1-combo"></script>
+<script src="/lib/koj-runtime-fx.js?v=44-r1-combo"></script>
+<link rel="stylesheet" href="/assets/kojnozrout/koj-runtime.css?v=44-r1-combo" />
 </head>
 <body>
 
@@ -46,10 +47,10 @@
         <img id="spriteA" class="sprite-slot" alt="" />
         <img id="spriteB" class="sprite-slot" alt="" />
         <div id="propLayer" aria-hidden="true">
-          <img id="propBowl" class="koj-prop" src="/assets/kojnozrout/props/bowl.png?v=42-koj-split" alt="" onerror="this.classList.remove('on')" />
-          <img id="propBall" class="koj-prop" src="/assets/kojnozrout/props/ball.png?v=42-koj-split" alt="" onerror="this.classList.remove('on')" />
-          <img id="propMic" class="koj-prop" src="/assets/kojnozrout/props/mic.png?v=42-koj-split" alt="" onerror="this.classList.remove('on')" />
-          <img id="propHand" class="koj-prop" src="/assets/kojnozrout/props/hand.png?v=42-koj-split" alt="" onerror="this.classList.remove('on')" />
+          <img id="propBowl" class="koj-prop" src="/assets/kojnozrout/props/bowl.png?v=44-r1-combo" alt="" onerror="this.classList.remove('on')" />
+          <img id="propBall" class="koj-prop" src="/assets/kojnozrout/props/ball.png?v=44-r1-combo" alt="" onerror="this.classList.remove('on')" />
+          <img id="propMic" class="koj-prop" src="/assets/kojnozrout/props/mic.png?v=44-r1-combo" alt="" onerror="this.classList.remove('on')" />
+          <img id="propHand" class="koj-prop" src="/assets/kojnozrout/props/hand.png?v=44-r1-combo" alt="" onerror="this.classList.remove('on')" />
         </div>
         <div id="kojProjectorHost" aria-hidden="true">
           <div id="kojBellyScreen">
@@ -97,7 +98,7 @@ const MIN_SWAP_EATING_MS = 650;
 const MIN_SWAP_SLEEPY_MS = 3200;
 const BOOT_SPRITE_KEY = "idle";
 const BOOT_SPRITE_PATH = "assets/kojnozrout/moods/kojnozout-idle.png";
-const ASSET_CACHE_V = "42-koj-split";
+const ASSET_CACHE_V = "44-r1-combo";
 
 const spriteA = document.getElementById("spriteA");
 const spriteB = document.getElementById("spriteB");
@@ -586,107 +587,34 @@ const propHand = document.getElementById("propHand");
 const propBowl = document.getElementById("propBowl");
 const itemFxLayer = document.getElementById("itemFxLayer");
 const animFxLayer = document.getElementById("animFxLayer");
-let lastItemUseToken = "";
-let animPlayer = null;
-let lastAnimationToken = "";
-let animationBusy = false;
 
-function ensureAnimPlayer() {
-  const API = globalThis.MIA_ANIMATION_PLAYER;
-  if (!API?.MiaAnimationPlayer || !spriteDock) return null;
-  if (!animPlayer) {
-    animPlayer = new API.MiaAnimationPlayer(spriteDock, { apiBase: API_BASE });
-  }
-  return animPlayer;
+const fxEngine =
+  typeof window.KojRuntimeFx?.create === "function"
+    ? window.KojRuntimeFx.create({
+        stageEl,
+        spriteDock,
+        animFxLayer,
+        itemFxLayer,
+        apiBase: API_BASE,
+        getSearch: () => location.search
+      })
+    : null;
+
+if (!fxEngine) {
+  console.error("[KOJ_RUNTIME] KojRuntimeFx missing — animation/item FX will fail");
 }
 
+function ensureAnimPlayer() {
+  return fxEngine ? fxEngine.ensureAnimPlayer() : null;
+}
 function syncAnimationReaction(data, now) {
-  const reaction = data?.animationReaction;
-  const active = reaction?.active && Number(reaction.holdUntilTs || 0) > now;
-  if (!active) {
-    if (lastAnimationToken) {
-      lastAnimationToken = "";
-      animationBusy = false;
-      stageEl.classList.remove("anim-sheet-active", "gift");
-      if (animPlayer) animPlayer.hide();
-    }
-    return false;
-  }
-
-  const token = `${reaction.updatedAt || 0}:${reaction.animationId}:${reaction.giftKey || ""}`;
-  const forceSheet =
-    new URLSearchParams(location.search).get("animBank") === "1" ||
-    reaction.studioPreview === true ||
-    String(reaction.bankQuality || "").toLowerCase() === "production";
-  const canPlaySheet =
-    forceSheet &&
-    reaction.preferProductionSprite !== true &&
-    reaction.manifestUrl &&
-    reaction.sheetUrl;
-
-  // Particles + SFX always — even when we keep production Koj sprite visible.
-  if (token !== lastAnimationToken) {
-    const FX = globalThis.MIA_ANIMATION_PLAYER;
-    if (FX?.spawnParticles && reaction.particles && animFxLayer) {
-      FX.spawnParticles(animFxLayer, reaction.particles, { apiBase: API_BASE });
-    }
-    const SFX = globalThis.MIA_SOUND_CUES;
-    if (SFX?.playSoundCue && reaction.soundCue) {
-      SFX.playSoundCue(reaction.soundCue);
-    }
-  }
-
-  if (!canPlaySheet) {
-    lastAnimationToken = token;
-    animationBusy = false;
-    stageEl.classList.remove("anim-sheet-active");
-    if (reaction.overlay?.stageClass) {
-      stageEl.classList.add(reaction.overlay.stageClass);
-    } else {
-      stageEl.classList.add("gift");
-    }
-    return false;
-  }
-
-  if (token === lastAnimationToken && animationBusy) {
-    stageEl.classList.add("anim-sheet-active");
-    return true;
-  }
-
-  const player = ensureAnimPlayer();
-  if (!player) return false;
-
-  lastAnimationToken = token;
-  animationBusy = true;
-  stageEl.classList.add("anim-sheet-active");
-  if (reaction.overlay?.stageClass) {
-    stageEl.classList.add(reaction.overlay.stageClass);
-  } else {
-    stageEl.classList.add("gift");
-  }
-
-  void player
-    .loadClip({
-      manifestUrl: reaction.manifestUrl,
-      sheetUrl: reaction.sheetUrl
-    })
-    .then(() => {
-      player.play({
-        motion: reaction.motion,
-        loop: false,
-        onComplete: () => {
-          animationBusy = false;
-          stageEl.classList.remove("anim-sheet-active");
-        }
-      });
-    })
-    .catch((err) => {
-      console.error("[MIA_ANIM]", err);
-      animationBusy = false;
-      stageEl.classList.remove("anim-sheet-active");
-    });
-
-  return true;
+  return fxEngine ? fxEngine.syncAnimationReaction(data, now) : false;
+}
+function spawnItemFx(itemId, opts = {}) {
+  if (fxEngine) fxEngine.spawnItemFx(itemId, opts);
+}
+function syncItemUse(data, now) {
+  if (fxEngine) fxEngine.syncItemUse(data, now);
 }
 
 function isEatingAtBowlKey(key = "") {
@@ -697,50 +625,15 @@ function isEatingAtBowlKey(key = "") {
         : false);
 }
 
-
-function spawnItemFx(itemId, opts = {}) {
-  const FX = window.MIA_2D_FX;
-  if (!FX?.playItemUse || !itemFxLayer) return;
-  FX.init({ apiBase: API_BASE }).then(() => {
-    FX.playItemUse(itemFxLayer, {
-      itemId,
-      apiBase: API_BASE,
-      duelProjectile: opts.duelProjectile,
-      projectile: opts.projectile,
-      accent: opts.accent || "#b46cff"
-    });
-  });
-}
-
-function syncItemUse(data, now) {
-  const itemUse = data?.kojDisplay?.itemUse;
-  const summary = data?.backpack?.display?.lastUseSummary;
-  const active = itemUse?.active || (summary?.holdUntil && summary.holdUntil > now);
-  const source = itemUse?.active ? itemUse : summary;
-  if (!active || !source?.itemId) {
-    lastItemUseToken = "";
-    return;
-  }
-  const token = `${source.at || 0}:${source.itemId}:${source.action || "use"}`;
-  if (token !== lastItemUseToken) {
-    lastItemUseToken = token;
-    const role = safe(source.role || source.effect?.role).toLowerCase();
-    const duelProjectile =
-      role === "duel" || source.duelActive
-        ? source.projectile || source.effect?.projectile || "orb"
-        : null;
-    spawnItemFx(source.itemId, {
-      duelProjectile,
-      projectile: source.projectile || source.effect?.projectile
-    });
-  }
-}
-
 function syncProps(data, now) {
   if (poseEngine) poseEngine.syncProps(data, now);
 }
 function syncVideoReactionVisual(data, now) {
   if (stageEngine) stageEngine.syncVideoReactionVisual(data, now);
+}
+
+function syncComboVisual(data, now) {
+  if (stageEngine) stageEngine.syncComboVisual(data, now);
 }
 
 const kojProjectorHost = document.getElementById("kojProjectorHost");
@@ -826,11 +719,10 @@ if (!sceneEngine) {
 }
 
 function resolveScene(displayMood, data, now) {
-  void now;
   return sceneEngine
-    ? sceneEngine.resolveScene(displayMood, data)
+    ? sceneEngine.resolveScene(displayMood, data, now)
     : (typeof window.KojRuntimeScene?.resolveScene === "function"
-        ? window.KojRuntimeScene.resolveScene(displayMood, data)
+        ? window.KojRuntimeScene.resolveScene(displayMood, data, now)
         : "den");
 }
 function syncScene(displayMood, data, now) {
@@ -865,7 +757,6 @@ async function renderSprite(state, care, kojDisplay, data) {
   const displayMood = safe(kojDisplay?.mood) || resolveDisplayMood(state, care);
   const assetKey = safe(kojDisplay?.spriteAsset) || displayMood;
   const moodEmoji = safe(kojDisplay?.moodEmoji);
-  applyStageMood(displayMood, data);
   const bowl = Number(state?.bowlPercent ?? state?.bowl?.percent ?? 0) || 0;
   const tier = (safe(state?.evolutionTier || state?.evolution?.tier) || "egg").toLowerCase();
   const heightFraction = resolveSpriteHeightFraction(state, tier);
@@ -1007,13 +898,16 @@ async function tick() {
     if (!res.ok) throw new Error("HTTP " + res.status);
     const data = await res.json();
     const state = data.kojnozoutState || data.kojnozroutState || {};
+    const displayMood = safe(data?.kojDisplay?.mood) || resolveDisplayMood(state, data.careOpportunities);
     syncSpeakingVisual(data, now);
     syncVideoReactionVisual(data, now);
+    applyStageMood(displayMood, data);
+    syncComboVisual(data, now);
     syncKojProjector(data, now);
     syncItemUse(data, now);
     syncProps(data, now);
     const animActive = syncAnimationReaction(data, now);
-    const sceneMood = safe(data?.kojDisplay?.mood) || resolveDisplayMood(state, data.careOpportunities);
+    const sceneMood = displayMood;
     syncScene(sceneMood, data, now);
     renderViewers(data);
     if (kojVector) {
