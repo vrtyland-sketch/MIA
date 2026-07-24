@@ -598,6 +598,7 @@
     let raf = 0;
     let particles = [];
     let playing = false;
+    let overlayHype = false;
     let motifColor = "#c77dff";
     let accentColor = "#7ee0ff";
     let spectacle = "simple";
@@ -618,6 +619,7 @@
         canvas: document.getElementById("giftTechFx"),
         density: 1.05,
         isSpeaking: () => playing,
+        isHype: () => overlayHype,
         hotspots: [
           { x: 0.5, y: 0.28, w: 0.22, h: 0.16 },
           { x: 0.5, y: 0.55, w: 0.36, h: 0.28 },
@@ -1004,6 +1006,12 @@
         const res = await fetch("/overlay-state", { cache: "no-store" });
         const data = await res.json();
         applyThemeHint(data?.theme);
+        const spamActive = Boolean(data?.spamSession?.active);
+        const comboLive =
+          data?.comboMoment &&
+          (Boolean(data.comboMoment.active) ||
+            Number(data.comboMoment.holdUntilTs || 0) > Date.now());
+        overlayHype = playing || spamActive || comboLive;
         if (data?.giftAnimationMoment) {
           showMoment(data.giftAnimationMoment);
         }
