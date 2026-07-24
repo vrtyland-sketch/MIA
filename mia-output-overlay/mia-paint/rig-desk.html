@@ -416,8 +416,9 @@
     </div>
 
     <p class="rd-foot">
-      Runtime: <code>/kojnozrout-runtime.html</code> · <code>/speech-overlay.html</code>
-      · cache <code>v=36-koj-unify</code>
+      Runtime: <code id="rdRuntimeUrl">/kojnozrout-runtime.html</code> · <code>/speech-overlay.html</code>
+      · manifest <code id="rdManifestBust">v=36-koj-unify</code>
+      · split libs <code id="rdSplitBust">45-r1-combo-belly</code>
       · gift anim: <a href="/mia-paint/gift-animation-desk.html">Gift Animation Desk</a>
       · celek: <code>docs/MIA_GRAPHICS_WHOLE.md</code>
       · po save: <code>npm run obs:refresh-overlays</code>
@@ -738,7 +739,24 @@
     }
   });
 
+  async function syncManifestBustLabels() {
+    try {
+      const res = await fetch("/obs/live-manifest", { cache: "no-store" });
+      if (!res.ok) return;
+      const data = await res.json();
+      const split = data.manifest?.splitUrls || {};
+      const manifestBust = String(split.runtime || "").match(/[?&]v=([^&]+)/);
+      const runtimeEl = document.getElementById("rdRuntimeUrl");
+      const manifestEl = document.getElementById("rdManifestBust");
+      if (runtimeEl && split.runtime) runtimeEl.textContent = split.runtime.replace(/^https?:\/\/[^/]+/, "");
+      if (manifestEl && manifestBust) manifestEl.textContent = "v=" + manifestBust[1];
+    } catch (_err) {
+      /* optional */
+    }
+  }
+
   loadEntity("koj");
+  syncManifestBustLabels();
 })();
 </script>
 </body>

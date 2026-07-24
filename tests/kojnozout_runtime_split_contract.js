@@ -32,7 +32,8 @@ const {
   formatBellyClock,
   weatherLabelFromCode,
   measureSpriteLayoutBox,
-  buildSpamWaveBellyContent
+  buildSpamWaveBellyContent,
+  buildComboMomentBellyContent
 } = require("../mia-output-overlay/lib/koj-runtime-belly");
 const {
   create: createKojRuntimeScene,
@@ -523,6 +524,22 @@ test("belly buildSpamWaveBellyContent exposes miaPoints progress only", () => {
   assert.equal(model.main, "56% → T2");
   assert.match(model.sub, /420 bodů/);
   assert.equal(model.progressPct, 56);
+  assert.ok(!JSON.stringify(model).toLowerCase().includes("coin"));
+});
+
+test("belly buildComboMomentBellyContent exposes title without coin fields", () => {
+  const now = Date.now();
+  const model = buildComboMomentBellyContent(
+    {
+      title: "SOLO COMBO",
+      subtext: "rapid gifts",
+      count: 3,
+      holdUntilTs: now + 5000
+    },
+    now
+  );
+  assert.equal(model.main, "SOLO COMBO");
+  assert.match(model.sub, /rapid gifts/);
   assert.ok(!JSON.stringify(model).toLowerCase().includes("coin"));
 });
 
