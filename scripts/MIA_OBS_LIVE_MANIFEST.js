@@ -15,6 +15,8 @@ const DEFAULT_PORT = 3000;
 const GFX_CACHE_BUST = "36-koj-unify";
 /** Gift animation overlay only — post-DoD stream polish (Koj/speech stay on v36). */
 const GIFT_ANIM_CACHE_BUST = "37-stream-polish";
+/** Koj runtime HTML + split libs only (manifest OBS URLs stay on GFX_CACHE_BUST). */
+const KOJ_SPLIT_CACHE_BUST = "48-r1-duel-walk-polish";
 
 /**
  * Live OBS input names ↔ manifest catalog names.
@@ -411,6 +413,9 @@ function buildLiveManifest(options = {}) {
     scene,
     baseUrl,
     port,
+    gfxCacheBust: GFX_CACHE_BUST,
+    giftAnimCacheBust: GIFT_ANIM_CACHE_BUST,
+    kojSplitCacheBust: KOJ_SPLIT_CACHE_BUST,
     tikfinityIngest: `${baseUrl}/ingest`,
     bodySync: bodySyncMode,
     splitUrls,
@@ -504,6 +509,7 @@ module.exports = {
   GIFT_VIDEO_TIERS,
   GFX_CACHE_BUST,
   GIFT_ANIM_CACHE_BUST,
+  KOJ_SPLIT_CACHE_BUST,
   OBS_INPUT_NAME_ALIASES,
   resolveObsInputNames,
   buildBaseUrl,

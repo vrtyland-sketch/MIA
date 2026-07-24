@@ -418,7 +418,7 @@
     <p class="rd-foot">
       Runtime: <code id="rdRuntimeUrl">/kojnozrout-runtime.html</code> · <code>/speech-overlay.html</code>
       · manifest <code id="rdManifestBust">v=36-koj-unify</code>
-      · split libs <code id="rdSplitBust">47-r1-tech-hype</code>
+      · split libs <code id="rdSplitBust">48-r1-duel-walk-polish</code>
       · speech hype: combo/wave classes on <code>#miaHolo</code>
       · gift anim: <a href="/mia-paint/gift-animation-desk.html">Gift Animation Desk</a>
       · celek: <code>docs/MIA_GRAPHICS_WHOLE.md</code>
@@ -747,10 +747,13 @@
       const data = await res.json();
       const split = data.manifest?.splitUrls || {};
       const manifestBust = String(split.runtime || "").match(/[?&]v=([^&]+)/);
+      const splitBust = data.manifest?.kojSplitCacheBust;
       const runtimeEl = document.getElementById("rdRuntimeUrl");
       const manifestEl = document.getElementById("rdManifestBust");
+      const splitEl = document.getElementById("rdSplitBust");
       if (runtimeEl && split.runtime) runtimeEl.textContent = split.runtime.replace(/^https?:\/\/[^/]+/, "");
       if (manifestEl && manifestBust) manifestEl.textContent = "v=" + manifestBust[1];
+      if (splitEl && splitBust) splitEl.textContent = "v=" + splitBust;
     } catch (_err) {
       /* optional */
     }

@@ -4,14 +4,15 @@ Append-only session notes for graphics/R1 work.
 
 ---
 
-## 2026-07-24 ù Full graphics day
+## 2026-07-24 ó Full graphics day
 
 **Baseline:** `0b6fdc65`  
 **Preflight:** green throughout session  
-**Split bust trail:** `44-r1-combo` ? `45-r1-combo-belly` ? `46-r1-live-hype` ? `47-r1-tech-hype`
+**Split bust trail:** `44-r1-combo` ? `45-r1-combo-belly` ? `46-r1-live-hype` ? `47-r1-tech-hype` ? `48-r1-duel-walk-polish`
 
 | # | Commit | Slice | Pushed |
 |---|--------|-------|--------|
+| 0 | `0b6fdc65` | R1 acceptance contract + R1-C checklist | yes |
 | 1 | `1f52ff98` | Combo moment belly HUD | yes |
 | 2 | `c942fc53` | Dashboard manifest cache-bust links | yes |
 | 3 | `4f9a205b` | Gift Animation Desk manifest bust sync | yes |
@@ -22,8 +23,13 @@ Append-only session notes for graphics/R1 work.
 | 8 | `20d3ac63` | Gift overlay tech sparks during combo/spam | yes |
 | 9 | `d79ee790` | Dashboard spam wave hype operator label | yes |
 | 10 | `defb76cd` | Speech bubble combo-hype glow | yes |
+| 11 | *(pending)* | Duel/battle/walk CSS polish + split bust 48 + manifest KOJ_SPLIT | pending |
+
+**Pre-baseline (same R1 arc):** `cb717643` ó Koj combo/spam wave polish on runtime split.
 
 ### Open backlog
 
-- R1-C manual stream sign-off
-- Battle/duel/walk pose art pass (LOW)
+- R1-C manual stream sign-off (OBS)
+- Battle/duel/walk **art** pass (LOW ó CSS/runtime polish done in slice 11)
+- Graphics freeze window doc after R1-C
+- Optional tag `v0.1.1-graphics` after R1-C

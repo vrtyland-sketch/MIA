@@ -21,7 +21,7 @@ const { create: createKojRuntimeStage } = require("../mia-output-overlay/lib/koj
 const { resolveScene } = require("../mia-output-overlay/lib/koj-runtime-scene");
 const { buildSpamWaveBellyContent, buildComboMomentBellyContent } = require("../mia-output-overlay/lib/koj-runtime-belly");
 
-const KOJ_SPLIT_BUST = "47-r1-tech-hype";
+const KOJ_SPLIT_BUST = "48-r1-duel-walk-polish";
 
 function test(name, fn) {
   try {
@@ -77,9 +77,10 @@ test("R1 status doc lists acceptance gates and dual bust layers", () => {
   assert.ok(doc.includes("R1-C how to verify"));
 });
 
-test("dual bust invariant: OBS manifest 36/37; split runtime libs 47-r1-tech-hype", () => {
+test("dual bust invariant: OBS manifest 36/37; split runtime libs 48-r1-duel-walk-polish", () => {
   assert.equal(manifest.GFX_CACHE_BUST, "36-koj-unify");
   assert.equal(manifest.GIFT_ANIM_CACHE_BUST, "37-stream-polish");
+  assert.equal(manifest.KOJ_SPLIT_CACHE_BUST, KOJ_SPLIT_BUST);
 
   const urls = manifest.buildSplitUrls(3000);
   assert.match(urls.runtime, /kojnozrout-runtime\.html\?v=36-koj-unify/);
@@ -97,6 +98,13 @@ test("koj runtime css exposes combo/spam wave stage selectors", () => {
   for (const sel of ["#stage.spam-wave", "#stage.combo-pulse", "#stage.combo-urgent"]) {
     assert.ok(css.includes(sel), `missing ${sel}`);
   }
+});
+
+test("koj runtime css duel/battle/walk pose polish selectors", () => {
+  const css = fs.readFileSync(RUNTIME_CSS, "utf8");
+  assert.match(css, /#stage\.duel .sprite-slot\.visible/);
+  assert.match(css, /#stage\.wander\.pose-walk-frames #walkShadow/);
+  assert.match(css, /rgba\(179, 136, 255/);
 });
 
 test("gift overlay wires overlayHype for MiaTechEnergy during combo/spam", () => {
