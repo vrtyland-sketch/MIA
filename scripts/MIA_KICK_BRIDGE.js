@@ -92,10 +92,50 @@ function buildWebhookForwardPayload(body = {}) {
   };
 }
 
+async function resolveKickChatroomId(config = {}) {
+  const explicit = safeString(config.chatroomId);
+  if (explicit) {
+    return explicit;
+  }
+
+  const channel = safeString(config.channel);
+  if (!channel) {
+    return DEFAULT_CHATROOM_ID;
+  }
+
+  try {
+    const response = await axios.get(
+      `https://kick.com/api/v2/channels/${encodeURIComponent(channel)}`,
+      {
+        timeout: 7000,
+        headers: {
+          Accept: "application/json",
+          "User-Agent": "MIA-KickBridge/1.0"
+        }
+      }
+    );
+    const chatroomId = response?.data?.chatroom?.id;
+    if (chatroomId) {
+      log(`Resolved Kick channel "${channel}" -> chatroomId=${chatroomId}`);
+      return String(chatroomId);
+    }
+    warn(`Kick channel "${channel}" has no chatroom.id in API response`);
+  } catch (err) {
+    error(
+      `Failed to resolve Kick channel "${channel}" (${err.response?.status || "network"}):`,
+      err.message
+    );
+  }
+
+  warn(`Falling back to default chatroomId=${DEFAULT_CHATROOM_ID}`);
+  return DEFAULT_CHATROOM_ID;
+}
+
 function createKickWebhookBridge({
   app,
   webhookPath = "/kick/webhook",
-  ingestUrl = "http://127.0.0.1:3000/ingest"
+  ingestUrl = "http://127.0.0.1:3000/ingest",
+  onEvent = null
 } = {}) {
   if (!app || typeof app.post !== "function") {
     throw new Error("createKickWebhookBridge requires express app");
@@ -113,7 +153,11 @@ function createKickWebhookBridge({
       }
 
       const payload = buildWebhookForwardPayload(body);
-      await postToIngest(ingestUrl, payload);
+      if (typeof onEvent === "function") {
+        await onEvent(payload);
+      } else {
+        await postToIngest(ingestUrl, payload);
+      }
 
       return res.json({
         ok: true,
@@ -129,7 +173,7 @@ function createKickWebhookBridge({
     }
   });
 
-  log(`Webhook bridge registered on ${webhookPath} -> ${ingestUrl}`);
+  log(`Webhook bridge registered on ${webhookPath} -> ${typeof onEvent === "function" ? "onEvent" : ingestUrl}`);
 }
 
 function parseJsonSafe(input) {
@@ -411,7 +455,8 @@ function startKickRealtimeBridge({
 
         if (
           eventName === "App\\Events\\ChatMessageEvent" ||
-          eventName === "chat.message"
+          eventName === "chat.message" ||
+          eventName === "chat.message.sent"
         ) {
           const parsedData = parseJsonSafe(envelope.data);
           if (!parsedData || typeof parsedData !== "object") {
@@ -476,16 +521,29 @@ async function start(options = {}) {
   const config = options?.config || {};
   const ingestUrl =
     safeString(config.ingestUrl) || "http://127.0.0.1:3000/ingest";
-  const chatroomId =
-    safeString(config.chatroomId) || DEFAULT_CHATROOM_ID;
+  const chatroomId = await resolveKickChatroomId(config);
   const pusherKey =
     safeString(config.pusherKey) || DEFAULT_PUSHER_KEY;
   const cluster =
     safeString(config.cluster) || DEFAULT_CLUSTER;
+  const onEvent =
+    typeof options?.onEvent === "function" ? options.onEvent : null;
+
+  if (!onEvent) {
+    warn(
+      "Kick bridge started without onEvent callback — events will POST to ingestUrl only"
+    );
+  }
+
+  log(
+    `Starting Kick realtime bridge chatroomId=${chatroomId}` +
+      (safeString(config.channel) ? ` channel=${safeString(config.channel)}` : "") +
+      ` -> ${onEvent ? "processEvent(onEvent)" : ingestUrl}`
+  );
 
   return startKickRealtimeBridge({
     ingestUrl,
-    onEvent: typeof options?.onEvent === "function" ? options.onEvent : null,
+    onEvent,
     chatroomId,
     pusherKey,
     cluster
@@ -519,6 +577,7 @@ module.exports = {
   createKickWebhookBridge,
   startKickRealtimeBridge,
   stopKickRealtimeBridge,
+  resolveKickChatroomId,
   start,
   stop,
   getKickBridgeStatus

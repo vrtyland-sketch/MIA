@@ -42,6 +42,8 @@ Výsledek zapisovat do [`MIA_R1C_OBS_RESULT.md`](./MIA_R1C_OBS_RESULT.md). Plán
 
 ### R1-C — 10-krokový OBS checklist (exact)
 
+**R1-C how to verify:** jedna kontrolovaná OBS session podle tabulky níže; automatické testy to nenahrazují.
+
 Jedna kontrolovaná OBS session. Automatické testy to **nenahrazují** — vizuální + audio gate před grafickým tagem.
 
 | # | Kroky | Co ověřit |

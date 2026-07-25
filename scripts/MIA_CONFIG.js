@@ -205,7 +205,15 @@ function buildRuntimeConfig(env = process.env) {
     ["MIA_KICK_INGEST_URL", "KICK_INGEST_URL"],
     `http://127.0.0.1:${port}/ingest`
   );
-  const kickChatroomId = pickString(env, ["MIA_KICK_CHATROOM_ID", "KICK_CHATROOM_ID"], "95746130");
+  const kickChannel = pickString(env, ["MIA_KICK_CHANNEL", "KICK_CHANNEL"], "");
+  const kickChatroomIdExplicit = pickString(
+    env,
+    ["MIA_KICK_CHATROOM_ID", "KICK_CHATROOM_ID"],
+    ""
+  );
+  const kickChatroomId =
+    kickChatroomIdExplicit ||
+    (kickChannel ? "" : "95746130");
   const kickPusherKey = pickString(env, ["MIA_KICK_PUSHER_KEY", "KICK_PUSHER_KEY"], "32cbd69e4b950bf97679");
   const kickCluster = pickString(env, ["MIA_KICK_CLUSTER", "KICK_CLUSTER"], "us2");
 
@@ -481,7 +489,9 @@ function buildRuntimeConfig(env = process.env) {
       mode: kickMode,
       webhookPath: kickWebhookPath,
       ingestUrl: kickIngestUrl,
+      channel: kickChannel,
       chatroomId: kickChatroomId,
+      chatroomIdExplicit: Boolean(kickChatroomIdExplicit),
       pusherKey: kickPusherKey,
       cluster: kickCluster
     },

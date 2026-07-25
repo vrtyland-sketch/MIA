@@ -53,7 +53,7 @@ async function run() {
 
     const api = createPlatformBridges({
       app: {},
-      runtimeConfig: { kick: {} },
+      runtimeConfig: { kick: { enabled: true } },
       writeLog: (_prefix, payload) => logs.push(payload),
       cloneJson: (v) => v,
       safeString: String,
@@ -62,8 +62,9 @@ async function run() {
         return { status: 200, body: { ok: true, actionResult: {} } };
       },
       kickBridgeModule: {
-        startKickBridge({ onEvent }) {
+        async start({ onEvent }) {
           this.captured = onEvent;
+          return { ok: true, reason: "started_by_test" };
         },
         captured: null
       },
@@ -74,7 +75,7 @@ async function run() {
       getKojnozoutState: () => ({})
     });
 
-    api.startKickBridge();
+    await api.startKickBridge();
     const onEvent = api.kickOnEvent;
     const result = await onEvent({ eventType: "comment", message: "hi" });
 

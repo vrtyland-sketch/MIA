@@ -79,7 +79,7 @@ Legenda: **ON** = aktivnù ve vùchozùm stream reùimu ù **OFF** = vypnuto / stub ù
 | Schopnost | Stav | Poznùmka |
 |-----------|------|----------|
 | TikFinity ? MIA ingest | **ON** | Hlavnù platforma; architektura TikFinity ? MIA ? OBS |
-| Kick bridge | **ON** | Platform bridges v preflight |
+| Kick bridge | **ON** | Platform bridges; see [`MIA_INGEST_PATH_AUDIT.md`](./MIA_INGEST_PATH_AUDIT.md) (2026-07-25 wiring fix) |
 | Twitch bridge | **?ùste?n?** | Skripty `twitch:login/probe/status` ù volitelnù |
 | Telegram bridge | **?ùste?n?** | Contract testy; setup hint |
 | Event normalizer (F1) | **ON** | Phase 1 contracty green |

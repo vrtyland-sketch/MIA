@@ -31,30 +31,89 @@ function createPlatformBridges(deps = {}) {
     return result;
   }
 
-  function startKickBridge() {
+  async function startKickBridge() {
+    const cfg = runtimeConfig?.kick || {};
+
+    if (cfg.enabled === false) {
+      writeLog("kick-bridge", {
+        status: "disabled",
+        reason: "kick.enabled=false"
+      });
+      console.warn(
+        "[KICK_BRIDGE] Disabled (MIA_KICK_ENABLED=0). Kick chat will NOT reach MIA."
+      );
+      return { ok: false, reason: "disabled" };
+    }
+
     try {
+      if (
+        cfg.mode === "webhook" &&
+        typeof kickBridgeModule?.createKickWebhookBridge === "function"
+      ) {
+        kickBridgeModule.createKickWebhookBridge({
+          app,
+          webhookPath: cfg.webhookPath,
+          ingestUrl: cfg.ingestUrl,
+          onEvent: kickOnEvent
+        });
+        writeLog("kick-bridge", {
+          status: "webhook_registered",
+          path: cfg.webhookPath
+        });
+        console.log(
+          `[KICK_BRIDGE] Webhook registered on ${cfg.webhookPath}`
+        );
+        return { ok: true, mode: "webhook" };
+      }
+
       if (typeof kickBridgeModule?.startKickBridge === "function") {
-        kickBridgeModule.startKickBridge({
-          config: runtimeConfig?.kick || {},
+        return await kickBridgeModule.startKickBridge({
+          config: cfg,
           onEvent: kickOnEvent
-        });
-      } else if (typeof kickBridgeModule?.start === "function") {
-        kickBridgeModule.start({
-          config: runtimeConfig?.kick || {},
-          onEvent: kickOnEvent
-        });
-      } else if (typeof kickBridgeModule?.createKickWebhookBridge === "function") {
-        kickBridgeModule.createKickWebhookBridge(app, {
-          onEvent: kickOnEvent,
-          config: runtimeConfig?.kick || {}
         });
       }
+
+      if (typeof kickBridgeModule?.start === "function") {
+        const result = await kickBridgeModule.start({
+          config: cfg,
+          onEvent: kickOnEvent
+        });
+
+        writeLog("kick-bridge", {
+          status: "starting",
+          result,
+          channel: cfg.channel || null,
+          chatroomId: cfg.chatroomId || null,
+          ingestUrl: cfg.ingestUrl || null
+        });
+
+        if (result?.ok === false) {
+          console.error("[KICK_BRIDGE] Failed to start:", result.reason);
+        } else {
+          console.log(
+            "[KICK_BRIDGE] Realtime bridge starting",
+            cfg.chatroomId
+              ? { chatroomId: cfg.chatroomId }
+              : cfg.channel
+                ? { channel: cfg.channel }
+                : {}
+          );
+        }
+
+        return result;
+      }
+
+      console.error(
+        "[KICK_BRIDGE] No kick bridge module export (start/createKickWebhookBridge missing)"
+      );
+      return { ok: false, reason: "module_missing" };
     } catch (err) {
       writeLog("mia-errors", {
         source: "kick_bridge",
         error: err.message
       });
       console.error("[KICK_BRIDGE_FAILED]", err.message);
+      return { ok: false, reason: "exception", error: err.message };
     }
   }
 
@@ -172,7 +231,13 @@ function createPlatformBridges(deps = {}) {
   }
 
   function bootstrapPlatformBridges() {
-    startKickBridge();
+    void startKickBridge().catch((err) => {
+      writeLog("mia-errors", {
+        source: "kick_bridge_bootstrap",
+        error: err.message
+      });
+      console.error("[KICK_BRIDGE_BOOTSTRAP_FAILED]", err.message);
+    });
     startTwitchBridge();
     startTelegramBridge();
   }
