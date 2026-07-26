@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * Engine 2.0 roadmap + scaffold contracts — design phase only.
+ * Engine 2.0 roadmap + scaffold contracts  design phase only.
  */
 
 const assert = require("assert/strict");
@@ -40,6 +40,10 @@ test("architecture and roadmap docs exist with guardrails", () => {
 test("engine2 scaffold folders present", () => {
   assert.ok(fs.existsSync(path.join(ROOT, "engine2", "README.md")));
   assert.ok(fs.existsSync(path.join(ROOT, "engine2", "gamestate-stub", "index.js")));
+  assert.ok(fs.existsSync(path.join(ROOT, "engine2", "game-state", "index.js")));
+  assert.ok(fs.existsSync(path.join(ROOT, "engine2", "visibility-engine", "index.js")));
+  assert.ok(fs.existsSync(path.join(ROOT, "engine2", "platform-projection", "index.js")));
+  assert.ok(fs.existsSync(path.join(ROOT, "engine2", "platform-renderer", "index.js")));
   assert.ok(fs.existsSync(path.join(ROOT, "engine2", "obs-router-boundary", "README.md")));
 });
 
@@ -59,10 +63,10 @@ test("GameState stub returns frozen read-only snapshot", () => {
   });
 });
 
-test("index.js does not import engine2 scaffold yet", () => {
+test("index.js does not import engine2 directly (admin wiring only)", () => {
   const indexSrc = fs.readFileSync(path.join(ROOT, "index.js"), "utf8");
-  assert.ok(!indexSrc.includes("engine2/gamestate-stub"));
-  assert.ok(!indexSrc.includes("engine2\\gamestate-stub"));
+  assert.ok(!indexSrc.includes("engine2/"));
+  assert.ok(!indexSrc.includes("engine2\\"));
 });
 
 console.log("mia_engine2_roadmap_contract: all passed");

@@ -531,11 +531,20 @@ function buildDefaultAdminStatus(ctx = {}) {
     themeManager = { enabled: false, active: "cyber", themes: [] };
   }
 
+  let engine2 = undefined;
+  try {
+    const { buildEngine2AdminSnapshot } = require("../engine2/wiring");
+    engine2 = buildEngine2AdminSnapshot(ctx);
+  } catch (_err) {
+    engine2 = undefined;
+  }
+
   return {
     ok: true,
     service: "MIA",
     phase: 4,
     controlCenter: true,
+    engine2,
     director,
     actionQueue,
     viewerMemory,

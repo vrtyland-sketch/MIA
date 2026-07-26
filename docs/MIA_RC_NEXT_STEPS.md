@@ -31,6 +31,10 @@ git push origin v0.1.1-graphics
 
 ## Potom — MIA Cross-Platform Game Engine (první blok)
 
+**E1 stub hotový** (2026-07-26): `GameState`, `VisibilityEngine`, `PlatformProjection`, `PlatformRenderer` v `engine2/`.  
+?ty?i platformy (tiktok/kick/obs/admin) ? ?ty?i odlišné projekce — contract test green.  
+**Flag default OFF:** `MIA_ENGINE2_STUB=0` — žádná zm?na streamu. Zapnout pro zkoušku: `MIA_ENGINE2_STUB=1` ? admin status ukáže `engine2.projections`.
+
 Jen tyto ?ty?i moduly. **Žádný poker.** Žádné pluginy.
 
 ```text

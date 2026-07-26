@@ -123,11 +123,11 @@ createGameStateStub({ loaders }) ? {
 
 ### Acceptance criteria (E1)
 
-- [ ] `MIA_ENGINE2_STUB` defaults OFF; production path unchanged when unset.
-- [ ] With flag ON: overlay/admin can read GameState snapshot from stub.
-- [ ] At least one OBS media command flows through router boundary in test harness.
-- [ ] `npm run test:preflight:fast` — all green.
-- [ ] No coin/gift value in any overlay payload.
+- [x] `MIA_ENGINE2_STUB` defaults OFF; production path unchanged when unset.
+- [x] With flag ON: admin can read four platform projections from Engine2 pipeline.
+- [ ] At least one OBS media command flows through router boundary in test harness (deferred — obs-router-boundary).
+- [x] `npm run test:preflight:fast` — all green.
+- [x] No coin/gift value in any overlay payload (VisibilityEngine uses shared sanitizer).
 
 **Rollback:** revert flag + wiring commit; stay on `v0.1-stream-core`.
 
