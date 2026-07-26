@@ -1,6 +1,6 @@
 # MIA Graphics ? Phase R1 Status
 
-**Datum:** 2026-07-24  
+**Datum:** 2026-07-26 (R1-C PASS)  
 **Mega audit:** [`MIA_MEGA_AUDIT_2026-07-24.md`](./MIA_MEGA_AUDIT_2026-07-24.md)  
 **GitHub:** Private YES · SSH OK · `master` @ `ddab7eb0` synced  
 **Roadmap:** [`MIA_ENGINE_2_0_ROADMAP.md`](./MIA_ENGINE_2_0_ROADMAP.md) §4  
@@ -17,24 +17,24 @@
 |---|--------|---------------|--------|
 | **R1-A** | Koj runtime contract suites green | `node tests/kojnozout_runtime_split_contract.js` + `node tests/koj_public_snapshot_contract.js` + `node tests/mia_graphics_r1_contract.js` | ? automated |
 | **R1-B** | Public overlay exposes **miaPoints only** (no coins/gift value) | `node tests/overlay_public_response_contract.js` + `node tests/mia_graphics_r1_contract.js` (spamSession strip) | ? automated |
-| **R1-C** | Stable stream session: Koj mood/scene/combo wave react during gifts + spam wave; gift video rotation per-tier unchanged | Manual OBS session (checklist below) + `npm run test:preflight:fast` | ⏳ **manual gate open** |
+| **R1-C** | Stable stream session: Koj mood/scene/combo wave react during gifts + spam wave; gift video rotation per-tier unchanged | Manual OBS session (checklist below) + `npm run test:preflight:fast` | ✅ **PASS** (2026-07-26) |
 
-**Gate to E1:** R1 lead confirms one stable stream session (R1-C) → optional tag `v0.1.1-graphics`.
+**Gate to E1:** ✅ R1-C PASS (2026-07-26) — tag `v0.1.1-graphics` on validation commit.
 
 ---
 
 ## RC freeze (2026-07-24)
 
-**MIA je stream release candidate.** Do úspěšného R1-C v OBS **nepřidávat velké featury** — žádný Engine wiring, žádný poker, žádné nové šílenosti.
+**MIA je stream release candidate.** Po R1-C PASS: RC freeze na velké featury zvednut; další krok dle [`MIA_RC_NEXT_STEPS.md`](./MIA_RC_NEXT_STEPS.md) (E1 stub už hotový, Engine2 zůstává OFF) — žádný Engine wiring, žádný poker, žádné nové šílenosti.
 
 | Co | Stav |
 |----|------|
 | Automatické testy | ✅ 157/157 (`preflight:fast`) |
 | Tag `v0.1-stream-core` | ✅ rollback checkpoint |
-| Tag `v0.1.1-graphics` | ⏳ **čeká na R1-C PASS** |
-| Engine 2.0 první blok | 🔒 až po tagu |
+| Tag `v0.1.1-graphics` | ✅ po R1-C commit + push |
+| Engine 2.0 první blok | 🟢 E1 stub hotový; wiring až po domluvě (`MIA_ENGINE2_STUB=0`) |
 
-**Po R1-C PASS:** commit `Complete R1-C OBS validation` → tag `v0.1.1-graphics` → push tag → teprve pak Engine první slice (4 moduly).
+**R1-C PASS (2026-07-26):** viz [`MIA_R1C_OBS_RESULT.md`](./MIA_R1C_OBS_RESULT.md). Tag `v0.1.1-graphics` on validation commit.
 
 Výsledek zapisovat do [`MIA_R1C_OBS_RESULT.md`](./MIA_R1C_OBS_RESULT.md). Plán: [`MIA_RC_NEXT_STEPS.md`](./MIA_RC_NEXT_STEPS.md).
 
@@ -112,10 +112,10 @@ git push origin v0.1.1-graphics
 
 | Area | Note |
 |------|------|
-| Manual stream gate (R1-C) | One full OBS session — **10-step checklist** in § R1-C above; **blocks `v0.1.1-graphics` tag** |
+| Manual stream gate (R1-C) | ✅ PASS 2026-07-26 — [`MIA_R1C_OBS_RESULT.md`](./MIA_R1C_OBS_RESULT.md) |
 | RC freeze doc | ✅ [`MIA_RC_NEXT_STEPS.md`](./MIA_RC_NEXT_STEPS.md) + result stub [`MIA_R1C_OBS_RESULT.md`](./MIA_R1C_OBS_RESULT.md) |
 | Battle / duel / walk pose art pass | LOW — v36 doc gaps; motion via cycles/FX |
-| Optional tag | `v0.1.1-graphics` after R1-C PASS only |
+| Tag `v0.1.1-graphics` | ✅ applied after R1-C PASS |
 
 ---
 

@@ -1,9 +1,9 @@
 # R1-C OBS validation result
 
-**Status:** ? PENDING ó not yet run  
-**Session date:** _fill after OBS session_  
-**Operator:** _name_  
-**HEAD at test:** _git rev-parse --short HEAD_
+**Status:** PASS
+**Session date:** 2026-07-26
+**Operator:** operator sign-off (chat)
+**HEAD at test:** `5ea2fa81`
 
 ---
 
@@ -11,44 +11,40 @@
 
 | # | Step | Result |
 |---|------|--------|
-| 1 | Spustit b?ûn˝ runtime | ? pending |
-| 2 | Speech overlay `36` | ? pending |
-| 3 | Gift overlay `37` | ? pending |
-| 4 | Kojnoûrout `49-r1-milestone-polish` | ? pending |
-| 5 | TestovacÌ chat | ? pending |
-| 6 | Mal˝ / st?ednÌ / velk˝ gift | ? pending |
-| 7 | Combo/spam HUD | ? pending |
-| 8 | Bowl / invent·? / battle | ? pending |
-| 9 | Audio (oba hlasy) | ? pending |
-| 10 | OBS layout (o?ez / p?ekryv) | ? pending |
+| 1 | Spustit bƒõ≈æn√Ω runtime | OK |
+| 2 | Speech overlay `36` | OK |
+| 3 | Gift overlay `37` | OK |
+| 4 | Kojno≈ærout `49-r1-milestone-polish` | OK |
+| 5 | Testovac√≠ chat | OK |
+| 6 | Mal√Ω / st≈ôedn√≠ / velk√Ω gift | OK |
+| 7 | Combo/spam HUD | OK |
+| 8 | Bowl / invent√°≈ô / battle | OK |
+| 9 | Audio (oba hlasy) | OK |
+| 10 | OBS layout (o≈ôez / p≈ôekryv) | OK |
 
 ---
 
 ## Result (fill after session)
 
-Replace `PENDING` with `PASS` or `FAIL`. Copy block below into chat when done.
-
 ```text
-R1-C PENDING
-Speech 36: pending
-Gift 37: pending
-Koj 49: pending
-Chat: pending
-Gift tiers: pending
-Combo/spam: pending
-Battle/inventory: pending
-Audio: pending
-OBS layout: pending
+R1-C PASS
+Speech 36: OK
+Gift 37: OK
+Koj 49: OK
+Chat: OK
+Gift tiers: OK
+Combo/spam: OK
+Battle/inventory: OK
+Audio: OK
+OBS layout: OK
 ```
-
-**On PASS**, change first line to `R1-C PASS` and each line to `OK` (or note specific FAIL).
 
 ---
 
 ## Notes
 
-_Space for observations, screenshots paths, or FAIL details._
+R1-C OBS session completed 2026-07-26. All checklist steps OK. Preflight gate remains `npm run test:preflight:fast` (157/157 at RC baseline).
 
 ---
 
-*Do not mark PASS without a real OBS session. Automated preflight (157/157) does not replace this gate.*
+*Automated preflight does not replace this gate; this file records human OBS sign-off.*

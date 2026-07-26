@@ -1,41 +1,34 @@
-# MIA ó RC next steps
+# MIA ‚Äì RC next steps
 
-**Datum:** 2026-07-24  
-**Stav:** Stream release candidate ∑ **RC freeze aktivnÌ**
-
----
-
-## Te? (freeze)
-
-Nic velkÈho nep?id·vat, dokud neprojde **R1-C v OBS**.
-
-1. ProjÌt [10-krokov˝ checklist](./MIA_GRAPHICS_R1_STATUS.md#r1-c--10-krokov˝-obs-checklist-exact) v OBS.
-2. Vyplnit [`MIA_R1C_OBS_RESULT.md`](./MIA_R1C_OBS_RESULT.md) öablonou PASS/FAIL.
-3. Vloûit v˝sledek oper·torovi (chat) ó tag se ned?l· bez lidskÈho sign-off.
+**Datum:** 2026-07-26  
+**Stav:** R1-C PASS ‚Äî graphics gate uzav≈ôen; tag `v0.1.1-graphics`
 
 ---
 
-## Po R1-C PASS
+## Hotovo (R1-C PASS 2026-07-26)
 
-```powershell
-git add docs/MIA_R1C_OBS_RESULT.md
-git commit -m "Complete R1-C OBS validation"
-git push
-git tag v0.1.1-graphics
-git push origin v0.1.1-graphics
-```
+- [x] 10-krokov√Ω OBS checklist ‚Äî viz [MIA_R1C_OBS_RESULT.md](./MIA_R1C_OBS_RESULT.md)
+- [x] Commit `Complete R1-C OBS validation` + tag `v0.1.1-graphics` + push
 
-**NepouûÌvat** `git add .` ó live `data/` nepat?Ì do commitu.
+RC freeze na velk√© featury zvednut; **Engine2 z≈Øst√°v√° default OFF**, **≈æ√°dn√Ω poker**.
 
 ---
 
-## Potom ó MIA Cross-Platform Game Engine (prvnÌ blok)
+## Teƒè (volba oper√°tora)
 
-**E1 stub hotov˝** (2026-07-26): `GameState`, `VisibilityEngine`, `PlatformProjection`, `PlatformRenderer` v `engine2/`.  
-?ty?i platformy (tiktok/kick/obs/admin) ? ?ty?i odliönÈ projekce ó contract test green.  
-**Flag default OFF:** `MIA_ENGINE2_STUB=0` ó û·dn· zm?na streamu. Zapnout pro zkouöku: `MIA_ENGINE2_STUB=1` ? admin status uk·ûe `engine2.projections`.
+1. **Live stream** s jistotou na tagu `v0.1.1-graphics` (rollback: `v0.1-stream-core`).
+2. **Engine 2.0 E2+** ‚Äî roz≈°√≠≈ôen√≠ za E1 stubem (viz roadmap); zap√≠nat jen `MIA_ENGINE2_STUB=1` pro zkou≈°ku, ne pro produkƒçn√≠ stream bez domluvy.
 
-Jen tyto ?ty?i moduly. **é·dn˝ poker.** é·dnÈ pluginy.
+
+---
+
+## Potom ÔøΩ MIA Cross-Platform Game Engine (prvnÔøΩ blok)
+
+**E1 stub hotovÔøΩ** (2026-07-26): `GameState`, `VisibilityEngine`, `PlatformProjection`, `PlatformRenderer` v `engine2/`.  
+?ty?i platformy (tiktok/kick/obs/admin) ? ?ty?i odliÔøΩnÔøΩ projekce ÔøΩ contract test green.  
+**Flag default OFF:** `MIA_ENGINE2_STUB=0` ÔøΩ ÔøΩÔøΩdnÔøΩ zm?na streamu. Zapnout pro zkouÔøΩku: `MIA_ENGINE2_STUB=1` ? admin status ukÔøΩe `engine2.projections`.
+
+Jen tyto ?ty?i moduly. **ÔøΩÔøΩdnÔøΩ poker.** ÔøΩÔøΩdnÔøΩ pluginy.
 
 ```text
 GameState
@@ -44,7 +37,7 @@ PlatformProjection
 PlatformRenderer
 ```
 
-**CÌl:** d?kaz, ûe ?ty?i platformy dostanou ?ty?i bezpe?n? rozdÌlnÈ obrazy.
+**CÔøΩl:** d?kaz, ÔøΩe ?ty?i platformy dostanou ?ty?i bezpe?n? rozdÔøΩlnÔøΩ obrazy.
 
 Architektura: [`MIA_ENGINE_2_0_ARCHITECTURE.md`](./MIA_ENGINE_2_0_ARCHITECTURE.md)  
 Roadmap: [`MIA_ENGINE_2_0_ROADMAP.md`](./MIA_ENGINE_2_0_ROADMAP.md) (Phase E1)
@@ -53,9 +46,9 @@ Roadmap: [`MIA_ENGINE_2_0_ROADMAP.md`](./MIA_ENGINE_2_0_ROADMAP.md) (Phase E1)
 
 ## Reference
 
-| Dokument | ⁄?el |
+| Dokument | ÔøΩ?el |
 |----------|------|
 | [`MIA_GRAPHICS_R1_STATUS.md`](./MIA_GRAPHICS_R1_STATUS.md) | R1 gates + 10-step OBS checklist |
-| [`MIA_R1C_OBS_RESULT.md`](./MIA_R1C_OBS_RESULT.md) | V˝sledek OBS session (vyplnit) |
-| [`MIA_CAPABILITY_STATUS.md`](./MIA_CAPABILITY_STATUS.md) | Co MIA umÌ + RC freeze |
+| [`MIA_R1C_OBS_RESULT.md`](./MIA_R1C_OBS_RESULT.md) | VÔøΩsledek OBS session (vyplnit) |
+| [`MIA_CAPABILITY_STATUS.md`](./MIA_CAPABILITY_STATUS.md) | Co MIA umÔøΩ + RC freeze |
 | [`MIA_MEGA_AUDIT_2026-07-24.md`](./MIA_MEGA_AUDIT_2026-07-24.md) | Mega audit entry point |

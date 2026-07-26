@@ -1,4 +1,4 @@
-# MIA  Stav schopnost a audit
+# MIA ï¿½ Stav schopnostï¿½ a audit
 
 **Datum auditu:** 2026-07-26 (regression follow-up po Kick fix)  
 **Repo:** `C:\MIA`  
@@ -8,151 +8,151 @@
 
 ---
 
-## RC freeze  stream release candidate (2026-07-24)
+## RC freeze ï¿½ stream release candidate (2026-07-24)
 
-**Verdikt:** MIA je prvn skute?n **stream release candidate**. Technicky uloen (GitHub Private + SSH), tag `v0.1-stream-core`, testy **157/157**.
+**Verdikt:** MIA je prvnï¿½ skute?nï¿½ **stream release candidate**. Technicky uloï¿½enï¿½ (GitHub Private + SSH), tag `v0.1-stream-core`, testy **157/157**.
 
-**Pravidlo:** **dn velk featury** dokud neprojde **R1-C v OBS** (10-krokov checklist v [`MIA_GRAPHICS_R1_STATUS.md`](./MIA_GRAPHICS_R1_STATUS.md)  R1-C).
+**Pravidlo:** **ï¿½ï¿½dnï¿½ velkï¿½ featury** dokud neprojde **R1-C v OBS** (10-krokovï¿½ checklist v [`MIA_GRAPHICS_R1_STATUS.md`](./MIA_GRAPHICS_R1_STATUS.md) ï¿½ R1-C).
 
-| Blokovno do R1-C | Po R1-C PASS |
+| Blokovï¿½no do R1-C | Po R1-C PASS |
 |-------------------|--------------|
-| Tag `v0.1.1-graphics` | Commit + tag + push |
-| Engine 2.0 wiring | Prvn blok: GameState, VisibilityEngine, PlatformProjection, PlatformRenderer |
-| Poker / pluginy / big-bang split | Stle mimo scope |
+| Tag `v0.1.1-graphics` | âœ… 2026-07-26 |
+| Engine 2.0 wiring | Prvnï¿½ blok: GameState, VisibilityEngine, PlatformProjection, PlatformRenderer |
+| Poker / pluginy / big-bang split | Stï¿½le mimo scope |
 
-Pln krok?: [`MIA_RC_NEXT_STEPS.md`](./MIA_RC_NEXT_STEPS.md)  vsledek OBS: [`MIA_R1C_OBS_RESULT.md`](./MIA_R1C_OBS_RESULT.md).
+Plï¿½n krok?: [`MIA_RC_NEXT_STEPS.md`](./MIA_RC_NEXT_STEPS.md) ï¿½ vï¿½sledek OBS: [`MIA_R1C_OBS_RESULT.md`](./MIA_R1C_OBS_RESULT.md).
 
 ---
 
-## 1. Vsledky audit test?
+## 1. Vï¿½sledky audit test?
 
-| P?kaz | Exit | Vsledek |
+| P?ï¿½kaz | Exit | Vï¿½sledek |
 |--------|------|----------|
 | `node --check index.js` | **0** | **PASS** |
-| `npm run test:preflight:fast` | **0** | **PASS — 159 / 159** (0 failed) |
+| `npm run test:preflight:fast` | **0** | **PASS ï¿½ 159 / 159** (0 failed) |
 
-**Dokon?eno (UTC):** `2026-07-26` — po Kick fix + env_wiring hardening
+**Dokon?eno (UTC):** `2026-07-26` ï¿½ po Kick fix + env_wiring hardening
 
-### Del testov sady (existuj, neblokuj tento audit)
+### Delï¿½ï¿½ testovï¿½ sady (existujï¿½, neblokujï¿½ tento audit)
 
 | Skript | Popis |
 |--------|--------|
-| `npm run test:preflight` | Full preflight  zahrnuje slow testy (video rotace, media catalog, sprint36, ) |
-| `npm run test:smoke` | Velk smoke ?et?zec (ingest, overlay, TTS, Koj, LLM hybrid, ) |
-| `npm run test:canon` / `test:master-canon` | 87 master-canon contract?  v `--fast` p?esko?eno |
+| `npm run test:preflight` | Full preflight ï¿½ zahrnuje slow testy (video rotace, media catalog, sprint3ï¿½6, ï¿½) |
+| `npm run test:smoke` | Velkï¿½ smoke ?et?zec (ingest, overlay, TTS, Koj, LLM hybrid, ï¿½) |
+| `npm run test:canon` / `test:master-canon` | 87 master-canon contract? ï¿½ v `--fast` p?esko?eno |
 | `npm run test:graphics-body` | Graphics studio body testy (~2 min, v fast b?hu zahrnuto) |
-| `npm run test:animation-engine` | Animation bank + timeline fze 1522 |
+| `npm run test:animation-engine` | Animation bank + timeline fï¿½ze 15ï¿½22 |
 | `npm run test:mia-paint` | MIA Paint + graphics studio contracty |
 
-V `--fast` reimu jsou p?esko?eny mj.: `media_catalog`, `video_rotation`, `video_timing`, `gift_visual`, `obs_persistent_layers`, `away_host_mode`, `master_canon_0001``0087`, sprint36.
+V `--fast` reï¿½imu jsou p?esko?eny mj.: `media_catalog`, `video_rotation`, `video_timing`, `gift_visual`, `obs_persistent_layers`, `away_host_mode`, `master_canon_0001`ï¿½`0087`, sprint3ï¿½6.
 
 ---
 
-## 2. Co MIA M (infrastruktura)
+## 2. Co MIA Mï¿½ (infrastruktura)
 
-| Poloka | Stav |
+| Poloï¿½ka | Stav |
 |---------|------|
-| **GitHub repo** | Private (opertor potvrdil 2026-07-24) |
+| **GitHub repo** | Private (operï¿½tor potvrdil 2026-07-24) |
 | **Remote** | `git@github.com:vrtyland-sketch/MIA.git` (SSH) |
-| **V?tev** | `master`  sync s `origin/master` |
-| **Tag `v0.1-stream-core`** | `70b3e859`  rollback checkpoint p?ed Engine 2.0 wiring |
-| **Backup v?tev** | `backup/pre-github-full`  **jen lokln?**, nepushovat |
-| **Dokumentace** | Mega audit, R1 status, DoD checklisty, Engine 2.0 roadmap, knon alignment |
+| **V?tev** | `master` ï¿½ sync s `origin/master` |
+| **Tag `v0.1-stream-core`** | `70b3e859` ï¿½ rollback checkpoint p?ed Engine 2.0 wiring |
+| **Backup v?tev** | `backup/pre-github-full` ï¿½ **jen lokï¿½ln?**, nepushovat |
+| **Dokumentace** | Mega audit, R1 status, DoD checklisty, Engine 2.0 roadmap, kï¿½non alignment |
 | **Cursor guardrails** | `.cursor/rules/mia-guardrails.mdc`, `mia-canon.mdc` |
 | **Test harness** | `scripts/run_preflight_tests.js` (fast/full), 150+ contract soubor? |
 | **OBS tooling** | `obs:refresh-overlays`, `obs:stream-ready`, `obs:prep-stream`, hands/arena skripty |
-| **Runtime data** | `data/*.json`  live stav, **necommitovat** |
+| **Runtime data** | `data/*.json` ï¿½ live stav, **necommitovat** |
 
-### Dirty tree (zm?rn? mimo git)
+### Dirty tree (zï¿½m?rn? mimo git)
 
-- Modifikovan: `data/*.json` (gift-map, koj state, session memory, )
+- Modifikovanï¿½: `data/*.json` (gift-map, koj state, session memory, ï¿½)
 - Untracked: `_canon_import/`, `shared/mia-*-core/` (87 modul?), `docs/master-canon/`, export docs
-- **Pravidlo:** live data a secrets do commit? nepat?
+- **Pravidlo:** live data a secrets do commit? nepat?ï¿½
 
 ---
 
-## 3. Co MIA UM  schopnosti podle oblast
+## 3. Co MIA UMï¿½ ï¿½ schopnosti podle oblastï¿½
 
-Legenda: **ON** = aktivn ve vchozm stream reimu  **OFF** = vypnuto / stub  **?ste?n?** = kd existuje, gate otev?en
+Legenda: **ON** = aktivnï¿½ ve vï¿½chozï¿½m stream reï¿½imu ï¿½ **OFF** = vypnuto / stub ï¿½ **?ï¿½ste?n?** = kï¿½d existuje, gate otev?enï¿½
 
 ### 3.1 Stream ingest
 
-| Schopnost | Stav | Poznmka |
+| Schopnost | Stav | Poznï¿½mka |
 |-----------|------|----------|
-| TikFinity ? MIA ingest | **ON** | Hlavn platforma; architektura TikFinity ? MIA ? OBS |
-| Kick bridge | **ON*** | Wiring fixed `ca80eae7`; live verify `/health.kickBridge.connected`  viz ingest audit |
-| Twitch bridge | **?ste?n?** | Skripty `twitch:login/probe/status`  voliteln |
-| Telegram bridge | **?ste?n?** | Contract testy; setup hint |
+| TikFinity ? MIA ingest | **ON** | Hlavnï¿½ platforma; architektura TikFinity ? MIA ? OBS |
+| Kick bridge | **ON*** | Wiring fixed `ca80eae7`; live verify `/health.kickBridge.connected` ï¿½ viz ingest audit |
+| Twitch bridge | **?ï¿½ste?n?** | Skripty `twitch:login/probe/status` ï¿½ volitelnï¿½ |
+| Telegram bridge | **?ï¿½ste?n?** | Contract testy; setup hint |
 | Event normalizer (F1) | **ON** | Phase 1 contracty green |
 | Runtime watchdog / replay | **ON** | `npm run replay`, phase1 contracts |
-| Remote dev (Tailscale) | **?ste?n?** | Skripty + contracty; voliteln nasazen |
+| Remote dev (Tailscale) | **?ï¿½ste?n?** | Skripty + contracty; volitelnï¿½ nasazenï¿½ |
 
 ### 3.2 OBS overlaye
 
-| Schopnost | Stav | Poznmka |
+| Schopnost | Stav | Poznï¿½mka |
 |-----------|------|----------|
 | Speech hologram + bublina | **ON** | `speech-overlay.html?v=36-koj-unify` |
 | Koj runtime (split) | **ON** | `kojnozrout-runtime.html` + split libs `49-r1-milestone-polish` |
 | Bowl overlay | **ON** | `36-koj-unify` |
-| Gift animation overlay | **ON** | `37-stream-polish`  idle pr?hledn, T4 stage |
-| Viewer strip / avatar chips | **ON** | Skryt p?i milestone speech (fix `f5b4eddc`) |
+| Gift animation overlay | **ON** | `37-stream-polish` ï¿½ idle pr?hlednï¿½, T4 stage |
+| Viewer strip / avatar chips | **ON** | Skrytï¿½ p?i milestone speech (fix `f5b4eddc`) |
 | OBS WebSocket sync | **ON** | obs-websocket-js, bootstrap/sync contracty |
-| Body-parts (MIA_HEADFEET) | **OFF** | Zm?rn? skryt  audit v refresh JSON |
+| Body-parts (MIA_HEADï¿½FEET) | **OFF** | Zï¿½m?rn? skrytï¿½ ï¿½ audit v refresh JSON |
 | Away host mode | **OFF/stub** | Slow test p?esko?en v fast |
 | `obs:refresh-overlays` | **ON** | Manifest-driven cache bust |
 
-### 3.3 Graphics / Koj / MIA vizul
+### 3.3 Graphics / Koj / MIA vizuï¿½l
 
-| Schopnost | Stav | Poznmka |
+| Schopnost | Stav | Poznï¿½mka |
 |-----------|------|----------|
 | Koj mood / scene / pose engine | **ON** | Split runtime: scene, pose, stage, belly, fx |
-| Combo moment + spam wave HUD | **ON** | Belly progress, stage t?dy combo/spam-wave/pulse |
+| Combo moment + spam wave HUD | **ON** | Belly progress, stage t?ï¿½dy combo/spam-wave/pulse |
 | Party scene fallback | **ON** | P?i combo/wave |
-| Tech-energy hype (Koj + speech + gift) | **ON** | R1 slice 610 |
+| Tech-energy hype (Koj + speech + gift) | **ON** | R1 slice 6ï¿½10 |
 | Duel / battle / walk CSS polish | **ON** | Soft Neon purple rim, walk shadow |
-| Milestone speech gesture | **ON** | Krtk hand gesture, bez wave flop (`f5b4eddc`) |
-| MIA Paint / Graphics Studio | **?ste?n?** | Browser + Tauri shell; contracty green, ne stream core |
-| Animation bank / timeline editor | **?ste?n?** | Production gate testy; mimo live stream path |
-| Battle/duel/walk art pass | **LOW backlog** | CSS/runtime hotovo; art gap otev?en |
-| Freeze baseline | **32-gfx-whole** | Nem?nit  referen?n checkpoint |
+| Milestone speech gesture | **ON** | Krï¿½tkï¿½ hand gesture, bez wave flop (`f5b4eddc`) |
+| MIA Paint / Graphics Studio | **?ï¿½ste?n?** | Browser + Tauri shell; contracty green, ne stream core |
+| Animation bank / timeline editor | **?ï¿½ste?n?** | Production gate testy; mimo live stream path |
+| Battle/duel/walk art pass | **LOW backlog** | CSS/runtime hotovo; art gap otev?enï¿½ |
+| Freeze baseline | **32-gfx-whole** | Nem?nit ï¿½ referen?nï¿½ checkpoint |
 
 ### 3.4 Gifts
 
-| Schopnost | Stav | Poznmka |
+| Schopnost | Stav | Poznï¿½mka |
 |-----------|------|----------|
 | Gift map + tier routing | **ON** | Gift map contracty |
-| Per-tier video rotace | **ON** | `rotationIndexByTier`  bez resetu tier indexu |
+| Per-tier video rotace | **ON** | `rotationIndexByTier` ï¿½ bez resetu tier indexu |
 | Gift present / thanks (miaPoints) | **ON** | Bez coin/value na overlayi |
 | Achievement moments | **ON** | Contract green |
 | User ack throttle | **ON** | Anti-spam |
-| Gift animation bank override | **?ste?n?** | Slow test `gift_visual` mimo fast |
+| Gift animation bank override | **?ï¿½ste?n?** | Slow test `gift_visual` mimo fast |
 | Storyboard (Universe/Galaxy/Rose) | **ON** | Post-DoD slice |
 
 ### 3.5 Chat / Speech
 
-| Schopnost | Stav | Poznmka |
+| Schopnost | Stav | Poznï¿½mka |
 |-----------|------|----------|
 | Direct chat intelligence | **ON** | Contract + smoke |
 | TTS (edge-tts) + overlay queue | **ON** | Voice priority, speaker routing |
-| Single voice (vchoz) | **ON** | `MIA_DUAL_VOICE` unset / `0` |
-| Dual voice (Koj companion TTS) | **OFF** | Zapnut: `MIA_DUAL_VOICE=1` |
+| Single voice (vï¿½chozï¿½) | **ON** | `MIA_DUAL_VOICE` unset / `0` |
+| Dual voice (Koj companion TTS) | **OFF** | Zapnutï¿½: `MIA_DUAL_VOICE=1` |
 | LLM hybrid responses | **ON** | Smoke test |
 | Session memory | **ON** | Contract green |
 | Emotion / grief text banks | **ON** | Coverage contracty |
-| Ucho (manuln poslech) | **? OPEN** | Prestream DoD backlog |
+| Ucho (manuï¿½lnï¿½ poslech) | **? OPEN** | Prestream DoD backlog |
 
 ### 3.6 Memory / Viewer
 
-| Schopnost | Stav | Poznmka |
+| Schopnost | Stav | Poznï¿½mka |
 |-----------|------|----------|
 | Viewer memory (phase 2) | **ON** | Contract |
-| Viewer inventory | **?ste?n?** | Data soubor untracked; logika v runtime |
+| Viewer inventory | **?ï¿½ste?n?** | Data soubor untracked; logika v runtime |
 | Story memory | **ON** | Persist v `data/story-memory.json` |
 | Chat lexicon | **ON** | `data/mia-chat-lexicon.json` |
 
 ### 3.7 Battle / Economy / Inventory
 
-| Schopnost | Stav | Poznmka |
+| Schopnost | Stav | Poznï¿½mka |
 |-----------|------|----------|
 | Platform arena | **ON** | Contract + demo skripty |
 | Koj vitals / duel | **ON** | Vitals-duel contracty |
@@ -161,15 +161,15 @@ Legenda: **ON** = aktivn ve vchozm stream reimu  **OFF** = vypnuto / stub 
 | Duel cross-stream sync | **ON** | Contract (design/test level) |
 | Gift economy (miaPoints) | **ON** | Bez expozice coin? |
 | Ecosystem orchestrator | **ON** | Contract |
-| Poker / Monopoly hry | **OFF  design only** | Engine 2.0 roadmap; dn shipped kd |
-| Cross-platform publishing | **OFF  design only** | Knon agent doc; neimplementovno |
+| Poker / Monopoly hry | **OFF ï¿½ design only** | Engine 2.0 roadmap; ï¿½ï¿½dnï¿½ shipped kï¿½d |
+| Cross-platform publishing | **OFF ï¿½ design only** | Kï¿½non agent doc; neimplementovï¿½no |
 
 ### 3.8 Admin
 
-| Schopnost | Stav | Poznmka |
+| Schopnost | Stav | Poznï¿½mka |
 |-----------|------|----------|
-| `/mia-admin` dashboard | **ON** | Fze 4 status |
-| Admin test T1T4 / bowl / battle | **ON** | API smoke |
+| `/mia-admin` dashboard | **ON** | Fï¿½ze 4 status |
+| Admin test T1ï¿½T4 / bowl / battle | **ON** | API smoke |
 | Action Queue toggle | **ON** | Admin ON/OFF/Flush |
 | Theme Manager | **OFF default** | Thin MVP; CSS vars jen p?i flag ON |
 | Storyboard admin | **ON** | Phase 2 contract |
@@ -177,91 +177,91 @@ Legenda: **ON** = aktivn ve vchozm stream reimu  **OFF** = vypnuto / stub 
 
 ### 3.9 Engine 2.0
 
-| Schopnost | Stav | Poznmka |
+| Schopnost | Stav | Poznï¿½mka |
 |-----------|------|----------|
 | Architektura + roadmap | **DONE (docs)** | `MIA_ENGINE_2_0_*.md` |
 | Scaffold `engine2/` | **STUB OFF** | GameState stub + OBS boundary README |
 | `MIA_ENGINE2_STUB` | **OFF** | Nep?ipojeno v `index.js` |
-| `shared/mia-*-core/` (87 modul?) | **Untracked** | P?ipraveno k budoucmu importu |
-| E1 wiring (GameState + OBS) | **? BLOCKED** | Po R1-C gate |
+| `shared/mia-*-core/` (87 modul?) | **Untracked** | P?ipraveno k budoucï¿½mu importu |
+| E1 wiring (GameState + OBS) | **VolitelnÄ›** | E1 stub hotovÃ½; default OFF |
 
 ### 3.10 Pluginy
 
-| Schopnost | Stav | Poznmka |
+| Schopnost | Stav | Poznï¿½mka |
 |-----------|------|----------|
-| Plugin loader | **OFF  design only** | Phase E4 v roadmap? |
-| Poker plugin | **OFF  design only** | Adres?ov struktura v arch doc |
-| Monopoly plugin | **OFF  design only** | Adres?ov struktura v arch doc |
-| MIA Paint plugin surface | **?ste?n?** | Paint contracty; ne live stream plugin |
+| Plugin loader | **OFF ï¿½ design only** | Phase E4 v roadmap? |
+| Poker plugin | **OFF ï¿½ design only** | Adresï¿½?ovï¿½ struktura v arch doc |
+| Monopoly plugin | **OFF ï¿½ design only** | Adresï¿½?ovï¿½ struktura v arch doc |
+| MIA Paint plugin surface | **?ï¿½ste?n?** | Paint contracty; ne live stream plugin |
 
 ---
 
-## 4. Guardrails (tvrd pravidla)
+## 4. Guardrails (tvrdï¿½ pravidla)
 
-| Pravidlo | Ov??en |
+| Pravidlo | Ov??enï¿½ |
 |----------|---------|
 | TikFinity ? MIA ? OBS (OBS jen renderuje) | Architektura + contracty |
-| Overlay public API: **jen `miaPoints`**  dn coins/gift value | `overlay_public_response_contract`, `mia_graphics_r1_contract` |
+| Overlay public API: **jen `miaPoints`** ï¿½ ï¿½ï¿½dnï¿½ coins/gift value | `overlay_public_response_contract`, `mia_graphics_r1_contract` |
 | Dual voice **default OFF** | `MIA_DUAL_VOICE.js`, Live DoD |
-| Gift video rotace per-tier (`rotationIndexByTier`, bez resetu) | R1 contracty + R1-C manul |
+| Gift video rotace per-tier (`rotationIndexByTier`, bez resetu) | R1 contracty + R1-C manuï¿½l |
 | Action Queue **default OFF** | Kill switch `MIA_ACTION_QUEUE=0` |
 | Engine 2.0 stub **default OFF** | `mia_engine2_roadmap_contract` |
-| dn big-bang split `index.js` | Roadmap Phase E5 |
-| dn force-push na `master` | Migration audit |
+| ï¿½ï¿½dnï¿½ big-bang split `index.js` | Roadmap Phase E5 |
+| ï¿½ï¿½dnï¿½ force-push na `master` | Migration audit |
 | Live `data/` a secrets mimo git | Dirty tree policy |
 
 ---
 
-## 5. Graphics cache bust  aktuln vrstvy
+## 5. Graphics cache bust ï¿½ aktuï¿½lnï¿½ vrstvy
 
 | Vrstva | Bust | Soubory |
 |--------|------|---------|
-| Freeze baseline | `32-gfx-whole` | Referen?n checkpoint  nem?nit |
+| Freeze baseline | `32-gfx-whole` | Referen?nï¿½ checkpoint ï¿½ nem?nit |
 | Speech / bowl / manifest OBS URL | `36-koj-unify` | `GFX_CACHE_BUST` v manifestu |
 | Gift overlay / desk | `37-stream-polish` | `GIFT_ANIM_CACHE_BUST` |
 | Koj runtime HTML + split libs | `49-r1-milestone-polish` | `KOJ_SPLIT_CACHE_BUST` |
 
-**Dual-bust invariant:** manifest OBS URL pro speech/bowl z?stvaj na `36`; split runtime libs na `49`. Po deploy: `npm run obs:refresh-overlays`.
+**Dual-bust invariant:** manifest OBS URL pro speech/bowl z?stï¿½vajï¿½ na `36`; split runtime libs na `49`. Po deploy: `npm run obs:refresh-overlays`.
 
 ---
 
-## 6. Otev?en brny (human gates)
+## 6. Otev?enï¿½ brï¿½ny (human gates)
 
 | Gate | Stav | Akce |
 |------|------|------|
-| **R1-C OBS manual** | **? OPEN** | Jedna pln OBS session  checklist v [`MIA_GRAPHICS_R1_STATUS.md`](./MIA_GRAPHICS_R1_STATUS.md)  R1-C |
-| **Tag `v0.1.1-graphics`** | **?ek na R1-C** | Nepushovat p?ed stream sign-off |
-| **Ucho (poslech)** | **? OPEN** | Manuln prestream check |
-| **Private API spot-check** | Voliteln | Pokud API stle ukazuje public, ov??it Settings |
-| **Canon import commit** | Plnovno | `_canon_import/`, `shared/mia-*-core/`  samostatn commit |
-| **E1 Engine 2.0 wiring** | Blocked | A po R1-C |
+| **R1-C OBS manual** | **âœ… PASS** (2026-07-26) | [`MIA_R1C_OBS_RESULT.md`](./MIA_R1C_OBS_RESULT.md) |
+| **Tag `v0.1.1-graphics`** | **âœ…** | R1-C PASS 2026-07-26 |
+| **Ucho (poslech)** | **âœ…** (R1-C krok 9) | OBS session 2026-07-26 |
+| **Private API spot-check** | Volitelnï¿½ | Pokud API stï¿½le ukazuje public, ov??it Settings |
+| **Canon import commit** | Plï¿½novï¿½no | `_canon_import/`, `shared/mia-*-core/` ï¿½ samostatnï¿½ commit |
+| **E1 Engine 2.0 wiring** | VolitelnÄ› | Po tagu; stub OFF default |
 
-### R1-C checklist (10 krok?  exact)
+### R1-C checklist (10 krok? ï¿½ exact)
 
-1. Spustit b?n runtime
+1. Spustit b?ï¿½nï¿½ runtime
 2. Ov??it speech overlay `36`
 3. Ov??it gift overlay `37`
-4. Ov??it Kojnorout `49-r1-milestone-polish`
-5. Poslat testovac chat
-6. Poslat mal, st?edn a velk gift
+4. Ov??it Kojnoï¿½rout `49-r1-milestone-polish`
+5. Poslat testovacï¿½ chat
+6. Poslat malï¿½, st?ednï¿½ a velkï¿½ gift
 7. Ov??it combo/spam HUD
-8. Ov??it bowl, invent? a battle obraz
+8. Ov??it bowl, inventï¿½? a battle obraz
 9. Poslechnout oba hlasy uchem
-10. Zkontrolovat, e nic nen o?znut, skryt nebo p?es sebe
+10. Zkontrolovat, ï¿½e nic nenï¿½ o?ï¿½znutï¿½, skrytï¿½ nebo p?es sebe
 
-ablona vsledku: [`MIA_R1C_OBS_RESULT.md`](./MIA_R1C_OBS_RESULT.md)  pln: [`MIA_RC_NEXT_STEPS.md`](./MIA_RC_NEXT_STEPS.md).
+ï¿½ablona vï¿½sledku: [`MIA_R1C_OBS_RESULT.md`](./MIA_R1C_OBS_RESULT.md) ï¿½ plï¿½n: [`MIA_RC_NEXT_STEPS.md`](./MIA_RC_NEXT_STEPS.md).
 
 ---
 
-## 7. Nedvn opravy
+## 7. Nedï¿½vnï¿½ opravy
 
-### `f5b4eddc`  milestone speech + avatary (2026-07-24)
+### `f5b4eddc` ï¿½ milestone speech + avatary (2026-07-24)
 
-- Potla?en wave flop animace b?hem milestone speech
-- Skryt avatar chips ve viewer strip overlay p?i milestone speech
-- Krtk hand gesture msto dlouh wave
-- Roz?en `koj-runtime-scene.js`, `koj-runtime-pose.js`, `viewer-strip-overlay.html`
-- Nov/roz?en contracty: `kojnozout_display_mood`, runtime split, graphics R1
+- Potla?enï¿½ wave flop animace b?hem milestone speech
+- Skrytï¿½ avatar chips ve viewer strip overlay p?i milestone speech
+- Krï¿½tkï¿½ hand gesture mï¿½sto dlouhï¿½ wave
+- Rozï¿½ï¿½?enï¿½ `koj-runtime-scene.js`, `koj-runtime-pose.js`, `viewer-strip-overlay.html`
+- Novï¿½/rozï¿½ï¿½?enï¿½ contracty: `kojnozout_display_mood`, runtime split, graphics R1
 
 ### Graphics day R1 (11 slices)
 
@@ -272,19 +272,19 @@ Legenda: **ON** = aktivn ve vchozm stream reimu  **OFF** = vypnuto / stub 
 
 ---
 
-## 8. DoD skre (posledn zznamy)
+## 8. DoD skï¿½re (poslednï¿½ zï¿½znamy)
 
-| Checklist | Skre | Datum |
+| Checklist | Skï¿½re | Datum |
 |-----------|-------|-------|
 | Prestream DoD | ~94 % | 2026-07-21 |
 | Live DoD | ~91 % ? ~94 % | 2026-07-20/21 |
 | Preflight fast (tento audit) | **100 %** (159/159) | 2026-07-26 |
 
-Otev?en poloky: ucho, R1-C OBS, zbvajc dirty tree dvky.
+Otev?enï¿½ poloï¿½ky: ucho, R1-C OBS, zbï¿½vajï¿½cï¿½ dirty tree dï¿½vky.
 
 ---
 
-## 9. Rychl p?kazy
+## 9. Rychlï¿½ p?ï¿½kazy
 
 ```powershell
 cd C:\MIA
@@ -296,4 +296,4 @@ npm start
 
 ---
 
-*Generovno pro capability audit  docs-only; bez zm?n runtime nebo live dat.*
+*Generovï¿½no pro capability audit ï¿½ docs-only; bez zm?n runtime nebo live dat.*
