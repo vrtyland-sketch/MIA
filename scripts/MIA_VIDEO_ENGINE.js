@@ -9,6 +9,7 @@ const {
   resolvePlatform,
   buildGiftVideoTransform
 } = require("./MIA_OBS_VISION");
+const { isKickBridgeEnabledFromEnv } = require("./MIA_CONFIG");
 
 /**
  * MIA_VIDEO_ENGINE.js
@@ -610,8 +611,7 @@ function createVideoEngine(deps = {}) {
     if (!idResult.ok) return idResult;
 
     const canvas = await readObsCanvas(safeObsCall);
-    const kickBridge =
-      String(process.env.MIA_KICK_BRIDGE_ENABLED || "").toLowerCase() === "1";
+    const kickBridge = isKickBridgeEnabledFromEnv(process.env);
     const platform = resolvePlatform(
       process.env.MIA_STREAM_PLATFORM || "auto",
       kickBridge

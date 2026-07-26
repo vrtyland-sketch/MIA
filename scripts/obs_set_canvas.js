@@ -15,6 +15,7 @@ const fs = require("fs");
 const path = require("path");
 const OBSWebSocket = require("obs-websocket-js").default;
 const { applyObsOverlayLayout } = require("./obs_fix_overlay_layout");
+const { isKickBridgeEnabledFromEnv } = require("./MIA_CONFIG");
 
 const ROOT = path.resolve(__dirname, "..");
 
@@ -117,7 +118,7 @@ async function main() {
     layout = await applyObsOverlayLayout(obs, {
       sceneName: process.env.MIA_OBS_CAMERA_SCENE || "SPINAK_ENGINE_GIFTS",
       platform: process.env.MIA_STREAM_PLATFORM || "auto",
-      kickBridge: String(process.env.MIA_KICK_BRIDGE_ENABLED || "").toLowerCase() === "1"
+      kickBridge: isKickBridgeEnabledFromEnv(process.env)
     });
   } catch (err) {
     layout = { ok: false, error: err.message };

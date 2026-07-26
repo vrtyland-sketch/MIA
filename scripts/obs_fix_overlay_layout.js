@@ -16,6 +16,7 @@ const {
   resolvePlatform,
   inferRole
 } = require("./MIA_OBS_VISION");
+const { isKickBridgeEnabledFromEnv } = require("./MIA_CONFIG");
 
 const ROOT = path.resolve(__dirname, "..");
 
@@ -119,8 +120,7 @@ async function applyAwayObsOverlayLayout(obs, options = {}) {
     awayScene.resolveAwaySceneName(process.env);
   const platform = options.platform || process.env.MIA_STREAM_PLATFORM || "auto";
   const kickBridge =
-    options.kickBridge === true ||
-    String(process.env.MIA_KICK_BRIDGE_ENABLED || "").toLowerCase() === "1";
+    options.kickBridge === true || isKickBridgeEnabledFromEnv(process.env);
 
   const canvas = await readObsCanvas((type, data) => obs.call(type, data));
   const resolvedPlatform = resolvePlatform(platform, kickBridge);
@@ -161,8 +161,7 @@ async function applyObsOverlayLayout(obs, options = {}) {
     options.sceneName || process.env.MIA_OBS_CAMERA_SCENE || "SPINAK_ENGINE_GIFTS";
   const platform = options.platform || process.env.MIA_STREAM_PLATFORM || "auto";
   const kickBridge =
-    options.kickBridge === true ||
-    String(process.env.MIA_KICK_BRIDGE_ENABLED || "").toLowerCase() === "1";
+    options.kickBridge === true || isKickBridgeEnabledFromEnv(process.env);
   const layoutContext = options.layoutContext || {};
 
   const canvas = await readObsCanvas((type, data) => obs.call(type, data));

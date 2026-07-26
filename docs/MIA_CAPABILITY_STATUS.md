@@ -1,9 +1,10 @@
 # MIA ù Stav schopnostù a audit
 
-**Datum auditu:** 2026-07-24 (ve?ernù b?h ~21:15 CEST)  
+**Datum auditu:** 2026-07-26 (regression follow-up po Kick fix)  
 **Repo:** `C:\MIA`  
 **Mega audit:** [`MIA_MEGA_AUDIT_2026-07-24.md`](./MIA_MEGA_AUDIT_2026-07-24.md)  
-**HEAD:** `148721df` ù `docs: add MIA capability status inventory (2026-07-24 audit)`
+**Gap analysis:** [`MIA_REGRESSION_GAP_ANALYSIS_2026-07-26.md`](./MIA_REGRESSION_GAP_ANALYSIS_2026-07-26.md)  
+**HEAD (Kick fix):** `ca80eae7`
 
 ---
 
@@ -28,9 +29,9 @@ Plùn krok?: [`MIA_RC_NEXT_STEPS.md`](./MIA_RC_NEXT_STEPS.md) ù vùsledek OBS: [`M
 | P?ùkaz | Exit | Vùsledek |
 |--------|------|----------|
 | `node --check index.js` | **0** | **PASS** |
-| `npm run test:preflight:fast` | **0** | **PASS ù 157 / 157** (0 failed) |
+| `npm run test:preflight:fast` | **0** | **PASS ó 159 / 159** (0 failed) |
 
-**Dokon?eno (UTC):** `2026-07-24T19:15:00.653Z` ù runtime ~4 min
+**Dokon?eno (UTC):** `2026-07-26` ó po Kick fix + env_wiring hardening
 
 ### Delùù testovù sady (existujù, neblokujù tento audit)
 
@@ -79,7 +80,7 @@ Legenda: **ON** = aktivnù ve vùchozùm stream reùimu ù **OFF** = vypnuto / stub ù
 | Schopnost | Stav | Poznùmka |
 |-----------|------|----------|
 | TikFinity ? MIA ingest | **ON** | Hlavnù platforma; architektura TikFinity ? MIA ? OBS |
-| Kick bridge | **ON** | Platform bridges; see [`MIA_INGEST_PATH_AUDIT.md`](./MIA_INGEST_PATH_AUDIT.md) (2026-07-25 wiring fix) |
+| Kick bridge | **ON*** | Wiring fixed `ca80eae7`; live verify `/health.kickBridge.connected` ù viz ingest audit |
 | Twitch bridge | **?ùste?n?** | Skripty `twitch:login/probe/status` ù volitelnù |
 | Telegram bridge | **?ùste?n?** | Contract testy; setup hint |
 | Event normalizer (F1) | **ON** | Phase 1 contracty green |
@@ -235,20 +236,20 @@ Legenda: **ON** = aktivnù ve vùchozùm stream reùimu ù **OFF** = vypnuto / stub ù
 | **Canon import commit** | Plùnovùno | `_canon_import/`, `shared/mia-*-core/` ù samostatnù commit |
 | **E1 Engine 2.0 wiring** | Blocked | Aù po R1-C |
 
-### R1-C checklist (10 krok? ó exact)
+### R1-C checklist (10 krok? ù exact)
 
-1. Spustit b?ûn˝ runtime
+1. Spustit b?ùnù runtime
 2. Ov??it speech overlay `36`
 3. Ov??it gift overlay `37`
-4. Ov??it Kojnoûrout `49-r1-milestone-polish`
-5. Poslat testovacÌ chat
-6. Poslat mal˝, st?ednÌ a velk˝ gift
+4. Ov??it Kojnoùrout `49-r1-milestone-polish`
+5. Poslat testovacù chat
+6. Poslat malù, st?ednù a velkù gift
 7. Ov??it combo/spam HUD
-8. Ov??it bowl, invent·? a battle obraz
+8. Ov??it bowl, inventù? a battle obraz
 9. Poslechnout oba hlasy uchem
-10. Zkontrolovat, ûe nic nenÌ o?ÌznutÈ, skrytÈ nebo p?es sebe
+10. Zkontrolovat, ùe nic nenù o?ùznutù, skrytù nebo p?es sebe
 
-äablona v˝sledku: [`MIA_R1C_OBS_RESULT.md`](./MIA_R1C_OBS_RESULT.md) ∑ pl·n: [`MIA_RC_NEXT_STEPS.md`](./MIA_RC_NEXT_STEPS.md).
+ùablona vùsledku: [`MIA_R1C_OBS_RESULT.md`](./MIA_R1C_OBS_RESULT.md) ù plùn: [`MIA_RC_NEXT_STEPS.md`](./MIA_RC_NEXT_STEPS.md).
 
 ---
 
@@ -277,7 +278,7 @@ Legenda: **ON** = aktivnù ve vùchozùm stream reùimu ù **OFF** = vypnuto / stub ù
 |-----------|-------|-------|
 | Prestream DoD | ~94 % | 2026-07-21 |
 | Live DoD | ~91 % ? ~94 % | 2026-07-20/21 |
-| Preflight fast (tento audit) | **100 %** (157/157) | 2026-07-24 |
+| Preflight fast (tento audit) | **100 %** (159/159) | 2026-07-26 |
 
 Otev?enù poloùky: ucho, R1-C OBS, zbùvajùcù dirty tree dùvky.
 

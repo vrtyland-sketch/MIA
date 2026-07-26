@@ -655,10 +655,19 @@ function buildRuntimeConfig(env = process.env) {
   };
 }
 
+function isKickBridgeEnabledFromEnv(env = process.env) {
+  return pickBool(
+    env,
+    ["MIA_KICK_ENABLED", "KICK_ENABLED", "MIA_KICK_BRIDGE_ENABLED"],
+    true
+  );
+}
+
 const runtimeConfig = buildRuntimeConfig();
 
 module.exports = {
   buildRuntimeConfig,
   buildOverlaySceneMap,
+  isKickBridgeEnabledFromEnv,
   runtimeConfig
 };
