@@ -16,6 +16,7 @@ const { createPlatformRenderer } = require("./platform-renderer");
 const { createStubState, applyNormalizedEvent } = require("./event-applicator");
 const { ingestNormalizedEvent } = require("./event-bus-stub");
 const { routeObsProjection, ROUTE_VERSION } = require("./obs-router-boundary");
+const { applyOverlayProfile, PROFILE_IDS, buildProfileRouteUrls } = require("./overlay-profiles");
 
 function createEngine2Pipeline(options = {}) {
   const gameState = createGameState(options);
@@ -50,6 +51,9 @@ module.exports = {
   applyNormalizedEvent,
   ingestNormalizedEvent,
   routeObsProjection,
+  applyOverlayProfile,
+  PROFILE_IDS,
+  buildProfileRouteUrls,
   projectForPlatform,
   PLATFORMS,
   PLATFORM_IDS,

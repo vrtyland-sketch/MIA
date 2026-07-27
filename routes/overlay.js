@@ -28,11 +28,40 @@ function registerOverlayRoutes(app, ctx = {}) {
     ? path.join(overlayStaticDir, "anchors")
     : path.join(__dirname, "..", "mia-output-overlay", "anchors");
 
-  app.get("/overlay-state", (_req, res) => {
-    const body = overlayStateCache
-      ? overlayStateCache.get(buildOverlayStateCacheKey(), buildPublicOverlayStateResponse)
-      : buildPublicOverlayStateResponse();
-    res.json(body);
+  app.get("/overlay-state", (req, res) => {
+    const profile = safeString(req.query?.profile, "").toLowerCase();
+    const useProfile = profile.length > 0;
+
+    const body = useProfile
+      ? buildPublicOverlayStateResponse()
+      : overlayStateCache
+        ? overlayStateCache.get(buildOverlayStateCacheKey(), buildPublicOverlayStateResponse)
+        : buildPublicOverlayStateResponse();
+
+    if (!useProfile) {
+      return res.json(body);
+    }
+
+    try {
+      const { isEngine2StubEnabled } = require("../engine2/flag");
+      const { applyOverlayProfile, PROFILE_IDS } = require("../engine2/overlay-profiles");
+
+      if (!isEngine2StubEnabled()) {
+        return res.json(body);
+      }
+
+      if (!PROFILE_IDS.includes(profile)) {
+        return res.status(400).json({
+          ok: false,
+          error: "unknown_profile",
+          allowed: [...PROFILE_IDS]
+        });
+      }
+
+      return res.json(applyOverlayProfile(body, profile));
+    } catch (err) {
+      return res.status(500).json({ ok: false, error: err.message || "profile_failed" });
+    }
   });
 
   app.get("/ping-overlay", async (_req, res) => {

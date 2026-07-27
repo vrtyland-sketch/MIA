@@ -9,6 +9,7 @@ const { createEngine2Pipeline } = require("./index");
 const { createStubState } = require("./event-applicator");
 const { ingestNormalizedEvent } = require("./event-bus-stub");
 const { routeObsProjection } = require("./obs-router-boundary");
+const { applyOverlayProfile, PROFILE_IDS, buildProfileRouteUrls } = require("./overlay-profiles");
 
 const SAMPLE_EVENTS = Object.freeze([
   {
@@ -78,16 +79,38 @@ function buildEngine2AdminSnapshot(ctx = {}) {
   const obsRender = pipeline.render("obs");
   const obsRoute = routeObsProjection(obsRender);
 
+  const sampleOverlay = {
+    updatedAt: Date.now(),
+    kojDisplay: { mood: state.koj?.mood || "calm", scene: "main", pose: "idle" },
+    miaOverlay: null,
+    chatFeed: state.chat?.recent || [],
+    recentGifts: state.economy?.recentGifts || [],
+    spamSession: { active: false },
+    giftEconomy: { miaPoints: state.economy?.miaPoints ?? 0 },
+    obsConnected: true,
+    voicePlayback: { queueLength: 0 },
+    theme: { enabled: false, id: "cyber", cssVars: null }
+  };
+
+  const overlayProfiles = {};
+  for (const profileId of PROFILE_IDS) {
+    overlayProfiles[profileId] = applyOverlayProfile(sampleOverlay, profileId);
+  }
+
   return {
     enabled: true,
-    phase: "E2",
+    phase: "E3",
     version: pipeline.gameState.getSnapshot().version,
     projections,
     obsRoute,
     eventBus: {
       ingested: busLog.length,
       events: busLog
-    }
+    },
+    overlayProfiles,
+    profileRoutes: buildProfileRouteUrls(
+      ctx.baseUrl || process.env.MIA_PUBLIC_BASE_URL || "http://127.0.0.1:3000"
+    )
   };
 }
 

@@ -132,7 +132,7 @@ test("MIA_ENGINE2_STUB=1 admin snapshot includes projections, obsRoute, eventBus
   process.env.MIA_ENGINE2_STUB = "1";
   const snap = buildEngine2AdminSnapshot({});
   assert.equal(snap.enabled, true);
-  assert.equal(snap.phase, "E2");
+  assert.equal(snap.phase, "E3");
   assert.ok(snap.projections.tiktok);
   assert.ok(snap.projections.obs);
   assert.ok(snap.obsRoute);

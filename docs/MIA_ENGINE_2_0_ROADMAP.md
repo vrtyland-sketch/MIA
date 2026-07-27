@@ -174,9 +174,9 @@ createGameStateStub({ loaders }) ? {
 
 ### Acceptance criteria (E3)
 
-- [ ] Same GameState snapshot feeds all profiles; Visibility assigns per-field channel.
-- [ ] Default single-profile path identical to pre-E3 behavior.
-- [ ] OBS Router can bind two browser sources to two profiles (smoke test).
+- [x] Same GameState snapshot feeds all profiles; Visibility assigns per-field channel.
+- [x] Default single-profile path identical to pre-E3 behavior.
+- [x] OBS Router can bind two browser sources to two profiles (smoke test URLs in admin `profileRoutes`).
 
 ---
 
