@@ -137,6 +137,8 @@ createGameStateStub({ loaders }) ? {
 
 **Goal:** All ingress ? normalized envelope ? dispatch; overlay sanitization in Visibility Engine.
 
+**E2 slice shipped (2026-07-27):** Event applicator stub, event-bus-stub (normalize?apply), OBS Router adapter (`obs.renderRoute`), admin preview behind flag.
+
 | Step | Extract | Risk |
 |------|---------|------|
 | E2.0-01 | Event normalizer + ingest route | Low |
@@ -151,10 +153,11 @@ createGameStateStub({ loaders }) ? {
 
 ### Acceptance criteria (E2)
 
-- [ ] 100% ingest events pass normalizer before handler.
-- [ ] Visibility layer strips coin/gift value from all public overlay fields.
-- [ ] Shadow pipeline + action queue unchanged behavior (parity tests).
-- [ ] Event Bus module matches `shared/mia-event-core/` surface.
+- [x] Stub pipeline: normalized gift/comment ? in-memory GameState (flag ON only).
+- [x] Visibility layer strips coin/gift value from all public overlay fields (E1 + contract).
+- [ ] Shadow pipeline + action queue unchanged behavior (parity tests) — live ingest deferred.
+- [x] OBS Router adapter maps obs projection ? stable `obs.renderRoute` envelope.
+- [ ] Event Bus module matches `shared/mia-event-core/` surface — partial stub only.
 
 ---
 

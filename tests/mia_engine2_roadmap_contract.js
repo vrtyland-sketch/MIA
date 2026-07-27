@@ -44,7 +44,9 @@ test("engine2 scaffold folders present", () => {
   assert.ok(fs.existsSync(path.join(ROOT, "engine2", "visibility-engine", "index.js")));
   assert.ok(fs.existsSync(path.join(ROOT, "engine2", "platform-projection", "index.js")));
   assert.ok(fs.existsSync(path.join(ROOT, "engine2", "platform-renderer", "index.js")));
-  assert.ok(fs.existsSync(path.join(ROOT, "engine2", "obs-router-boundary", "README.md")));
+  assert.ok(fs.existsSync(path.join(ROOT, "engine2", "obs-router-boundary", "index.js")));
+  assert.ok(fs.existsSync(path.join(ROOT, "engine2", "event-applicator", "index.js")));
+  assert.ok(fs.existsSync(path.join(ROOT, "engine2", "event-bus-stub", "index.js")));
 });
 
 test("GameState stub returns frozen read-only snapshot", () => {

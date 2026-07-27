@@ -167,7 +167,8 @@ const FAST_SUITE_NAMES = [
   "mia_graphics_studio_12f",
   "graphics_body",
   "engine2_roadmap",
-  "engine2_first_slice"
+  "engine2_first_slice",
+  "engine2_e2"
 ];
 
 const SUITES = [
@@ -456,7 +457,8 @@ const SUITES = [
   { name: "mia_graphics_studio_12f", cmd: "node", args: ["tests/mia_graphics_studio_12f_contract.js"] },
   { name: "graphics_body", cmd: "node", args: ["scripts/run_graphics_body_tests.js"] },
   { name: "engine2_roadmap", cmd: "node", args: ["tests/mia_engine2_roadmap_contract.js"] },
-  { name: "engine2_first_slice", cmd: "node", args: ["tests/mia_engine2_first_slice_contract.js"] }
+  { name: "engine2_first_slice", cmd: "node", args: ["tests/mia_engine2_first_slice_contract.js"] },
+  { name: "engine2_e2", cmd: "node", args: ["tests/mia_engine2_e2_contract.js"] }
 ];
 
 function resolvePreflightMode(argv = process.argv, env = process.env) {

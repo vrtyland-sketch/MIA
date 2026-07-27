@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * Engine 2.0 — E1 first slice entry point.
+ * Engine 2.0 — E1/E2 entry point.
  * Default OFF via MIA_ENGINE2_STUB; no production behavior change when unset.
  */
 
@@ -13,6 +13,9 @@ const {
   projectForPlatform
 } = require("./platform-projection");
 const { createPlatformRenderer } = require("./platform-renderer");
+const { createStubState, applyNormalizedEvent } = require("./event-applicator");
+const { ingestNormalizedEvent } = require("./event-bus-stub");
+const { routeObsProjection, ROUTE_VERSION } = require("./obs-router-boundary");
 
 function createEngine2Pipeline(options = {}) {
   const gameState = createGameState(options);
@@ -43,8 +46,13 @@ module.exports = {
   createVisibilityEngine,
   createPlatformRenderer,
   createEngine2Pipeline,
+  createStubState,
+  applyNormalizedEvent,
+  ingestNormalizedEvent,
+  routeObsProjection,
   projectForPlatform,
   PLATFORMS,
   PLATFORM_IDS,
-  DEFAULT_VERSION
+  DEFAULT_VERSION,
+  ROUTE_VERSION
 };

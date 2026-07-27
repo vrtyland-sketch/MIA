@@ -5,7 +5,7 @@
  * Single-writer principle: renderers read snapshots; mutations go via Event Bus (future E2).
  */
 
-const DEFAULT_VERSION = "engine2/0.1.0-e1";
+const DEFAULT_VERSION = "engine2/0.1.0-e2";
 
 function createGameState(options = {}) {
   const loaders = options.loaders || {};

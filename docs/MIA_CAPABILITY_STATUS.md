@@ -180,10 +180,11 @@ Legenda: **ON** = aktivn� ve v�choz�m stream re�imu � **OFF** = vypnut
 | Schopnost | Stav | Pozn�mka |
 |-----------|------|----------|
 | Architektura + roadmap | **DONE (docs)** | `MIA_ENGINE_2_0_*.md` |
-| Scaffold `engine2/` | **STUB OFF** | GameState stub + OBS boundary README |
-| `MIA_ENGINE2_STUB` | **OFF** | Nep?ipojeno v `index.js` |
+| Scaffold `engine2/` | **STUB OFF** | E1 four modules + E2 applicator/bus/OBS router |
+| `MIA_ENGINE2_STUB` | **OFF** | Admin wiring only (`routes/admin.js`) |
 | `shared/mia-*-core/` (87 modul?) | **Untracked** | P?ipraveno k budouc�mu importu |
-| E1 wiring (GameState + OBS) | **Volitelně** | E1 stub hotový; default OFF |
+| E1 wiring (GameState + projections) | **Volitelně** | Hotovo; default OFF |
+| E2 stub (event apply + obs.renderRoute) | **Volitelně** | `mia_engine2_e2_contract`; default OFF |
 
 ### 3.10 Pluginy
 
@@ -205,7 +206,7 @@ Legenda: **ON** = aktivn� ve v�choz�m stream re�imu � **OFF** = vypnut
 | Dual voice **default OFF** | `MIA_DUAL_VOICE.js`, Live DoD |
 | Gift video rotace per-tier (`rotationIndexByTier`, bez resetu) | R1 contracty + R1-C manu�l |
 | Action Queue **default OFF** | Kill switch `MIA_ACTION_QUEUE=0` |
-| Engine 2.0 stub **default OFF** | `mia_engine2_roadmap_contract` |
+| Engine 2.0 stub **default OFF** | `mia_engine2_roadmap_contract`, `mia_engine2_e2_contract` |
 | ��dn� big-bang split `index.js` | Roadmap Phase E5 |
 | ��dn� force-push na `master` | Migration audit |
 | Live `data/` a secrets mimo git | Dirty tree policy |
