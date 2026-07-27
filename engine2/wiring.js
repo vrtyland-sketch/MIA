@@ -108,7 +108,7 @@ function buildEngine2AdminSnapshot(ctx = {}) {
 
   return {
     enabled: true,
-    phase: "E5a",
+    phase: "E5b",
     version: pipeline.gameState.getSnapshot().version,
     projections,
     obsRoute,

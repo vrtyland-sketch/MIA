@@ -8,7 +8,6 @@ const TARGET_LINES = 500;
 const BASELINE_LINES = 3900;
 
 const NEXT_CANDIDATE_HINTS = Object.freeze([
-  "collectRouteContextHost / initRouteContextRuntime",
   "collectHealthHost / initHealthRuntime",
   "collectObsBootstrapHost / initObsBootstrapRuntime",
   "collectDeliveryHost / initDeliveryRuntime",
@@ -63,13 +62,13 @@ function getCompositionStatus({ indexPath } = {}) {
   const progressPct = Math.min(100, Math.round((removed / span) * 100));
 
   return {
-    phase: "E5a",
+    phase: "E5b",
     indexLines,
     targetLines: TARGET_LINES,
     progressPct,
     modulesRequiredApprox,
     nextCandidates,
-    note: "full shrink deferred — thin slices only"
+    note: "E5b route-context boot shipped; full shrink deferred — thin slices only"
   };
 }
 

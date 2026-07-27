@@ -204,7 +204,7 @@ Uses `shared/mia-module-core/` when canon import lands.
 
 ## 9. Phase E5 — Composition shrink
 
-**Goal:** `index.js` < 500 lines — wiring only. **Multi-session:** E5a inventory only; E5b+ thin extractions.
+**Goal:** `index.js` < 500 lines — wiring only. **Multi-session:** E5a inventory; E5b route-context boot; E5c+ remaining extractions deferred.
 
 ### E5a — inventory + safeRequire extract (done)
 
@@ -213,7 +213,16 @@ Uses `shared/mia-module-core/` when canon import lands.
 - [x] Admin snapshot `composition` when stub ON; `phase: "E5a"`
 - [x] Contract `mia_engine2_e5_contract.js` + preflight `engine2_e5`
 
-### E5b+ — full shrink (deferred)
+### E5b — route-context boot extract (done)
+
+- [x] `scripts/MIA_ROUTE_CONTEXT_BOOT.js` — `createRouteContextBoot`
+- [x] `index.js` bindings host stays; init/host/runtime delegated to boot factory
+- [x] Admin snapshot `phase: "E5b"`; composition next candidates updated
+
+### E5c+ — full shrink (deferred — multi-session)
+
+- [ ] Health, OBS bootstrap, delivery, stream-state boot extractions
+- [ ] `index.js` < 500 lines (not claimed complete at E5b)
 
 ### Acceptance criteria (E5 full) — matches architecture §8
 
@@ -221,7 +230,7 @@ Uses `shared/mia-module-core/` when canon import lands.
 - [ ] Four overlay profiles from one GameState source.
 - [ ] Sample plugin load/unload works.
 - [ ] Stream guardrails audit green.
-- [ ] `index.js` < 500 lines (E5b+ slices).
+- [ ] `index.js` < 500 lines (E5c+ slices).
 
 ---
 

@@ -74,11 +74,12 @@ async function run() {
     assert.equal(host.modules.getInterpreterRuntime(), interpreter);
   });
 
-  await test("index.js uses collectRouteContextBindingsHost and buildRouteContextHost", () => {
+  await test("index.js uses collectRouteContextBindingsHost and MIA_ROUTE_CONTEXT_BOOT", () => {
     const indexSrc = fs.readFileSync(path.join(ROOT, "index.js"), "utf8");
     assert.match(indexSrc, /function collectRouteContextBindingsHost\(\)/);
     assert.match(indexSrc, /MIA_ROUTE_CONTEXT_HOST/);
-    assert.match(indexSrc, /buildHost\(collectRouteContextBindingsHost\(\)\)/);
+    assert.match(indexSrc, /MIA_ROUTE_CONTEXT_BOOT/);
+    assert.match(indexSrc, /collectBindings:\s*collectRouteContextBindingsHost/);
     assert.doesNotMatch(indexSrc, /modules: \{\s*overlayStateModule,\s*platformArenaModule,/);
     assert.match(indexSrc, /getInterpreterRuntime: interpreterRuntime/);
   });

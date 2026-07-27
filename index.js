@@ -280,6 +280,7 @@ const obsPostConnectRuntimeModule = safeRequire("./scripts/MIA_OBS_POST_CONNECT_
 const routeContextModule = safeRequire("./scripts/MIA_ROUTE_CONTEXT", {});
 const routeContextDepsModule = safeRequire("./scripts/MIA_ROUTE_CONTEXT_DEPS", {});
 const routeContextCtxModule = safeRequire("./scripts/MIA_ROUTE_CONTEXT_CTX", {});
+const { createRouteContextBoot } = require("./scripts/MIA_ROUTE_CONTEXT_BOOT");
 const pipelineSummaryRuntimeModule = safeRequire("./scripts/MIA_PIPELINE_SUMMARY_RUNTIME", {});
 const overlayStateRuntimeModule = safeRequire("./scripts/MIA_OVERLAY_STATE_RUNTIME", {});
 const visionContextRuntimeModule = safeRequire("./scripts/MIA_VISION_CONTEXT_RUNTIME", {});
@@ -1379,8 +1380,6 @@ async function buildDiagnosePayload() {
   return healthRuntime().buildDiagnosePayload();
 }
 
-let routeContextRuntimeApi = null;
-
 function collectRouteContextBindingsHost() {
   return {
     overlayStateModule,
@@ -1517,50 +1516,20 @@ function collectRouteContextBindingsHost() {
   };
 }
 
-function collectRouteContextHost() {
-  const buildHost =
-    typeof routeContextHostModule.buildRouteContextHost === "function"
-      ? routeContextHostModule.buildRouteContextHost
-      : (bindings) => bindings;
-  return buildHost(collectRouteContextBindingsHost());
-}
-
-function initRouteContextRuntime() {
-  if (routeContextRuntimeApi) return routeContextRuntimeApi;
-  if (typeof routeContextModule.createRouteContextRuntime !== "function") {
-    routeContextRuntimeApi = {
-      buildMiaRouteContext: () => ({}),
-      resetOverlayState: () => {}
-    };
-    return routeContextRuntimeApi;
-  }
-
-  const buildCtx =
-    typeof routeContextCtxModule.buildRouteContextCtx === "function"
-      ? routeContextCtxModule.buildRouteContextCtx
-      : (host) => host;
-
-  const buildDeps =
-    typeof routeContextDepsModule.buildRouteContextDeps === "function"
-      ? routeContextDepsModule.buildRouteContextDeps
-      : (ctx) => ctx;
-
-  routeContextRuntimeApi = routeContextModule.createRouteContextRuntime(
-    buildDeps(buildCtx(collectRouteContextHost()))
-  );
-  return routeContextRuntimeApi;
-}
-
-function routeContextRuntime() {
-  return initRouteContextRuntime();
-}
+const routeContextBoot = createRouteContextBoot({
+  routeContextModule,
+  routeContextHostModule,
+  routeContextCtxModule,
+  routeContextDepsModule,
+  collectBindings: collectRouteContextBindingsHost
+});
 
 function resetOverlayState() {
-  return routeContextRuntime().resetOverlayState();
+  return routeContextBoot.resetOverlayState();
 }
 
 function buildMiaRouteContext() {
-  return routeContextRuntime().buildMiaRouteContext();
+  return routeContextBoot.buildMiaRouteContext();
 }
 
 let obsPostConnectRuntimeApi = null;

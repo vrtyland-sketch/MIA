@@ -57,11 +57,12 @@ async function run() {
     assert.equal(deps.getInterpreterRuntime(), interpreter);
   });
 
-  await test("index.js uses collectRouteContextHost and buildRouteContextDeps", () => {
+  await test("index.js uses MIA_ROUTE_CONTEXT_BOOT and buildRouteContextDeps", () => {
     const indexSrc = fs.readFileSync(path.join(ROOT, "index.js"), "utf8");
-    assert.match(indexSrc, /function collectRouteContextHost\(\)/);
+    const bootSrc = fs.readFileSync(path.join(ROOT, "scripts/MIA_ROUTE_CONTEXT_BOOT.js"), "utf8");
+    assert.match(indexSrc, /MIA_ROUTE_CONTEXT_BOOT/);
     assert.match(indexSrc, /MIA_ROUTE_CONTEXT_DEPS/);
-    assert.match(indexSrc, /buildDeps\(buildCtx\(collectRouteContextHost\(\)\)\)/);
+    assert.match(bootSrc, /buildDeps\(buildCtx\(collectHost\(\)\)\)/);
     assert.doesNotMatch(indexSrc, /function getRouteContextCtx\(\)/);
     assert.doesNotMatch(indexSrc, /getDuelStateActive: \(\) => Boolean\(kojnozoutDuelState/);
   });

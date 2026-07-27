@@ -1,10 +1,10 @@
-# Engine 2.0 — E5a slice (flag OFF by default)
+# Engine 2.0 — E5b slice (flag OFF by default)
 
-**Status:** E1–E5a stubs. Composition inventory + plugin loader when `MIA_ENGINE2_STUB=1`.
+**Status:** E1–E5b stubs. Composition inventory + plugin loader when `MIA_ENGINE2_STUB=1`.
 
 | Path | Module |
 |------|--------|
-| [`composition/`](./composition/) | E5a index.js line inventory + shrink progress |
+| [`composition/`](./composition/) | E5b index.js line inventory + shrink progress |
 | [`game/hello/`](../../game/hello/) | E4 demo plugin (no-op) |
 | [`plugin-loader/`](./plugin-loader/) | E4 load/unload + sandbox bus |
 | [`overlay-profiles/`](./overlay-profiles/) | E3 main/clean/host/game profiles |
@@ -16,7 +16,7 @@
 
 **Enable:** `MIA_ENGINE2_STUB=1`
 
-**Admin snapshot (stub ON):** `phase: "E5a"`, `composition` inventory, E4 plugins, E3 profiles, E2 bus/OBS.
+**Admin snapshot (stub ON):** `phase: "E5b"`, `composition` inventory, E4 plugins, E3 profiles, E2 bus/OBS.
 
 **Plugin API:**
 - `GET /api/mia-admin/engine2/plugins`

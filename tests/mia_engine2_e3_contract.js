@@ -124,7 +124,7 @@ test("MIA_ENGINE2_STUB=1 admin snapshot includes overlayProfiles and profileRout
   const prev = process.env.MIA_ENGINE2_STUB;
   process.env.MIA_ENGINE2_STUB = "1";
   const snap = buildEngine2AdminSnapshot({ baseUrl: "http://127.0.0.1:3000" });
-  assert.equal(snap.phase, "E5a");
+  assert.equal(snap.phase, "E5b");
   assert.ok(snap.overlayProfiles);
   assert.ok(snap.overlayProfiles.main);
   assert.ok(snap.overlayProfiles.clean);

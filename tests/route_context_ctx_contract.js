@@ -50,13 +50,15 @@ async function run() {
     assert.equal(ctx.getPort(), 3000);
   });
 
-  await test("index.js uses collectRouteContextBindingsHost and buildRouteContextHost", () => {
+  await test("index.js uses collectRouteContextBindingsHost and MIA_ROUTE_CONTEXT_BOOT", () => {
     const indexSrc = fs.readFileSync(path.join(ROOT, "index.js"), "utf8");
+    const bootSrc = fs.readFileSync(path.join(ROOT, "scripts/MIA_ROUTE_CONTEXT_BOOT.js"), "utf8");
     assert.match(indexSrc, /function collectRouteContextBindingsHost\(\)/);
     assert.match(indexSrc, /MIA_ROUTE_CONTEXT_CTX/);
     assert.match(indexSrc, /MIA_ROUTE_CONTEXT_HOST/);
-    assert.match(indexSrc, /buildHost\(collectRouteContextBindingsHost\(\)\)/);
-    assert.match(indexSrc, /buildCtx\(collectRouteContextHost\(\)\)/);
+    assert.match(indexSrc, /MIA_ROUTE_CONTEXT_BOOT/);
+    assert.match(bootSrc, /buildHost\(collectBindings\(\)\)/);
+    assert.match(bootSrc, /buildCtx\(collectHost\(\)\)/);
     assert.doesNotMatch(indexSrc, /function getRouteContextCtx\(\)/);
     assert.match(indexSrc, /getStreamState,/);
     assert.match(indexSrc, /getInterpreterRuntime: interpreterRuntime/);

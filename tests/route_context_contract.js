@@ -75,13 +75,14 @@ async function run() {
     assert.equal(typeof ctx.buildObsLiveManifest, "function");
   });
 
-  await test("index.js wires routeContextRuntime with thin buildMiaRouteContext wrapper", () => {
+  await test("index.js wires routeContextBoot with thin buildMiaRouteContext wrapper", () => {
     const indexSrc = fs.readFileSync(path.join(ROOT, "index.js"), "utf8");
-    assert.match(indexSrc, /initRouteContextRuntime/);
+    assert.match(indexSrc, /MIA_ROUTE_CONTEXT_BOOT/);
+    assert.match(indexSrc, /createRouteContextBoot/);
     assert.match(indexSrc, /MIA_ROUTE_CONTEXT/);
     assert.match(
       indexSrc,
-      /function buildMiaRouteContext\(\) \{\s*return routeContextRuntime\(\)\.buildMiaRouteContext\(\);/
+      /function buildMiaRouteContext\(\) \{\s*return routeContextBoot\.buildMiaRouteContext\(\);/
     );
     assert.doesNotMatch(indexSrc, /speakMiaShowcaseLine\s*\n\s*\};\s*\n\}\s*\n\nlet obsPostConnectRuntimeApi/);
   });

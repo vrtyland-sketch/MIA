@@ -100,7 +100,7 @@ test("MIA_ENGINE2_STUB=1 admin snapshot includes plugins (E4)", () => {
   const prev = process.env.MIA_ENGINE2_STUB;
   process.env.MIA_ENGINE2_STUB = "1";
   const snap = buildEngine2AdminSnapshot({});
-  assert.equal(snap.phase, "E5a");
+  assert.equal(snap.phase, "E5b");
   assert.ok(snap.plugins);
   assert.ok(Array.isArray(snap.plugins.registry.plugins));
   if (prev === undefined) delete process.env.MIA_ENGINE2_STUB;

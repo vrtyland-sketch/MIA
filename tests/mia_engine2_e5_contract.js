@@ -7,6 +7,7 @@ const { isEngine2StubEnabled } = require("../engine2");
 const { getCompositionStatus } = require("../engine2/composition");
 const { safeRequire } = require("../scripts/MIA_SAFE_REQUIRE");
 const { buildEngine2AdminSnapshot } = require("../engine2/wiring");
+const { createRouteContextBoot } = require("../scripts/MIA_ROUTE_CONTEXT_BOOT");
 
 const ROOT = path.join(__dirname, "..");
 const INDEX_PATH = path.join(ROOT, "index.js");
@@ -23,7 +24,7 @@ function test(name, fn) {
 
 test("getCompositionStatus returns numeric inventory", () => {
   const status = getCompositionStatus({ indexPath: INDEX_PATH });
-  assert.equal(status.phase, "E5a");
+  assert.equal(status.phase, "E5b");
   assert.equal(typeof status.indexLines, "number");
   assert.ok(status.indexLines > 500);
   assert.equal(status.targetLines, 500);
@@ -48,6 +49,34 @@ test("index.js uses external safeRequire module", () => {
   assert.doesNotMatch(src, /function safeRequire\s*\(/);
 });
 
+test("createRouteContextBoot exposes collect/init/runtime API", () => {
+  const boot = createRouteContextBoot({
+    routeContextModule: {
+      createRouteContextRuntime: (deps) => ({
+        buildMiaRouteContext: () => ({ PORT: deps.getPort?.() }),
+        resetOverlayState: () => {}
+      })
+    },
+    routeContextHostModule: { buildRouteContextHost: (b) => b },
+    routeContextCtxModule: { buildRouteContextCtx: (h) => h },
+    routeContextDepsModule: { buildRouteContextDeps: (c) => c },
+    collectBindings: () => ({ getPort: () => 4242 })
+  });
+  assert.equal(typeof boot.collectHost, "function");
+  assert.equal(typeof boot.init, "function");
+  assert.equal(typeof boot.getRuntime, "function");
+  assert.equal(boot.buildMiaRouteContext().PORT, 4242);
+});
+
+test("index.js uses MIA_ROUTE_CONTEXT_BOOT factory", () => {
+  const src = fs.readFileSync(INDEX_PATH, "utf8");
+  assert.match(src, /MIA_ROUTE_CONTEXT_BOOT/);
+  assert.match(src, /createRouteContextBoot/);
+  assert.match(src, /collectBindings:\s*collectRouteContextBindingsHost/);
+  assert.doesNotMatch(src, /function initRouteContextRuntime\s*\(/);
+  assert.doesNotMatch(src, /function collectRouteContextHost\s*\(/);
+});
+
 test("MIA_ENGINE2_STUB defaults OFF — no admin snapshot", () => {
   const prev = process.env.MIA_ENGINE2_STUB;
   delete process.env.MIA_ENGINE2_STUB;
@@ -57,13 +86,13 @@ test("MIA_ENGINE2_STUB defaults OFF — no admin snapshot", () => {
   else process.env.MIA_ENGINE2_STUB = prev;
 });
 
-test("MIA_ENGINE2_STUB=1 admin snapshot includes composition (E5a)", () => {
+test("MIA_ENGINE2_STUB=1 admin snapshot includes composition (E5b)", () => {
   const prev = process.env.MIA_ENGINE2_STUB;
   process.env.MIA_ENGINE2_STUB = "1";
   const snap = buildEngine2AdminSnapshot({ indexPath: INDEX_PATH });
-  assert.equal(snap.phase, "E5a");
+  assert.equal(snap.phase, "E5b");
   assert.ok(snap.composition);
-  assert.equal(snap.composition.phase, "E5a");
+  assert.equal(snap.composition.phase, "E5b");
   assert.ok(snap.composition.indexLines > 500);
   assert.ok(snap.plugins);
   if (prev === undefined) delete process.env.MIA_ENGINE2_STUB;
