@@ -11,6 +11,8 @@ const { ingestNormalizedEvent } = require("./event-bus-stub");
 const { routeObsProjection } = require("./obs-router-boundary");
 const { applyOverlayProfile, PROFILE_IDS, buildProfileRouteUrls } = require("./overlay-profiles");
 const { getPluginLoader } = require("./plugin-loader");
+const { getCompositionStatus } = require("./composition");
+const path = require("path");
 
 const SAMPLE_EVENTS = Object.freeze([
   {
@@ -101,9 +103,12 @@ function buildEngine2AdminSnapshot(ctx = {}) {
     overlayProfiles[profileId] = applyOverlayProfile(sampleOverlay, profileId, { activePlugin });
   }
 
+  const indexPath = ctx.indexPath || path.join(__dirname, "..", "index.js");
+  const composition = getCompositionStatus({ indexPath });
+
   return {
     enabled: true,
-    phase: "E4",
+    phase: "E5a",
     version: pipeline.gameState.getSnapshot().version,
     projections,
     obsRoute,
@@ -115,7 +120,8 @@ function buildEngine2AdminSnapshot(ctx = {}) {
     profileRoutes: buildProfileRouteUrls(
       ctx.baseUrl || process.env.MIA_PUBLIC_BASE_URL || "http://127.0.0.1:3000"
     ),
-    plugins: loader.getSnapshot()
+    plugins: loader.getSnapshot(),
+    composition
   };
 }
 

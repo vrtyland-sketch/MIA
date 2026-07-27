@@ -554,16 +554,45 @@ function loadIndexWithStubs() {
     "./shared/runtime_execution": require("../shared/runtime_execution")
   };
 
+  const safeRequirePath = path.resolve(__dirname, "../scripts/MIA_SAFE_REQUIRE.js");
+
   delete require.cache[indexPath];
   try {
     delete require.cache[require.resolve("fs")];
   } catch (_err) {
     // ignore
   }
+  try {
+    delete require.cache[safeRequirePath];
+  } catch (_err) {
+    // ignore
+  }
+
+  function lookupStub(request) {
+    if (Object.prototype.hasOwnProperty.call(stubs, request)) {
+      return stubs[request];
+    }
+    try {
+      const relFromRoot =
+        "./" + path.relative(path.resolve(__dirname, ".."), request).replace(/\\/g, "/");
+      if (Object.prototype.hasOwnProperty.call(stubs, relFromRoot)) {
+        return stubs[relFromRoot];
+      }
+    } catch (_err) {
+      // ignore
+    }
+    return undefined;
+  }
 
   Module._load = function patchedLoader(request, parent, isMain) {
-    if (parent && parent.filename === indexPath && stubs[request]) {
-      return stubs[request];
+    if (parent) {
+      const parentFile = parent.filename;
+      if (parentFile === indexPath || parentFile === safeRequirePath) {
+        const stub = lookupStub(request);
+        if (stub !== undefined) {
+          return stub;
+        }
+      }
     }
     return originalLoad.apply(this, arguments);
   };

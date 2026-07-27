@@ -7,15 +7,7 @@ const path = require("path");
 const fs = require("fs");
 const net = require("net");
 const { execSync } = require("child_process");
-
-function safeRequire(modulePath, fallback = {}) {
-  try {
-    return require(modulePath);
-  } catch (err) {
-    console.error("[BOOT][REQUIRE_FAILED]", modulePath, err && err.message ? err.message : err);
-    return fallback;
-  }
-}
+const { safeRequire } = require("./scripts/MIA_SAFE_REQUIRE");
 
 const OBSWebSocket = safeRequire("obs-websocket-js", { default: null }).default;
 
