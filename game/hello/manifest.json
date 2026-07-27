@@ -1,0 +1,7 @@
+{
+  "id": "game.hello",
+  "version": "0.1.0",
+  "permissions": ["gamestate.read", "overlay.channel.game"],
+  "eventSubscriptions": ["GIFT", "COMMENT"],
+  "obsScenes": []
+}

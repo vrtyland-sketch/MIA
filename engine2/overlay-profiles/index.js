@@ -31,7 +31,7 @@ function pickHostKojDisplay(kojDisplay) {
   };
 }
 
-function applyOverlayProfile(baseBody, profile) {
+function applyOverlayProfile(baseBody, profile, options = {}) {
   const id = String(profile || "main").toLowerCase();
   if (!PROFILE_IDS.includes(id)) {
     throw new Error(`overlay profile: unknown "${profile}"`);
@@ -42,6 +42,7 @@ function applyOverlayProfile(baseBody, profile) {
       ? stripValueFieldsForPublic(baseBody)
       : {};
   const updatedAt = body.updatedAt || Date.now();
+  const activePlugin = options.activePlugin || null;
 
   switch (id) {
     case "main":
@@ -110,10 +111,11 @@ function applyOverlayProfile(baseBody, profile) {
         profileChannel: "plugin-game",
         updatedAt,
         gameChannel: Object.freeze({
-          active: false,
-          pluginId: null,
-          phase: "idle",
-          note: "E4 plugin loader not wired"
+          active: Boolean(activePlugin),
+          pluginId: activePlugin?.manifestId || activePlugin?.id || null,
+          phase: activePlugin ? "ready" : "idle",
+          version: activePlugin?.version || null,
+          note: activePlugin ? null : "Load a plugin via admin API (E4 stub)"
         })
       });
 

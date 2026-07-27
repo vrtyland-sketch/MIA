@@ -1,29 +1,23 @@
-# Engine 2.0 — E3 slice (flag OFF by default)
+# Engine 2.0 — E4 slice (flag OFF by default)
 
-**Status:** E1–E3 stubs. Multi-profile overlay routes when `MIA_ENGINE2_STUB=1` + `?profile=`.
+**Status:** E1–E4 stubs. Multi-profile overlay + plugin loader when `MIA_ENGINE2_STUB=1`.
 
 | Path | Module |
 |------|--------|
-| [`game-state/`](./game-state/) | GameState — read-only snapshot facade |
-| [`visibility-engine/`](./visibility-engine/) | VisibilityEngine — platform channel filters + miaPoints sanitization |
-| [`platform-projection/`](./platform-projection/) | PlatformProjection — tiktok/kick/obs/admin shapes |
-| [`platform-renderer/`](./platform-renderer/) | PlatformRenderer — snapshot ? visibility ? projection |
-| [`event-applicator/`](./event-applicator/) | E2 — apply normalized gift/comment into stub state |
-| [`event-bus-stub/`](./event-bus-stub/) | E2 — normalize ? apply (no live ingest) |
-| [`obs-router-boundary/`](./obs-router-boundary/) | E2 — obs projection ? `obs.renderRoute` envelope |
-| [`overlay-profiles/`](./overlay-profiles/) | E3 — main/clean/host/game overlay-state profiles |
-| [`gamestate-stub/`](./gamestate-stub/) | Backward-compatible re-export of game-state |
-| [`wiring.js`](./wiring.js) | Optional admin snapshot hook |
+| [`game/hello/`](../../game/hello/) | E4 demo plugin (no-op) |
+| [`plugin-loader/`](./plugin-loader/) | E4 load/unload + sandbox bus |
+| [`overlay-profiles/`](./overlay-profiles/) | E3 main/clean/host/game profiles |
+| [`obs-router-boundary/`](./obs-router-boundary/) | E2 obs.renderRoute |
+| [`event-bus-stub/`](./event-bus-stub/) | E2 normalize ? apply |
+| [`platform-renderer/`](./platform-renderer/) | PlatformRenderer |
+| [`game-state/`](./game-state/) | GameState |
+| [`wiring.js`](./wiring.js) | Admin snapshot hook |
 
-**Enable (dev only):** `MIA_ENGINE2_STUB=1` — admin status + `/overlay-state?profile=main|clean|host|game`.
+**Enable:** `MIA_ENGINE2_STUB=1`
 
-**Default:** OFF — `/overlay-state` without `?profile=` unchanged.
+**Plugin API:**
+- `GET /api/mia-admin/engine2/plugins`
+- `POST /api/mia-admin/engine2/plugins/hello/load`
+- `POST /api/mia-admin/engine2/plugins/hello/unload`
 
-**Tests:** `mia_engine2_first_slice_contract.js`, `mia_engine2_e2_contract.js`, `mia_engine2_e3_contract.js`
-
-**Docs:**
-
-- [`docs/MIA_ENGINE_2_0_ARCHITECTURE.md`](../docs/MIA_ENGINE_2_0_ARCHITECTURE.md)
-- [`docs/MIA_ENGINE_2_0_ROADMAP.md`](../docs/MIA_ENGINE_2_0_ROADMAP.md)
-
-**Guardrails (unchanged):** TikFinity ? MIA ? OBS · overlay `miaPoints` only · per-tier video rotation without reset.
+**Tests:** `mia_engine2_*_contract.js`

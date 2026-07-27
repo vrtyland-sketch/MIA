@@ -10,6 +10,7 @@ const { createStubState } = require("./event-applicator");
 const { ingestNormalizedEvent } = require("./event-bus-stub");
 const { routeObsProjection } = require("./obs-router-boundary");
 const { applyOverlayProfile, PROFILE_IDS, buildProfileRouteUrls } = require("./overlay-profiles");
+const { getPluginLoader } = require("./plugin-loader");
 
 const SAMPLE_EVENTS = Object.freeze([
   {
@@ -92,14 +93,17 @@ function buildEngine2AdminSnapshot(ctx = {}) {
     theme: { enabled: false, id: "cyber", cssVars: null }
   };
 
+  const loader = getPluginLoader();
+  const activePlugin = loader.getActivePlugin();
+
   const overlayProfiles = {};
   for (const profileId of PROFILE_IDS) {
-    overlayProfiles[profileId] = applyOverlayProfile(sampleOverlay, profileId);
+    overlayProfiles[profileId] = applyOverlayProfile(sampleOverlay, profileId, { activePlugin });
   }
 
   return {
     enabled: true,
-    phase: "E3",
+    phase: "E4",
     version: pipeline.gameState.getSnapshot().version,
     projections,
     obsRoute,
@@ -110,7 +114,8 @@ function buildEngine2AdminSnapshot(ctx = {}) {
     overlayProfiles,
     profileRoutes: buildProfileRouteUrls(
       ctx.baseUrl || process.env.MIA_PUBLIC_BASE_URL || "http://127.0.0.1:3000"
-    )
+    ),
+    plugins: loader.getSnapshot()
   };
 }
 

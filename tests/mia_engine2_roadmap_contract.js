@@ -48,6 +48,8 @@ test("engine2 scaffold folders present", () => {
   assert.ok(fs.existsSync(path.join(ROOT, "engine2", "event-applicator", "index.js")));
   assert.ok(fs.existsSync(path.join(ROOT, "engine2", "event-bus-stub", "index.js")));
   assert.ok(fs.existsSync(path.join(ROOT, "engine2", "overlay-profiles", "index.js")));
+  assert.ok(fs.existsSync(path.join(ROOT, "engine2", "plugin-loader", "index.js")));
+  assert.ok(fs.existsSync(path.join(ROOT, "game", "hello", "manifest.json")));
 });
 
 test("GameState stub returns frozen read-only snapshot", () => {

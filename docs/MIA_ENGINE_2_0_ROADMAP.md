@@ -196,9 +196,9 @@ Uses `shared/mia-module-core/` when canon import lands.
 
 ### Acceptance criteria (E4)
 
-- [ ] `game/hello/` loads and unloads without server restart (dev mode).
-- [ ] Plugin cannot write overlay coin values or call OBS directly.
-- [ ] Visibility hides plugin channel until plugin active.
+- [x] `game/hello/` loads and unloads without server restart (dev mode).
+- [x] Plugin cannot write overlay coin values or call OBS directly.
+- [x] Visibility hides plugin channel until plugin active.
 
 ---
 

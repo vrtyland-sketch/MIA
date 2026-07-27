@@ -408,6 +408,50 @@ function registerAdminRoutes(app, ctx = {}) {
     }
   });
 
+  app.get("/api/mia-admin/engine2/plugins", guard, (_req, res) => {
+    try {
+      const { isEngine2StubEnabled } = require("../engine2/flag");
+      if (!isEngine2StubEnabled()) {
+        return res.json({ ok: true, enabled: false, plugins: null });
+      }
+      const { getPluginLoader } = require("../engine2/plugin-loader");
+      res.json({ ok: true, enabled: true, ...getPluginLoader().getSnapshot() });
+    } catch (err) {
+      res.status(500).json({ ok: false, error: err.message });
+    }
+  });
+
+  app.post("/api/mia-admin/engine2/plugins/:pluginId/load", guard, (req, res) => {
+    try {
+      const { isEngine2StubEnabled } = require("../engine2/flag");
+      if (!isEngine2StubEnabled()) {
+        return res.status(403).json({ ok: false, error: "engine2_stub_disabled" });
+      }
+      const { getPluginLoader } = require("../engine2/plugin-loader");
+      const pluginId = safeString(req.params.pluginId, "");
+      const result = getPluginLoader().loadPlugin(pluginId);
+      res.json({ ok: true, ...result, snapshot: getPluginLoader().getSnapshot() });
+    } catch (err) {
+      res.status(400).json({ ok: false, error: err.message });
+    }
+  });
+
+  app.post("/api/mia-admin/engine2/plugins/:pluginId/unload", guard, (req, res) => {
+    try {
+      const { isEngine2StubEnabled } = require("../engine2/flag");
+      if (!isEngine2StubEnabled()) {
+        return res.status(403).json({ ok: false, error: "engine2_stub_disabled" });
+      }
+      const { getPluginLoader } = require("../engine2/plugin-loader");
+      const pluginId = safeString(req.params.pluginId, "");
+      const result = getPluginLoader().unloadPlugin(pluginId);
+      const status = result.ok ? 200 : 404;
+      res.status(status).json({ ok: result.ok, ...result, snapshot: getPluginLoader().getSnapshot() });
+    } catch (err) {
+      res.status(400).json({ ok: false, error: err.message });
+    }
+  });
+
   return {
     ok: true,
     routes: [
@@ -429,7 +473,10 @@ function registerAdminRoutes(app, ctx = {}) {
       "GET /api/mia-admin/theme",
       "POST /api/mia-admin/theme",
       "GET /api/mia-admin/action-queue",
-      "POST /api/mia-admin/action-queue"
+      "POST /api/mia-admin/action-queue",
+      "GET /api/mia-admin/engine2/plugins",
+      "POST /api/mia-admin/engine2/plugins/:pluginId/load",
+      "POST /api/mia-admin/engine2/plugins/:pluginId/unload"
     ]
   };
 }

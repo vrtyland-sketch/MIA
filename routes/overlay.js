@@ -58,7 +58,18 @@ function registerOverlayRoutes(app, ctx = {}) {
         });
       }
 
-      return res.json(applyOverlayProfile(body, profile));
+      function getActivePluginForOverlay() {
+        try {
+          const { isEngine2StubEnabled } = require("../engine2/flag");
+          if (!isEngine2StubEnabled()) return null;
+          const { getPluginLoader } = require("../engine2/plugin-loader");
+          return getPluginLoader().getActivePlugin();
+        } catch (_err) {
+          return null;
+        }
+      }
+
+      return res.json(applyOverlayProfile(body, profile, { activePlugin: getActivePluginForOverlay() }));
     } catch (err) {
       return res.status(500).json({ ok: false, error: err.message || "profile_failed" });
     }
