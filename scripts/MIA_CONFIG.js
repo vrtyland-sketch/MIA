@@ -217,6 +217,12 @@ function buildRuntimeConfig(env = process.env) {
   const kickPusherKey = pickString(env, ["MIA_KICK_PUSHER_KEY", "KICK_PUSHER_KEY"], "32cbd69e4b950bf97679");
   const kickCluster = pickString(env, ["MIA_KICK_CLUSTER", "KICK_CLUSTER"], "us2");
 
+  const tiktokIngestUrl = pickString(
+    env,
+    ["MIA_TIKTOK_INGEST_URL", "TIKTOK_INGEST_URL", "MIA_TIKFINITY_INGEST_URL", "TIKFINITY_INGEST_URL"],
+    `http://127.0.0.1:${port}/ingest`
+  );
+
   const twitchEnabled = pickBool(env, ["MIA_TWITCH_ENABLED", "TWITCH_ENABLED"], false);
   const twitchMode = pickString(env, ["MIA_TWITCH_MODE", "TWITCH_MODE"], "eventsub_ws");
   const twitchIngestUrl = pickString(
@@ -496,6 +502,18 @@ function buildRuntimeConfig(env = process.env) {
       cluster: kickCluster
     },
 
+    tiktok: {
+      authMode: "tikfinity",
+      ingestUrl: tiktokIngestUrl,
+      ingestAliases: [
+        "/ingest",
+        "/tikfinity/webhook",
+        "/tikfinity/ingest",
+        "/tiktok/ingest"
+      ],
+      bridgeModule: null
+    },
+
     twitch: {
       enabled: twitchEnabled,
       mode: twitchMode,
@@ -505,6 +523,21 @@ function buildRuntimeConfig(env = process.env) {
       broadcasterId: twitchBroadcasterId,
       clientId: twitchClientId,
       accessToken: twitchAccessToken,
+      chatOnly: pickBool(env, ["MIA_TWITCH_CHAT_ONLY", "TWITCH_CHAT_ONLY"], true),
+      ingestSecret: pickString(env, ["MIA_INGEST_SECRET"], "")
+    },
+
+    youtube: {
+      enabled: pickBool(env, ["MIA_YOUTUBE_ENABLED", "YOUTUBE_ENABLED"], false),
+      ingestUrl: pickString(
+        env,
+        ["MIA_YOUTUBE_INGEST_URL", "YOUTUBE_INGEST_URL"],
+        "http://127.0.0.1:3000/ingest"
+      ),
+      apiKey: pickString(env, ["YOUTUBE_API_KEY", "MIA_YOUTUBE_API_KEY"], ""),
+      liveChatId: pickString(env, ["YOUTUBE_LIVE_CHAT_ID", "MIA_YOUTUBE_LIVE_CHAT_ID"], ""),
+      videoId: pickString(env, ["YOUTUBE_VIDEO_ID", "MIA_YOUTUBE_VIDEO_ID"], ""),
+      pollMs: pickNumber(env, ["MIA_YOUTUBE_POLL_MS", "YOUTUBE_POLL_MS"], 4000),
       ingestSecret: pickString(env, ["MIA_INGEST_SECRET"], "")
     },
 

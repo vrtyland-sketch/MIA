@@ -1,4 +1,4 @@
-# MIA — multi-platform stream (TikTok + Kick + Twitch)
+# MIA — multi-platform stream (TikTok + Kick + Twitch + YouTube)
 
 Jeden OBS výstup → více platforem. Všechny platformy končí v **`POST /ingest`** → `normalize_event.js` → shadow pipeline.
 
@@ -6,11 +6,16 @@ Jeden OBS výstup → více platforem. Všechny platformy končí v **`POST /ing
 TikFinity (TikTok) ──HTTP──► /ingest
 Kick Pusher WS    ────────► /ingest
 Twitch EventSub   ────────► /ingest
+YouTube Live Chat ────────► /ingest
                               │
                               ▼
                     normalize → MIA → OBS
 ```
 
+**Integration Layer:** [MIA_MULTI_PLATFORM_INTEGRATION_LAYER.md](./MIA_MULTI_PLATFORM_INTEGRATION_LAYER.md)  
+**Operator login:** [MIA_MULTI_PLATFORM_OPERATOR_CHECKLIST.md](./MIA_MULTI_PLATFORM_OPERATOR_CHECKLIST.md)  
+**Twitch closed:** [MIA_TWITCH_LIVE_READY.md](./MIA_TWITCH_LIVE_READY.md) · **LIVE READY**  
+**Status:** `npm run platform:status` (`fourWayReady` false, dokud Kick+YouTube)
 ---
 
 ## Mapa eventů (co z každé platformy dostaneme)

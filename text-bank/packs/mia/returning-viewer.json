@@ -8,11 +8,14 @@
         "intent": "returning_viewer"
       },
       "variants": [
-        "Ráda tě zase vidím.",
-        "Jsem ráda, že jsi zpátky v chatu.",
-        "Zase tady — to je fajn.",
-        "Vítám tě znovu.",
-        "Ráda tě zase registruju tady."
+        "{name}, zase tady. To je fajn.",
+        "Ahoj {name}. Vrátil ses — vidím tě.",
+        "{name}, zase v chatu. Super.",
+        "Zase tady, {name}. Jedeme dál.",
+        "{name}, vítám tě zpátky.",
+        "Jo {name}, zase online. Beru.",
+        "{name}, ahoj znovu. Pořád tě slyším.",
+        "Zase tady — {name}, to mám ráda."
       ]
     }
   }

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <title>MIA Genesis — Community</title>
+  <link rel="stylesheet" href="/assets/genesis/genesis.css" />
+  <style>
+    body { background: transparent; }
+    .wrap {
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: stretch;
+    }
+    .platforms { font-size: 13px; letter-spacing: 0.1em; color: var(--g-muted); padding: 10px 12px; }
+    .yt { display: none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="g-panel platforms" id="platforms">
+      <span><strong>TikTok</strong> · Kick · YouTube</span>
+    </div>
+    <div class="g-panel yt">
+      <p class="g-title">YouTube</p>
+      <h2>Dlouhodobý archiv MIA</h2>
+      <p>Tam postupně vzniká stopa vývoje. Každý odběratel pomáhá otevřít další etapu.</p>
+    </div>
+  </div>
+  <script>
+    fetch("/assets/genesis/genesis-state.demo.json")
+      .then((r) => r.json())
+      .then((s) => {
+        const tk = (s.platforms && s.platforms.tiktok) || "STANDBY";
+        const kick = (s.platforms && s.platforms.kick) || "STANDBY";
+        const yt = (s.platforms && s.platforms.youtube) || "COMMUNITY_BUILDING";
+        document.getElementById("platforms").innerHTML =
+          `<span><strong>TikTok</strong> ${tk} · Kick ${kick} · YouTube ${yt.replace(/_/g, " ")}</span>`;
+      })
+      .catch(() => {});
+  </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "mode": "genesis",
+  "flagNote": "MIA_GENESIS_MODE — client demo; does not touch Stream Core overlay-state",
+  "genesisDay": 1,
+  "readinessPercent": 8,
+  "dailyNote": "Probíhá inicializace.",
+  "youtube": { "current": 142, "goal": 1000 },
+  "modulesOnline": 1,
+  "modulesTotal": 12,
+  "platforms": {
+    "tiktok": "CONNECTED",
+    "kick": "STANDBY",
+    "youtube": "COMMUNITY_BUILDING"
+  },
+  "status": {
+    "Voice": "ONLINE",
+    "Memory": "CHECKING",
+    "OBS": "ONLINE",
+    "TikTok": "CONNECTED",
+    "Kick": "STANDBY",
+    "YouTube": "COMMUNITY BUILDING",
+    "Gift Engine": "LOCKED",
+    "Chat": "LOCKED",
+    "Bowl": "LOCKED",
+    "Video": "LOCKED"
+  },
+  "unlockOrder": ["Voice", "Chat", "Gift Engine", "Bowl", "Video"],
+  "bgmMode": "startup",
+  "lang": "cs"
+}

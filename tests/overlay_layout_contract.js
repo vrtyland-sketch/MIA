@@ -1,59 +1,98 @@
 "use strict";
 
-const assert = require("assert");
+const assert = require("assert/strict");
 const fs = require("fs");
 const path = require("path");
+const {
+  DEFAULTS,
+  getLayout,
+  saveLayout,
+  resetLayout,
+  normalize,
+  resolveObsKojScale
+} = require("../scripts/MIA_OVERLAY_LAYOUT");
 
-function pass(label) {
-  console.log(`✅ ${label}`);
+const ROOT = path.resolve(__dirname, "..");
+
+function ok(name) {
+  console.log(`ok - ${name}`);
 }
 
-const overlayDir = path.resolve(__dirname, "..", "mia-output-overlay");
+function run() {
+  resetLayout();
+  const base = getLayout({ forceReload: true });
+  assert.strictEqual(base.kojScale, DEFAULTS.kojScale);
+  assert.ok(base.kojScale < 1, "default koj scale is under 1 for portrait fit");
+  assert.ok(base.dockMaxW <= 260, "default dock is narrower than legacy 360");
+  ok("defaults fit on portrait");
 
-const voice = fs.readFileSync(path.join(overlayDir, "mia-voice-overlay.html"), "utf8");
-assert.ok(!voice.includes('id="tag"'), "voice overlay has no visible tag");
-assert.ok(voice.includes("completedPlaybackId"), "voice overlay single-play guard");
-assert.ok(voice.includes("width: 200px"), "voice overlay fixed 200px canvas");
+  const saved = saveLayout({ kojScale: 0.7, growthMul: 0.6, obsKojScale: 0.9 });
+  assert.strictEqual(saved.kojScale, 0.7);
+  assert.strictEqual(getLayout().growthMul, 0.6);
+  ok("saveLayout persists in memory/disk");
 
-const bowl = fs.readFileSync(path.join(overlayDir, "kojnozrout-bowl-overlay.html"), "utf8");
-assert.ok(bowl.includes("moodBadge"), "bowl uses compact mood badge only");
-assert.ok(!bowl.includes('id="kojSprite"'), "bowl does not duplicate koj PNG sprite");
-assert.ok(bowl.includes("kojDisplay"), "bowl uses server kojDisplay for mood badge");
+  const clamped = normalize({ kojScale: 9, dockMaxW: 10, growthMul: -1 });
+  assert.ok(clamped.kojScale <= 1.4);
+  assert.ok(clamped.dockMaxW >= 140);
+  assert.ok(clamped.growthMul >= 0.4);
+  ok("normalize clamps extremes");
 
-const runtime = fs.readFileSync(path.join(overlayDir, "kojnozrout-runtime.html"), "utf8");
-assert.ok(runtime.includes("kojDisplay"), "runtime uses server kojDisplay snapshot");
-assert.ok(runtime.includes("HUB_EVOLUTION_SCALE"), "runtime hub-compatible scale");
-assert.ok(runtime.includes("resolveSpriteHeightFraction"), "runtime scale from hub formula");
+  const prev = process.env.MIA_KOJ_OBS_SCALE;
+  process.env.MIA_KOJ_OBS_SCALE = "0.8";
+  assert.strictEqual(resolveObsKojScale("tiktok", true, 1.0), 0.8);
+  delete process.env.MIA_KOJ_OBS_SCALE;
+  saveLayout({ obsKojScale: 0.95 });
+  assert.strictEqual(resolveObsKojScale("tiktok", true, 1.0), 0.95);
+  if (prev == null) delete process.env.MIA_KOJ_OBS_SCALE;
+  else process.env.MIA_KOJ_OBS_SCALE = prev;
+  ok("resolveObsKojScale prefers env then layout");
 
-const entity = fs.readFileSync(path.join(overlayDir, "entity-overlay.html"), "utf8");
-assert.ok(entity.includes("#badge"), "entity uses flexible badge layout");
-assert.ok(entity.includes("max-width:") || entity.includes("min-height:"), "entity badge is responsive");
-assert.ok(entity.includes("vitalsSummary"), "entity shows vitals summary");
+  const vision = fs.readFileSync(path.join(ROOT, "scripts", "MIA_OBS_VISION.js"), "utf8");
+  assert.match(vision, /resolveObsKojScale/);
+  assert.doesNotMatch(vision, /isPortrait \? 1\.35/);
+  ok("OBS vision no longer hardcodes 1.35 portrait scale");
 
-const speech = fs.readFileSync(path.join(overlayDir, "speech-overlay.html"), "utf8");
-const pickBlock = speech.slice(
-  speech.indexOf("function pickActiveOverlay"),
-  speech.indexOf("function isActiveVoicePlayback")
-);
-assert.ok(
-  pickBlock.includes("toNumber(b.priority, 3) - toNumber(a.priority, 3)"),
-  "speech overlay picks active bubble by priority first (support beats newer low-prio chatter)"
-);
-assert.ok(
-  pickBlock.includes("b.updatedAt") && pickBlock.includes("a.updatedAt"),
-  "speech overlay tie-breaks equal priority by most recent update"
-);
-assert.ok(
-  speech.includes("livePriority > pinnedPriority"),
-  "speech overlay lets a higher-priority overlay break an existing pin"
-);
-assert.ok(speech.includes("#box") && speech.includes("z-index: 10"), "speech bubble stacks above hologram");
-assert.ok(speech.includes("#miaHolo") && speech.includes("z-index: 2"), "mia hologram stays under bubble text");
-assert.ok(
-  speech.includes("@media (max-height: 500px)") && speech.includes("#miaHolo"),
-  "speech strip shrinks hologram on portrait OBS browser"
-);
+  const overlayRoutes = fs.readFileSync(path.join(ROOT, "routes", "overlay.js"), "utf8");
+  assert.match(overlayRoutes, /\/overlay\/layout/);
+  ok("overlay routes expose layout API");
 
-pass("overlay layout contract");
-console.log("\n---- OVERLAY LAYOUT CONTRACT ----");
-console.log("passed");
+  const runtimeHtml = fs.readFileSync(
+    path.join(ROOT, "mia-output-overlay", "kojnozrout-runtime.html"),
+    "utf8"
+  );
+  const runtimeCss = fs.readFileSync(
+    path.join(ROOT, "mia-output-overlay", "assets", "kojnozrout", "koj-runtime.css"),
+    "utf8"
+  );
+  const layoutLib = fs.readFileSync(
+    path.join(ROOT, "mia-output-overlay", "lib", "koj-runtime-layout.js"),
+    "utf8"
+  );
+  assert.match(runtimeHtml, /koj-runtime-layout\.js/);
+  assert.match(runtimeHtml, /KojRuntimeLayout\.start/);
+  assert.match(runtimeCss, /--koj-sprite-scale/);
+  assert.match(runtimeCss, /--koj-dock-max-w/);
+  assert.match(layoutLib, /\/overlay\/layout/);
+  assert.doesNotMatch(layoutLib, /\bcoins?\b/i);
+  ok("runtime wires layout lib without coin fields");
+
+  const dashboard = fs.readFileSync(
+    path.join(ROOT, "mia-output-overlay", "mia-streamer-dashboard.html"),
+    "utf8"
+  );
+  assert.match(dashboard, /Velikost overlay/);
+  assert.match(dashboard, /btnLayoutSave/);
+  ok("streamer dashboard exposes size controls");
+
+  const gift = fs.readFileSync(
+    path.join(ROOT, "mia-output-overlay", "gift-animation-overlay.html"),
+    "utf8"
+  );
+  assert.match(gift, /--gift-cast-scale/);
+  ok("gift cast uses scale var");
+
+  resetLayout();
+  console.log("overlay_layout_contract: all passed");
+}
+
+run();

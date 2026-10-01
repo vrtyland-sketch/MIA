@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "updatedAt": 1786407645219,
+  "kojRef": "data/kojnozout-state.json",
+  "bowl": {
+    "bowlPercent": 0.18,
+    "bowlFillPercent": 0.18,
+    "bowlState": 0.18,
+    "bowlVisualLevel": "low"
+  },
+  "koj": {
+    "bowlPercent": 0.18,
+    "bowlFillPercent": 0.18,
+    "bowlState": 0.18,
+    "bowlVisualLevel": "low",
+    "feedPoints": 442.5,
+    "hunger": 79.80068000000003,
+    "energy": 11.776265333333333,
+    "mood": "sad",
+    "stage": "active",
+    "behavior": "care_react",
+    "evolutionTier": "sprout",
+    "socialState": -57.52834166666669,
+    "isSleeping": false,
+    "lastFedAt": 1786213569129,
+    "lastDecayAt": 1786213569129,
+    "vitals": {
+      "wellbeing": -38.30079235666669,
+      "sleepDepth": 0,
+      "affliction": "sad",
+      "communityVibe": 0,
+      "lastWakeAt": 1786213569129,
+      "lastSleepAt": 1785519542771,
+      "groggyUntil": 1786213577129,
+      "sickSeverity": 0,
+      "recoveryProgress": 0,
+      "sickSince": 0,
+      "immunityUntil": 0,
+      "lastCareHealAt": 0,
+      "lastSupportHealAt": 1786213569129
+    },
+    "affliction": "sad",
+    "bond": {
+      "careBond": 336,
+      "neglect": 57.18412249999999,
+      "satisfaction": 73.5854975,
+      "lastCareAt": 1786213569129,
+      "lastCommunityTouchAt": 1786213569129,
+      "totalCareEvents": 92
+    },
+    "robotModes": {
+      "activeForm": "pet",
+      "unlockedForms": [
+        "pet"
+      ],
+      "miaSync": 0,
+      "combatPower": 0,
+      "formExpiresAt": 0,
+      "formCooldownUntil": 0,
+      "lastFormId": null,
+      "lastFormChangedAt": 0
+    },
+    "fatigue": 56.72343999999998,
+    "techCharge": 23.055311999999997
+  },
+  "queue": {
+    "size": 0,
+    "pending": 0,
+    "current": null,
+    "items": [],
+    "coalesceWindowMs": 2500
+  },
+  "watchdog": {
+    "ok": false,
+    "at": 1786407645219,
+    "obsConnected": false,
+    "consecutiveObsDown": 1967,
+    "ingest": {
+      "hasIngest": true,
+      "ageMs": 194076094,
+      "stale": true,
+      "staleThresholdMs": 120000
+    },
+    "reconnect": {
+      "attempted": false,
+      "mode": null,
+      "reason": "cooldown",
+      "lastReconnectAt": 1786407615211
+    }
+  }
+}

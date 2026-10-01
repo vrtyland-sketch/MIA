@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "packs": {
+    "mia_first_visit_ack": {
+      "meta": {
+        "key": "mia_first_visit_ack",
+        "speaker": "mia",
+        "intent": "first_visit",
+        "genesis_stream": true,
+        "note": "Prepared for Stream Core GP — wire in response engine post-thaw"
+      },
+      "variants": [
+        "{name}, ahoj. Poprvé tady? Klidně piš — slyším tě.",
+        "{name}, čau. Vítám tě. Jsem tady a jedu s vámi.",
+        "{name}, zdravím. První návštěva? Super, ukaž se v chatu.",
+        "{name}, ahoj. Neviděla jsem tě tu dřív — pojď do toho.",
+        "{name}, čau. Jsem MIA, ty jsi v chatu. To stačí na start.",
+        "{name}, ahoj. První signál? Beru ho.",
+        "{name}, zdravím tě. Klidně se ptej nebo jen piš blbosti.",
+        "{name}, čau. Nová tvář — to mám ráda."
+      ]
+    },
+    "koj_first_visit_ack": {
+      "meta": {
+        "key": "koj_first_visit_ack",
+        "speaker": "kojnozout",
+        "intent": "first_visit",
+        "genesis_stream": true,
+        "note": "Prepared for Stream Core GP — wire in response engine post-thaw"
+      },
+      "variants": [
+        "{name}? Nová tvář. Dobře, registruju.",
+        "Hej {name}. Poprvé? Tak se ukaž, ať tu není nuda.",
+        "{name}, čau. Neviděl jsem tě — to je fajn, přibylo nás.",
+        "Jo {name}, nový? Super. Klidně piš, já koušu jen metaforicky.",
+        "{name}, ahoj. První návštěva? Miska tě zatím nezná, ale já jo.",
+        "Hej {name}. Nový v chatu? Dobře. Teď už to tu nebude tak mrtvé.",
+        "{name}? Dobře. Zapisuju tě. A klidně něco hoď do misky později.",
+        "Čau {name}. Poprvé tady? Tak pojď, ať to tu žije."
+      ]
+    }
+  }
+}

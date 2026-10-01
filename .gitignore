@@ -2,6 +2,7 @@ node_modules/
 logs/
 data/remote-dev/
 data/mia-ai-animations/
+data/overlay-layout.json
 .env
 secrets/local/
 generated/mia-fold-link.txt
@@ -26,6 +27,10 @@ mia-output-overlay/assets/kojnozrout/moods/*.pre-*.png
 mia-output-overlay/assets/kojnozrout/moods/_prenorm_backup/
 mia-output-overlay/assets/kojnozrout/_archive/
 tmp_13h*.png
+_tmp_master.bundle
+_push_diag_top_blobs.txt
+_git_push_verbose.log.err
+data/avatar-cache/
 *.log
 .DS_Store
 Thumbs.db
@@ -35,8 +40,7 @@ incoming-images/photos/
 incoming-images/videos/
 incoming-images/other/
 
-# Large media banks — kept on disk, not in git (GitHub size limits)
+# Large media banks ï¿½ kept on disk, not in git (GitHub size limits)
 incoming-images/videos_2/
 mia-output-overlay/assets/animation-bank/
 mia-output-overlay/assets/kojnozrout/
-

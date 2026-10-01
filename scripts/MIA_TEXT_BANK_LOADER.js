@@ -89,6 +89,12 @@ function extractEntriesFromPack(parsed, filePath) {
     });
   }
 
+  // Genesis (and similar) packs use { lines: [...] } and are loaded by overlay voice
+  // pickers — not by the classic { key, variants } TEXT_BANK.
+  if (Array.isArray(parsed.lines)) {
+    return [];
+  }
+
   throw new Error(
     `Text bank pack must use { key, variants } or { packs: { ... } }: ${filePath}`
   );

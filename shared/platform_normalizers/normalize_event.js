@@ -80,6 +80,15 @@ function detectPlatform(input = {}) {
   ).toLowerCase();
 
   if (
+    source.includes("youtube") ||
+    source.includes("yt_") ||
+    input.liveChatId ||
+    input.youtubeLiveChatId
+  ) {
+    return "youtube";
+  }
+
+  if (
     source.includes("twitch") ||
     input.twitchEventType ||
     input.broadcaster_user_id ||
@@ -139,6 +148,11 @@ function detectSource(input = {}, platform = "unknown") {
   if (platform === "kick") {
     if (input.chatroomId || input.channel) return "kick_realtime";
     return "kick";
+  }
+
+  if (platform === "youtube") {
+    if (input.liveChatId || input.youtubeLiveChatId) return "youtube_live_chat";
+    return "youtube";
   }
 
   if (platform === "tiktok") {

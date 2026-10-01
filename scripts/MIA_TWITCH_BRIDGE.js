@@ -40,6 +40,21 @@ const PHASE1_SUBSCRIPTIONS = [
   { type: "stream.offline", version: "1", conditionKey: "broadcaster_user_id" }
 ];
 
+/** Chat-only: no bits/subs → gift lane (protects frozen Stream Core gift/video) */
+const CHAT_ONLY_SUBSCRIPTIONS = [
+  { type: "channel.chat.message", version: "1", conditionKey: "broadcaster_user_id" },
+  { type: "channel.follow", version: "2", conditionKey: "broadcaster_user_id" },
+  { type: "stream.online", version: "1", conditionKey: "broadcaster_user_id" },
+  { type: "stream.offline", version: "1", conditionKey: "broadcaster_user_id" }
+];
+
+function resolveSubscriptionList(config = {}) {
+  // Default chat-only when chatOnly is true OR unset (safe for Core freeze).
+  // Set MIA_TWITCH_CHAT_ONLY=0 to enable bits/subs later.
+  if (config.chatOnly === false) return PHASE1_SUBSCRIPTIONS;
+  return CHAT_ONLY_SUBSCRIPTIONS;
+}
+
 function log(...args) {
   console.log("[MIA_TWITCH_BRIDGE]", ...args);
 }
@@ -95,12 +110,43 @@ async function resolveBroadcasterId(config = {}) {
   return user?.id || null;
 }
 
+/** User ID of the OAuth token owner (chat reader). Falls back to broadcaster when same account. */
+async function resolveAuthUserId(config = {}) {
+  if (safeString(config.userId)) return config.userId;
+  try {
+    const res = await axios.get(`${HELIX}/users`, {
+      headers: helixHeaders(config),
+      timeout: 8000
+    });
+    const user = res.data?.data?.[0];
+    if (user?.id) return String(user.id);
+  } catch (_err) {
+    /* fall through */
+  }
+  return safeString(config.broadcasterId) || null;
+}
+
 function buildUserFromTwitch(event = {}) {
   const chatter = event.chatter || event.user || event.from_broadcaster_user || {};
   return {
-    userId: chatter.user_id || event.user_id || event.userId || null,
-    username: safeString(chatter.login || chatter.user_login || event.user_login),
-    nickname: safeString(chatter.user_name || chatter.display_name || event.user_name),
+    userId:
+      chatter.user_id ||
+      event.chatter_user_id ||
+      event.user_id ||
+      event.userId ||
+      null,
+    username: safeString(
+      chatter.login ||
+        chatter.user_login ||
+        event.chatter_user_login ||
+        event.user_login
+    ),
+    nickname: safeString(
+      chatter.user_name ||
+        chatter.display_name ||
+        event.chatter_user_name ||
+        event.user_name
+    ),
     avatarUrl: ""
   };
 }
@@ -224,13 +270,22 @@ function mapEventSubToIngest(subscriptionType, event = {}) {
 
 async function createEventSubSubscription(config, subDef, sessionId, broadcasterId) {
   const condition = {};
+  const authUserId = safeString(config.userId || config.broadcasterId || broadcasterId);
+
   if (subDef.conditionKey === "to_broadcaster_user_id") {
     condition.to_broadcaster_user_id = broadcasterId;
   } else {
     condition.broadcaster_user_id = broadcasterId;
   }
+
+  // channel.chat.message requires broadcaster_user_id + user_id (reader), not moderator_user_id.
   if (subDef.type === "channel.chat.message") {
-    condition.moderator_user_id = broadcasterId;
+    condition.user_id = authUserId;
+  }
+
+  // channel.follow v2 requires broadcaster_user_id + moderator_user_id.
+  if (subDef.type === "channel.follow") {
+    condition.moderator_user_id = authUserId;
   }
 
   const body = {
@@ -260,7 +315,12 @@ async function createEventSubSubscription(config, subDef, sessionId, broadcaster
 
 async function subscribeAll(config, sessionId, broadcasterId) {
   const results = [];
-  for (const sub of PHASE1_SUBSCRIPTIONS) {
+  const list = resolveSubscriptionList(config);
+  log(
+    `Subscribing (${config.chatOnly === false ? "full" : "chat-only"}):`,
+    list.map((s) => s.type).join(", ")
+  );
+  for (const sub of list) {
     try {
       results.push(await createEventSubSubscription(config, sub, sessionId, broadcasterId));
     } catch (err) {
@@ -321,6 +381,9 @@ function connectWebSocket(config) {
           error("Missing broadcaster ID — set TWITCH_BROADCASTER_ID or TWITCH_CHANNEL_LOGIN");
           return;
         }
+        config.broadcasterId = broadcasterId;
+        config.userId = await resolveAuthUserId({ ...config, broadcasterId });
+        log(`Auth user_id=${config.userId || "?"} broadcaster_id=${broadcasterId}`);
         await subscribeAll(config, ACTIVE.sessionId, broadcasterId);
         return;
       }

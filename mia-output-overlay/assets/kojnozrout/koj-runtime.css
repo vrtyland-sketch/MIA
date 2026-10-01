@@ -13,18 +13,27 @@ html, body {
   inset: 0;
   overflow: hidden;
   pointer-events: none;
+  --koj-sprite-scale: 0.82;
+  --koj-growth-mul: 0.82;
+  --koj-dock-max-w: 240px;
+  --koj-dock-max-h: 400px;
+  --koj-belly-scale: 0.88;
+  --koj-chip-scale: 0.9;
+  --koj-prop-scale: 0.75;
+  --koj-viewer-top: 40%;
 }
 
 #spriteDock {
   position: absolute;
-  /* Pravý dolní dock — větší silueta, čitelná vedle MIA na portrait canvasu. */
+  /* Pravý dolní dock — škálovatelný přes /overlay/layout (default menší, ať sedí na portrait). */
   right: 1%;
   left: auto;
   bottom: var(--tt-pad, 0);
-  transform: none;
-  width: min(96%, 360px);
+  width: min(92%, var(--koj-dock-max-w, 240px));
   height: calc(100% - var(--tt-safe-top, 0px));
-  max-height: 94%;
+  max-height: min(88%, var(--koj-dock-max-h, 400px));
+  transform: scale(var(--koj-sprite-scale, 0.82));
+  transform-origin: 100% 100%;
 }
 
 #spriteLayer {
@@ -511,6 +520,8 @@ html, body {
   inset: 0;
   pointer-events: none;
   z-index: 3;
+  transform: scale(var(--koj-prop-scale, 0.75));
+  transform-origin: 50% 100%;
 }
 .koj-prop {
   position: absolute;
@@ -534,8 +545,8 @@ html, body {
 #propBall {
   left: 8%;
   bottom: 0;
-  width: clamp(56px, 16vw, 96px);
-  max-height: 14vh;
+  width: clamp(40px, 12vw, 72px);
+  max-height: 11vh;
   transform-origin: 50% 100%;
 }
 #propBall.on {
@@ -561,8 +572,8 @@ html, body {
 #propMic {
   right: 2%;
   bottom: 22%;
-  width: clamp(52px, 14vw, 88px);
-  max-height: 22vh;
+  width: clamp(40px, 11vw, 68px);
+  max-height: 16vh;
   transform-origin: 50% 100%;
 }
 #propMic.on {
@@ -586,8 +597,8 @@ html, body {
 #propBowl {
   right: 6%;
   bottom: 0;
-  width: clamp(68px, 20vw, 118px);
-  max-height: 18vh;
+  width: clamp(52px, 15vw, 90px);
+  max-height: 14vh;
   transform-origin: 50% 100%;
   opacity: 0;
   transition: opacity 460ms ease, transform 460ms ease;
@@ -610,8 +621,8 @@ html, body {
 #propHand {
   left: 50%;
   top: 0;
-  width: clamp(72px, 18vw, 110px);
-  max-height: 24vh;
+  width: clamp(56px, 14vw, 88px);
+  max-height: 18vh;
   transform: translateX(-50%) translateY(-35%);
 }
 #propHand.on {
@@ -848,8 +859,8 @@ html, body {
 }
 .viewer-chip {
   position: relative;
-  width: clamp(22px, 5.5vw, 30px);
-  height: clamp(22px, 5.5vw, 30px);
+  width: clamp(18px, 4.6vw, 26px);
+  height: clamp(18px, 4.6vw, 26px);
   border-radius: 50%;
   overflow: hidden;
   flex: 0 0 auto;
@@ -862,10 +873,12 @@ html, body {
   align-items: center;
   justify-content: center;
   color: #e8fffa;
-  font-size: clamp(10px, 2.6vw, 14px);
+  font-size: clamp(9px, 2.2vw, 12px);
   font-weight: 700;
   font-family: system-ui, sans-serif;
   animation: chipIn 420ms ease;
+  transform: scale(var(--koj-chip-scale, 0.9));
+  transform-origin: 50% 50%;
 }
 .viewer-chip img {
   width: 100%;
@@ -973,10 +986,10 @@ html, body {
   opacity: 1;
 }
 #kojBellyScreen.on .belly-scale {
-  transform: scale(1);
+  transform: scale(var(--koj-belly-scale, 0.88));
 }
 #kojBellyScreen:not(.on) .belly-scale {
-  transform: scale(0.92);
+  transform: scale(calc(var(--koj-belly-scale, 0.88) * 0.92));
 }
 #kojBellyScreen .belly-scale {
   position: absolute;

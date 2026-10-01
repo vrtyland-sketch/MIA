@@ -1,4 +1,4 @@
-﻿# MIA Mega Audit � 2026-07-24
+# MIA Mega Audit � 2026-07-24
 
 **Single entry point** for human mega audit after private GitHub migration + graphics day completion.
 
@@ -6,7 +6,7 @@
 **Audit run:** 2026-07-24 ~15:50 CEST  
 **Operator brief:** repo set Private; SSH remote active; Engine 2.0 stub OFF.
 
-**RC freeze (2026-07-24):** MIA = **stream release candidate**. **R1-C PASS 2026-07-26** — tag `v0.1.1-graphics`. See [`MIA_RC_NEXT_STEPS.md`](./MIA_RC_NEXT_STEPS.md).
+**RC freeze (2026-07-24):** MIA = **stream release candidate**. **R1-C PASS 2026-07-26** — tag `v0.1.1-graphics`.1.1-graphics`. See [`MIA_RC_NEXT_STEPS.md`](./MIA_RC_NEXT_STEPS.md).
 
 ---
 
@@ -105,7 +105,7 @@ Finished at (UTC): `2026-07-24T13:48:55.494Z`
 | **Live `data/*.json`** | � | Modified/untracked runtime state � **do not commit** |
 | **`_canon_import/`, `shared/mia-*-core/`** | Future | Separate canon import commit when planned |
 | **`backup/pre-github-full`** | Local | Full history archive � never push |
-**RC freeze (2026-07-24):** MIA = **stream release candidate**. **R1-C PASS 2026-07-26** — tag `v0.1.1-graphics`. See [`MIA_RC_NEXT_STEPS.md`](./MIA_RC_NEXT_STEPS.md).
+**RC freeze (2026-07-24):** MIA = **stream release candidate**. **R1-C PASS 2026-07-26** — tag `v0.1.1-graphics`.1.1-graphics`. See [`MIA_RC_NEXT_STEPS.md`](./MIA_RC_NEXT_STEPS.md).
 | **Private API spot-check** | Human | If API still shows public, confirm Settings ? Danger zone ? Private |
 
 ### R1-C checklist (exact � 10 steps)

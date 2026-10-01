@@ -1,0 +1,18 @@
+{
+  "version": "1.0.0",
+  "status": "draft",
+  "note": "Maps stable IDs to text-bank pack keys. Variants live in text-bank/packs/*.json until loader supports variantId.",
+  "conventions": {
+    "pattern": "<SITUATION>_<SPEAKER>_<NN>",
+    "examples": [
+      "THANK_SMALL_MIA_01",
+      "THANK_SMALL_KOJ_01",
+      "IDLE_MIA_01",
+      "GREET_RETURN_MIA_01",
+      "BOWL_FULL_KOJ_01",
+      "SPAM_SINGLE_MIA_01",
+      "GIFT_T4_MIA_01"
+    ]
+  },
+  "entries": []
+}

@@ -13,30 +13,162 @@
         "mood": "neon_combat",
         "note": "Žrout clipů a coinů — boj + hravost. Neon."
       },
-      "miaPoints": 947,
-      "giftPoints": 583,
-      "activityPoints": 364,
-      "events": 145,
-      "gifts": 54,
+      "miaPoints": 23068.5,
+      "giftPoints": 21680.5,
+      "activityPoints": 1388,
+      "events": 823,
+      "gifts": 476,
       "wins": 0,
       "losses": 0,
       "reigns": 0,
       "contributors": {
         "liveaudit": {
           "userLabel": "LiveAudit",
-          "points": 121
+          "points": 151
         },
         "test user 123": {
           "userLabel": "Test User 123",
-          "points": 738
+          "points": 1341.5
         },
         "tester": {
           "userLabel": "Tester",
-          "points": 20
+          "points": 728
         },
         "gifter": {
           "userLabel": "Gifter",
-          "points": 68
+          "points": 2266
+        },
+        "liveauditcare": {
+          "userLabel": "LiveAuditCare",
+          "points": 16
+        },
+        "tikuser": {
+          "userLabel": "TikUser",
+          "points": 8
+        },
+        "dod smoke": {
+          "userLabel": "DoD Smoke",
+          "points": 7.5
+        },
+        "dod t2": {
+          "userLabel": "DoD T2",
+          "points": 112.5
+        },
+        "dod t3": {
+          "userLabel": "DoD T3",
+          "points": 1504.5
+        },
+        "dod t4": {
+          "userLabel": "DoD T4",
+          "points": 7512
+        },
+        "dod bowl": {
+          "userLabel": "DoD Bowl",
+          "points": 7512
+        },
+        "prestream mute": {
+          "userLabel": "Prestream Mute",
+          "points": 15
+        },
+        "mutespam0": {
+          "userLabel": "MuteSpam0",
+          "points": 7.5
+        },
+        "mutespam1": {
+          "userLabel": "MuteSpam1",
+          "points": 13.5
+        },
+        "mutespam2": {
+          "userLabel": "MuteSpam2",
+          "points": 7.5
+        },
+        "muteps": {
+          "userLabel": "MutePS",
+          "points": 7.5
+        },
+        "muteps2": {
+          "userLabel": "MutePS2",
+          "points": 7.5
+        },
+        "aq spam": {
+          "userLabel": "AQ Spam",
+          "points": 15
+        },
+        "aq t2": {
+          "userLabel": "AQ T2",
+          "points": 112.5
+        },
+        "aq chat": {
+          "userLabel": "AQ Chat",
+          "points": 4
+        },
+        "aq t3": {
+          "userLabel": "AQ T3",
+          "points": 1504.5
+        },
+        "spamfan1": {
+          "userLabel": "SpamFan1",
+          "points": 7.5
+        },
+        "spamfan3": {
+          "userLabel": "SpamFan3",
+          "points": 13.5
+        },
+        "waveuser1": {
+          "userLabel": "WaveUser1",
+          "points": 7.5
+        },
+        "waveuser2": {
+          "userLabel": "WaveUser2",
+          "points": 7.5
+        },
+        "waveuser3": {
+          "userLabel": "WaveUser3",
+          "points": 7.5
+        },
+        "waveuser4": {
+          "userLabel": "WaveUser4",
+          "points": 7.5
+        },
+        "waveuser5": {
+          "userLabel": "WaveUser5",
+          "points": 7.5
+        },
+        "debug podporovatel": {
+          "userLabel": "Debug podporovatel",
+          "points": 15
+        },
+        "r1cuser1": {
+          "userLabel": "R1CUser1",
+          "points": 7.5
+        },
+        "r1cuser2": {
+          "userLabel": "R1CUser2",
+          "points": 7.5
+        },
+        "r1cuser3": {
+          "userLabel": "R1CUser3",
+          "points": 7.5
+        },
+        "r1cuser4": {
+          "userLabel": "R1CUser4",
+          "points": 7.5
+        },
+        "kristiánek": {
+          "userLabel": "Kristiánek",
+          "points": 40
+        },
+        "chyť si dron 1": {
+          "userLabel": "Chyť si dron 1",
+          "points": 63.5
+        },
+        "🔥❤️🤌klárisek❤️martin 🤌❤️🔥": {
+          "userLabel": "🔥❤️🤌Klárisek❤️Martin 🤌❤️🔥",
+          "points": 4
+        },
+        "🔥❤️🤌váša špíňák🤌❤️🔥": {
+          "userLabel": "🔥❤️🤌Váša Špíňák🤌❤️🔥",
+          "points": 4
         }
       }
     },
@@ -52,10 +184,10 @@
         "mood": "acid_stack",
         "note": "Žrout stacků — duel a tlak. Acid green."
       },
-      "miaPoints": 8,
+      "miaPoints": 128,
       "giftPoints": 0,
-      "activityPoints": 8,
-      "events": 2,
+      "activityPoints": 128,
+      "events": 32,
       "gifts": 0,
       "wins": 0,
       "losses": 0,
@@ -63,7 +195,23 @@
       "contributors": {
         "vasaspinak": {
           "userLabel": "VasaSpinak",
-          "points": 8
+          "points": 96
+        },
+        "testuser": {
+          "userLabel": "TestUser",
+          "points": 12
+        },
+        "testkick": {
+          "userLabel": "TestKick",
+          "points": 4
+        },
+        "kickuser": {
+          "userLabel": "KickUser",
+          "points": 4
+        },
+        "tester": {
+          "userLabel": "Tester",
+          "points": 12
         }
       }
     },
@@ -79,15 +227,24 @@
         "mood": "bond_purple",
         "note": "Žrout bitů a vazby — láska/bond + obrana. Purple."
       },
-      "miaPoints": 0,
+      "miaPoints": 8,
       "giftPoints": 0,
-      "activityPoints": 0,
-      "events": 0,
+      "activityPoints": 8,
+      "events": 2,
       "gifts": 0,
       "wins": 0,
       "losses": 0,
       "reigns": 0,
-      "contributors": {}
+      "contributors": {
+        "divák": {
+          "userLabel": "divák",
+          "points": 4
+        },
+        "vasaspinak": {
+          "userLabel": "vasaspinak",
+          "points": 4
+        }
+      }
     },
     "youtube": {
       "id": "youtube",
@@ -117,6 +274,9 @@
     "phase": "finished",
     "startedAt": 1783131524953,
     "endsAt": 1783131824953,
+    "announceEndsAt": 0,
+    "countdownEndsAt": 0,
+    "activeStartedAt": 0,
     "durationMs": 300000,
     "scores": {
       "tiktok": 0,
@@ -124,7 +284,10 @@
       "twitch": 0,
       "youtube": 0
     },
-    "winner": null
+    "energy": {},
+    "lastActionAt": 0,
+    "winner": null,
+    "phasesEnabled": true
   },
   "tournament": {
     "active": false,
@@ -178,42 +341,315 @@
     "tiktok:liveaudit": {
       "userLabel": "LiveAudit",
       "platform": "tiktok",
-      "miaPoints": 121,
-      "gifts": 12,
-      "events": 12
+      "miaPoints": 151,
+      "gifts": 16,
+      "events": 16
     },
     "tiktok:test user 123": {
       "userLabel": "Test User 123",
       "platform": "tiktok",
-      "miaPoints": 738,
-      "gifts": 32,
-      "events": 118
+      "miaPoints": 1341.5,
+      "gifts": 79,
+      "events": 220
     },
     "kick:vasaspinak": {
       "userLabel": "VasaSpinak",
       "platform": "kick",
-      "miaPoints": 8,
+      "miaPoints": 96,
       "gifts": 0,
-      "events": 2
+      "events": 24
     },
     "tiktok:tester": {
       "userLabel": "Tester",
       "platform": "tiktok",
-      "miaPoints": 20,
+      "miaPoints": 728,
       "gifts": 0,
-      "events": 5
+      "events": 182
     },
     "tiktok:gifter": {
       "userLabel": "Gifter",
       "platform": "tiktok",
-      "miaPoints": 68,
-      "gifts": 10,
+      "miaPoints": 2266,
+      "gifts": 347,
+      "events": 347
+    },
+    "kick:testuser": {
+      "userLabel": "TestUser",
+      "platform": "kick",
+      "miaPoints": 12,
+      "gifts": 0,
+      "events": 3
+    },
+    "kick:testkick": {
+      "userLabel": "TestKick",
+      "platform": "kick",
+      "miaPoints": 4,
+      "gifts": 0,
+      "events": 1
+    },
+    "tiktok:liveauditcare": {
+      "userLabel": "LiveAuditCare",
+      "platform": "tiktok",
+      "miaPoints": 16,
+      "gifts": 0,
+      "events": 4
+    },
+    "tiktok:tikuser": {
+      "userLabel": "TikUser",
+      "platform": "tiktok",
+      "miaPoints": 8,
+      "gifts": 0,
+      "events": 2
+    },
+    "kick:kickuser": {
+      "userLabel": "KickUser",
+      "platform": "kick",
+      "miaPoints": 4,
+      "gifts": 0,
+      "events": 1
+    },
+    "tiktok:dod smoke": {
+      "userLabel": "DoD Smoke",
+      "platform": "tiktok",
+      "miaPoints": 7.5,
+      "gifts": 1,
+      "events": 1
+    },
+    "tiktok:dod t2": {
+      "userLabel": "DoD T2",
+      "platform": "tiktok",
+      "miaPoints": 112.5,
+      "gifts": 1,
+      "events": 1
+    },
+    "tiktok:dod t3": {
+      "userLabel": "DoD T3",
+      "platform": "tiktok",
+      "miaPoints": 1504.5,
+      "gifts": 1,
+      "events": 1
+    },
+    "tiktok:dod t4": {
+      "userLabel": "DoD T4",
+      "platform": "tiktok",
+      "miaPoints": 7512,
+      "gifts": 1,
+      "events": 1
+    },
+    "tiktok:dod bowl": {
+      "userLabel": "DoD Bowl",
+      "platform": "tiktok",
+      "miaPoints": 7512,
+      "gifts": 1,
+      "events": 1
+    },
+    "tiktok:prestream mute": {
+      "userLabel": "Prestream Mute",
+      "platform": "tiktok",
+      "miaPoints": 15,
+      "gifts": 2,
+      "events": 2
+    },
+    "tiktok:mutespam0": {
+      "userLabel": "MuteSpam0",
+      "platform": "tiktok",
+      "miaPoints": 7.5,
+      "gifts": 1,
+      "events": 1
+    },
+    "tiktok:mutespam1": {
+      "userLabel": "MuteSpam1",
+      "platform": "tiktok",
+      "miaPoints": 13.5,
+      "gifts": 1,
+      "events": 1
+    },
+    "tiktok:mutespam2": {
+      "userLabel": "MuteSpam2",
+      "platform": "tiktok",
+      "miaPoints": 7.5,
+      "gifts": 1,
+      "events": 1
+    },
+    "tiktok:muteps": {
+      "userLabel": "MutePS",
+      "platform": "tiktok",
+      "miaPoints": 7.5,
+      "gifts": 1,
+      "events": 1
+    },
+    "tiktok:muteps2": {
+      "userLabel": "MutePS2",
+      "platform": "tiktok",
+      "miaPoints": 7.5,
+      "gifts": 1,
+      "events": 1
+    },
+    "tiktok:aq spam": {
+      "userLabel": "AQ Spam",
+      "platform": "tiktok",
+      "miaPoints": 15,
+      "gifts": 2,
+      "events": 2
+    },
+    "tiktok:aq t2": {
+      "userLabel": "AQ T2",
+      "platform": "tiktok",
+      "miaPoints": 112.5,
+      "gifts": 1,
+      "events": 1
+    },
+    "tiktok:aq chat": {
+      "userLabel": "AQ Chat",
+      "platform": "tiktok",
+      "miaPoints": 4,
+      "gifts": 0,
+      "events": 1
+    },
+    "tiktok:aq t3": {
+      "userLabel": "AQ T3",
+      "platform": "tiktok",
+      "miaPoints": 1504.5,
+      "gifts": 1,
+      "events": 1
+    },
+    "tiktok:spamfan1": {
+      "userLabel": "SpamFan1",
+      "platform": "tiktok",
+      "miaPoints": 7.5,
+      "gifts": 1,
+      "events": 1
+    },
+    "tiktok:spamfan3": {
+      "userLabel": "SpamFan3",
+      "platform": "tiktok",
+      "miaPoints": 13.5,
+      "gifts": 1,
+      "events": 1
+    },
+    "tiktok:waveuser1": {
+      "userLabel": "WaveUser1",
+      "platform": "tiktok",
+      "miaPoints": 7.5,
+      "gifts": 1,
+      "events": 1
+    },
+    "tiktok:waveuser2": {
+      "userLabel": "WaveUser2",
+      "platform": "tiktok",
+      "miaPoints": 7.5,
+      "gifts": 1,
+      "events": 1
+    },
+    "tiktok:waveuser3": {
+      "userLabel": "WaveUser3",
+      "platform": "tiktok",
+      "miaPoints": 7.5,
+      "gifts": 1,
+      "events": 1
+    },
+    "tiktok:waveuser4": {
+      "userLabel": "WaveUser4",
+      "platform": "tiktok",
+      "miaPoints": 7.5,
+      "gifts": 1,
+      "events": 1
+    },
+    "tiktok:waveuser5": {
+      "userLabel": "WaveUser5",
+      "platform": "tiktok",
+      "miaPoints": 7.5,
+      "gifts": 1,
+      "events": 1
+    },
+    "tiktok:debug podporovatel": {
+      "userLabel": "Debug podporovatel",
+      "platform": "tiktok",
+      "miaPoints": 15,
+      "gifts": 2,
+      "events": 2
+    },
+    "tiktok:r1cuser1": {
+      "userLabel": "R1CUser1",
+      "platform": "tiktok",
+      "miaPoints": 7.5,
+      "gifts": 1,
+      "events": 1
+    },
+    "tiktok:r1cuser2": {
+      "userLabel": "R1CUser2",
+      "platform": "tiktok",
+      "miaPoints": 7.5,
+      "gifts": 1,
+      "events": 1
+    },
+    "tiktok:r1cuser3": {
+      "userLabel": "R1CUser3",
+      "platform": "tiktok",
+      "miaPoints": 7.5,
+      "gifts": 1,
+      "events": 1
+    },
+    "tiktok:r1cuser4": {
+      "userLabel": "R1CUser4",
+      "platform": "tiktok",
+      "miaPoints": 7.5,
+      "gifts": 1,
+      "events": 1
+    },
+    "kick:tester": {
+      "userLabel": "Tester",
+      "platform": "kick",
+      "miaPoints": 12,
+      "gifts": 0,
+      "events": 3
+    },
+    "twitch:divák": {
+      "userLabel": "divák",
+      "platform": "twitch",
+      "miaPoints": 4,
+      "gifts": 0,
+      "events": 1
+    },
+    "twitch:vasaspinak": {
+      "userLabel": "vasaspinak",
+      "platform": "twitch",
+      "miaPoints": 4,
+      "gifts": 0,
+      "events": 1
+    },
+    "tiktok:kristiánek": {
+      "userLabel": "Kristiánek",
+      "platform": "tiktok",
+      "miaPoints": 40,
+      "gifts": 0,
       "events": 10
+    },
+    "tiktok:chyť si dron 1": {
+      "userLabel": "Chyť si dron 1",
+      "platform": "tiktok",
+      "miaPoints": 63.5,
+      "gifts": 5,
+      "events": 10
+    },
+    "tiktok:🔥❤️🤌klárisek❤️martin 🤌❤️🔥": {
+      "userLabel": "🔥❤️🤌Klárisek❤️Martin 🤌❤️🔥",
+      "platform": "tiktok",
+      "miaPoints": 4,
+      "gifts": 0,
+      "events": 1
+    },
+    "tiktok:🔥❤️🤌váša špíňák🤌❤️🔥": {
+      "userLabel": "🔥❤️🤌Váša Špíňák🤌❤️🔥",
+      "platform": "tiktok",
+      "miaPoints": 4,
+      "gifts": 0,
+      "events": 1
     }
   },
   "battle": {
     "actions": [],
     "lastActionId": 0
   },
-  "updatedAt": 1783627044178
+  "updatedAt": 1786213569132
 }

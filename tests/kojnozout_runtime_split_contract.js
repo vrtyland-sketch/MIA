@@ -121,7 +121,7 @@ test("runtime html loads sprite engine and cache-busts split libs", () => {
   );
   assert.ok(html.includes("koj-runtime-sprite.js"), "loads koj-runtime-sprite.js");
   assert.ok(html.includes("KojRuntimeSprite.create"), "creates sprite engine");
-  assert.ok(html.includes("49-r1-milestone-polish"), "cache bust 49-r1-milestone-polish");
+  assert.ok(html.includes("50-layout-size"), "cache bust 50-layout-size");
   assert.ok(!html.includes("const textureCache = new Map()"), "texture cache lives in lib");
   assert.ok(!html.includes("crossfadeHideTimer"), "crossfade timer lives in lib");
 });
@@ -139,7 +139,7 @@ test("sprite engine builds mood/asset urls and shares mutable state", () => {
   };
   const engine = createKojRuntimeSprite({
     apiBase: "http://127.0.0.1:3000",
-    cacheV: "49-r1-milestone-polish",
+    cacheV: "50-layout-size",
     sharedState: shared,
     spriteA: { style: {}, classList: { add() {}, remove() {}, contains() { return false; } } },
     spriteB: { style: {}, classList: { add() {}, remove() {}, contains() { return false; } } },
@@ -151,7 +151,7 @@ test("sprite engine builds mood/asset urls and shares mutable state", () => {
     engine.moodAsset("idle"),
     "assets/kojnozrout/moods/kojnozout-idle.png"
   );
-  assert.ok(engine.assetUrl("assets/kojnozrout/moods/kojnozout-idle.png").includes("v=49-r1-milestone-polish"));
+  assert.ok(engine.assetUrl("assets/kojnozrout/moods/kojnozout-idle.png").includes("v=50-layout-size"));
   assert.equal(engine.minSwapMs("sleepy"), 3200);
   assert.equal(engine.minSwapMs("eating"), 650);
   shared.currentImgUrl = "x";
@@ -623,6 +623,7 @@ test("runtime html loads fx engine for animation/item effects", () => {
     "utf8"
   );
   assert.ok(html.includes("koj-runtime-fx.js"), "loads koj-runtime-fx.js");
+  assert.ok(html.includes("koj-runtime-layout.js"), "loads koj-runtime-layout.js");
   assert.ok(html.includes("KojRuntimeFx.create"), "creates fx engine");
   assert.ok(!html.includes("let lastAnimationToken"), "animation token lives in lib");
   assert.ok(!html.includes("let animationBusy"), "animation busy flag lives in lib");

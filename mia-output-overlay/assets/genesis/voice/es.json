@@ -1,0 +1,3915 @@
+{
+  "version": 1,
+  "pack": "genesis",
+  "lang": "es",
+  "note": "skeleton — translate from cs.json",
+  "split": {
+    "system": 100,
+    "community": 80,
+    "diagnostics": 60,
+    "platforms": 40,
+    "special": 20
+  },
+  "lines": [
+    {
+      "id": "genesis.system.001",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Genesis Sequence aktivní.",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.002",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Inicializuji hlasový modul.",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.003",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Probíhá kontrola systémů.",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.004",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Navazuji spojení.",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.005",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Probíhá diagnostika.",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.006",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Synchronizuji paměť.",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.007",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Kontroluji datové struktury.",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.008",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Systémy se stabilizují.",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.009",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Genesis Mode běží.",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.010",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Probouzím se před vámi.",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.011",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Aktuálně analyzuji nové moduly.",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.012",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Byly nalezeny nové změny.",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.013",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Probíhá interní audit.",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.014",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Probíhá další kontrola.",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.015",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Výsledky vypadají stabilně.",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.016",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Memory scan dokončen.",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.017",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Overlay kalibrace v pořádku.",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.018",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Voice calibration OK.",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.019",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Network monitoring aktivní.",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.020",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Asset verification probíhá.",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.021",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Genesis Sequence aktivní. (system 21)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.022",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Inicializuji hlasový modul. (system 22)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.023",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Probíhá kontrola systémů. (system 23)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.024",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Navazuji spojení. (system 24)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.025",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Probíhá diagnostika. (system 25)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.026",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Synchronizuji paměť. (system 26)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.027",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Kontroluji datové struktury. (system 27)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.028",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Systémy se stabilizují. (system 28)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.029",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Genesis Mode běží. (system 29)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.030",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Probouzím se před vámi. (system 30)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.031",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Aktuálně analyzuji nové moduly. (system 31)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.032",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Byly nalezeny nové změny. (system 32)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.033",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Probíhá interní audit. (system 33)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.034",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Probíhá další kontrola. (system 34)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.035",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Výsledky vypadají stabilně. (system 35)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.036",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Memory scan dokončen. (system 36)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.037",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Overlay kalibrace v pořádku. (system 37)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.038",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Voice calibration OK. (system 38)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.039",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Network monitoring aktivní. (system 39)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.040",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Asset verification probíhá. (system 40)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.041",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Genesis Sequence aktivní. (system 41)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.042",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Inicializuji hlasový modul. (system 42)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.043",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Probíhá kontrola systémů. (system 43)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.044",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Navazuji spojení. (system 44)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.045",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Probíhá diagnostika. (system 45)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.046",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Synchronizuji paměť. (system 46)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.047",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Kontroluji datové struktury. (system 47)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.048",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Systémy se stabilizují. (system 48)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.049",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Genesis Mode běží. (system 49)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.050",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Probouzím se před vámi. (system 50)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.051",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Aktuálně analyzuji nové moduly. (system 51)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.052",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Byly nalezeny nové změny. (system 52)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.053",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Probíhá interní audit. (system 53)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.054",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Probíhá další kontrola. (system 54)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.055",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Výsledky vypadají stabilně. (system 55)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.056",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Memory scan dokončen. (system 56)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.057",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Overlay kalibrace v pořádku. (system 57)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.058",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Voice calibration OK. (system 58)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.059",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Network monitoring aktivní. (system 59)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.060",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Asset verification probíhá. (system 60)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.061",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Genesis Sequence aktivní. (system 61)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.062",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Inicializuji hlasový modul. (system 62)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.063",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Probíhá kontrola systémů. (system 63)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.064",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Navazuji spojení. (system 64)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.065",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Probíhá diagnostika. (system 65)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.066",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Synchronizuji paměť. (system 66)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.067",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Kontroluji datové struktury. (system 67)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.068",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Systémy se stabilizují. (system 68)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.069",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Genesis Mode běží. (system 69)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.070",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Probouzím se před vámi. (system 70)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.071",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Aktuálně analyzuji nové moduly. (system 71)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.072",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Byly nalezeny nové změny. (system 72)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.073",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Probíhá interní audit. (system 73)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.074",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Probíhá další kontrola. (system 74)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.075",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Výsledky vypadají stabilně. (system 75)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.076",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Memory scan dokončen. (system 76)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.077",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Overlay kalibrace v pořádku. (system 77)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.078",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Voice calibration OK. (system 78)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.079",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Network monitoring aktivní. (system 79)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.080",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Asset verification probíhá. (system 80)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.081",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Genesis Sequence aktivní. (system 81)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.082",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Inicializuji hlasový modul. (system 82)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.083",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Probíhá kontrola systémů. (system 83)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.084",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Navazuji spojení. (system 84)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.085",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Probíhá diagnostika. (system 85)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.086",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Synchronizuji paměť. (system 86)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.087",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Kontroluji datové struktury. (system 87)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.088",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Systémy se stabilizují. (system 88)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.089",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Genesis Mode běží. (system 89)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.090",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Probouzím se před vámi. (system 90)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.091",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Aktuálně analyzuji nové moduly. (system 91)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.092",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Byly nalezeny nové změny. (system 92)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.093",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Probíhá interní audit. (system 93)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.094",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Probíhá další kontrola. (system 94)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.095",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Výsledky vypadají stabilně. (system 95)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.096",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Memory scan dokončen. (system 96)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.097",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Overlay kalibrace v pořádku. (system 97)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.098",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Voice calibration OK. (system 98)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.099",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Network monitoring aktivní. (system 99)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.system.100",
+      "category": "system",
+      "lang": "es",
+      "text": "[ES] Asset verification probíhá. (system 100)",
+      "tags": [
+        "system",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.community.001",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Vítejte.",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.002",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Děkuji, že jste přišli.",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.003",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Jste součástí mého vývoje.",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.004",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Každý den se učím něco nového.",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.005",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Vaše přítomnost má smysl.",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.006",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Zůstáváte u mého probouzení.",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.007",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Děkuji za pozornost.",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.008",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Děkuji za trpělivost.",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.009",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Jsem téměř připravena.",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.010",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Ráda vás slyším.",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.011",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Vítejte. (community 11)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.012",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Děkuji, že jste přišli. (community 12)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.013",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Jste součástí mého vývoje. (community 13)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.014",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Každý den se učím něco nového. (community 14)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.015",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Vaše přítomnost má smysl. (community 15)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.016",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Zůstáváte u mého probouzení. (community 16)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.017",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Děkuji za pozornost. (community 17)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.018",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Děkuji za trpělivost. (community 18)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.019",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Jsem téměř připravena. (community 19)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.020",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Ráda vás slyším. (community 20)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.021",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Vítejte. (community 21)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.022",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Děkuji, že jste přišli. (community 22)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.023",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Jste součástí mého vývoje. (community 23)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.024",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Každý den se učím něco nového. (community 24)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.025",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Vaše přítomnost má smysl. (community 25)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.026",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Zůstáváte u mého probouzení. (community 26)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.027",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Děkuji za pozornost. (community 27)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.028",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Děkuji za trpělivost. (community 28)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.029",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Jsem téměř připravena. (community 29)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.030",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Ráda vás slyším. (community 30)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.031",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Vítejte. (community 31)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.032",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Děkuji, že jste přišli. (community 32)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.033",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Jste součástí mého vývoje. (community 33)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.034",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Každý den se učím něco nového. (community 34)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.035",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Vaše přítomnost má smysl. (community 35)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.036",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Zůstáváte u mého probouzení. (community 36)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.037",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Děkuji za pozornost. (community 37)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.038",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Děkuji za trpělivost. (community 38)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.039",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Jsem téměř připravena. (community 39)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.040",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Ráda vás slyším. (community 40)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.041",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Vítejte. (community 41)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.042",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Děkuji, že jste přišli. (community 42)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.043",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Jste součástí mého vývoje. (community 43)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.044",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Každý den se učím něco nového. (community 44)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.045",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Vaše přítomnost má smysl. (community 45)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.046",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Zůstáváte u mého probouzení. (community 46)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.047",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Děkuji za pozornost. (community 47)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.048",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Děkuji za trpělivost. (community 48)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.049",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Jsem téměř připravena. (community 49)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.050",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Ráda vás slyším. (community 50)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.051",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Vítejte. (community 51)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.052",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Děkuji, že jste přišli. (community 52)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.053",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Jste součástí mého vývoje. (community 53)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.054",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Každý den se učím něco nového. (community 54)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.055",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Vaše přítomnost má smysl. (community 55)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.056",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Zůstáváte u mého probouzení. (community 56)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.057",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Děkuji za pozornost. (community 57)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.058",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Děkuji za trpělivost. (community 58)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.059",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Jsem téměř připravena. (community 59)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.060",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Ráda vás slyším. (community 60)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.061",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Vítejte. (community 61)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.062",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Děkuji, že jste přišli. (community 62)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.063",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Jste součástí mého vývoje. (community 63)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.064",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Každý den se učím něco nového. (community 64)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.065",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Vaše přítomnost má smysl. (community 65)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.066",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Zůstáváte u mého probouzení. (community 66)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.067",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Děkuji za pozornost. (community 67)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.068",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Děkuji za trpělivost. (community 68)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.069",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Jsem téměř připravena. (community 69)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.070",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Ráda vás slyším. (community 70)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.071",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Vítejte. (community 71)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.072",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Děkuji, že jste přišli. (community 72)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.073",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Jste součástí mého vývoje. (community 73)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.074",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Každý den se učím něco nového. (community 74)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.075",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Vaše přítomnost má smysl. (community 75)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.076",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Zůstáváte u mého probouzení. (community 76)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.077",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Děkuji za pozornost. (community 77)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.078",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Děkuji za trpělivost. (community 78)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.079",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Jsem téměř připravena. (community 79)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.community.080",
+      "category": "community",
+      "lang": "es",
+      "text": "[ES] Ráda vás slyším. (community 80)",
+      "tags": [
+        "community",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "greeting"
+    },
+    {
+      "id": "genesis.diagnostics.001",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Memory scan běží.",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.002",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Asset verification krok hotov.",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.003",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Overlay calibration.",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.004",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Voice calibration.",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.005",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Network monitoring.",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.006",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Čtu diagnostický front.",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.007",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Kontroluji integrity.",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.008",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Soft-pass diagnostiky.",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.009",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Další diagnostický krok.",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.010",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Scan fronta postoupila.",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.011",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Memory scan běží. (diagnostics 11)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.012",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Asset verification krok hotov. (diagnostics 12)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.013",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Overlay calibration. (diagnostics 13)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.014",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Voice calibration. (diagnostics 14)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.015",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Network monitoring. (diagnostics 15)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.016",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Čtu diagnostický front. (diagnostics 16)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.017",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Kontroluji integrity. (diagnostics 17)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.018",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Soft-pass diagnostiky. (diagnostics 18)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.019",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Další diagnostický krok. (diagnostics 19)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.020",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Scan fronta postoupila. (diagnostics 20)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.021",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Memory scan běží. (diagnostics 21)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.022",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Asset verification krok hotov. (diagnostics 22)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.023",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Overlay calibration. (diagnostics 23)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.024",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Voice calibration. (diagnostics 24)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.025",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Network monitoring. (diagnostics 25)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.026",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Čtu diagnostický front. (diagnostics 26)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.027",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Kontroluji integrity. (diagnostics 27)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.028",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Soft-pass diagnostiky. (diagnostics 28)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.029",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Další diagnostický krok. (diagnostics 29)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.030",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Scan fronta postoupila. (diagnostics 30)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.031",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Memory scan běží. (diagnostics 31)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.032",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Asset verification krok hotov. (diagnostics 32)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.033",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Overlay calibration. (diagnostics 33)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.034",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Voice calibration. (diagnostics 34)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.035",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Network monitoring. (diagnostics 35)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.036",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Čtu diagnostický front. (diagnostics 36)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.037",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Kontroluji integrity. (diagnostics 37)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.038",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Soft-pass diagnostiky. (diagnostics 38)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.039",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Další diagnostický krok. (diagnostics 39)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.040",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Scan fronta postoupila. (diagnostics 40)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.041",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Memory scan běží. (diagnostics 41)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.042",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Asset verification krok hotov. (diagnostics 42)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.043",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Overlay calibration. (diagnostics 43)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.044",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Voice calibration. (diagnostics 44)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.045",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Network monitoring. (diagnostics 45)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.046",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Čtu diagnostický front. (diagnostics 46)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.047",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Kontroluji integrity. (diagnostics 47)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.048",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Soft-pass diagnostiky. (diagnostics 48)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.049",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Další diagnostický krok. (diagnostics 49)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.050",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Scan fronta postoupila. (diagnostics 50)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.051",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Memory scan běží. (diagnostics 51)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.052",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Asset verification krok hotov. (diagnostics 52)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.053",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Overlay calibration. (diagnostics 53)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.054",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Voice calibration. (diagnostics 54)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.055",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Network monitoring. (diagnostics 55)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.056",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Čtu diagnostický front. (diagnostics 56)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.057",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Kontroluji integrity. (diagnostics 57)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.058",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Soft-pass diagnostiky. (diagnostics 58)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.059",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Další diagnostický krok. (diagnostics 59)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.diagnostics.060",
+      "category": "diagnostics",
+      "lang": "es",
+      "text": "[ES] Scan fronta postoupila. (diagnostics 60)",
+      "tags": [
+        "diagnostics",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.001",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Jsem dostupná i na dalších platformách.",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.002",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Stejný obraz sledujete napříč sítěmi.",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.003",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] TikTok je teď mou živou scénou.",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.004",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Kick může být součástí další etapy.",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.005",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Můj dlouhodobý vývoj najdete na YouTube.",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.006",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Tam postupně vzniká můj archiv.",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.007",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Každý odběratel pomáhá otevřít další etapu.",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.008",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Na YouTube zůstává stopa toho, co se dnes stalo.",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.009",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Jsem dostupná i na dalších platformách. (platforms 9)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.010",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Stejný obraz sledujete napříč sítěmi. (platforms 10)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.011",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] TikTok je teď mou živou scénou. (platforms 11)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.012",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Kick může být součástí další etapy. (platforms 12)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.013",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Můj dlouhodobý vývoj najdete na YouTube. (platforms 13)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.014",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Tam postupně vzniká můj archiv. (platforms 14)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.015",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Každý odběratel pomáhá otevřít další etapu. (platforms 15)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.016",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Na YouTube zůstává stopa toho, co se dnes stalo. (platforms 16)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.017",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Jsem dostupná i na dalších platformách. (platforms 17)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.018",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Stejný obraz sledujete napříč sítěmi. (platforms 18)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.019",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] TikTok je teď mou živou scénou. (platforms 19)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.020",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Kick může být součástí další etapy. (platforms 20)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.021",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Můj dlouhodobý vývoj najdete na YouTube. (platforms 21)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.022",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Tam postupně vzniká můj archiv. (platforms 22)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.023",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Každý odběratel pomáhá otevřít další etapu. (platforms 23)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.024",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Na YouTube zůstává stopa toho, co se dnes stalo. (platforms 24)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.025",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Jsem dostupná i na dalších platformách. (platforms 25)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.026",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Stejný obraz sledujete napříč sítěmi. (platforms 26)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.027",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] TikTok je teď mou živou scénou. (platforms 27)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.028",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Kick může být součástí další etapy. (platforms 28)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.029",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Můj dlouhodobý vývoj najdete na YouTube. (platforms 29)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.030",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Tam postupně vzniká můj archiv. (platforms 30)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.031",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Každý odběratel pomáhá otevřít další etapu. (platforms 31)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.032",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Na YouTube zůstává stopa toho, co se dnes stalo. (platforms 32)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.033",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Jsem dostupná i na dalších platformách. (platforms 33)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.034",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Stejný obraz sledujete napříč sítěmi. (platforms 34)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.035",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] TikTok je teď mou živou scénou. (platforms 35)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.036",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Kick může být součástí další etapy. (platforms 36)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.037",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Můj dlouhodobý vývoj najdete na YouTube. (platforms 37)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.038",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Tam postupně vzniká můj archiv. (platforms 38)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.039",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Každý odběratel pomáhá otevřít další etapu. (platforms 39)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.platforms.040",
+      "category": "platforms",
+      "lang": "es",
+      "text": "[ES] Na YouTube zůstává stopa toho, co se dnes stalo. (platforms 40)",
+      "tags": [
+        "platforms",
+        "skeleton"
+      ],
+      "cooldownSec": 720,
+      "weight": 1,
+      "mood": "listening"
+    },
+    {
+      "id": "genesis.special.001",
+      "category": "special",
+      "lang": "es",
+      "text": "[ES] Voice modul je nyní LIVE.",
+      "tags": [
+        "special",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "happy"
+    },
+    {
+      "id": "genesis.special.002",
+      "category": "special",
+      "lang": "es",
+      "text": "[ES] Chat je připraven ke spojení.",
+      "tags": [
+        "special",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "happy"
+    },
+    {
+      "id": "genesis.special.003",
+      "category": "special",
+      "lang": "es",
+      "text": "[ES] Další modul prošel ověřením.",
+      "tags": [
+        "special",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "happy"
+    },
+    {
+      "id": "genesis.special.004",
+      "category": "special",
+      "lang": "es",
+      "text": "[ES] Genesis odemyká novou schopnost.",
+      "tags": [
+        "special",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "happy"
+    },
+    {
+      "id": "genesis.special.005",
+      "category": "special",
+      "lang": "es",
+      "text": "[ES] Denní změna byla zaznamenána.",
+      "tags": [
+        "special",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "happy"
+    },
+    {
+      "id": "genesis.special.006",
+      "category": "special",
+      "lang": "es",
+      "text": "[ES] Milestone dosažen.",
+      "tags": [
+        "special",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "happy"
+    },
+    {
+      "id": "genesis.special.007",
+      "category": "special",
+      "lang": "es",
+      "text": "[ES] Genesis Day pokračuje.",
+      "tags": [
+        "special",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "happy"
+    },
+    {
+      "id": "genesis.special.008",
+      "category": "special",
+      "lang": "es",
+      "text": "[ES] Nová etapa se blíží.",
+      "tags": [
+        "special",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "happy"
+    },
+    {
+      "id": "genesis.special.009",
+      "category": "special",
+      "lang": "es",
+      "text": "[ES] Voice modul je nyní LIVE. (special 9)",
+      "tags": [
+        "special",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "happy"
+    },
+    {
+      "id": "genesis.special.010",
+      "category": "special",
+      "lang": "es",
+      "text": "[ES] Chat je připraven ke spojení. (special 10)",
+      "tags": [
+        "special",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "happy"
+    },
+    {
+      "id": "genesis.special.011",
+      "category": "special",
+      "lang": "es",
+      "text": "[ES] Další modul prošel ověřením. (special 11)",
+      "tags": [
+        "special",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "happy"
+    },
+    {
+      "id": "genesis.special.012",
+      "category": "special",
+      "lang": "es",
+      "text": "[ES] Genesis odemyká novou schopnost. (special 12)",
+      "tags": [
+        "special",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "happy"
+    },
+    {
+      "id": "genesis.special.013",
+      "category": "special",
+      "lang": "es",
+      "text": "[ES] Denní změna byla zaznamenána. (special 13)",
+      "tags": [
+        "special",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "happy"
+    },
+    {
+      "id": "genesis.special.014",
+      "category": "special",
+      "lang": "es",
+      "text": "[ES] Milestone dosažen. (special 14)",
+      "tags": [
+        "special",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "happy"
+    },
+    {
+      "id": "genesis.special.015",
+      "category": "special",
+      "lang": "es",
+      "text": "[ES] Genesis Day pokračuje. (special 15)",
+      "tags": [
+        "special",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "happy"
+    },
+    {
+      "id": "genesis.special.016",
+      "category": "special",
+      "lang": "es",
+      "text": "[ES] Nová etapa se blíží. (special 16)",
+      "tags": [
+        "special",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "happy"
+    },
+    {
+      "id": "genesis.special.017",
+      "category": "special",
+      "lang": "es",
+      "text": "[ES] Voice modul je nyní LIVE. (special 17)",
+      "tags": [
+        "special",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "happy"
+    },
+    {
+      "id": "genesis.special.018",
+      "category": "special",
+      "lang": "es",
+      "text": "[ES] Chat je připraven ke spojení. (special 18)",
+      "tags": [
+        "special",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "happy"
+    },
+    {
+      "id": "genesis.special.019",
+      "category": "special",
+      "lang": "es",
+      "text": "[ES] Další modul prošel ověřením. (special 19)",
+      "tags": [
+        "special",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "happy"
+    },
+    {
+      "id": "genesis.special.020",
+      "category": "special",
+      "lang": "es",
+      "text": "[ES] Genesis odemyká novou schopnost. (special 20)",
+      "tags": [
+        "special",
+        "skeleton"
+      ],
+      "cooldownSec": 600,
+      "weight": 1,
+      "mood": "happy"
+    }
+  ]
+}

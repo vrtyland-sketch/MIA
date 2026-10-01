@@ -41,25 +41,6 @@
         "Já tu jsem. Hlad taky."
       ]
     },
-    "community_ping_mia": {
-      "meta": {
-        "speaker": "mia",
-        "intent": "community",
-        "tags": ["community", "expansion"]
-      },
-      "variants": [
-        "Komunita se hýbe. To mám ráda.",
-        "Chat se probouzí. Pokračujte.",
-        "Tady už to začíná mít tep.",
-        "Tohle tempo se mi líbí.",
-        "Jo. Tohle už je slušný pohyb.",
-        "Komunita je vzhůru. A to je dobře.",
-        "Tohle už není ticho. Tohle je rytmus.",
-        "Když se komunita rozhýbe, je to hned znát.",
-        "Tenhle prostor má náladu. To beru.",
-        "Chat drží proud. Jen tak dál."
-      ]
-    },
     "wake_up_chat_mia": {
       "meta": {
         "speaker": "mia",

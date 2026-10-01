@@ -211,6 +211,45 @@ function registerOverlayRoutes(app, ctx = {}) {
     }
   };
 
+  let overlayLayoutModule = null;
+  try {
+    overlayLayoutModule = require("../scripts/MIA_OVERLAY_LAYOUT");
+  } catch (_err) {
+    overlayLayoutModule = null;
+  }
+
+  if (overlayLayoutModule) {
+    app.get("/overlay/layout", (_req, res) => {
+      res.json({ ok: true, layout: overlayLayoutModule.getLayout() });
+    });
+
+    const saveOverlayLayout = (req, res) => {
+      try {
+        const layout = overlayLayoutModule.saveLayout(req.body || {});
+        return res.json({ ok: true, layout });
+      } catch (err) {
+        return res.status(500).json({ ok: false, error: err.message || "save_failed" });
+      }
+    };
+
+    const resetOverlayLayout = (_req, res) => {
+      try {
+        const layout = overlayLayoutModule.resetLayout();
+        return res.json({ ok: true, layout });
+      } catch (err) {
+        return res.status(500).json({ ok: false, error: err.message || "reset_failed" });
+      }
+    };
+
+    if (typeof localAdminGuard === "function") {
+      app.post("/overlay/layout", localAdminGuard, saveOverlayLayout);
+      app.post("/overlay/layout/reset", localAdminGuard, resetOverlayLayout);
+    } else {
+      app.post("/overlay/layout", saveOverlayLayout);
+      app.post("/overlay/layout/reset", resetOverlayLayout);
+    }
+  }
+
   if (typeof localAdminGuard === "function") {
     app.post("/api/rig-anchors", localAdminGuard, saveRigAnchors);
   } else {
@@ -242,7 +281,10 @@ function registerOverlayRoutes(app, ctx = {}) {
       "POST /overlay/clear",
       "GET /overlay/clear",
       "POST /api/rig-anchors",
-      "GET /api/rig-anchors/:characterId"
+      "GET /api/rig-anchors/:characterId",
+      "GET /overlay/layout",
+      "POST /overlay/layout",
+      "POST /overlay/layout/reset"
     ]
   };
 }

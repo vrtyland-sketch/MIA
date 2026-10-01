@@ -1,0 +1,58 @@
+/* MIA Genesis Mode — shared visual tokens (no Stream Core deps) */
+:root {
+  --g-bg0: #050a12;
+  --g-bg1: #0b1830;
+  --g-cyan: #5ce1ff;
+  --g-mint: #7dffb3;
+  --g-amber: #ffc857;
+  --g-warn: #ff6b6b;
+  --g-muted: #7a90b0;
+  --g-panel: rgba(8, 18, 36, 0.72);
+  --g-border: rgba(92, 225, 255, 0.28);
+  --g-mono: "Cascadia Mono", "Consolas", "Courier New", monospace;
+  --g-sans: "Segoe UI", "Trebuchet MS", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  width: 1080px;
+  height: 1920px;
+  overflow: hidden;
+  font-family: var(--g-sans);
+  color: #e8f4ff;
+  background: transparent;
+}
+
+.g-panel {
+  background: var(--g-panel);
+  border: 1px solid var(--g-border);
+  border-radius: 14px;
+  backdrop-filter: blur(8px);
+  padding: 14px 16px;
+}
+
+.g-title {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--g-cyan);
+  margin: 0 0 10px;
+  font-weight: 700;
+}
+
+.g-status-online { color: var(--g-mint); }
+.g-status-verifying { color: var(--g-amber); }
+.g-status-locked,
+.g-status-standby { color: var(--g-muted); }
+.g-status-warning { color: var(--g-warn); }
+
+.rows {
+  font-family: var(--g-mono);
+  font-size: 13px;
+  line-height: 1.55;
+  color: #d7e8ff;
+}
+
+.rows div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

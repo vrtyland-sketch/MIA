@@ -1,70 +1,70 @@
 {
-  "generatedAt": "2026-07-05T18:07:53.655Z",
+  "generatedAt": "2026-07-21T18:58:22.279Z",
   "moods": {
     "canon": [
       {
         "mood": "idle",
-        "bytes": 729929,
+        "bytes": 1252184,
         "handPainted": true
       },
       {
         "mood": "warm",
-        "bytes": 711888,
+        "bytes": 1048741,
         "handPainted": true
       },
       {
         "mood": "happy",
-        "bytes": 912730,
+        "bytes": 1344789,
         "handPainted": true
       },
       {
         "mood": "hungry",
-        "bytes": 929743,
+        "bytes": 1276514,
         "handPainted": true
       },
       {
         "mood": "excited",
-        "bytes": 778124,
+        "bytes": 1372451,
         "handPainted": true
       },
       {
         "mood": "eating",
-        "bytes": 823229,
+        "bytes": 1341861,
         "handPainted": true
       },
       {
         "mood": "full",
-        "bytes": 1435586,
+        "bytes": 1347190,
         "handPainted": true
       },
       {
         "mood": "sleepy",
-        "bytes": 713107,
+        "bytes": 1252184,
         "handPainted": true
       },
       {
         "mood": "sick",
-        "bytes": 818583,
+        "bytes": 1322153,
         "handPainted": true
       },
       {
         "mood": "sad",
-        "bytes": 878373,
+        "bytes": 1338681,
         "handPainted": true
       },
       {
         "mood": "annoyed",
-        "bytes": 948509,
+        "bytes": 1271507,
         "handPainted": true
       },
       {
         "mood": "laugh",
-        "bytes": 912730,
+        "bytes": 1294474,
         "handPainted": true
       },
       {
         "mood": "stressed",
-        "bytes": 948509,
+        "bytes": 1271507,
         "handPainted": true
       }
     ],

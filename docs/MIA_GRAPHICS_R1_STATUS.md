@@ -6,7 +6,7 @@
 **Roadmap:** [`MIA_ENGINE_2_0_ROADMAP.md`](./MIA_ENGINE_2_0_ROADMAP.md) §4  
 **Freeze baseline:** `v=32-gfx-whole` ([`GRAPHICS_CHECKPOINT_v32.md`](./GRAPHICS_CHECKPOINT_v32.md))  
 **Active runtime bust:** `v=36-koj-unify` (speech / bowl / manifest URLs)  
-**Koj split bust:** `v=49-r1-milestone-polish` (`kojnozrout-runtime.html` + split libs)  
+**Koj split bust:** `v=50-layout-size` (`kojnozrout-runtime.html` + split libs)  
 **Gift overlay bust:** `v=37-stream-polish` (beze zm?ny)
 
 ---
@@ -51,7 +51,7 @@ Jedna kontrolovaná OBS session. Automatické testy to **nenahrazují** — vizu
 | 1 | Spustit běžný runtime | `node index.js` nebo `npm start`; zelený health / OBS WS connect |
 | 2 | Ověřit speech overlay **`36`** | Hologram + bublina, bust `36-koj-unify` |
 | 3 | Ověřit gift overlay **`37`** | Animace dárků, bust `37-stream-polish` |
-| 4 | Ověřit Kojnožrout **`49-r1-milestone-polish`** | Runtime split, belly HUD, scény |
+| 4 | Ověřit Kojnožrout **`50-layout-size`** | Runtime split, belly HUD, scény |
 | 5 | Poslat testovací chat | MIA reaguje, bublina OK |
 | 6 | Poslat malý, střední a velký gift | T1–T4 animace, rotace per-tier (`rotationIndexByTier` beze resetu) |
 | 7 | Ověřit combo/spam HUD | Belly progress, countdown, **jen `miaPoints`** — žádné coins/gift value |
@@ -101,7 +101,7 @@ git push origin v0.1.1-graphics
 - **Belly HUD wave:** `buildSpamWaveBellyContent` shows progress bar + countdown on Koj belly during active spam wave (no coin fields).
 - **Split cache bust:** `43-koj-split` ? `44-r1-combo` ? `45-r1-combo-belly` on runtime HTML + split libs only (36 / 37 unchanged).
 - **Combo belly HUD:** `buildComboMomentBellyContent` ? title/subtext/count on belly during combo moment (no coins).
-- **Live motion hype:** `KojLiveMotion.isHype` boosts sway during combo/spam stage classes (split bust trail through `49-r1-milestone-polish`).
+- **Live motion hype:** `KojLiveMotion.isHype` boosts sway during combo/spam stage classes (split bust trail through `50-layout-size`).
 - **Duel/battle/walk CSS polish:** Soft Neon purple rim on duel/battle; walk-frame contact shadow (slice 11, no new art).
 - **Tech-energy hype:** `MiaTechEnergy.isHype` on Koj runtime + speech holo + gift overlay idle stage.
 - **Speech holo parity:** `#miaHolo` combo-pulse/urgent CSS + `syncMiaHoloHype`; bubble `combo-hype` rim during wave.
@@ -125,7 +125,7 @@ git push origin v0.1.1-graphics
 |-------|------|
 | Speech / bowl / manifest | `36-koj-unify` |
 | Gift overlay / desk | `37-stream-polish` |
-| Koj runtime split | `49-r1-milestone-polish` |
+| Koj runtime split | `50-layout-size` |
 
 Refresh after deploy: `npm run obs:refresh-overlays`
 

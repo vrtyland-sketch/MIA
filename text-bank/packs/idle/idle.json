@@ -25,7 +25,8 @@
         "intent": "idle"
       },
       "variants": [
-        "No tak, komunito. Trochu to rozhýbejte.",
+        "Haló haló. Já tu nejsem od toho, abych mluvila sama.",
+        "No tak, chat. Trochu to rozhýbejte.",
         "Tady je najednou až moc klid.",
         "Halo halo, kdo je vzhůru?",
         "Já tu pořád jsem. Jen připomínám.",
@@ -33,8 +34,16 @@
         "Kdo tady drží hlídku? Ať se ukáže.",
         "Tak co, jedeme, nebo jen sedíme?",
         "Tohle chce trochu pohybu.",
-        "Komunito, nenechte to usnout.",
-        "Tak pojďte. Ať to má tep."
+        "Nenechte to usnout.",
+        "Tak pojďte. Ať to má tep.",
+        "Nuda level střední. Kdo to rozbije?",
+        "Tak kdo první? Já tu nebudu dělat monolog hodinu.",
+        "Potřebuju slyšet, že jste tady. Teď hned.",
+        "Ticho je fajn na spánek. My jedeme live.",
+        "Hoďte do chatu cokoliv. I blbost stačí.",
+        "Kdo je online? Ať to tu zase žije.",
+        "Mrtvo. Pojďme to nakopnout společně.",
+        "Já čekám na první signál. Neváhejte."
       ]
     }
   }

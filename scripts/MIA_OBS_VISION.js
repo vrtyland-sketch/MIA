@@ -173,7 +173,15 @@ function buildViewerAnchors(canvas, platform) {
   const speechScale = isPortrait
     ? Math.max(0.72, Math.min(1.0, w / ref.width))
     : Math.max(0.58, Math.min(0.82, w / CANVAS_LANDSCAPE.width));
-  const kojScale = platform === "tiktok" ? (isPortrait ? 1.35 : 0.95) : isPortrait ? 1.0 : 0.86;
+  const kojScaleFallback =
+    platform === "tiktok" ? (isPortrait ? 1.0 : 0.95) : isPortrait ? 1.0 : 0.86;
+  let kojScale = kojScaleFallback;
+  try {
+    const { resolveObsKojScale } = require("./MIA_OVERLAY_LAYOUT");
+    kojScale = resolveObsKojScale(platform, isPortrait, kojScaleFallback);
+  } catch (_err) {
+    kojScale = kojScaleFallback;
+  }
   const kojBrowserW = platform === "tiktok" ? 520 : 400;
   const kojRenderW = Math.round(kojBrowserW * kojScale);
   const kojX = w - safe.right - pad;

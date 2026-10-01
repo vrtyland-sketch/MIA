@@ -1,0 +1,283 @@
+{
+  "name": "MIA MASTER CANON",
+  "version": "1.0.0",
+  "document_range": {
+    "from": 1,
+    "to": 49
+  },
+  "planned_max": 5000,
+  "format": "markdown",
+  "source_of_truth": true,
+  "generated_files": [
+    {
+      "path": "00_GOVERNANCE/0001_ústava_projektu_mia.md",
+      "sha256": "1e244a083bc15129596a88172989ef00cbe9383813e347241f264dd01545dee7",
+      "size": 2921
+    },
+    {
+      "path": "00_GOVERNANCE/0002_definice_entity.md",
+      "sha256": "14cdf5f45b6c064ed31ca6e0fff940830d698b0035935a52ee9dfb7558d1740a",
+      "size": 2765
+    },
+    {
+      "path": "00_GOVERNANCE/0003_definice_udalosti.md",
+      "sha256": "f59bdd54a02059d1fc1e4ca5d50d4be36b288768f0367fc54069177dd683586b",
+      "size": 2783
+    },
+    {
+      "path": "00_GOVERNANCE/0004_definice_komponenty.md",
+      "sha256": "6913422649e277d3cc103275d0201963deee6545e750b09cdedab25ace4e01ae",
+      "size": 2789
+    },
+    {
+      "path": "00_GOVERNANCE/0005_architektonicke_stavebni_prvky.md",
+      "sha256": "b925bbdea85abd3cf6d56e443ffb8c6563bc5d1e628570ab1512773c92898741",
+      "size": 2867
+    },
+    {
+      "path": "01_CORE/0006_architektura_platformy_mia.md",
+      "sha256": "31057932579535154c8c84c7677b18c2f1629b6e1132afbaf797560dfc4e19b0",
+      "size": 2874
+    },
+    {
+      "path": "01_CORE/0007_core_system.md",
+      "sha256": "42428a04b225b698f5c20ac2ee0417fddea7dd303e1a70ac0ce2d0cce9aec02c",
+      "size": 2741
+    },
+    {
+      "path": "01_CORE/0008_runtime_manager.md",
+      "sha256": "5d9b0cf6e7cb764da5be408e39f287d4460690102cdc376046c5eb14c9d0f287",
+      "size": 2765
+    },
+    {
+      "path": "01_CORE/0009_lifecycle_manager.md",
+      "sha256": "08b904d54e42ad474f3b974f608daa21385eb8ed67f4cc1e67ac60c365f18d2e",
+      "size": 2777
+    },
+    {
+      "path": "02_EVENT_BUS/0010_event_bus.md",
+      "sha256": "cd88ab162082a9defb8af13efa8cee1c41a79e59bb0eef037662b99b8f13aa84",
+      "size": 2766
+    },
+    {
+      "path": "02_EVENT_BUS/0011_event_gateway.md",
+      "sha256": "60b7c53a8e44d2051f8e031efc6f2485bada66dc63605182de548d31f8aaa52b",
+      "size": 2753
+    },
+    {
+      "path": "02_EVENT_BUS/0012_event_validator.md",
+      "sha256": "0b4fd59b1ed2a10e876aa1405d80752350bfa9f26641a6cf07bac3318c2fc027",
+      "size": 2765
+    },
+    {
+      "path": "02_EVENT_BUS/0013_event_registry.md",
+      "sha256": "3a8e8dc0348fba3ef515d9eb69962f9cb2dbfc86b86134cd2ff1e4bd7b833c37",
+      "size": 2759
+    },
+    {
+      "path": "02_EVENT_BUS/0014_event_router.md",
+      "sha256": "0169afc006b79a1ff73ad067079f85286783fa5b1fe7ac5e20e170b018c671a3",
+      "size": 2747
+    },
+    {
+      "path": "02_EVENT_BUS/0015_priority_manager.md",
+      "sha256": "a0419c114593916eb9f066bea53b6ccfd7fb5e3fbff578116668d52caf0fdc4e",
+      "size": 2771
+    },
+    {
+      "path": "02_EVENT_BUS/0016_queue_manager.md",
+      "sha256": "553a4c26025c26ce9dc7d7940bc7531c9e1f5e8b3db7267536ff9ce70d79d7f3",
+      "size": 2753
+    },
+    {
+      "path": "02_EVENT_BUS/0017_event_dispatcher.md",
+      "sha256": "4668a1841c9f3a76169ae844652be7aa175320021593effa2ab5f8560a12047c",
+      "size": 2771
+    },
+    {
+      "path": "03_MONITORING/0018_monitoring_system.md",
+      "sha256": "85a2efd2efdb41769ab3255440aed81a774746cee91b2707998337afbb58c255",
+      "size": 2777
+    },
+    {
+      "path": "04_MEMORY/0019_memory_system.md",
+      "sha256": "93dbaf6b5265c51cafdc251e2b5387919c70d0a6c7dfcfa406a15c50adb2343d",
+      "size": 2814
+    },
+    {
+      "path": "04_MEMORY/0020_working_memory.md",
+      "sha256": "04fb1632e22165623df51f9ad31b946e363747ac5029ce56b36149411085f68e",
+      "size": 2759
+    },
+    {
+      "path": "04_MEMORY/0021_short-term_memory.md",
+      "sha256": "d6ebe26b1985da7a3697ebe0dafdb42ca12a626dd25a04a7dcdccd6fa9d52db7",
+      "size": 2777
+    },
+    {
+      "path": "04_MEMORY/0022_long-term_memory.md",
+      "sha256": "3360cd1450deb24f6735e4b2e07c7a937f93effbce398b7238e7e43429cbacdc",
+      "size": 2771
+    },
+    {
+      "path": "04_MEMORY/0023_episodic_memory.md",
+      "sha256": "2137032b7d77edfcdf917994272e24fd7d0195ca0298fa3889ec70747cac1885",
+      "size": 2765
+    },
+    {
+      "path": "04_MEMORY/0024_semantic_memory.md",
+      "sha256": "72d81b43e45a642361eaf60ea1d5c7a4b73c11b4aad7c10dbcb01ecb0303d339",
+      "size": 2765
+    },
+    {
+      "path": "04_MEMORY/0025_procedural_memory.md",
+      "sha256": "51fa877de607bf8572af8cc31494f024dd1ef4f04428abb579b11d227472c2a6",
+      "size": 2777
+    },
+    {
+      "path": "04_MEMORY/0026_emotional_memory.md",
+      "sha256": "ff541106b161c4ca370334e7296ab942feccf3d40c8a3d179cb2fa27058e2a20",
+      "size": 2771
+    },
+    {
+      "path": "04_MEMORY/0027_knowledge_graph.md",
+      "sha256": "e6d4852c99ca74ef3dc2beab93ec41244cf6e39d924643e62aea88a4fed048a9",
+      "size": 2765
+    },
+    {
+      "path": "05_AI/0028_decision_engine.md",
+      "sha256": "542ad826bbabf2628a6143ed5efe1c7011daa9021b9da2bf1c06fa70c7623eac",
+      "size": 2847
+    },
+    {
+      "path": "05_AI/0029_action_orchestrator.md",
+      "sha256": "0be9ab5333ff635cc9acb27d016e3ce8833f22bca32183ed05549a8a835a0f7b",
+      "size": 2838
+    },
+    {
+      "path": "05_AI/0030_goal_management_system.md",
+      "sha256": "fa58ce2267f3a726c1b98189426080395f0037743af2069d20171db565f843aa",
+      "size": 2807
+    },
+    {
+      "path": "05_AI/0031_planning_engine.md",
+      "sha256": "c307fdeda725537aa0d4c735b762916d368748105b6a4a1c91c839b4fb3e540a",
+      "size": 2765
+    },
+    {
+      "path": "05_AI/0032_emotion_engine.md",
+      "sha256": "827153c240d39f2767eb5ba66c06ce2336ecca77730f2c254b1500232b47c6be",
+      "size": 2759
+    },
+    {
+      "path": "05_AI/0033_personality_engine.md",
+      "sha256": "2564a9d2fbf2ad5bb430fb8ddf078d29db3ac3e14d3554fc17e3d2aa52252f3e",
+      "size": 2783
+    },
+    {
+      "path": "05_AI/0034_conversation_engine.md",
+      "sha256": "117d15414e36f919a5bf77e8533f23461d0c7a6cc5ea031c99b7116079887a1b",
+      "size": 2840
+    },
+    {
+      "path": "06_GRAPHICS_OBS/0035_speech_engine.md",
+      "sha256": "734750019612673eb0c608b25943d61be7a304f5671a125e714831674e895a32",
+      "size": 2787
+    },
+    {
+      "path": "06_GRAPHICS_OBS/0036_animation_engine.md",
+      "sha256": "c807e50ac9ac7a7332e3a632136a0afb8f4bc0637d8c712d678016ca3ed06b13",
+      "size": 2771
+    },
+    {
+      "path": "06_GRAPHICS_OBS/0037_visual_rendering_system.md",
+      "sha256": "144c72bd1e13114bb3f117b251174560765ea82bd0dbdc590a20c6d77cbac38d",
+      "size": 2813
+    },
+    {
+      "path": "06_GRAPHICS_OBS/0038_obs_integration_layer.md",
+      "sha256": "f096414abfd2e23028ac988b2f899b8c368df0c46b952b4928a6dd22d3c50ba6",
+      "size": 2928
+    },
+    {
+      "path": "07_GAMEPLAY/0039_battle_engine.md",
+      "sha256": "cff84f2336aaf909592376b47f8dc013b8e30771406e626fc34c70062fa90dbe",
+      "size": 2846
+    },
+    {
+      "path": "07_GAMEPLAY/0040_inventory_engine.md",
+      "sha256": "95e1bc922b6afffa5ec74f0ac7f7ba1d7c6922826b2d8f9c31589fb408b4ec2e",
+      "size": 2771
+    },
+    {
+      "path": "07_GAMEPLAY/0041_economy_engine.md",
+      "sha256": "dd0febe42f2f2539ae7b5f7a53858a7478f5f13b3e3d10b977a97b0a3a34273b",
+      "size": 2849
+    },
+    {
+      "path": "07_GAMEPLAY/0042_quest_and_progression_engine.md",
+      "sha256": "9079ae48b32948da06c0787bcca9ba5d597599487e692a4623584ce6f5225faa",
+      "size": 2841
+    },
+    {
+      "path": "07_GAMEPLAY/0043_achievement_engine.md",
+      "sha256": "f2bfe88c7e8728dc2d2cc668784990a8bfc4a9e1fce22ff9dea68cdc36435687",
+      "size": 2783
+    },
+    {
+      "path": "08_WORLD_COMMUNITY/0044_community_engine.md",
+      "sha256": "39c306b344faa11989a09fc151d521f72c7919b043ecae7edd8e85855213eb40",
+      "size": 2771
+    },
+    {
+      "path": "08_WORLD_COMMUNITY/0045_world_engine.md",
+      "sha256": "a6604a6f29a057911689cf49c21b6eae1669778ffb6c8e3bab9fbac64d37f917",
+      "size": 2747
+    },
+    {
+      "path": "08_WORLD_COMMUNITY/0046_story_engine.md",
+      "sha256": "1c93eae8a4ec7451b204bf3631c2be99d7037fdd31981f9b2d3ca46927d0aff4",
+      "size": 2747
+    },
+    {
+      "path": "08_WORLD_COMMUNITY/0047_npc_and_character_engine.md",
+      "sha256": "166c2df8dd7f07c70acca6fb98c6df434df42801538de9da4c1c0bca3cc14c0f",
+      "size": 2817
+    },
+    {
+      "path": "08_WORLD_COMMUNITY/0048_creature_evolution_engine.md",
+      "sha256": "cf2a762e4b0a723cb0546ae55c9b14ac78fc88411bd6ccd98c6a781a4e8f2056",
+      "size": 3021
+    },
+    {
+      "path": "09_PLATFORM_MODULES/0049_plugin_and_module_engine.md",
+      "sha256": "63ca70226c048f342d787e8b81fe6f31090ea9b973ce3ebeb1669f8706f98f76",
+      "size": 2957
+    },
+    {
+      "path": "ARCHITECTURE_TREE.md",
+      "sha256": "78315cdf489d8e32e8fe558c699c5642e7731360ca72913d36f8094c1f2d6aee",
+      "size": 1423
+    },
+    {
+      "path": "CANON_INDEX.md",
+      "sha256": "743ece45973f6b9dfc1625476290424e83ad61539a4d21166741a6b0e1fcb9bb",
+      "size": 6408
+    },
+    {
+      "path": "CURSOR_AUDIT_PROMPT.md",
+      "sha256": "29e0dac80e7700c5458dabce3dcb7eeef26f08339f0fa4b2e0fda18d4ae5cf13",
+      "size": 943
+    },
+    {
+      "path": "IMPLEMENTATION_MATRIX.csv",
+      "sha256": "75869ff882f17246fdc71b0e4c1e8b2fab1d6e3b3bbd7288983a916e5c06bd30",
+      "size": 2190
+    },
+    {
+      "path": "README.md",
+      "sha256": "bc090b322c8406e8919fe934c18180c87ce585cb9d8316ab39d2a5a49135e887",
+      "size": 667
+    }
+  ]
+}

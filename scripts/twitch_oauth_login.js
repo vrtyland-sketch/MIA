@@ -21,8 +21,9 @@ const OUT_PATH = path.join(ROOT, "secrets", "local", "twitch_oauth.json");
 const REDIRECT_URI = "http://localhost:3099/twitch/callback";
 const PORT = 3099;
 
+// Official Twitch scopes (https://dev.twitch.tv/docs/authentication/scopes/)
+// EventSub chat over WebSocket needs user:read:chat — NOT channel:read:chat (invalid).
 const SCOPES = [
-  "channel:read:chat",
   "user:read:chat",
   "channel:read:subscriptions",
   "channel:read:redemptions",
@@ -118,11 +119,16 @@ async function run() {
     }).toString();
 
   console.log("\n=== Twitch OAuth login ===\n");
-  console.log("Oteviram Twitch prihlaseni...\n");
+  console.log("1) Startuji callback listener na", REDIRECT_URI);
 
   const codePromise = new Promise((resolve, reject) => {
     const server = http.createServer((req, res) => {
-      const url = new URL(req.url, `http://127.0.0.1:${PORT}`);
+      const url = new URL(req.url || "/", `http://127.0.0.1:${PORT}`);
+      if (url.pathname === "/health") {
+        res.writeHead(200, { "Content-Type": "text/plain" });
+        res.end("ok");
+        return;
+      }
       if (url.pathname !== "/twitch/callback") {
         res.writeHead(404);
         res.end("not found");
@@ -148,12 +154,28 @@ async function run() {
       server.close();
     });
 
-    server.listen(PORT, "127.0.0.1", () => openBrowser(authUrl));
-    server.on("error", reject);
+    server.once("error", (err) => {
+      reject(new Error(`Callback server failed on :${PORT}: ${err.message}`));
+    });
+
+    // Listen FIRST — only open browser after port is confirmed accepting connections.
+    server.listen(PORT, "127.0.0.1", async () => {
+      try {
+        const health = await fetch(`http://127.0.0.1:${PORT}/health`);
+        if (!health.ok) throw new Error(`health ${health.status}`);
+        console.log("2) Callback READY na 127.0.0.1:" + PORT + " /twitch/callback");
+        console.log("3) Oteviram Twitch autorizaci — klikni Authorize (timeout 15 min)\n");
+        openBrowser(authUrl);
+      } catch (err) {
+        server.close();
+        reject(new Error(`Callback listen verify failed: ${err.message}`));
+      }
+    });
+
     setTimeout(() => {
       server.close();
-      reject(new Error("OAuth timeout (5 min)"));
-    }, 300_000);
+      reject(new Error("OAuth timeout (15 min) — server uz nebezi, spust znovu npm run twitch:login"));
+    }, 900_000);
   });
 
   try {

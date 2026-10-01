@@ -39,12 +39,44 @@ async function run() {
       "startKickBridge",
       "twitchOnEvent",
       "startTwitchBridge",
+      "youtubeOnEvent",
+      "startYouTubeBridge",
       "telegramOnMessage",
       "startTelegramBridge",
       "bootstrapPlatformBridges"
     ]) {
       assert.equal(typeof api[key], "function", `missing ${key}`);
     }
+  });
+
+  await test("startKickBridge uses unified /ingest HTTP (no direct onEvent)", async () => {
+    let startOpts = null;
+
+    const api = createPlatformBridges({
+      app: {},
+      runtimeConfig: {
+        kick: { enabled: true, ingestUrl: "http://127.0.0.1:3000/ingest" }
+      },
+      writeLog: () => {},
+      cloneJson: (v) => v,
+      safeString: (v, fb) => (v ? String(v) : fb || ""),
+      processEvent: async () => ({ status: 200, body: { ok: true } }),
+      kickBridgeModule: {
+        async start(opts) {
+          startOpts = opts;
+          return { ok: true, reason: "started_by_test" };
+        }
+      },
+      twitchBridgeModule: {},
+      telegramBridgeModule: {},
+      responseEngine: {},
+      getOutputState: () => ({}),
+      getKojnozoutState: () => ({})
+    });
+
+    await api.startKickBridge();
+    assert.equal(startOpts.onEvent, null);
+    assert.equal(startOpts.config.ingestUrl, "http://127.0.0.1:3000/ingest");
   });
 
   await test("kickOnEvent forwards to processEvent and logs", async () => {

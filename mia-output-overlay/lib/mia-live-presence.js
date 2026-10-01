@@ -27,14 +27,15 @@
     /** Kept for contract / eyes ladder timing; hero no longer ticks pose frames */
     lipTickMs: 280,
     lipHoldMs: 340,
+    /** Distinct head poses (parts/head/) — pre-R1-D controlled expansion */
     faces: {
-      idle: IDLE,
-      happy: IDLE,
-      gift: IDLE,
-      duel: IDLE,
-      combo: IDLE,
-      think: IDLE,
-      wave: IDLE
+      idle:  "/assets/mia/parts/head/idle.png",
+      happy: "/assets/mia/parts/head/happy.png",
+      gift:  "/assets/mia/parts/head/gift.png",
+      duel:  "/assets/mia/parts/head/duel.png",
+      combo: "/assets/mia/parts/head/combo.png",
+      think: "/assets/mia/parts/head/think.png",
+      wave:  "/assets/mia/parts/head/wave.png"
     },
     bustUrl(url) {
       if (!url) return url;

@@ -28,17 +28,24 @@ async function test(name, fn) {
     assert.ok(mods.some((m) => m.id === "live_presence" && m.phase === "14a"));
   });
 
-  await test("live presence config — idle↔speak only (no wave carousel)", () => {
+  await test("live presence config — lip ladder + distinct mood faces (pre-R1-D expansion)", () => {
     assert.equal(presence.idleFace, presence.lipLadder[0]);
     assert.equal(presence.speakFace, presence.lipLadder[1]);
-    assert.equal(presence.faces.idle, presence.lipLadder[0]);
-    assert.equal(presence.faces.gift, presence.idleFace);
-    assert.equal(presence.faces.wave, presence.idleFace);
     assert.equal(presence.lipLadder.length, 2);
     assert.ok(presence.lipTickMs >= 220);
     assert.ok(presence.lipHoldMs >= 280);
     assert.ok(presence.poseCrossfadeMs >= 200 && presence.poseCrossfadeMs <= 400);
     assert.match(String(presence.bust), /36-koj-unify/);
+    // Distinct mood faces (parts/head/) — pre-R1-D controlled expansion
+    const MOODS = ["idle", "happy", "gift", "duel", "combo", "think", "wave"];
+    for (const m of MOODS) {
+      assert.ok(presence.faces[m], `faces.${m} must be defined`);
+      assert.match(presence.faces[m], /parts\/head\//, `faces.${m} must use parts/head/`);
+    }
+    // idle and happy/gift/wave must be distinct URLs (no longer all collapsed to one PNG)
+    assert.notEqual(presence.faces.idle, presence.faces.happy);
+    assert.notEqual(presence.faces.idle, presence.faces.gift);
+    assert.notEqual(presence.faces.idle, presence.faces.wave);
   });
 
   await test("speech + head runtime use shared presence", () => {

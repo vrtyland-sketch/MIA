@@ -15,10 +15,21 @@ function createPlatformBridges(deps = {}) {
     kickBridgeModule,
     twitchBridgeModule,
     telegramBridgeModule,
+    youtubeBridgeModule: youtubeBridgeModuleDep,
     responseEngine,
     getOutputState,
     getKojnozoutState
   } = deps;
+
+  // Prefer injected module; fall back to local require so index.js need not change.
+  let youtubeBridgeModule = youtubeBridgeModuleDep;
+  if (!youtubeBridgeModule || typeof youtubeBridgeModule.start !== "function") {
+    try {
+      youtubeBridgeModule = require("./MIA_YOUTUBE_BRIDGE");
+    } catch (_err) {
+      youtubeBridgeModule = {};
+    }
+  }
 
   async function kickOnEvent(rawEvent) {
     const result = await processEvent(rawEvent);
@@ -29,6 +40,11 @@ function createPlatformBridges(deps = {}) {
     });
 
     return result;
+  }
+
+  /** Unified gateway: bridges POST to /ingest (same path as TikFinity). */
+  function bridgeUsesIngestHttp(cfg = {}) {
+    return safeString(cfg.ingestUrl, "http://127.0.0.1:3000/ingest");
   }
 
   async function startKickBridge() {
@@ -45,6 +61,9 @@ function createPlatformBridges(deps = {}) {
       return { ok: false, reason: "disabled" };
     }
 
+    const ingestUrl = bridgeUsesIngestHttp(cfg);
+    console.log(`[KICK_BRIDGE] Route: Kick → ${ingestUrl} (unified /ingest gateway)`);
+
     try {
       if (
         cfg.mode === "webhook" &&
@@ -53,8 +72,8 @@ function createPlatformBridges(deps = {}) {
         kickBridgeModule.createKickWebhookBridge({
           app,
           webhookPath: cfg.webhookPath,
-          ingestUrl: cfg.ingestUrl,
-          onEvent: kickOnEvent
+          ingestUrl,
+          onEvent: null
         });
         writeLog("kick-bridge", {
           status: "webhook_registered",
@@ -68,15 +87,15 @@ function createPlatformBridges(deps = {}) {
 
       if (typeof kickBridgeModule?.startKickBridge === "function") {
         return await kickBridgeModule.startKickBridge({
-          config: cfg,
-          onEvent: kickOnEvent
+          config: { ...cfg, ingestUrl },
+          onEvent: null
         });
       }
 
       if (typeof kickBridgeModule?.start === "function") {
         const result = await kickBridgeModule.start({
-          config: cfg,
-          onEvent: kickOnEvent
+          config: { ...cfg, ingestUrl },
+          onEvent: null
         });
 
         writeLog("kick-bridge", {
@@ -132,6 +151,9 @@ function createPlatformBridges(deps = {}) {
     const cfg = runtimeConfig?.twitch || {};
     if (!cfg.enabled) return;
 
+    const ingestUrl = bridgeUsesIngestHttp(cfg);
+    console.log(`[TWITCH_BRIDGE] Route: Twitch → ${ingestUrl} (unified /ingest gateway)`);
+
     try {
       if (
         typeof twitchBridgeModule?.createTwitchWebhookBridge === "function" &&
@@ -139,14 +161,14 @@ function createPlatformBridges(deps = {}) {
       ) {
         twitchBridgeModule.createTwitchWebhookBridge(app, {
           webhookPath: cfg.webhookPath,
-          ingestUrl: cfg.ingestUrl,
-          onEvent: twitchOnEvent
+          ingestUrl,
+          onEvent: null
         });
       }
       if (typeof twitchBridgeModule?.start === "function" && cfg.mode !== "webhook") {
         twitchBridgeModule.start({
-          config: cfg,
-          onEvent: twitchOnEvent
+          config: { ...cfg, ingestUrl },
+          onEvent: null
         });
       }
     } catch (err) {
@@ -230,6 +252,57 @@ function createPlatformBridges(deps = {}) {
     }
   }
 
+  async function youtubeOnEvent(rawEvent) {
+    const result = await processEvent(rawEvent);
+    writeLog("youtube-events", {
+      event: cloneJson(rawEvent, rawEvent),
+      result
+    });
+    return result;
+  }
+
+  function startYouTubeBridge() {
+    const cfg = runtimeConfig?.youtube || {};
+    if (!cfg.enabled) {
+      writeLog("youtube-bridge", { status: "disabled" });
+      return { ok: false, reason: "disabled" };
+    }
+
+    const ingestUrl = bridgeUsesIngestHttp(cfg);
+    console.log(`[YOUTUBE_BRIDGE] Route: YouTube → ${ingestUrl} (unified /ingest gateway)`);
+
+    try {
+      if (typeof youtubeBridgeModule?.start !== "function") {
+        console.error("[YOUTUBE_BRIDGE] module missing");
+        return { ok: false, reason: "module_missing" };
+      }
+      const result = youtubeBridgeModule.start({
+        config: { ...cfg, ingestUrl },
+        onEvent: null
+      });
+      Promise.resolve(result)
+        .then((r) => {
+          writeLog("youtube-bridge", { status: "starting", result: r });
+          if (r?.ok === false) {
+            console.error("[YOUTUBE_BRIDGE] Failed:", r.reason);
+          } else {
+            console.log("[YOUTUBE_BRIDGE] Chat-only poll starting", {
+              liveChatId: r?.liveChatId || cfg.liveChatId || null
+            });
+          }
+        })
+        .catch((err) => {
+          writeLog("mia-errors", { source: "youtube_bridge", error: err.message });
+          console.error("[YOUTUBE_BRIDGE_FAILED]", err.message);
+        });
+      return result;
+    } catch (err) {
+      writeLog("mia-errors", { source: "youtube_bridge", error: err.message });
+      console.error("[YOUTUBE_BRIDGE_FAILED]", err.message);
+      return { ok: false, reason: "exception", error: err.message };
+    }
+  }
+
   function bootstrapPlatformBridges() {
     void startKickBridge().catch((err) => {
       writeLog("mia-errors", {
@@ -239,6 +312,7 @@ function createPlatformBridges(deps = {}) {
       console.error("[KICK_BRIDGE_BOOTSTRAP_FAILED]", err.message);
     });
     startTwitchBridge();
+    startYouTubeBridge();
     startTelegramBridge();
   }
 
@@ -247,6 +321,8 @@ function createPlatformBridges(deps = {}) {
     startKickBridge,
     twitchOnEvent,
     startTwitchBridge,
+    youtubeOnEvent,
+    startYouTubeBridge,
     telegramOnMessage,
     startTelegramBridge,
     bootstrapPlatformBridges

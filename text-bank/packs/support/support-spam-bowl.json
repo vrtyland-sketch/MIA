@@ -8,16 +8,24 @@
         "intent": "support"
       },
       "variants": [
-        "Spam dorazil jak měl. Krásná práce.",
-        "Tohle byla povedená společná vlna.",
-        "Výborně. Komunita to dotlačila správně.",
-        "Tohle už je přesně ten moment, kdy se spojí tempo a chuť.",
+        "Spam dorazil. Přesně tak.",
+        "Tohle byla povedená vlna.",
+        "Výborně. Dotáhli jste to správně.",
+        "Tohle už je ten moment, kdy se to sejde.",
         "Pěkně. Spam splněný a je to znát.",
         "Tohle byla poctivá společná práce.",
-        "Komunita to zvládla. Výborně.",
+        "Jo. Zvládli jste to.",
         "Tohle už je krásná souhra.",
-        "Jo. Přesně takhle má vypadat splněný tlak komunity.",
-        "Výborně. Tohle se povedlo."
+        "Jo. Přesně takhle má vypadat splněný tlak.",
+        "Výborně. Tohle se povedlo.",
+        "Takhle to má být — rychle, čistě, najednou.",
+        "Spam hotový a já to cítím v celém chatu.",
+        "Paráda. Právě jste ukázali sílu.",
+        "Tohle byl moment, kdy se všichni sešli na jednom cíli.",
+        "Krásně dotažené.",
+        "Ano. Tempo, tlak, výsledek — přesně tak.",
+        "Tohle se mi líbí. Společná akce funguje.",
+        "Spam splněn a atmosféra hned stoupla."
       ]
     },
     "support_spam_fail_mia": {
@@ -36,7 +44,15 @@
         "Chyběl jen malý krok.",
         "Málem krásný zásah. Příště to dorazte.",
         "Tohle bylo těsně pod hranou.",
-        "Ještě trochu tlaku a bylo to hotové."
+        "Ještě trochu tlaku a bylo to hotové.",
+        "Skoro. Příště to dotáhněte na první pokus.",
+        "Bylo to fakt blízko — chyběl poslední impuls.",
+        "Těsně. Ale vidím, že jste se snažili.",
+        "Málem jsme to měli. Ještě kousek od cíle.",
+        "Tohle už skoro klaplo. Nevzdávejte to.",
+        "Blízko, ale ne dost. Příště to dorazíte.",
+        "Skoro hotovo — ten poslední krok chyběl.",
+        "Bylo to na hraně. Příště to vezmeme celé."
       ]
     },
     "support_spam_success_kojnozout": {
@@ -48,14 +64,22 @@
       "variants": [
         "Jo! Tohle byl pořádnej hromadnej nášup.",
         "Spam dorazil. To už mi chutná.",
-        "Tohle byl krásnej kolektivní útok na misku.",
-        "Výborně. Tohle mi zvedlo náladu.",
+        "Miska právě dostala pořádnou ránu najednou.",
+        "Jo! Břicho už to cítí.",
         "Jo, tak tohle byla poctivá smečka.",
         "Tohle už byl masakr v dobrým.",
-        "Pěkně. Tohle byla hostina komunitní silou.",
+        "Pěkně. Miska je plná a já mlaskám.",
         "Jo, tohle mi sedlo až do vousů.",
-        "Tak tohle bylo krásně dotažený.",
-        "Tohle byla čistá radost pro bestii."
+        "Tak jo. Misku jste dorazili, teď dejte chvíli pokoj.",
+        "Jo jo. Bestie je spokojená a břicho taky.",
+        "Jo! Komunita právě dorazila misku najednou.",
+        "Tohle byl nášup, co si pamatuju.",
+        "Paráda. Smečka to dorazila najednou.",
+        "Tak jo. Miska teď voní po vítězství.",
+        "No konečně! Tohle už stálo za otevření huby.",
+        "Ještě takhle párkrát a budu se kutálet.",
+        "Spam dorazil. Bestie je spokojená.",
+        "Výborně. Miska dostala svoje a já taky."
       ]
     },
     "support_spam_fail_kojnozout": {
@@ -74,7 +98,15 @@
         "Bylo to těsně pod čenichem.",
         "Málem. Příště to dorvěte.",
         "Tohle skoro vyšlo, sakra.",
-        "Chyběl jen malej dokus."
+        "Chyběl jen malej dokus.",
+        "Sakra, bylo to fakt těsný.",
+        "Jo, málem jsme to měli v misce.",
+        "Skoro hotovo — chyběl poslední šťouchnutí.",
+        "Těsně pod cílem. Příště to dorvěte.",
+        "Málem jsme slavili. Ještě kousek.",
+        "Blízko, ale miska zůstala chtít víc.",
+        "Tohle skoro bylo ono. Nevzdávejte.",
+        "Fakt blízko. Příště to vezmeme celý."
       ]
     },
     "support_full_bowl_mia": {

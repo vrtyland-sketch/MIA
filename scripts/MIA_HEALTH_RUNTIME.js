@@ -53,6 +53,9 @@ function createHealthRuntime(deps = {}) {
     const obsConnected = typeof getObsConnected === "function" ? getObsConnected() : false;
     const splitOverlays =
       typeof MIA_SPLIT_OVERLAYS === "function" ? MIA_SPLIT_OVERLAYS() : {};
+    const tiktokCfg = runtimeConfig?.tiktok || {};
+    const kickCfg = runtimeConfig?.kick || {};
+    const baseIngest = tiktokCfg.ingestUrl || `http://127.0.0.1:${port}/ingest`;
 
     return {
       ok: true,
@@ -62,6 +65,30 @@ function createHealthRuntime(deps = {}) {
       time: typeof nowIso === "function" ? nowIso() : new Date().toISOString(),
       lastIngest:
         typeof getLastIngestSummary === "function" ? getLastIngestSummary() || null : null,
+      ingestRouting: {
+        gateway: "POST/GET /ingest",
+        tikfinity: {
+          canonical: baseIngest,
+          aliases: (tiktokCfg.ingestAliases || [
+            "/tikfinity/webhook",
+            "/tikfinity/ingest",
+            "/tiktok/ingest"
+          ]).map((p) => `http://127.0.0.1:${port}${p}`),
+          note: "TikFinity browser extension → any alias above (same handler)"
+        },
+        kick: kickStatus
+          ? {
+              mode: kickCfg.mode || "realtime",
+              route: `Kick bridge → ${kickCfg.ingestUrl || baseIngest}`,
+              webhookPath: kickCfg.webhookPath || "/kick/webhook"
+            }
+          : null,
+        twitch: twitchStatus
+          ? {
+              route: `Twitch bridge → ${runtimeConfig?.twitch?.ingestUrl || baseIngest}`
+            }
+          : null
+      },
       kickBridge: kickStatus,
       twitchBridge: twitchStatus,
       bowlPercent: kojSnap?.bowlPercent ?? null,

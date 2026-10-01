@@ -70,10 +70,13 @@ async function run() {
     assert.match(env, /MIA_PREFLIGHT_MODE/);
   });
 
-  await test("index startup uses fast preflight by default", () => {
-    const index = fs.readFileSync(path.join(ROOT, "index.js"), "utf8");
-    assert.match(index, /resolveStartupPreflightArgs/);
-    assert.match(index, /--fast/);
+  await test("startup overlay runtime uses fast preflight by default", () => {
+    const startup = fs.readFileSync(
+      path.join(ROOT, "scripts", "MIA_STARTUP_OVERLAY_RUNTIME.js"),
+      "utf8"
+    );
+    assert.match(startup, /resolveStartupPreflightArgs/);
+    assert.match(startup, /--fast/);
   });
 
   if (process.exitCode) {

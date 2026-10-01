@@ -42,7 +42,9 @@
     }
     .cast {
       position: relative;
-      width: min(1100px, 94vw);
+      width: min(calc(1100px * var(--gift-cast-scale, 0.72)), calc(94vw * var(--gift-cast-scale, 0.72)));
+      max-height: min(62vh, 520px);
+      aspect-ratio: 16 / 9;
       height: min(620px, 78vh);
       border-radius: 32px;
       overflow: hidden;
@@ -61,8 +63,9 @@
     }
     #stage.spec-max .cast,
     #stage.spec-high .cast {
-      width: min(1180px, 96vw);
-      height: min(680px, 82vh);
+      width: min(calc(1180px * var(--gift-cast-scale, 0.72)), calc(96vw * var(--gift-cast-scale, 0.72)));
+      height: min(calc(680px * var(--gift-cast-scale, 0.72)), calc(82vh * var(--gift-cast-scale, 0.72)));
+      max-height: min(58vh, 480px);
       box-shadow:
         0 32px 96px rgba(0, 0, 0, 0.62),
         0 0 0 1px color-mix(in srgb, var(--accent, #c77dff) 55%, transparent),
@@ -1018,8 +1021,23 @@
       } catch (_err) { /* ignore */ }
     }
 
+    async function pollLayout() {
+      try {
+        const res = await fetch("/overlay/layout", { cache: "no-store" });
+        if (!res.ok) return;
+        const body = await res.json();
+        const layout = body.layout || body;
+        const scale = Number(layout.giftCastScale);
+        if (Number.isFinite(scale) && scale > 0) {
+          document.documentElement.style.setProperty("--gift-cast-scale", String(scale));
+        }
+      } catch (_err) { /* ignore */ }
+    }
+
     setInterval(poll, POLL_MS);
+    setInterval(pollLayout, 5000);
     poll();
+    pollLayout();
   </script>
 </body>
 </html>

@@ -187,6 +187,30 @@
     </section>
 
     <section class="card">
+      <h2>Velikost overlay (manuál)</h2>
+      <p class="mono" style="opacity:.75;margin:0 0 10px;font-size:12px;line-height:1.4">
+        Když je Koj / gift / genesis mimo obraz, sniž měřítko a ulož.
+        Runtime si bere hodnoty z <span class="mono">/overlay/layout</span>.
+        Po změně OBS scale klikni i <strong>Srovnat layout</strong>.
+      </p>
+      <div class="row"><span>Koj scale</span><strong><input id="layKojScale" type="range" min="0.4" max="1.4" step="0.01" style="width:55%"/> <em id="layKojScaleVal">—</em></strong></div>
+      <div class="row"><span>Růst</span><strong><input id="layGrowth" type="range" min="0.4" max="1.4" step="0.01" style="width:55%"/> <em id="layGrowthVal">—</em></strong></div>
+      <div class="row"><span>Dock max W</span><strong><input id="layDockW" type="range" min="140" max="520" step="4" style="width:55%"/> <em id="layDockWVal">—</em></strong></div>
+      <div class="row"><span>Dock max H</span><strong><input id="layDockH" type="range" min="180" max="720" step="4" style="width:55%"/> <em id="layDockHVal">—</em></strong></div>
+      <div class="row"><span>Břicho</span><strong><input id="layBelly" type="range" min="0.4" max="1.4" step="0.01" style="width:55%"/> <em id="layBellyVal">—</em></strong></div>
+      <div class="row"><span>Props</span><strong><input id="layProp" type="range" min="0.4" max="1.4" step="0.01" style="width:55%"/> <em id="layPropVal">—</em></strong></div>
+      <div class="row"><span>Gift cast</span><strong><input id="layGift" type="range" min="0.4" max="1.2" step="0.01" style="width:55%"/> <em id="layGiftVal">—</em></strong></div>
+      <div class="row"><span>Genesis</span><strong><input id="layGenesis" type="range" min="0.5" max="1.2" step="0.01" style="width:55%"/> <em id="layGenesisVal">—</em></strong></div>
+      <div class="row"><span>OBS Koj (portrait)</span><strong><input id="layObsKoj" type="range" min="0.45" max="1.6" step="0.01" style="width:55%"/> <em id="layObsKojVal">—</em></strong></div>
+      <div class="actions">
+        <button class="btn" type="button" id="btnLayoutSave">Uložit velikost</button>
+        <button class="btn" type="button" id="btnLayoutReset">Reset default</button>
+        <a class="btn" href="/kojnozrout-runtime.html?layout=1" target="_blank">Panel v runtime</a>
+        <button class="btn" type="button" id="btnFixLayoutAfterSize">Srovnat layout</button>
+      </div>
+    </section>
+
+    <section class="card">
       <h2>Host režim</h2>
       <div class="row"><span>World mode</span><strong id="worldMode">—</strong></div>
       <div class="row"><span>Host badge</span><strong id="hostBadge">—</strong></div>
@@ -683,6 +707,75 @@
       await postJson("/obs/fix-layout");
       refresh();
     });
+
+    const layoutFields = [
+      ["layKojScale", "kojScale", "layKojScaleVal"],
+      ["layGrowth", "growthMul", "layGrowthVal"],
+      ["layDockW", "dockMaxW", "layDockWVal"],
+      ["layDockH", "dockMaxH", "layDockHVal"],
+      ["layBelly", "bellyScale", "layBellyVal"],
+      ["layProp", "propScale", "layPropVal"],
+      ["layGift", "giftCastScale", "layGiftVal"],
+      ["layGenesis", "genesisScale", "layGenesisVal"],
+      ["layObsKoj", "obsKojScale", "layObsKojVal"]
+    ];
+
+    function syncLayoutUi(layout) {
+      if (!layout) return;
+      for (const [inputId, key, valId] of layoutFields) {
+        const input = document.getElementById(inputId);
+        const val = document.getElementById(valId);
+        if (input && layout[key] != null) input.value = String(layout[key]);
+        if (val && layout[key] != null) val.textContent = String(layout[key]);
+      }
+    }
+
+    function readLayoutUi() {
+      const out = {};
+      for (const [inputId, key, valId] of layoutFields) {
+        const input = document.getElementById(inputId);
+        if (!input) continue;
+        const n = Number(input.value);
+        out[key] = Number.isFinite(n) ? n : undefined;
+        const val = document.getElementById(valId);
+        if (val) val.textContent = input.value;
+      }
+      return out;
+    }
+
+    for (const [inputId] of layoutFields) {
+      const input = document.getElementById(inputId);
+      if (!input) continue;
+      input.addEventListener("input", readLayoutUi);
+    }
+
+    async function loadOverlayLayout() {
+      try {
+        const res = await fetch("/overlay/layout", { cache: "no-store" });
+        if (!res.ok) return;
+        const body = await res.json();
+        syncLayoutUi(body.layout || body);
+      } catch (_err) {
+        /* ignore */
+      }
+    }
+
+    document.getElementById("btnLayoutSave").addEventListener("click", async () => {
+      await postJson("/overlay/layout", readLayoutUi());
+      await loadOverlayLayout();
+    });
+
+    document.getElementById("btnLayoutReset").addEventListener("click", async () => {
+      await postJson("/overlay/layout/reset", {});
+      await loadOverlayLayout();
+    });
+
+    document.getElementById("btnFixLayoutAfterSize").addEventListener("click", async () => {
+      await postJson("/obs/fix-layout");
+      refresh();
+    });
+
+    loadOverlayLayout();
 
     document.getElementById("btnReviveVoice").addEventListener("click", async () => {
       const result = await postJson("/obs/revive-voice", { speaker: "mia" });

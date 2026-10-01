@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <title>MIA Genesis — Operator Mode</title>
+  <link rel="stylesheet" href="/assets/genesis/genesis.css" />
+  <style>
+    body {
+      width: 1280px;
+      height: 720px;
+      background: #070d18;
+      color: #e8f4ff;
+      padding: 28px 32px;
+      font-family: var(--g-sans);
+    }
+    h1 { margin: 0 0 6px; font-size: 28px; }
+    .sub { color: var(--g-muted); margin-bottom: 22px; font-size: 14px; }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .card {
+      background: var(--g-panel);
+      border: 1px solid var(--g-border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .name { font-weight: 700; letter-spacing: 0.06em; }
+    .dot { font-size: 18px; margin-right: 8px; }
+    .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    button {
+      border: 1px solid var(--g-border);
+      background: rgba(92, 225, 255, 0.12);
+      color: #e8f4ff;
+      border-radius: 8px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+    }
+    button:hover { background: rgba(92, 225, 255, 0.22); }
+    button.warn { border-color: rgba(255, 200, 87, 0.5); }
+    button.ok { border-color: rgba(125, 255, 179, 0.5); }
+    .log {
+      margin-top: 18px;
+      font-family: var(--g-mono);
+      font-size: 12px;
+      color: #9eb4d9;
+      max-height: 160px;
+      overflow: auto;
+      white-space: pre-wrap;
+    }
+    .banner {
+      margin-bottom: 16px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(125, 255, 179, 0.35);
+      color: var(--g-mint);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Operator Mode</h1>
+  <div class="sub">Druhý monitor · MIA_STREAM_TEST ověřuješ ty · MIA_GENESIS vidí diváci · Core izolován</div>
+  <div class="banner">GENESIS · LIVE na veřejné scéně · STREAM_TEST je neveřejný</div>
+  <div class="grid" id="modules"></div>
+  <div class="log" id="log"></div>
+
+  <script src="/assets/genesis/genesis-bus.js"></script>
+  <script>
+    const ORDER = ["GENESIS", "Voice", "Chat", "Gift Engine", "Bowl", "Video", "Overlay"];
+    const logEl = document.getElementById("log");
+
+    function icon(state) {
+      const s = String(state || "").toUpperCase();
+      if (s === "LIVE" || s === "ONLINE" || s === "PASS") return "🟢";
+      if (s === "TEST" || s === "VERIFYING" || s === "CHECKING") return "🟡";
+      return "🔴";
+    }
+
+    function log(line) {
+      logEl.textContent = new Date().toLocaleTimeString() + "  " + line + "\n" + logEl.textContent;
+    }
+
+    function render() {
+      const modules = MIA_GENESIS_BUS.getModules();
+      const host = document.getElementById("modules");
+      host.innerHTML = ORDER.map((id) => {
+        const m = modules[id] || { state: "OFF", label: id };
+        const disableEnable = id === "GENESIS" || id === "Overlay";
+        return `<div class="card" data-id="${id}">
+          <div><span class="dot">${icon(m.state)}</span><span class="name">${(m.label || id).toUpperCase()}</span>
+          <div style="color:var(--g-muted);font-size:12px;margin-top:4px">${m.state}</div></div>
+          <div class="actions">
+            <button class="warn" data-act="test" data-id="${id}">TEST</button>
+            <button data-act="off" data-id="${id}">OFF</button>
+            <button class="ok" data-act="enable" data-id="${id}" ${disableEnable ? "disabled" : ""}>ENABLE → GENESIS</button>
+          </div>
+        </div>`;
+      }).join("");
+    }
+
+    document.getElementById("modules").addEventListener("click", (ev) => {
+      const btn = ev.target.closest("button");
+      if (!btn) return;
+      const id = btn.getAttribute("data-id");
+      const act = btn.getAttribute("data-act");
+      if (act === "test") {
+        MIA_GENESIS_BUS.setModuleState(id, "TEST");
+        log(id + " → TEST (ověřuj na MIA_STREAM_TEST)");
+      } else if (act === "off") {
+        MIA_GENESIS_BUS.setModuleState(id, "OFF");
+        log(id + " → OFF");
+      } else if (act === "enable") {
+        MIA_GENESIS_BUS.unlockPublic(id);
+        log(id + " → ENABLE na veřejném Genesis");
+      }
+      render();
+    });
+
+    MIA_GENESIS_BUS.onMessage((msg) => {
+      if (msg && msg.type) log("bus: " + msg.type + (msg.moduleId ? " " + msg.moduleId : ""));
+      render();
+    });
+
+    // Seed defaults once
+    const store = MIA_GENESIS_BUS.readStore();
+    if (!store.updatedAt) {
+      Object.keys(MIA_GENESIS_BUS.DEFAULT_MODULES).forEach((k) => {
+        MIA_GENESIS_BUS.setModuleState(k, MIA_GENESIS_BUS.DEFAULT_MODULES[k].state);
+      });
+    }
+    render();
+  </script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1080, height=1920, initial-scale=1" />
+  <title>MIA Genesis Overlay</title>
+  <link rel="stylesheet" href="/assets/genesis/genesis.css?v=portrait3" />
+  <style>
+    html, body {
+      width: 1080px;
+      height: 1920px;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: transparent;
+    }
+    body {
+      width: 1080px;
+      height: 1920px;
+      margin: 0;
+      padding: 200px 48px 140px 48px;
+      box-sizing: border-box;
+      transform: scale(var(--genesis-scale, 0.85));
+      transform-origin: 50% 0%;
+    }
+    .stage {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 4px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+      box-sizing: border-box;
+    }
+    .header {
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .brand .tag {
+      color: var(--g-cyan);
+      letter-spacing: 0.18em;
+      font-size: 10px;
+      text-transform: uppercase;
+    }
+    .brand h1 {
+      margin: 2px 0 0;
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+    }
+    .ready {
+      margin-top: 8px;
+      text-align: center;
+      padding: 8px 12px;
+    }
+    .ready .pct {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--g-mint);
+      line-height: 1;
+    }
+    .ready .label {
+      color: var(--g-muted);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+    }
+    .avatar-wrap {
+      height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .avatar {
+      width: 200px;
+      height: 220px;
+      object-fit: contain;
+    }
+    .hud {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 0;
+      overflow: hidden;
+    }
+    .daily {
+      font-size: 13px;
+      text-align: center;
+      line-height: 1.35;
+      color: #cfe8ff;
+    }
+    .shell {
+      font-family: var(--g-mono);
+      font-size: 10px;
+      line-height: 1.4;
+      color: var(--g-muted);
+      padding: 10px 12px;
+    }
+    .g-title {
+      font-size: 10px;
+      margin-bottom: 6px;
+    }
+    .shell .rows div {
+      white-space: normal;
+    }
+    #panelTerminal pre {
+      max-height: 72px;
+      overflow: hidden;
+      font-size: 10px;
+      white-space: pre-wrap;
+    }
+    .footer-note {
+      text-align: center;
+      font-size: 9px;
+      color: var(--g-muted);
+      letter-spacing: 0.08em;
+    }
+    #genesisSub {
+      position: fixed;
+      left: 48px;
+      right: 48px;
+      bottom: 160px;
+      padding: 14px 18px;
+      background: rgba(0, 0, 0, 0.82);
+      border: 1px solid rgba(92, 225, 255, 0.45);
+      border-radius: 12px;
+      font-size: 18px;
+      line-height: 1.38;
+      text-align: center;
+      z-index: 9999;
+      box-sizing: border-box;
+      white-space: normal;
+      word-wrap: break-word;
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="stage">
+      <div class="header">
+        <div class="brand">
+          <div class="tag">Genesis · probouzení</div>
+          <h1>MIA</h1>
+        </div>
+        <div class="ready g-panel">
+          <div class="label">READINESS</div>
+          <div class="pct" id="readiness">0%</div>
+        </div>
+      </div>
+      <div class="avatar-wrap">
+        <img class="avatar" id="avatar" src="/assets/mia/parts/head/idle.png" alt="MIA" />
+      </div>
+      <div class="hud">
+        <div class="g-panel daily" id="dailyNote">Genesis Sequence…</div>
+        <div class="g-panel shell" id="panelStatus">
+          <p class="g-title">System Status</p>
+          <div></div>
+        </div>
+        <div class="g-panel shell" id="panelDiag">
+          <p class="g-title">Diagnostics</p>
+          <div></div>
+        </div>
+        <div class="g-panel shell" id="panelTerminal">
+          <p class="g-title">Live Log</p>
+          <div></div>
+        </div>
+        <div class="g-panel shell" id="panelMilestones">
+          <p class="g-title">Milestones</p>
+          <div></div>
+        </div>
+        <div class="g-panel shell" id="publicModules" style="display:none">
+          <p class="g-title">Modules LIVE</p>
+          <div id="publicModuleBody"></div>
+        </div>
+      </div>
+      <div class="footer-note">9:16 · portrait</div>
+  </div>
+  <div id="genesisSub" aria-live="polite"></div>
+  <script>
+    window.MIA_GENESIS_BUILD = 5;
+  </script>
+  <script src="/assets/genesis/genesis-bus.js"></script>
+  <script src="/assets/genesis/genesis-voice.js"></script>
+  <script src="/assets/genesis/genesis-audio.js"></script>
+  <script src="/assets/genesis/genesis-runtime.js"></script>
+  <script src="/assets/genesis/genesis-birth-sequence.js"></script>
+  <script>
+    (async function pollGenesisLayout() {
+      try {
+        const res = await fetch("/overlay/layout", { cache: "no-store" });
+        if (!res.ok) return;
+        const body = await res.json();
+        const layout = body.layout || body;
+        const scale = Number(layout.genesisScale);
+        if (Number.isFinite(scale) && scale > 0) {
+          document.documentElement.style.setProperty("--genesis-scale", String(scale));
+          document.body.style.setProperty("--genesis-scale", String(scale));
+        }
+      } catch (_err) { /* ignore */ }
+      setTimeout(pollGenesisLayout, 5000);
+    })();
+  </script>
+</body>
+</html>

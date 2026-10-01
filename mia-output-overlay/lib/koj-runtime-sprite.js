@@ -105,11 +105,37 @@
       return safe(mood).toLowerCase() || "idle";
     }
 
+    function readCssPx(name, fallback) {
+      try {
+        const raw = getComputedStyle(stageEl || document.documentElement)
+          .getPropertyValue(name)
+          .trim();
+        const n = parseFloat(raw);
+        return Number.isFinite(n) && n > 0 ? n : fallback;
+      } catch (_err) {
+        return fallback;
+      }
+    }
+
+    function readCssNum(name, fallback) {
+      try {
+        const raw = getComputedStyle(stageEl || document.documentElement)
+          .getPropertyValue(name)
+          .trim();
+        const n = Number(raw);
+        return Number.isFinite(n) && n > 0 ? n : fallback;
+      } catch (_err) {
+        return fallback;
+      }
+    }
+
     function stageSize() {
       const w = Math.max(80, (stageEl && stageEl.clientWidth) || 400);
       const h = Math.max(80, (stageEl && stageEl.clientHeight) || 400);
-      const dockW = Math.min(w * 0.92, 300);
-      const dockH = Math.min(h * 0.88, 520);
+      const dockMaxW = readCssPx("--koj-dock-max-w", 240);
+      const dockMaxH = readCssPx("--koj-dock-max-h", 400);
+      const dockW = Math.min(w * 0.92, dockMaxW);
+      const dockH = Math.min(h * 0.88, dockMaxH);
       if (spriteDock) {
         spriteDock.style.width = `${dockW}px`;
         spriteDock.style.height = `${dockH}px`;
@@ -228,9 +254,13 @@
         Number.isFinite(sc) && sc > 0
           ? sc
           : evolutionScale[normalizedTier] || evolutionScale.egg;
-      const targetPx = Math.min(320, Math.round(110 + hubScale * 380));
+      const growthMul = readCssNum("--koj-growth-mul", 0.82);
+      const targetPx = Math.min(
+        280,
+        Math.round((110 + hubScale * 380) * growthMul)
+      );
       const { h } = stageSize();
-      return clamp(targetPx / h, 0.42, 0.98);
+      return clamp(targetPx / h, 0.36, 0.92);
     }
 
     async function crossfadeToTexture(url, heightFraction, mood = "", spriteAsset = "") {

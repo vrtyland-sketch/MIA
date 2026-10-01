@@ -60,6 +60,8 @@ function createMiaServerStarter(deps = {}) {
       console.log(`[OBS URL] dash    -> ${split.dashboard}  (streamer panel, ne pro OBS)`);
       console.log(`[OBS URL] hub     -> ${split.hub}  (legacy all-in-one, nedoporuceno)`);
       console.log(`[TIKFINITY] POST/GET -> http://127.0.0.1:${PORT}/ingest`);
+      console.log(`[TIKFINITY] aliases -> /tikfinity/webhook | /tikfinity/ingest | /tiktok/ingest`);
+      console.log(`[INGEST] Kick/Twitch/YouTube bridges -> same /ingest gateway`);
       warnOnDeadObsSceneFiles();
       await connectObs();
       setTimeout(() => {

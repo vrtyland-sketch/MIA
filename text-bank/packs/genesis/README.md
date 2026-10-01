@@ -1,0 +1,1 @@
+# Genesis voice packs\n\n- cs.json — 300 lines (100/80/60/40/20)\n- en.json, de.json, es.json — multilingual skeletons\n\nNot wired into Stream Core gift voice routing.\n

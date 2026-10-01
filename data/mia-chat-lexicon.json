@@ -1,23 +1,23 @@
 {
   "version": 1,
-  "updatedAt": 1781914061334,
+  "updatedAt": 1784052054394,
   "stats": {
-    "messagesSeen": 504,
-    "uniqueWords": 24,
-    "uniquePhrases": 28,
+    "messagesSeen": 516,
+    "uniqueWords": 31,
+    "uniquePhrases": 41,
     "spicyHits": 0
   },
   "tone": {
     "spiceLevel": 0,
-    "casualLevel": 100,
+    "casualLevel": 91,
     "energyLevel": 0,
-    "lastUpdated": 1781913679412
+    "lastUpdated": 1784051945526
   },
   "words": {
     "test": {
-      "count": 472,
+      "count": 475,
       "firstSeen": 1781369804347,
-      "lastSeen": 1781913679410,
+      "lastSeen": 1784051851640,
       "lastRaw": "test"
     },
     "kojnozroiutmia": {
@@ -157,6 +157,48 @@
       "firstSeen": 1781906899160,
       "lastSeen": 1781906899160,
       "lastRaw": "nia"
+    },
+    "podrbi": {
+      "count": 1,
+      "firstSeen": 1784051052991,
+      "lastSeen": 1784051052991,
+      "lastRaw": "podrbi"
+    },
+    "kojnozouta": {
+      "count": 1,
+      "firstSeen": 1784051052991,
+      "lastSeen": 1784051052991,
+      "lastRaw": "kojnozouta"
+    },
+    "chat": {
+      "count": 1,
+      "firstSeen": 1784051543623,
+      "lastSeen": 1784051543623,
+      "lastRaw": "chat"
+    },
+    "bublina": {
+      "count": 3,
+      "firstSeen": 1784051543623,
+      "lastSeen": 1784051851640,
+      "lastRaw": "bublina"
+    },
+    "kick": {
+      "count": 2,
+      "firstSeen": 1784051543623,
+      "lastSeen": 1784051851522,
+      "lastRaw": "kick"
+    },
+    "tiktok": {
+      "count": 2,
+      "firstSeen": 1784051618343,
+      "lastSeen": 1784051851640,
+      "lastRaw": "tiktok"
+    },
+    "chattest": {
+      "count": 1,
+      "firstSeen": 1784051945526,
+      "lastSeen": 1784051945526,
+      "lastRaw": "chattest"
     }
   },
   "phrases": {
@@ -185,9 +227,9 @@
       "lastRaw": "jsem nemocny"
     },
     "ahoj mia": {
-      "count": 7,
+      "count": 13,
       "firstSeen": 1781410191924,
-      "lastSeen": 1781906912177,
+      "lastSeen": 1784051274649,
       "lastRaw": "ahoj mia"
     },
     "pohadkumio rek": {
@@ -321,6 +363,84 @@
       "firstSeen": 1781907320512,
       "lastSeen": 1781907320512,
       "lastRaw": "Mia rekni pohadku"
+    },
+    "podrbi kojnozouta": {
+      "count": 2,
+      "firstSeen": 1784051052991,
+      "lastSeen": 1784051052991,
+      "lastRaw": "podrbi kojnozouta"
+    },
+    "chat bublina": {
+      "count": 1,
+      "firstSeen": 1784051543625,
+      "lastSeen": 1784051543625,
+      "lastRaw": "chat bublina"
+    },
+    "bublina kick": {
+      "count": 1,
+      "firstSeen": 1784051543625,
+      "lastSeen": 1784051543625,
+      "lastRaw": "bublina kick"
+    },
+    "test chat bublina": {
+      "count": 1,
+      "firstSeen": 1784051543627,
+      "lastSeen": 1784051543627,
+      "lastRaw": "test chat bublina"
+    },
+    "chat bublina kick": {
+      "count": 1,
+      "firstSeen": 1784051543627,
+      "lastSeen": 1784051543627,
+      "lastRaw": "chat bublina kick"
+    },
+    "test chat bublina kick": {
+      "count": 2,
+      "firstSeen": 1784051543630,
+      "lastSeen": 1784051543630,
+      "lastRaw": "test chat bublina kick"
+    },
+    "ahoj z tiktok": {
+      "count": 1,
+      "firstSeen": 1784051618343,
+      "lastSeen": 1784051618343,
+      "lastRaw": "ahoj z tiktok"
+    },
+    "kick test": {
+      "count": 1,
+      "firstSeen": 1784051851522,
+      "lastSeen": 1784051851522,
+      "lastRaw": "kick test"
+    },
+    "test bublina": {
+      "count": 2,
+      "firstSeen": 1784051851522,
+      "lastSeen": 1784051851640,
+      "lastRaw": "test bublina"
+    },
+    "kick test bublina": {
+      "count": 2,
+      "firstSeen": 1784051851522,
+      "lastSeen": 1784051851522,
+      "lastRaw": "kick test bublina"
+    },
+    "tiktok test": {
+      "count": 1,
+      "firstSeen": 1784051851640,
+      "lastSeen": 1784051851640,
+      "lastRaw": "tiktok test"
+    },
+    "tiktok test bublina": {
+      "count": 2,
+      "firstSeen": 1784051851640,
+      "lastSeen": 1784051851640,
+      "lastRaw": "tiktok test bublina"
+    },
+    "chattest": {
+      "count": 1,
+      "firstSeen": 1784051945526,
+      "lastSeen": 1784051945526,
+      "lastRaw": "chatTest"
     }
   },
   "spicy": {},
@@ -334,9 +454,9 @@
     },
     "vasaspinak": {
       "label": "VasaSpinak",
-      "count": 31,
+      "count": 37,
       "spicyCount": 0,
-      "lastSeen": 1781907320531,
+      "lastSeen": 1784051945526,
       "favoritePhrases": {
         "ahoj co kojnozroiutmia": {
           "count": 1,
@@ -381,9 +501,9 @@
           "lastRaw": "ahojMia"
         },
         "ahoj mia": {
-          "count": 6,
+          "count": 11,
           "firstSeen": 1781414052848,
-          "lastSeen": 1781906912177,
+          "lastSeen": 1784051274649,
           "lastRaw": "ahoj mia"
         },
         "ahoj mia co miska": {
@@ -475,25 +595,183 @@
           "firstSeen": 1781907320531,
           "lastSeen": 1781907320531,
           "lastRaw": "Mia rekni pohadku"
+        },
+        "chattest": {
+          "count": 1,
+          "firstSeen": 1784051945526,
+          "lastSeen": 1784051945526,
+          "lastRaw": "chatTest"
         }
       }
     },
     "testuser": {
       "label": "TestUser",
-      "count": 1,
+      "count": 2,
       "spicyCount": 0,
-      "lastSeen": 1781410191925,
+      "lastSeen": 1784051543630,
       "favoritePhrases": {
         "ahoj mia": {
           "count": 1,
           "firstSeen": 1781410191925,
           "lastSeen": 1781410191925,
           "lastRaw": "ahoj mia"
+        },
+        "test chat bublina kick": {
+          "count": 1,
+          "firstSeen": 1784051543630,
+          "lastSeen": 1784051543630,
+          "lastRaw": "test chat bublina kick"
+        }
+      }
+    },
+    "testkick": {
+      "label": "TestKick",
+      "count": 1,
+      "spicyCount": 0,
+      "lastSeen": 1784050661942,
+      "favoritePhrases": {
+        "ahoj mia": {
+          "count": 1,
+          "firstSeen": 1784050661942,
+          "lastSeen": 1784050661942,
+          "lastRaw": "ahoj mia"
+        }
+      }
+    },
+    "liveauditcare": {
+      "label": "LiveAuditCare",
+      "count": 1,
+      "spicyCount": 0,
+      "lastSeen": 1784051052992,
+      "favoritePhrases": {
+        "podrbi kojnozouta": {
+          "count": 1,
+          "firstSeen": 1784051052992,
+          "lastSeen": 1784051052992,
+          "lastRaw": "podrbi kojnozouta"
+        }
+      }
+    },
+    "tikuser": {
+      "label": "TikUser",
+      "count": 2,
+      "spicyCount": 0,
+      "lastSeen": 1784051851640,
+      "favoritePhrases": {
+        "ahoj z tiktok": {
+          "count": 1,
+          "firstSeen": 1784051618343,
+          "lastSeen": 1784051618343,
+          "lastRaw": "ahoj z tiktok"
+        },
+        "tiktok test bublina": {
+          "count": 1,
+          "firstSeen": 1784051851640,
+          "lastSeen": 1784051851640,
+          "lastRaw": "tiktok test bublina"
+        }
+      }
+    },
+    "kickuser": {
+      "label": "KickUser",
+      "count": 1,
+      "spicyCount": 0,
+      "lastSeen": 1784051851522,
+      "favoritePhrases": {
+        "kick test bublina": {
+          "count": 1,
+          "firstSeen": 1784051851522,
+          "lastSeen": 1784051851522,
+          "lastRaw": "kick test bublina"
         }
       }
     }
   },
   "recentSamples": [
+    {
+      "ts": 1784051945526,
+      "userLabel": "VasaSpinak",
+      "platform": "kick",
+      "text": "chatTest",
+      "spicy": false
+    },
+    {
+      "ts": 1784051851640,
+      "userLabel": "TikUser",
+      "platform": "tiktok",
+      "text": "tiktok test bublina",
+      "spicy": false
+    },
+    {
+      "ts": 1784051851522,
+      "userLabel": "KickUser",
+      "platform": "kick",
+      "text": "kick test bublina",
+      "spicy": false
+    },
+    {
+      "ts": 1784051618344,
+      "userLabel": "TikUser",
+      "platform": "tiktok",
+      "text": "ahoj z tiktok",
+      "spicy": false
+    },
+    {
+      "ts": 1784051543630,
+      "userLabel": "TestUser",
+      "platform": "kick",
+      "text": "test chat bublina kick",
+      "spicy": false
+    },
+    {
+      "ts": 1784051274649,
+      "userLabel": "VasaSpinak",
+      "platform": "kick",
+      "text": "ahoj mia",
+      "spicy": false
+    },
+    {
+      "ts": 1784051052992,
+      "userLabel": "LiveAuditCare",
+      "platform": "tiktok",
+      "text": "podrbi kojnozouta",
+      "spicy": false
+    },
+    {
+      "ts": 1784051005548,
+      "userLabel": "VasaSpinak",
+      "platform": "kick",
+      "text": "ahoj mia",
+      "spicy": false
+    },
+    {
+      "ts": 1784050838956,
+      "userLabel": "VasaSpinak",
+      "platform": "kick",
+      "text": "ahoj mia",
+      "spicy": false
+    },
+    {
+      "ts": 1784050661942,
+      "userLabel": "TestKick",
+      "platform": "kick",
+      "text": "ahoj mia",
+      "spicy": false
+    },
+    {
+      "ts": 1784050590126,
+      "userLabel": "VasaSpinak",
+      "platform": "kick",
+      "text": "ahoj mia",
+      "spicy": false
+    },
+    {
+      "ts": 1784050493504,
+      "userLabel": "VasaSpinak",
+      "platform": "kick",
+      "text": "ahoj mia",
+      "spicy": false
+    },
     {
       "ts": 1781907320540,
       "userLabel": "VasaSpinak",

@@ -8,16 +8,22 @@
         "intent": "support"
       },
       "variants": [
-        "Děkuju. I malá podpora je vidět.",
-        "Tohle se počítá. Díky moc.",
-        "Díky. Každý takový impuls má váhu.",
-        "Tohle je milé. Děkuju.",
-        "Registruju to. Díky za podporu.",
-        "Díky. I menší krok dělá atmosféru.",
-        "Tohle se neztratí. Děkuju.",
-        "Pěkný. Díky za tenhle signál.",
-        "Mám to. Díky moc.",
-        "Díky. Tohle má smysl."
+        "{name}, hezky. To se neztratí.",
+        "Jo, {name}. I drobnost umí rozhýbat tempo.",
+        "Registruju to, {name}. Pěkný signál.",
+        "Malý impuls, {name} — a přesně to stačí.",
+        "{name}, tohle se počítá.",
+        "Hezký, {name}. Právě jsem to propsala.",
+        "Beru, {name}. Není to velký, ale sedí to.",
+        "{name}, jo. Tohle má smysl.",
+        "Pěkně, {name}. I maličkost něco udělá.",
+        "Tohle beru, {name}. Vidím to.",
+        "{name}, malý signál — a přesto viditelný.",
+        "Jo. {name}, právě jsi něco rozhýbal.",
+        "Hezký moment, {name}. Beru.",
+        "Registruju, {name}. I taková věc má váhu.",
+        "Malé, ale poctivé, {name}. To stačí.",
+        "{name}, díky — jednou stačí: vidím tě."
       ]
     },
     "support_medium_mia": {
@@ -65,16 +71,24 @@
         "intent": "support"
       },
       "variants": [
-        "Jo, něco přistálo. To beru.",
-        "Miska to ucítila. Díky.",
-        "Hezky. I menší sousto se počítá.",
-        "Tohle mi zlepšilo náladu.",
-        "Jo, registruju krmení. Díky.",
-        "Pěkný. Něco se pohnulo.",
-        "Tohle chutná i v menší dávce.",
-        "Díky. Miska není úplně opuštěná.",
-        "Jo, tohle se hodí.",
-        "Malý, ale poctivý. Beru."
+        "Jo, něco přistálo. Beru.",
+        "Hezky. Miska to ucítila.",
+        "{name}? To chutná líp než nic.",
+        "Malý sousto. Ale poctivý.",
+        "Pfff, něco do misky. Fajn.",
+        "Registruju. A hned to voní líp.",
+        "Jo jo. Není to hostina, ale nevadí.",
+        "{name}, tohle mi zvedlo náladu.",
+        "Hezky. Teď dej chvíli pokoj, nech mě žrát.",
+        "Malý, ale beru.",
+        "Jo. Miska nezůstala úplně prázdná.",
+        "{name}, něco do misky — to respektuju.",
+        "Hezky. I drobek umí zahřát bříško.",
+        "Registruju krmení. Jo.",
+        "Malý signál, dobrá nálada. Beru.",
+        "Jo {name}, tohle se hodí.",
+        "Něco přistálo. Maska spokojená.",
+        "Díky {name} — jednou. Teď mlaskám."
       ]
     },
     "support_medium_kojnozout": {
