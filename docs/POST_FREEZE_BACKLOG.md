@@ -66,7 +66,7 @@ Fast preflight (`165/165`) nestačí — neběží slow sady (`media_catalog`, `
 | 1 | Nechat **stejný notebook/PC** jako minule (žádná optimalizace před testem) |
 | 2 | Spustit **MIA → TikFinity → TikTok LIVE Studio → OBS** (stejné pořadí jako dřív) |
 | 3 | **5–10 min** testovací live |
-| 4 | Z druhého účtu **`Chyť si dron 1`**: 1× komentář + **1× Rose** |
+| 4 | Z druhého účtu **`ControlViewer`**: 1× komentář + **1× Rose** |
 | 5 | Ověřit řetězec: `COMMENT/GIFT → INGEST → DECISION → OVERLAY → MIA/Koj TTS → **slyšet ve streamu**` |
 | 6 | Paralelně: **RAM/GPU** + watchdog TikTok Studia (Task Manager / existující evidence skripty) |
 

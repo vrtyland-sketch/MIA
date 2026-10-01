@@ -1,12 +1,19 @@
 "use strict";
 
 const assert = require("assert/strict");
+const fs = require("fs");
 const path = require("path");
 const sessionMemory = require("../scripts/MIA_SESSION_MEMORY");
 const responseEngine = require("../scripts/MIA_RESPONSE_ENGINE");
 const { createOutputState } = require("../scripts/MIA_OUTPUT_STATE");
 
+const FIXTURE = path.join(__dirname, "fixtures", "session-memory.example.json");
 const TMP_STORE = path.join(__dirname, ".tmp-session-memory-response-test.json");
+
+function loadFixtureStore() {
+  fs.copyFileSync(FIXTURE, TMP_STORE);
+  return sessionMemory.loadStore(TMP_STORE);
+}
 
 function test(name, fn) {
   try {
@@ -22,7 +29,7 @@ function test(name, fn) {
 console.log("\n---- SESSION MEMORY RESPONSE CONTRACT ----\n");
 
 test("first visit greeting does not get returning ack", () => {
-  sessionMemory.loadStore(TMP_STORE);
+  loadFixtureStore();
   sessionMemory.observeChatMessage({
     userLabel: "Katka",
     message: "mia ahoj",
@@ -43,7 +50,7 @@ test("first visit greeting does not get returning ack", () => {
 });
 
 test("returning viewer greeting weaves ack from text bank", () => {
-  sessionMemory.loadStore(TMP_STORE);
+  loadFixtureStore();
   sessionMemory.observeChatMessage({
     userLabel: "Katka",
     message: "mia ahoj",
@@ -71,7 +78,7 @@ test("returning viewer greeting weaves ack from text bank", () => {
 });
 
 test("returning ack is skipped for grief intents", () => {
-  sessionMemory.loadStore(TMP_STORE);
+  loadFixtureStore();
   sessionMemory.observeChatMessage({
     userLabel: "Tom",
     message: "ahoj",
@@ -94,7 +101,7 @@ test("returning ack is skipped for grief intents", () => {
 });
 
 test("returning viewer status question gets session ack", () => {
-  sessionMemory.loadStore(TMP_STORE);
+  loadFixtureStore();
   sessionMemory.observeChatMessage({
     userLabel: "Jana",
     message: "cau",
@@ -118,7 +125,7 @@ test("returning viewer status question gets session ack", () => {
 });
 
 test("bot reply memory stores and recalls last Koj line for user", () => {
-  sessionMemory.loadStore(TMP_STORE);
+  loadFixtureStore();
   sessionMemory.observeBotReply({
     speaker: "kojnozout",
     userLabel: "Jana",

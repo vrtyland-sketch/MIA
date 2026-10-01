@@ -23,7 +23,7 @@
 | **4** | OBS restart ~19:43 | Krátká WS destabilizace, ne hlavní příčina 50 min výpadku |
 | **5** | GENESIS / multi-platform | Sekundární — startup/locky; **ne** „ingest endpoint mrtvý“ |
 
-**Co je PROVEN:** TikFinity webhook, reálný COMMENT (Kristiánek 19:50), reálný GIFT → video/TTS (Chyť si dron 1, Rose).  
+**Co je PROVEN:** TikFinity webhook, reálný COMMENT (ExampleViewer 19:50), reálný GIFT → video/TTS (ControlViewer, Rose).  
 **Co NENÍ PROVEN:** 15 min souvislá stabilita A+B (FINAL GATE).
 
 **Nové zadání (ne hledat rozbitý ingest):** TikFinity stabilita + RAM budget + OBS output viditelnost.
@@ -113,7 +113,7 @@ Předstreamový checklist (ops only):
 6. Bez reálného COMMENT ≠ TikTok PASS  
 
 **2026-08-06 INGEST GATE:** MIA endpoint ✅ PASS ([evidence](./STREAM_VALIDATION_02_INGEST_GATE.jsonl)).  
-**2026-08-06 večer:** reálný COMMENT ✅ (Kristiánek), reálný GIFT ✅ (Chyť si dron 1, Rose) — **14 live eventů** v okně 19:50–20:03.  
+**2026-08-06 večer:** reálný COMMENT ✅ (ExampleViewer), reálný GIFT ✅ (ControlViewer, Rose) — **14 live eventů** v okně 19:50–20:03.  
 **TikFinity uptime:** ❌ ~50 min bez trafficu před reconnectem.
 
 Platformy:

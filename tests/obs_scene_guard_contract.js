@@ -42,8 +42,8 @@ test("detects dead local file path", () => {
   const dir = makeScenesDir({
     SPINAK: {
       sources: [
-        { name: "deadImg", id: "image_source", settings: { file: "C:/Users/Shadow/Downloads/x.png" } },
-        { name: "deadVid", id: "ffmpeg_source", settings: { local_file: "C:/Users/Shadow/Downloads/y.mp4" } }
+        { name: "deadImg", id: "image_source", settings: { file: "C:/Users/ExampleUser/Downloads/x.png" } },
+        { name: "deadVid", id: "ffmpeg_source", settings: { local_file: "C:/Users/ExampleUser/Downloads/y.mp4" } }
       ]
     }
   });

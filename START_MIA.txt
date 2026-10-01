@@ -260,7 +260,7 @@ JEDNORAZOVE NA PC (Quick Share okno):
 GALAXY FOLD:
 1. Nastaveni -> Google -> Zarizeni a sdileni -> Quick Share -> ZAP
 2. Viditelnost: Vlastni zarizeni (stejny Google ucet)
-3. Galerie -> vyber fotky/videa -> Sdilet -> Quick Share -> Vaclav Janota PC -> Accept na PC
+3. Galerie -> vyber fotky/videa -> Sdilet -> Quick Share -> STREAM-PC -> Accept na PC
 
 SDILENI:
 - Telefon -> PC: Quick Share (viz vyse)
@@ -270,7 +270,7 @@ POZADAVKY: Wi-Fi + Bluetooth na obou zarizenich
 QR KOD:
 - V MIA / na disku QR kod NEMAME — generuje ho az aplikace Quick Share.
 - Google Quick Share na PC (nas, winget): QR pro parovani obvykle NENI —
-  Fold musi videt "Vaclav Janota PC" v seznamu (stejny Google ucet).
+  Fold musi videt "STREAM-PC" v seznamu (stejny Google ucet).
 - QR na GALAXY FOLD: Rychle nastaveni -> Quick Share (nebo panel sdileni)
   -> "Pouzit QR kod" = telefon ukaze QR (spis pro pripojeni DRUHEHO telefonu).
 - QR z PC pro skenovani Foldem: ma Samsung Quick Share (Microsoft Store),

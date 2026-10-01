@@ -23,7 +23,7 @@
 | Dual voice | OFF ☑ |
 | Pořadí startu | MIA → TikFinity → TikTok LIVE Studio → OBS ☑ |
 | Délka live | cíl 5–10 min (přerušeno pádem TikFinity) |
-| Kontrolní účet | `Chyť si dron 1` (v ingestu maskováno jako `Test User 123` / TikFinity test text) |
+| Kontrolní účet | `ControlViewer` (v ingestu maskováno jako `Test User 123` / TikFinity test text) |
 
 ---
 

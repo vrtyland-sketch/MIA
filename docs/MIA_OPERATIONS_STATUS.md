@@ -77,7 +77,7 @@ PIPELINE: PROVEN (PMB ~10 s audio) · STABILITY: NOT PROVEN (notebook RAM/TikFin
 |---|------|----------|
 | D1 | Stejný scénář jako PMB | [`PRE_MIGRATION_BASELINE_EVIDENCE.md`](./PRE_MIGRATION_BASELINE_EVIDENCE.md) |
 | D2 | 3 RAM snapshoty A/B/C | povinné |
-| D3 | COMMENT + Rose z `Chyť si dron 1` | 4 verdikty |
+| D3 | COMMENT + Rose z `ControlViewer` | 4 verdikty |
 | D4 | Cíl: **FINAL AUDIO PASS** (MIA + Koj slyšet) | PF-03 |
 
 ### Fáze E — Post-thaw execution (až po C6 + D PASS)

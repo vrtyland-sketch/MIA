@@ -1,6 +1,8 @@
 "use strict";
 
 const assert = require("assert/strict");
+const fs = require("fs");
+const path = require("path");
 const llmAdapter = require("../scripts/MIA_LLM_ADAPTER");
 const sessionMemory = require("../scripts/MIA_SESSION_MEMORY");
 const { buildActionResult } = require("../shared/platform_runtime/action_builder");
@@ -149,7 +151,10 @@ test("greeting uses text bank variants", () => {
 });
 
 test("session memory tracks returning viewer", () => {
-  sessionMemory.loadStore(require("path").join(__dirname, ".tmp-session-memory-test.json"));
+  const fixture = path.join(__dirname, "fixtures", "session-memory.example.json");
+  const tmpStore = path.join(__dirname, ".tmp-session-memory-test.json");
+  fs.copyFileSync(fixture, tmpStore);
+  sessionMemory.loadStore(tmpStore);
   sessionMemory.observeChatMessage({
     userLabel: "Tester",
     message: "první zpráva",
