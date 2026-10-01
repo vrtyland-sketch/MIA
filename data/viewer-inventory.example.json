@@ -1,0 +1,384 @@
+{
+  "version": 1,
+  "updatedAt": 1785966546177,
+  "inventories": {
+    "id:admin-test-T1": {
+      "userId": "admin-test-T1",
+      "name": "DoD Smoke",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1784578914089,
+          "source": "first_support"
+        }
+      ]
+    },
+    "id:admin-test-T2": {
+      "userId": "admin-test-T2",
+      "name": "DoD T2",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1784580535057,
+          "source": "first_support"
+        }
+      ]
+    },
+    "id:admin-test-T3": {
+      "userId": "admin-test-T3",
+      "name": "DoD T3",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1784580536265,
+          "source": "first_support"
+        }
+      ]
+    },
+    "id:admin-test-T4": {
+      "userId": "admin-test-T4",
+      "name": "DoD T4",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1784580538320,
+          "source": "first_support"
+        }
+      ]
+    },
+    "id:admin-bowl-stub": {
+      "userId": "admin-bowl-stub",
+      "name": "DoD Bowl",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1784580543026,
+          "source": "first_support"
+        }
+      ]
+    },
+    "id:prestream-mute-t1": {
+      "userId": "prestream-mute-t1",
+      "name": "Prestream Mute",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1784656699347,
+          "source": "first_support"
+        }
+      ]
+    },
+    "id:prestream-mute-spam-0": {
+      "userId": "prestream-mute-spam-0",
+      "name": "MuteSpam0",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1784656817457,
+          "source": "first_support"
+        }
+      ]
+    },
+    "id:prestream-mute-spam-1": {
+      "userId": "prestream-mute-spam-1",
+      "name": "MuteSpam1",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1784656824673,
+          "source": "first_support"
+        }
+      ]
+    },
+    "id:prestream-mute-spam-2": {
+      "userId": "prestream-mute-spam-2",
+      "name": "MuteSpam2",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1784656830503,
+          "source": "first_support"
+        }
+      ]
+    },
+    "id:prestream-mute-ps": {
+      "userId": "prestream-mute-ps",
+      "name": "MutePS",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1784656874100,
+          "source": "first_support"
+        }
+      ]
+    },
+    "id:prestream-mute-ps2": {
+      "userId": "prestream-mute-ps2",
+      "name": "MutePS2",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1784656905154,
+          "source": "first_support"
+        }
+      ]
+    },
+    "id:prestream-aq-spam": {
+      "userId": "prestream-aq-spam",
+      "name": "AQ Spam",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1784656925639,
+          "source": "first_support"
+        }
+      ]
+    },
+    "id:prestream-aq-t2": {
+      "userId": "prestream-aq-t2",
+      "name": "AQ T2",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1784656938834,
+          "source": "first_support"
+        }
+      ]
+    },
+    "id:prestream-aq-t3": {
+      "userId": "prestream-aq-t3",
+      "name": "AQ T3",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1784656943354,
+          "source": "first_support"
+        }
+      ]
+    },
+    "id:spam-test-1": {
+      "userId": "spam-test-1",
+      "name": "SpamFan1",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1784904664557,
+          "source": "first_support"
+        }
+      ]
+    },
+    "id:spam-test-3": {
+      "userId": "spam-test-3",
+      "name": "SpamFan3",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1784904704397,
+          "source": "first_support"
+        }
+      ]
+    },
+    "id:wave-user-1": {
+      "userId": "wave-user-1",
+      "name": "WaveUser1",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1784904909286,
+          "source": "first_support"
+        }
+      ]
+    },
+    "id:wave-user-2": {
+      "userId": "wave-user-2",
+      "name": "WaveUser2",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1784904914898,
+          "source": "first_support"
+        }
+      ]
+    },
+    "id:wave-user-3": {
+      "userId": "wave-user-3",
+      "name": "WaveUser3",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1784904915699,
+          "source": "first_support"
+        }
+      ]
+    },
+    "id:wave-user-4": {
+      "userId": "wave-user-4",
+      "name": "WaveUser4",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1784904916334,
+          "source": "first_support"
+        }
+      ]
+    },
+    "id:wave-user-5": {
+      "userId": "wave-user-5",
+      "name": "WaveUser5",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1784904916944,
+          "source": "first_support"
+        }
+      ]
+    },
+    "name:debug podporovatel": {
+      "userId": null,
+      "name": "Debug podporovatel",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1784912345937,
+          "source": "first_support"
+        }
+      ]
+    },
+    "id:r1c-user-1": {
+      "userId": "r1c-user-1",
+      "name": "R1CUser1",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1784912358991,
+          "source": "first_support"
+        }
+      ]
+    },
+    "id:r1c-user-2": {
+      "userId": "r1c-user-2",
+      "name": "R1CUser2",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1784912365643,
+          "source": "first_support"
+        }
+      ]
+    },
+    "id:r1c-user-3": {
+      "userId": "r1c-user-3",
+      "name": "R1CUser3",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1784912366931,
+          "source": "first_support"
+        }
+      ]
+    },
+    "id:r1c-user-4": {
+      "userId": "r1c-user-4",
+      "name": "R1CUser4",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1784912367832,
+          "source": "first_support"
+        }
+      ]
+    },
+    "name:liveaudit": {
+      "userId": null,
+      "name": "LiveAudit",
+      "items": [
+        {
+          "id": "koj_sticker",
+          "label": "Koj samolepka",
+          "kind": "cosmetic",
+          "qty": 1,
+          "earnedAt": 1785856818960,
+          "source": "first_support"
+        }
+      ]
+    }
+  }
+}

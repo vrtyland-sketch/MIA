@@ -1,0 +1,393 @@
+{
+  "version": 1,
+  "updatedAt": 1786213572160,
+  "users": {
+    "test_user_123": {
+      "userLabel": "Test User 123",
+      "feedCount": 510,
+      "giftFeedCount": 510,
+      "careFeedCount": 0,
+      "lastFeedAt": 1786213569155,
+      "lastFeedType": "gift",
+      "storiesPlayed": {
+        "sock_rocket_saga": {
+          "count": 5,
+          "lastAt": 1781863490933
+        }
+      },
+      "milestonesHit": [
+        3,
+        8,
+        15,
+        25,
+        40
+      ]
+    },
+    "karel": {
+      "userLabel": "Karel",
+      "feedCount": 0,
+      "giftFeedCount": 0,
+      "careFeedCount": 0,
+      "lastFeedAt": 0,
+      "lastFeedType": "",
+      "storiesPlayed": {
+        "sock_rocket_saga": {
+          "count": 4,
+          "lastAt": 1781811760429
+        }
+      },
+      "milestonesHit": []
+    },
+    "test": {
+      "userLabel": "Test",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1781904818766,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "audittest": {
+      "userLabel": "AuditTest",
+      "feedCount": 2,
+      "giftFeedCount": 2,
+      "careFeedCount": 0,
+      "lastFeedAt": 1781905171302,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "liveaudit": {
+      "userLabel": "LiveAudit",
+      "feedCount": 53,
+      "giftFeedCount": 53,
+      "careFeedCount": 0,
+      "lastFeedAt": 1786001762071,
+      "lastFeedType": "gift",
+      "storiesPlayed": {
+        "sock_rocket_saga": {
+          "count": 5,
+          "lastAt": 1783157920491
+        }
+      },
+      "milestonesHit": [
+        3,
+        8,
+        15,
+        25,
+        40
+      ]
+    },
+    "t": {
+      "userLabel": "T",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1781906306877,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "audit_user": {
+      "userLabel": "Audit User",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1781995747820,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "t1_divák": {
+      "userLabel": "T1 Divák",
+      "feedCount": 2,
+      "giftFeedCount": 2,
+      "careFeedCount": 0,
+      "lastFeedAt": 1782836945749,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "t3_divák": {
+      "userLabel": "T3 Divák",
+      "feedCount": 2,
+      "giftFeedCount": 2,
+      "careFeedCount": 0,
+      "lastFeedAt": 1782836952225,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "t5_divák": {
+      "userLabel": "T5 Divák",
+      "feedCount": 2,
+      "giftFeedCount": 2,
+      "careFeedCount": 0,
+      "lastFeedAt": 1782836961630,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "dod_smoke": {
+      "userLabel": "DoD Smoke",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1784578914377,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "dod_t2": {
+      "userLabel": "DoD T2",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1784580535359,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "dod_t3": {
+      "userLabel": "DoD T3",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1784580536375,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "dod_t4": {
+      "userLabel": "DoD T4",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1784580538475,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "dod_bowl": {
+      "userLabel": "DoD Bowl",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1784580543082,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "prestream_mute": {
+      "userLabel": "Prestream Mute",
+      "feedCount": 2,
+      "giftFeedCount": 2,
+      "careFeedCount": 0,
+      "lastFeedAt": 1784656811533,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "mutespam0": {
+      "userLabel": "MuteSpam0",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1784656820361,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "mutespam1": {
+      "userLabel": "MuteSpam1",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1784656826847,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "mutespam2": {
+      "userLabel": "MuteSpam2",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1784656830548,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "muteps": {
+      "userLabel": "MutePS",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1784656874390,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "muteps2": {
+      "userLabel": "MutePS2",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1784656906152,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "aq_spam": {
+      "userLabel": "AQ Spam",
+      "feedCount": 2,
+      "giftFeedCount": 2,
+      "careFeedCount": 0,
+      "lastFeedAt": 1784656930360,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "aq_t2": {
+      "userLabel": "AQ T2",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1784656939030,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "aq_t3": {
+      "userLabel": "AQ T3",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1784656943442,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "spamfan1": {
+      "userLabel": "SpamFan1",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1784904673979,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "spamfan3": {
+      "userLabel": "SpamFan3",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1784904709156,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "waveuser1": {
+      "userLabel": "WaveUser1",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1784904912372,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "waveuser2": {
+      "userLabel": "WaveUser2",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1784904915048,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "waveuser3": {
+      "userLabel": "WaveUser3",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1784904915864,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "waveuser4": {
+      "userLabel": "WaveUser4",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1784904916503,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "waveuser5": {
+      "userLabel": "WaveUser5",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1784904917180,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "debug_podporovatel": {
+      "userLabel": "Debug podporovatel",
+      "feedCount": 2,
+      "giftFeedCount": 2,
+      "careFeedCount": 0,
+      "lastFeedAt": 1784912366872,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "r1cuser1": {
+      "userLabel": "R1CUser1",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1784912361962,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "r1cuser2": {
+      "userLabel": "R1CUser2",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1784912365999,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "r1cuser3": {
+      "userLabel": "R1CUser3",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1784912367266,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    },
+    "r1cuser4": {
+      "userLabel": "R1CUser4",
+      "feedCount": 1,
+      "giftFeedCount": 1,
+      "careFeedCount": 0,
+      "lastFeedAt": 1784912367920,
+      "lastFeedType": "gift",
+      "storiesPlayed": {},
+      "milestonesHit": []
+    }
+  }
+}

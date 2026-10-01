@@ -1,0 +1,470 @@
+{
+  "version": 1,
+  "updatedAt": 1786213571081,
+  "viewers": {
+    "id:u_comment": {
+      "userId": "u_comment",
+      "name": "Tester",
+      "totalMiaPoints": 0,
+      "giftCount": 0,
+      "chatCount": 30,
+      "firstSeen": 1784576556847,
+      "lastSeen": 1785953412944,
+      "favoriteGift": null,
+      "_giftTallies": {}
+    },
+    "id:u_gift": {
+      "userId": "u_gift",
+      "name": "Gifter",
+      "totalMiaPoints": 1125,
+      "giftCount": 30,
+      "chatCount": 0,
+      "firstSeen": 1784576559343,
+      "lastSeen": 1785953416330,
+      "favoriteGift": "ROSE",
+      "_giftTallies": {
+        "ROSE": 30
+      }
+    },
+    "id:admin-test-T1": {
+      "userId": "admin-test-T1",
+      "name": "DoD Smoke",
+      "totalMiaPoints": 7.5,
+      "giftCount": 1,
+      "chatCount": 0,
+      "firstSeen": 1784578914085,
+      "lastSeen": 1784578914085,
+      "favoriteGift": "ROSE",
+      "_giftTallies": {
+        "ROSE": 1
+      }
+    },
+    "id:admin-test-T2": {
+      "userId": "admin-test-T2",
+      "name": "DoD T2",
+      "totalMiaPoints": 112.5,
+      "giftCount": 1,
+      "chatCount": 0,
+      "firstSeen": 1784580535053,
+      "lastSeen": 1784580535053,
+      "favoriteGift": "ROSE",
+      "_giftTallies": {
+        "ROSE": 1
+      }
+    },
+    "id:admin-test-T3": {
+      "userId": "admin-test-T3",
+      "name": "DoD T3",
+      "totalMiaPoints": 1492.5,
+      "giftCount": 1,
+      "chatCount": 0,
+      "firstSeen": 1784580536265,
+      "lastSeen": 1784580536265,
+      "favoriteGift": "UNIVERSE",
+      "_giftTallies": {
+        "UNIVERSE": 1
+      }
+    },
+    "id:admin-test-T4": {
+      "userId": "admin-test-T4",
+      "name": "DoD T4",
+      "totalMiaPoints": 7500,
+      "giftCount": 1,
+      "chatCount": 0,
+      "firstSeen": 1784580538320,
+      "lastSeen": 1784580538320,
+      "favoriteGift": "LION",
+      "_giftTallies": {
+        "LION": 1
+      }
+    },
+    "id:admin-bowl-stub": {
+      "userId": "admin-bowl-stub",
+      "name": "DoD Bowl",
+      "totalMiaPoints": 7500,
+      "giftCount": 1,
+      "chatCount": 0,
+      "firstSeen": 1784580543025,
+      "lastSeen": 1784580543025,
+      "favoriteGift": "LION",
+      "_giftTallies": {
+        "LION": 1
+      }
+    },
+    "id:prestream-mute-t1": {
+      "userId": "prestream-mute-t1",
+      "name": "Prestream Mute",
+      "totalMiaPoints": 15,
+      "giftCount": 2,
+      "chatCount": 0,
+      "firstSeen": 1784656699344,
+      "lastSeen": 1784656811362,
+      "favoriteGift": "ROSE",
+      "_giftTallies": {
+        "ROSE": 2
+      }
+    },
+    "id:prestream-mute-spam-0": {
+      "userId": "prestream-mute-spam-0",
+      "name": "MuteSpam0",
+      "totalMiaPoints": 7.5,
+      "giftCount": 1,
+      "chatCount": 0,
+      "firstSeen": 1784656817455,
+      "lastSeen": 1784656817455,
+      "favoriteGift": "ROSE",
+      "_giftTallies": {
+        "ROSE": 1
+      }
+    },
+    "id:prestream-mute-spam-1": {
+      "userId": "prestream-mute-spam-1",
+      "name": "MuteSpam1",
+      "totalMiaPoints": 7.5,
+      "giftCount": 1,
+      "chatCount": 0,
+      "firstSeen": 1784656824671,
+      "lastSeen": 1784656824671,
+      "favoriteGift": "ROSE",
+      "_giftTallies": {
+        "ROSE": 1
+      }
+    },
+    "id:prestream-mute-spam-2": {
+      "userId": "prestream-mute-spam-2",
+      "name": "MuteSpam2",
+      "totalMiaPoints": 7.5,
+      "giftCount": 1,
+      "chatCount": 0,
+      "firstSeen": 1784656830502,
+      "lastSeen": 1784656830502,
+      "favoriteGift": "ROSE",
+      "_giftTallies": {
+        "ROSE": 1
+      }
+    },
+    "id:prestream-mute-ps": {
+      "userId": "prestream-mute-ps",
+      "name": "MutePS",
+      "totalMiaPoints": 7.5,
+      "giftCount": 1,
+      "chatCount": 0,
+      "firstSeen": 1784656874098,
+      "lastSeen": 1784656874098,
+      "favoriteGift": "ROSE",
+      "_giftTallies": {
+        "ROSE": 1
+      }
+    },
+    "id:prestream-mute-ps2": {
+      "userId": "prestream-mute-ps2",
+      "name": "MutePS2",
+      "totalMiaPoints": 7.5,
+      "giftCount": 1,
+      "chatCount": 0,
+      "firstSeen": 1784656905153,
+      "lastSeen": 1784656905153,
+      "favoriteGift": "ROSE",
+      "_giftTallies": {
+        "ROSE": 1
+      }
+    },
+    "id:prestream-aq-spam": {
+      "userId": "prestream-aq-spam",
+      "name": "AQ Spam",
+      "totalMiaPoints": 15,
+      "giftCount": 2,
+      "chatCount": 0,
+      "firstSeen": 1784656925639,
+      "lastSeen": 1784656930207,
+      "favoriteGift": "ROSE",
+      "_giftTallies": {
+        "ROSE": 2
+      }
+    },
+    "id:prestream-aq-t2": {
+      "userId": "prestream-aq-t2",
+      "name": "AQ T2",
+      "totalMiaPoints": 112.5,
+      "giftCount": 1,
+      "chatCount": 0,
+      "firstSeen": 1784656938833,
+      "lastSeen": 1784656938833,
+      "favoriteGift": "ROSE",
+      "_giftTallies": {
+        "ROSE": 1
+      }
+    },
+    "name:aq chat": {
+      "userId": null,
+      "name": "AQ Chat",
+      "totalMiaPoints": 0,
+      "giftCount": 0,
+      "chatCount": 1,
+      "firstSeen": 1784656942640,
+      "lastSeen": 1784656942640,
+      "favoriteGift": null,
+      "_giftTallies": {}
+    },
+    "id:prestream-aq-t3": {
+      "userId": "prestream-aq-t3",
+      "name": "AQ T3",
+      "totalMiaPoints": 1492.5,
+      "giftCount": 1,
+      "chatCount": 0,
+      "firstSeen": 1784656943354,
+      "lastSeen": 1784656943354,
+      "favoriteGift": "UNIVERSE",
+      "_giftTallies": {
+        "UNIVERSE": 1
+      }
+    },
+    "id:spam-test-1": {
+      "userId": "spam-test-1",
+      "name": "SpamFan1",
+      "totalMiaPoints": 7.5,
+      "giftCount": 1,
+      "chatCount": 0,
+      "firstSeen": 1784904664514,
+      "lastSeen": 1784904664514,
+      "favoriteGift": "ROSE",
+      "_giftTallies": {
+        "ROSE": 1
+      }
+    },
+    "id:spam-test-3": {
+      "userId": "spam-test-3",
+      "name": "SpamFan3",
+      "totalMiaPoints": 7.5,
+      "giftCount": 1,
+      "chatCount": 0,
+      "firstSeen": 1784904704363,
+      "lastSeen": 1784904704363,
+      "favoriteGift": "ROSE",
+      "_giftTallies": {
+        "ROSE": 1
+      }
+    },
+    "id:wave-user-1": {
+      "userId": "wave-user-1",
+      "name": "WaveUser1",
+      "totalMiaPoints": 7.5,
+      "giftCount": 1,
+      "chatCount": 0,
+      "firstSeen": 1784904909276,
+      "lastSeen": 1784904909276,
+      "favoriteGift": "ROSE",
+      "_giftTallies": {
+        "ROSE": 1
+      }
+    },
+    "id:wave-user-2": {
+      "userId": "wave-user-2",
+      "name": "WaveUser2",
+      "totalMiaPoints": 7.5,
+      "giftCount": 1,
+      "chatCount": 0,
+      "firstSeen": 1784904914898,
+      "lastSeen": 1784904914898,
+      "favoriteGift": "ROSE",
+      "_giftTallies": {
+        "ROSE": 1
+      }
+    },
+    "id:wave-user-3": {
+      "userId": "wave-user-3",
+      "name": "WaveUser3",
+      "totalMiaPoints": 7.5,
+      "giftCount": 1,
+      "chatCount": 0,
+      "firstSeen": 1784904915699,
+      "lastSeen": 1784904915699,
+      "favoriteGift": "ROSE",
+      "_giftTallies": {
+        "ROSE": 1
+      }
+    },
+    "id:wave-user-4": {
+      "userId": "wave-user-4",
+      "name": "WaveUser4",
+      "totalMiaPoints": 7.5,
+      "giftCount": 1,
+      "chatCount": 0,
+      "firstSeen": 1784904916334,
+      "lastSeen": 1784904916334,
+      "favoriteGift": "ROSE",
+      "_giftTallies": {
+        "ROSE": 1
+      }
+    },
+    "id:wave-user-5": {
+      "userId": "wave-user-5",
+      "name": "WaveUser5",
+      "totalMiaPoints": 7.5,
+      "giftCount": 1,
+      "chatCount": 0,
+      "firstSeen": 1784904916944,
+      "lastSeen": 1784904916944,
+      "favoriteGift": "ROSE",
+      "_giftTallies": {
+        "ROSE": 1
+      }
+    },
+    "name:debug podporovatel": {
+      "userId": null,
+      "name": "Debug podporovatel",
+      "totalMiaPoints": 15,
+      "giftCount": 2,
+      "chatCount": 0,
+      "firstSeen": 1784912345897,
+      "lastSeen": 1784912366697,
+      "favoriteGift": "ROSE",
+      "_giftTallies": {
+        "ROSE": 2
+      }
+    },
+    "id:r1c-user-1": {
+      "userId": "r1c-user-1",
+      "name": "R1CUser1",
+      "totalMiaPoints": 7.5,
+      "giftCount": 1,
+      "chatCount": 0,
+      "firstSeen": 1784912358988,
+      "lastSeen": 1784912358988,
+      "favoriteGift": "ROSE",
+      "_giftTallies": {
+        "ROSE": 1
+      }
+    },
+    "id:r1c-user-2": {
+      "userId": "r1c-user-2",
+      "name": "R1CUser2",
+      "totalMiaPoints": 7.5,
+      "giftCount": 1,
+      "chatCount": 0,
+      "firstSeen": 1784912365642,
+      "lastSeen": 1784912365642,
+      "favoriteGift": "ROSE",
+      "_giftTallies": {
+        "ROSE": 1
+      }
+    },
+    "id:r1c-user-3": {
+      "userId": "r1c-user-3",
+      "name": "R1CUser3",
+      "totalMiaPoints": 7.5,
+      "giftCount": 1,
+      "chatCount": 0,
+      "firstSeen": 1784912366910,
+      "lastSeen": 1784912366910,
+      "favoriteGift": "ROSE",
+      "_giftTallies": {
+        "ROSE": 1
+      }
+    },
+    "id:r1c-user-4": {
+      "userId": "r1c-user-4",
+      "name": "R1CUser4",
+      "totalMiaPoints": 7.5,
+      "giftCount": 1,
+      "chatCount": 0,
+      "firstSeen": 1784912367830,
+      "lastSeen": 1784912367830,
+      "favoriteGift": "ROSE",
+      "_giftTallies": {
+        "ROSE": 1
+      }
+    },
+    "id:u1": {
+      "userId": "u1",
+      "name": "Tester",
+      "totalMiaPoints": 0,
+      "giftCount": 0,
+      "chatCount": 1,
+      "firstSeen": 1784965206363,
+      "lastSeen": 1784965206363,
+      "favoriteGift": null,
+      "_giftTallies": {}
+    },
+    "id:u2": {
+      "userId": "u2",
+      "name": "Tester",
+      "totalMiaPoints": 0,
+      "giftCount": 0,
+      "chatCount": 1,
+      "firstSeen": 1784965206628,
+      "lastSeen": 1784965206628,
+      "favoriteGift": null,
+      "_giftTallies": {}
+    },
+    "id:u3": {
+      "userId": "u3",
+      "name": "Tester",
+      "totalMiaPoints": 0,
+      "giftCount": 0,
+      "chatCount": 1,
+      "firstSeen": 1784965206771,
+      "lastSeen": 1784965206771,
+      "favoriteGift": null,
+      "_giftTallies": {}
+    },
+    "name:viewer": {
+      "userId": null,
+      "name": "Viewer",
+      "totalMiaPoints": 0,
+      "giftCount": 0,
+      "chatCount": 1,
+      "firstSeen": 1785517594189,
+      "lastSeen": 1785517594189,
+      "favoriteGift": null,
+      "_giftTallies": {}
+    },
+    "id:2743946": {
+      "userId": "2743946",
+      "name": "Test User 123",
+      "totalMiaPoints": 247.5,
+      "giftCount": 33,
+      "chatCount": 38,
+      "firstSeen": 1785852973367,
+      "lastSeen": 1786213569127,
+      "favoriteGift": "ROSE",
+      "_giftTallies": {
+        "ROSE": 33
+      }
+    },
+    "name:liveaudit": {
+      "userId": null,
+      "name": "LiveAudit",
+      "totalMiaPoints": 15,
+      "giftCount": 2,
+      "chatCount": 0,
+      "firstSeen": 1785856818952,
+      "lastSeen": 1786001761870,
+      "favoriteGift": "ROSE",
+      "_giftTallies": {
+        "ROSE": 2
+      }
+    },
+    "name:liveauditcare": {
+      "userId": null,
+      "name": "LiveAuditCare",
+      "totalMiaPoints": 0,
+      "giftCount": 0,
+      "chatCount": 2,
+      "firstSeen": 1785856823070,
+      "lastSeen": 1786001779930,
+      "favoriteGift": null,
+      "_giftTallies": {}
+    },
+    "id:6919135557013619717": {
+      "userId": "6919135557013619717",
+      "totalMiaPoints": 0,
+      "giftCount": 0,
+      "chatCount": 1,
+      "firstSeen": 1786038904487,
+      "lastSeen": 1786038904487,
+      "favoriteGift": null,
+      "_giftTallies": {}
+    }
+  }
+}
