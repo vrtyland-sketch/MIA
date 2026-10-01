@@ -10,6 +10,21 @@ const results = {
   failed: 0
 };
 
+// Keep obs_hands / self-restart from calling process.exit(0) before the summary.
+process.env.MIA_SELF_RESTART = "0";
+
+const realProcessExit = process.exit.bind(process);
+process.exit = function ingestSmokeExit(code) {
+  const nextCode = results.failed > 0 ? 1 : code == null ? 0 : code;
+  return realProcessExit(nextCode);
+};
+
+process.on("beforeExit", (code) => {
+  if (results.failed > 0 && code === 0) {
+    realProcessExit(1);
+  }
+});
+
 async function test(name, fn) {
   try {
     await fn();
@@ -38,13 +53,6 @@ async function waitFor(predicate, timeoutMs = 1500, stepMs = 25) {
   return null;
 }
 
-async function waitForKickLogs(loaded, timeoutMs = 1500) {
-  return waitFor(() => {
-    const logs = loaded.getLogEntries("kick-events");
-    return logs.length > 0 ? logs : null;
-  }, timeoutMs, 25);
-}
-
 function loadIndexWithStubs() {
   const indexPath = path.resolve(__dirname, "../index.js");
   const originalLoad = Module._load;
@@ -56,11 +64,17 @@ function loadIndexWithStubs() {
 
   const expressApp = {
     use() {},
-    get(route, handler) {
-      routeRegistry.get.set(route, handler);
+    get(route, ...handlers) {
+      routeRegistry.get.set(
+        route,
+        handlers.filter((handler) => typeof handler === "function")
+      );
     },
-    post(route, handler) {
-      routeRegistry.post.set(route, handler);
+    post(route, ...handlers) {
+      routeRegistry.post.set(
+        route,
+        handlers.filter((handler) => typeof handler === "function")
+      );
     },
     listen(_port, hostOrCb, maybeCb) {
       const cb = typeof hostOrCb === "function" ? hostOrCb : maybeCb;
@@ -92,7 +106,38 @@ function loadIndexWithStubs() {
   }
 
   let capturedKickOnEvent = null;
+  let capturedKickStart = null;
   const logWrites = [];
+
+  const restartStub = {
+    isSelfRestartEnabled() {
+      return false;
+    },
+    isRestartPending() {
+      return false;
+    },
+    shouldRestartAfterHands() {
+      return false;
+    },
+    shouldRestartAfterMediaApply() {
+      return false;
+    },
+    scheduleInProcessRestart() {
+      return { scheduled: false, reason: "stubbed_by_ingest_smoke" };
+    },
+    maybeScheduleRestartAfterHands() {
+      return { scheduled: false, reason: "stubbed_by_ingest_smoke" };
+    },
+    maybeScheduleRestartAfterMediaApply() {
+      return { scheduled: false, reason: "stubbed_by_ingest_smoke" };
+    },
+    spawnDetachedRestart() {
+      return { scheduled: false, reason: "stubbed_by_ingest_smoke" };
+    },
+    triggerExternalRestart() {
+      return { scheduled: false, reason: "stubbed_by_ingest_smoke" };
+    }
+  };
 
   const fsStub = {
     ...realFs,
@@ -456,14 +501,24 @@ function loadIndexWithStubs() {
       }
     },
     "./scripts/MIA_KICK_BRIDGE": {
-      async startKickBridge({ onEvent } = {}) {
-        capturedKickOnEvent = onEvent || null;
+      async startKickBridge(options = {}) {
+        capturedKickStart = options;
+        capturedKickOnEvent = options.onEvent ?? null;
+        return {
+          ok: true,
+          reason: "started_by_test"
+        };
+      },
+      async start(options = {}) {
+        capturedKickStart = options;
+        capturedKickOnEvent = options.onEvent ?? null;
         return {
           ok: true,
           reason: "started_by_test"
         };
       }
     },
+    "./scripts/MIA_SELF_RESTART": restartStub,
     "./MIA_NEXT/engine_shadow_runtime": {
       runShadowPipeline(input) {
         const eventType = input?.rawEvent?.eventType;
@@ -555,8 +610,10 @@ function loadIndexWithStubs() {
   };
 
   const safeRequirePath = path.resolve(__dirname, "../scripts/MIA_SAFE_REQUIRE.js");
+  const selfRestartPath = path.resolve(__dirname, "../scripts/MIA_SELF_RESTART.js");
 
   delete require.cache[indexPath];
+  delete require.cache[selfRestartPath];
   try {
     delete require.cache[require.resolve("fs")];
   } catch (_err) {
@@ -584,7 +641,15 @@ function loadIndexWithStubs() {
     return undefined;
   }
 
+  function isSelfRestartRequest(request) {
+    const text = String(request || "").replace(/\\/g, "/");
+    return /(?:^|\/)MIA_SELF_RESTART(?:\.js)?$/.test(text);
+  }
+
   Module._load = function patchedLoader(request, parent, isMain) {
+    if (isSelfRestartRequest(request)) {
+      return restartStub;
+    }
     if (parent) {
       const parentFile = parent.filename;
       if (parentFile === indexPath || parentFile === safeRequirePath) {
@@ -628,8 +693,46 @@ function loadIndexWithStubs() {
     getCapturedKickOnEvent() {
       return capturedKickOnEvent;
     },
+    getCapturedKickStart() {
+      return capturedKickStart;
+    },
     getLogEntries
   };
+}
+
+async function invokeRoute(handlers, { method = "POST", body = {}, query = {}, ip = "127.0.0.1" } = {}) {
+  assert.ok(Array.isArray(handlers) && handlers.length > 0, "route handlers missing");
+  const req = {
+    method,
+    body,
+    query,
+    headers: {},
+    ip,
+    socket: { remoteAddress: ip }
+  };
+  let statusCode = 200;
+  let jsonBody = null;
+  const res = {
+    status(code) {
+      statusCode = code;
+      return this;
+    },
+    json(payload) {
+      jsonBody = payload;
+      return this;
+    }
+  };
+
+  let index = 0;
+  async function next() {
+    const handler = handlers[index];
+    index += 1;
+    if (typeof handler !== "function") return;
+    await handler(req, res, next);
+  }
+
+  await next();
+  return { status: statusCode, body: jsonBody };
 }
 
 (async () => {
@@ -639,136 +742,102 @@ function loadIndexWithStubs() {
     assert.equal(typeof loaded.getCapturedKickOnEvent, "function");
   });
 
-  await test("bootstrap wires kick onEvent callback", async () => {
+  await test("bootstrap starts Kick on unified /ingest with onEvent null", async () => {
     const loaded = loadIndexWithStubs();
-    const onEvent = await waitFor(
-      () => loaded.getCapturedKickOnEvent(),
+    const startOpts = await waitFor(
+      () => loaded.getCapturedKickStart(),
       1500,
       25
     );
 
-    assert.equal(typeof onEvent, "function");
+    assert.ok(startOpts, "kick bridge start was not called");
+    assert.equal(startOpts.onEvent, null);
+    assert.match(String(startOpts.config?.ingestUrl || ""), /\/ingest$/);
   });
 
-  await test("comment ingest through kick callback logs valid runtime result", async () => {
+  await test("POST /ingest accepts a comment without a kick onEvent callback", async () => {
     const loaded = loadIndexWithStubs();
-    const onEvent = await waitFor(
-      () => loaded.getCapturedKickOnEvent(),
+    const startOpts = await waitFor(
+      () => loaded.getCapturedKickStart(),
       1500,
       25
     );
+    assert.equal(startOpts && startOpts.onEvent, null);
 
-    assert.equal(typeof onEvent, "function");
-
-    const commentEvent = {
-      source: "debug",
-      platform: "tiktok",
-      type: "comment",
-      eventType: "comment",
-      content: "Ahoj MIA",
-      message: "Ahoj MIA",
-      username: "tester",
-      nickname: "Tester",
-      userId: "u_comment"
-    };
-
-    await assert.doesNotReject(async () => {
-      await onEvent(commentEvent);
+    const response = await invokeRoute(loaded.routeRegistry.post.get("/ingest"), {
+      body: {
+        source: "debug",
+        platform: "tiktok",
+        type: "comment",
+        eventType: "comment",
+        content: "Ahoj MIA",
+        message: "Ahoj MIA",
+        username: "tester",
+        nickname: "Tester",
+        userId: "u_comment"
+      }
     });
 
-    const kickLogs = await waitForKickLogs(loaded);
-    assert.ok(kickLogs && kickLogs.length > 0);
-
-    const lastKickLog = kickLogs[kickLogs.length - 1];
-    assert.ok(lastKickLog.result);
-    assert.equal(lastKickLog.result.status, 200);
-    assert.equal(lastKickLog.result.body.ok, true);
-    assert.ok(lastKickLog.result.body.animationTrace);
-    assert.ok(lastKickLog.result.body.overlayEmit);
+    assert.equal(response.status, 200);
+    assert.equal(response.body.ok, true);
+    assert.equal(response.body.accepted, true);
+    assert.equal(response.body.queued, true);
+    assert.equal(typeof response.body.lane, "string");
   });
 
-  await test("gift ingest through kick callback logs executionResult", async () => {
+  await test("POST /ingest accepts a gift without a kick onEvent callback", async () => {
     const loaded = loadIndexWithStubs();
-    const onEvent = await waitFor(
-      () => loaded.getCapturedKickOnEvent(),
+    const startOpts = await waitFor(
+      () => loaded.getCapturedKickStart(),
       1500,
       25
     );
+    assert.equal(startOpts && startOpts.onEvent, null);
 
-    assert.equal(typeof onEvent, "function");
-
-    const giftEvent = {
-      source: "debug",
-      platform: "tiktok",
-      type: "gift",
-      eventType: "gift",
-      giftName: "Rose",
-      coins: 5,
-      count: 1,
-      username: "gifter",
-      nickname: "Gifter",
-      userId: "u_gift"
-    };
-
-    await assert.doesNotReject(async () => {
-      await onEvent(giftEvent);
+    const response = await invokeRoute(loaded.routeRegistry.post.get("/ingest"), {
+      body: {
+        source: "debug",
+        platform: "tiktok",
+        type: "gift",
+        eventType: "gift",
+        giftName: "Rose",
+        coins: 5,
+        count: 1,
+        username: "gifter",
+        nickname: "Gifter",
+        userId: "u_gift"
+      }
     });
 
-    const kickLogs = await waitForKickLogs(loaded);
-    assert.ok(kickLogs && kickLogs.length > 0);
-
-    const lastKickLog = kickLogs[kickLogs.length - 1];
-    assert.ok(lastKickLog.result);
-    assert.equal(lastKickLog.result.status, 200);
-    assert.equal(lastKickLog.result.body.ok, true);
-    assert.ok(lastKickLog.result.body.executionResult);
-    assert.ok(lastKickLog.result.body.animationTrace);
-    assert.ok(lastKickLog.result.body.videoResult);
-    assert.equal(
-      typeof lastKickLog.result.body.executionResult.status,
-      "string"
-    );
+    assert.equal(response.status, 200);
+    assert.equal(response.body.ok, true);
+    assert.equal(response.body.accepted, true);
+    assert.equal(response.body.queued, true);
+    assert.equal(typeof response.body.lane, "string");
   });
 
-  await test("gift ingest path reaches shared execution-compatible response shape", async () => {
+  await test("tikfinity and tiktok aliases share the unified /ingest gateway", async () => {
     const loaded = loadIndexWithStubs();
-    const onEvent = await waitFor(
-      () => loaded.getCapturedKickOnEvent(),
-      1500,
-      25
-    );
+    const aliases = ["/ingest", "/tikfinity/ingest", "/tiktok/ingest"];
 
-    assert.equal(typeof onEvent, "function");
-
-    const giftEvent = {
-      source: "debug",
-      platform: "tiktok",
-      type: "gift",
-      eventType: "gift",
-      giftName: "Rose",
-      coins: 5,
-      count: 1,
-      username: "gifter",
-      nickname: "Gifter",
-      userId: "u_gift"
-    };
-
-    await assert.doesNotReject(async () => {
-      await onEvent(giftEvent);
-    });
-
-    const kickLogs = await waitForKickLogs(loaded);
-    assert.ok(kickLogs && kickLogs.length > 0);
-    const lastKickLog = kickLogs[kickLogs.length - 1];
-    const body = lastKickLog.result.body;
-
-    assert.equal(body.runtime.selectedRuntime, "MIA_NEXT");
-    assert.ok(body.decision);
-    assert.ok(body.actionResult);
-    assert.ok(body.executionResult);
-    assert.ok(body.overlayEmit);
-    assert.ok(body.videoResult);
-    assert.ok(body.animationTrace);
+    for (const route of aliases) {
+      const handlers = loaded.routeRegistry.post.get(route);
+      assert.ok(Array.isArray(handlers) && handlers.length >= 2, route);
+      const response = await invokeRoute(handlers, {
+        body: {
+          source: "debug",
+          platform: "tiktok",
+          type: "comment",
+          eventType: "comment",
+          content: "Ahoj MIA",
+          username: "tester",
+          userId: "u_alias"
+        }
+      });
+      assert.equal(response.status, 200, route);
+      assert.equal(response.body.ok, true, route);
+      assert.equal(response.body.accepted, true, route);
+    }
   });
 
   console.log("");
