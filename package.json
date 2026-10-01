@@ -176,6 +176,7 @@
     "test:media-catalog": "node tests/media_catalog_contract.js",
     "test:preflight": "node scripts/run_preflight_tests.js --full",
     "test:preflight:fast": "node scripts/run_preflight_tests.js --fast",
+    "test:preflight:cloud": "node scripts/run_preflight_tests.js --full --cloud",
     "test:stream-ready": "node scripts/run_preflight_tests.js --full && node tests/media_catalog_contract.js",
     "generate:story-assets": "node scripts/kojnozrout_generate_story_assets.js"
   },

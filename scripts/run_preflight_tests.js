@@ -1,7 +1,9 @@
 ﻿"use strict";
 
 const { spawn, spawnSync } = require("child_process");
+const fs = require("fs");
 const path = require("path");
+const { getClipEntry, loadBankIndex } = require("../shared/mia-animation-engine/AnimationBank");
 
 const ROOT = path.resolve(__dirname, "..");
 
@@ -172,7 +174,8 @@ const FAST_SUITE_NAMES = [
   "engine2_e2",
   "engine2_e3",
   "engine2_e4",
-  "engine2_e5"
+  "engine2_e5",
+  "preflight_cloud"
 ];
 
 const SUITES = [
@@ -467,8 +470,182 @@ const SUITES = [
   { name: "engine2_e2", cmd: "node", args: ["tests/mia_engine2_e2_contract.js"] },
   { name: "engine2_e3", cmd: "node", args: ["tests/mia_engine2_e3_contract.js"] },
   { name: "engine2_e4", cmd: "node", args: ["tests/mia_engine2_e4_contract.js"] },
-  { name: "engine2_e5", cmd: "node", args: ["tests/mia_engine2_e5_contract.js"] }
+  { name: "engine2_e5", cmd: "node", args: ["tests/mia_engine2_e5_contract.js"] },
+  { name: "preflight_cloud", cmd: "node", args: ["tests/preflight_cloud_contract.js"] }
 ];
+
+/**
+ * Local files that some suites read. Cloud mode may call a failure
+ * ENV_BLOCKED only when one of these is actually absent and the failure
+ * text matches that absence. A different assertion stays FAIL.
+ */
+const CLOUD_ENV_PREREQUISITES = [
+  {
+    suite: "media_catalog",
+    path: "incoming-images/videos",
+    kind: "dir",
+    matches: (output) =>
+      output.includes('prefixes.includes("videos")') ||
+      /missing file videos\//.test(output)
+  },
+  {
+    suite: "media_catalog",
+    path: "incoming-images/videos_2",
+    kind: "dir",
+    matches: (output) =>
+      output.includes("expected videos_2 files in catalog") ||
+      /missing file videos_2\//.test(output)
+  },
+  {
+    suite: "story_animation",
+    path: "mia-output-overlay/assets/kojnozrout/story-bank-manifest.json",
+    kind: "file",
+    matches: (output) => output.includes("story bank manifest exists")
+  },
+  {
+    suite: "graphics_body",
+    path: "mia-output-overlay/assets/animation-bank/gift/rose",
+    kind: "rose-clip",
+    matches: (output) => graphicsFailureIsMissingRoseClip(output)
+  },
+  {
+    suite: "master_canon_0001",
+    path: ".cursor/rules/mia-canon.mdc",
+    kind: "file",
+    matches: (output) =>
+      output.includes(".cursor/rules/mia-canon.mdc") &&
+      (output.includes("ENOENT") || output.includes("no such file"))
+  }
+];
+
+function defaultProbe(root = ROOT) {
+  return {
+    exists(relPath) {
+      return fs.existsSync(path.join(root, relPath));
+    },
+    roseClipPresent() {
+      const bankRoot = path.join(root, "mia-output-overlay", "assets", "animation-bank");
+      return Boolean(getClipEntry(loadBankIndex(bankRoot), "gift/rose"));
+    }
+  };
+}
+
+function prerequisiteIsPresent(spec, probe) {
+  if (spec.kind === "rose-clip") {
+    return probe.roseClipPresent() === true;
+  }
+  return probe.exists(spec.path) === true;
+}
+
+function listMissingPrerequisites(suiteName, probe = defaultProbe()) {
+  return CLOUD_ENV_PREREQUISITES.filter(
+    (spec) => spec.suite === suiteName && !prerequisiteIsPresent(spec, probe)
+  ).map((spec) => spec.path);
+}
+
+function graphicsFailureIsMissingRoseClip(output) {
+  const text = String(output || "");
+  const start = text.indexOf("{");
+  const end = text.lastIndexOf("}");
+  if (start < 0 || end <= start) return false;
+  let report;
+  try {
+    report = JSON.parse(text.slice(start, end + 1));
+  } catch (_err) {
+    return false;
+  }
+  const failed = Array.isArray(report.results)
+    ? report.results.filter((row) => row && row.ok === false)
+    : [];
+  if (failed.length !== 1) return false;
+  if (failed[0].file !== "mia_graphics_studio_13b_unified_preview_contract.js") return false;
+  const stderr = String(failed[0].stderr || "");
+  if (stderr.includes("result.bodyMood") || stderr.includes("falsy value")) return false;
+  return (
+    stderr.includes("pushBankClipPreview returns unified bodyMood") &&
+    stderr.includes("false !== true")
+  );
+}
+
+function failureMatchesMissingPrerequisite(suiteName, output, missing) {
+  const absent = new Set(missing || []);
+  if (absent.size === 0) return false;
+  return CLOUD_ENV_PREREQUISITES.some(
+    (spec) =>
+      spec.suite === suiteName &&
+      absent.has(spec.path) &&
+      spec.matches(String(output || ""))
+  );
+}
+
+function classifyCloudSuite({ name, exitCode, output, missing }) {
+  const absent = Array.isArray(missing) ? missing : [];
+  if (exitCode === 0) {
+    return { disposition: "PASS", missing: [] };
+  }
+  if (
+    absent.length > 0 &&
+    failureMatchesMissingPrerequisite(name, output, absent)
+  ) {
+    return { disposition: "ENV_BLOCKED", missing: absent };
+  }
+  return { disposition: "FAIL", missing: absent };
+}
+
+function resolvePreflightProfile(argv = process.argv) {
+  return argv.includes("--cloud") ? "cloud" : "strict";
+}
+
+function publishSuiteResult(raw, profile, probe) {
+  const published = {
+    name: raw.name,
+    ok: raw.ok,
+    exitCode: raw.exitCode,
+    ms: raw.ms,
+    output: raw.output
+  };
+  if (profile !== "cloud") return published;
+  const missing = listMissingPrerequisites(raw.name, probe || defaultProbe());
+  const classified = classifyCloudSuite({
+    name: raw.name,
+    exitCode: raw.exitCode,
+    output: raw.fullOutput != null ? raw.fullOutput : raw.output,
+    missing
+  });
+  return {
+    ...published,
+    disposition: classified.disposition,
+    missing: classified.missing
+  };
+}
+
+function summarizeCloudResults(results) {
+  const passed = results.filter((row) => row.disposition === "PASS");
+  const failed = results.filter((row) => row.disposition === "FAIL");
+  const envBlocked = results.filter((row) => row.disposition === "ENV_BLOCKED");
+  return {
+    passed: passed.length,
+    failed: failed.length,
+    envBlocked: envBlocked.length,
+    blocked: envBlocked.map((row) => ({
+      name: row.name,
+      missing: row.missing
+    })),
+    ok: failed.length === 0
+  };
+}
+
+function printCloudSummary(report) {
+  console.error(`PASS ${report.passed}`);
+  console.error(`FAIL ${report.failed}`);
+  console.error(`ENV_BLOCKED ${report.envBlocked}`);
+  for (const row of report.blocked || []) {
+    console.error(`ENV_BLOCKED ${row.name}`);
+    for (const item of row.missing || []) {
+      console.error(`  missing ${item}`);
+    }
+  }
+}
 
 function resolvePreflightMode(argv = process.argv, env = process.env) {
   if (argv.includes("--fast")) return "fast";
@@ -501,12 +678,14 @@ function runSuite(suite) {
     encoding: "utf8",
     shell: false
   });
+  const fullOutput = `${result.stdout || ""}${result.stderr || ""}`.trim();
   return {
     name: suite.name,
     ok: result.status === 0,
     exitCode: result.status,
     ms: Date.now() - started,
-    output: `${result.stdout || ""}${result.stderr || ""}`.trim().slice(-400)
+    output: fullOutput.slice(-400),
+    fullOutput
   };
 }
 
@@ -531,12 +710,14 @@ function runSuiteAsync(suite) {
     });
 
     child.on("close", (code) => {
+      const fullOutput = `${stdout}${stderr}`.trim();
       resolve({
         name: suite.name,
         ok: code === 0,
         exitCode: code,
         ms: Date.now() - started,
-        output: `${stdout}${stderr}`.trim().slice(-400)
+        output: fullOutput.slice(-400),
+        fullOutput
       });
     });
 
@@ -554,15 +735,17 @@ function runSuiteAsync(suite) {
 
 async function runAllSuites(options = {}) {
   const mode = options.mode || resolvePreflightMode();
+  const profile = options.profile || resolvePreflightProfile();
   const suites = selectSuites(mode);
   const parallel = shouldRunParallel(mode, options, process.env);
   const started = Date.now();
+  const probe = options.probe;
 
-  const results = parallel
+  const rawResults = parallel
     ? await Promise.all(suites.map((suite) => runSuiteAsync(suite)))
     : suites.map((suite) => runSuite(suite));
+  const results = rawResults.map((row) => publishSuiteResult(row, profile, probe));
 
-  const failed = results.filter((row) => !row.ok);
   const skipped =
     mode === "fast"
       ? SUITES.filter((suite) => !suites.some((row) => row.name === suite.name)).map(
@@ -570,6 +753,27 @@ async function runAllSuites(options = {}) {
         )
       : [];
 
+  if (profile === "cloud") {
+    const cloud = summarizeCloudResults(results);
+    return {
+      ok: cloud.ok,
+      profile,
+      mode,
+      parallel,
+      passed: cloud.passed,
+      failed: cloud.failed,
+      envBlocked: cloud.envBlocked,
+      blocked: cloud.blocked,
+      total: results.length,
+      skippedSlow: [...skipped],
+      durationMs: Date.now() - started,
+      results,
+      finishedAt: new Date().toISOString(),
+      running: false
+    };
+  }
+
+  const failed = results.filter((row) => !row.ok);
   return {
     ok: failed.length === 0,
     mode,
@@ -586,7 +790,9 @@ async function runAllSuites(options = {}) {
 }
 
 async function main() {
-  const report = await runAllSuites();
+  const profile = resolvePreflightProfile();
+  const report = await runAllSuites({ profile });
+  if (profile === "cloud") printCloudSummary(report);
   console.log(JSON.stringify(report, null, 2));
   process.exitCode = report.ok ? 0 : 1;
 }
@@ -602,8 +808,15 @@ module.exports = {
   SUITES,
   FAST_SUITE_NAMES,
   SLOW_SUITE_NAMES,
+  CLOUD_ENV_PREREQUISITES,
   resolvePreflightMode,
+  resolvePreflightProfile,
   selectSuites,
+  listMissingPrerequisites,
+  classifyCloudSuite,
+  publishSuiteResult,
+  summarizeCloudResults,
+  graphicsFailureIsMissingRoseClip,
   runSuite,
   runSuiteAsync,
   runAllSuites
