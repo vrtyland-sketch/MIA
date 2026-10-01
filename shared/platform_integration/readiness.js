@@ -99,14 +99,15 @@ function assessPlatform(id, env = loadDotEnv()) {
     status = "needs_oauth";
   }
 
-  const ok = status === "ready" || (id === "tiktok" && status === "ready");
-
   return {
     id,
     displayName: meta.displayName,
     enabled,
     status,
     ok: status === "ready",
+    configuredReady: status === "ready",
+    runtimeReady: false,
+    liveReady: false,
     missing,
     chatOnly:
       id === "twitch"
@@ -121,23 +122,82 @@ function assessPlatform(id, env = loadDotEnv()) {
   };
 }
 
-function assessAll(env = loadDotEnv()) {
-  const platforms = streamPlatforms().map((p) => assessPlatform(p.id, env));
-  const ready = platforms.filter((p) => p.ok).map((p) => p.id);
+const LIVE_SIGNAL_WINDOW_MS = 15 * 60 * 1000;
+const FOUR_WAY_IDS = ["tiktok", "kick", "twitch", "youtube"];
+
+function assessLiveSignal(signal, now = Date.now(), windowMs = LIVE_SIGNAL_WINDOW_MS) {
+  if (!signal || typeof signal !== "object") {
+    return { fresh: false, at: null, eventType: null, ageMs: null };
+  }
+  const at = Number(signal.at);
+  if (!Number.isFinite(at) || at <= 0) {
+    return { fresh: false, at: null, eventType: null, ageMs: null };
+  }
+  const ageMs = now - at;
+  const eventType =
+    typeof signal.eventType === "string" && signal.eventType.trim()
+      ? signal.eventType.trim().toUpperCase()
+      : null;
+  return {
+    fresh: ageMs >= 0 && ageMs <= windowMs,
+    at,
+    eventType,
+    ageMs
+  };
+}
+
+function assessAll(env = loadDotEnv(), options = {}) {
+  const now = Number.isFinite(options.now) ? options.now : Date.now();
+  const windowMs = Number.isFinite(options.liveWindowMs)
+    ? Math.max(1000, options.liveWindowMs)
+    : LIVE_SIGNAL_WINDOW_MS;
+  const liveSignals = options.liveSignals && typeof options.liveSignals === "object"
+    ? options.liveSignals
+    : {};
+
+  const platforms = streamPlatforms().map((p) => {
+    const row = assessPlatform(p.id, env);
+    const signal = assessLiveSignal(liveSignals[p.id], now, windowMs);
+    const liveReady = row.configuredReady === true && signal.fresh === true;
+    return {
+      ...row,
+      runtimeReady: liveReady,
+      liveReady,
+      liveSignal: signal.fresh
+        ? { at: signal.at, eventType: signal.eventType, ageMs: signal.ageMs }
+        : null
+    };
+  });
+  const ready = platforms.filter((p) => p.configuredReady).map((p) => p.id);
+  const live = platforms.filter((p) => p.liveReady).map((p) => p.id);
   const blocked = platforms.filter((p) => p.status === "blocked_credentials" || p.status === "needs_oauth");
   const disabled = platforms.filter((p) => p.status === "disabled");
+  const fourWayConfiguredReady = FOUR_WAY_IDS.every((id) =>
+    platforms.find((p) => p.id === id)?.configuredReady
+  );
+  const fourWayLiveReady = FOUR_WAY_IDS.every((id) =>
+    platforms.find((p) => p.id === id)?.liveReady
+  );
   return {
-    at: new Date().toISOString(),
+    at: new Date(now).toISOString(),
     layer: "multi_platform_integration",
     corePolicy: "Stream Core frozen — adapters chat-only where declared",
     platforms,
     summary: {
       ready,
+      live,
       blocked: blocked.map((p) => p.id),
       disabled: disabled.map((p) => p.id),
-      fourWayReady: ["tiktok", "kick", "twitch", "youtube"].every((id) =>
-        platforms.find((p) => p.id === id)?.ok
-      )
+      configuredReady: fourWayConfiguredReady,
+      runtimeReady: fourWayLiveReady,
+      liveReady: fourWayLiveReady,
+      fourWayConfiguredReady,
+      fourWayLiveReady,
+      // Credential/config aggregate only. A true value is not proof of live chat.
+      fourWayReady: fourWayConfiguredReady,
+      impliesLiveInputs: false,
+      readinessNote:
+        "configuredReady/fourWayReady mean credentials and config only. runtimeReady/liveReady require a recent observed ingest on each platform."
     }
   };
 }
@@ -145,5 +205,7 @@ function assessAll(env = loadDotEnv()) {
 module.exports = {
   loadDotEnv,
   assessPlatform,
-  assessAll
+  assessAll,
+  assessLiveSignal,
+  LIVE_SIGNAL_WINDOW_MS
 };
