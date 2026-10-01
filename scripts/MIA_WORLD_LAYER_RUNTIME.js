@@ -109,11 +109,15 @@ function createWorldLayerRuntime(deps = {}) {
           typeof kojnozoutBackpackModule?.resolveItemFromEvent === "function"
             ? kojnozoutBackpackModule.resolveItemFromEvent(eventType, support)
             : null;
+        const scoringMode = safeString(platformArenaState.scoringMode, "classic").toLowerCase();
+        const itemPower = item ? Number(item.power) || 0 : 0;
         const arenaResult = platformArenaModule.ingestArenaActivity(platformArenaState, {
           platform: platformKey,
           eventType,
           userLabel,
-          miaPoints: miaPoints + (item ? Number(item.power) || 0 : 0)
+          eventId: normalized.eventId || null,
+          scoringMode,
+          miaPoints: scoringMode === "fair" ? miaPoints : miaPoints + itemPower
         });
         if (arenaResult?.state) {
           platformArenaState = arenaResult.state;

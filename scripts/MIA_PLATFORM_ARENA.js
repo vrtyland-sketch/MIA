@@ -24,6 +24,15 @@ const DUEL_ACTION_INTERVAL_MS = 8_000;
 const DUEL_ACTION_ENERGY_COST = 12;
 const DUEL_GIFT_ENERGY_GAIN = 0.35;
 
+/**
+ * FAIR mode keeps free actions (chat/follow/share/like) on the existing point
+ * table. Paid/support events add a capped score and a capped duel-energy
+ * grant so coin/bits/superchat size cannot decide the arena.
+ */
+const FAIR_PAID_SCORE_CAP = 4;
+const FAIR_PAID_ENERGY_GAIN = 8;
+const SEEN_EVENT_LIMIT = 200;
+
 function envFlag(name) {
   const v = String(process.env[name] || "").trim().toLowerCase();
   if (!v) return null;
@@ -39,6 +48,14 @@ function isBattleMvpEnabled() {
   const env = envFlag("MIA_BATTLE_MVP");
   if (env === false) return false;
   return true;
+}
+
+function normalizeScoringMode(value) {
+  const mode = safeString(value).toLowerCase();
+  if (mode === "fair" || mode === "classic") return mode;
+  return safeString(process.env.MIA_ARENA_SCORING).toLowerCase() === "fair"
+    ? "fair"
+    : "classic";
 }
 
 /**
@@ -223,6 +240,10 @@ function createArenaState(seed = {}) {
       history: Array.isArray(seed.tournament?.history) ? seed.tournament.history.slice(0, 50) : []
     },
     users: seed.users && typeof seed.users === "object" ? seed.users : {},
+    scoringMode: normalizeScoringMode(seed.scoringMode),
+    seenEventIds: Array.isArray(seed.seenEventIds)
+      ? seed.seenEventIds.map((id) => safeString(id)).filter(Boolean).slice(-SEEN_EVENT_LIMIT)
+      : [],
     battle:
       typeof arenaBattle.createBattleState === "function"
         ? arenaBattle.createBattleState(seed.battle || {})
@@ -277,10 +298,16 @@ function bumpContributor(platformRow, userLabel, points) {
   platformRow.contributors[key].points += points;
 }
 
-function resolveActivityPoints(eventType, miaPoints) {
+function resolveActivityPoints(eventType, miaPoints, scoringMode = "classic") {
   const type = safeString(eventType).toUpperCase();
   const base = Math.max(0, toNumber(miaPoints, 0));
-  if (type === "GIFT") return Math.max(base, 1);
+  if (type === "GIFT") {
+    const raw = Math.max(base, 1);
+    if (normalizeScoringMode(scoringMode) === "fair") {
+      return Math.min(FAIR_PAID_SCORE_CAP, raw);
+    }
+    return raw;
+  }
   if (type === "LIKE") return Math.max(1.5, base || 1.5);
   if (type === "FOLLOW") return Math.max(3, base || 3);
   if (type === "SHARE") return Math.max(2, base || 2);
@@ -305,8 +332,24 @@ function ingestArenaActivity(state, payload = {}) {
   const platform = normalizePlatform(payload.platform);
   const eventType = safeString(payload.eventType, "COMMENT").toUpperCase();
   const userLabel = safeString(payload.userLabel, "divák");
-  const points = resolveActivityPoints(eventType, payload.miaPoints);
+  const eventId = safeString(payload.eventId);
+  if (eventId && next.seenEventIds.includes(eventId)) {
+    return {
+      state: next,
+      applied: false,
+      reason: "duplicate_event",
+      platform,
+      points: 0,
+      eventId
+    };
+  }
+
+  const points = resolveActivityPoints(eventType, payload.miaPoints, next.scoringMode);
   if (points <= 0) return { state: next, applied: false, reason: "no_points" };
+
+  if (eventId) {
+    next.seenEventIds = next.seenEventIds.concat(eventId).slice(-SEEN_EVENT_LIMIT);
+  }
 
   const row = next.platforms[platform];
   row.miaPoints += points;
@@ -327,7 +370,9 @@ function ingestArenaActivity(state, payload = {}) {
     }
     const gain =
       eventType === "GIFT"
-        ? Math.max(2, points * DUEL_GIFT_ENERGY_GAIN)
+        ? next.scoringMode === "fair"
+          ? FAIR_PAID_ENERGY_GAIN
+          : Math.max(2, points * DUEL_GIFT_ENERGY_GAIN)
         : Math.max(0.5, points * 0.15);
     next.duel.energy[platform] = Math.min(
       100,
@@ -670,8 +715,11 @@ function getArenaSnapshot(state) {
     },
     topUsers: getTopUsers(next, 12),
     battle: arenaBattle.getBattleSnapshot(next.battle),
+    scoringMode: next.scoringMode,
     economyNote:
-      "Skóre = MIA body (naše měna). Nezávislé na výplatě platforem (~50 % TikTok).",
+      next.scoringMode === "fair"
+        ? "FAIR: chat, follow, share a like zůstávají volné akce. Dárek přidá omezené skóre a omezenou energii, ne neomezené body podle mincí platformy."
+        : "Skóre = MIA body (naše měna). Nezávislé na výplatě platforem (~50 % TikTok).",
     updatedAt: next.updatedAt
   };
 }
@@ -686,7 +734,11 @@ module.exports = {
   DUEL_COUNTDOWN_MS,
   DUEL_ACTION_INTERVAL_MS,
   DUEL_ACTION_ENERGY_COST,
+  FAIR_PAID_SCORE_CAP,
+  FAIR_PAID_ENERGY_GAIN,
   STATE_PATH,
+  normalizeScoringMode,
+  resolveActivityPoints,
   isBattleMvpEnabled,
   createArenaState,
   loadArenaState,

@@ -179,6 +179,89 @@ test("kick box item attacks other platform kojs", () => {
   assert.equal(battle.poses.tiktok, "hit");
 });
 
+test("default scoring stays classic and duel is 5 minutes", () => {
+  const state = arena.createArenaState();
+  assert.equal(state.scoringMode, "classic");
+  assert.equal(arena.DEFAULT_DUEL_MS, 300000);
+  const started = arena.startArenaDuel(state, { skipPhases: true });
+  assert.equal(started.duel.durationMs, 300000);
+  assert.equal(started.duel.phase, "active");
+});
+
+test("FAIR mode caps paid score and energy across unequal gifts", () => {
+  let fair = arena.createArenaState({ scoringMode: "fair" });
+  fair = arena.startArenaDuel(fair, { durationMs: 300000, skipPhases: true });
+  const gifts = [
+    { platform: "tiktok", miaPoints: 50000 },
+    { platform: "kick", miaPoints: 20 },
+    { platform: "twitch", miaPoints: 10000 },
+    { platform: "youtube", miaPoints: 1 }
+  ];
+  for (const gift of gifts) {
+    const result = arena.ingestArenaActivity(fair, {
+      platform: gift.platform,
+      eventType: "GIFT",
+      userLabel: gift.platform,
+      miaPoints: gift.miaPoints,
+      eventId: `fair-gift-${gift.platform}`
+    });
+    assert.equal(result.applied, true);
+    fair = result.state;
+  }
+
+  assert.equal(fair.platforms.tiktok.miaPoints, arena.FAIR_PAID_SCORE_CAP);
+  assert.equal(fair.platforms.kick.miaPoints, arena.FAIR_PAID_SCORE_CAP);
+  assert.equal(fair.platforms.twitch.miaPoints, arena.FAIR_PAID_SCORE_CAP);
+  assert.equal(fair.platforms.youtube.miaPoints, 1);
+  assert.equal(fair.duel.energy.tiktok, arena.FAIR_PAID_ENERGY_GAIN);
+  assert.ok(fair.duel.energy.tiktok < 100);
+
+  let classic = arena.createArenaState();
+  classic = arena.startArenaDuel(classic, { durationMs: 300000, skipPhases: true });
+  classic = arena.ingestArenaActivity(classic, {
+    platform: "tiktok",
+    eventType: "GIFT",
+    userLabel: "Donor",
+    miaPoints: 50000,
+    eventId: "classic-whale"
+  }).state;
+  assert.ok(classic.platforms.tiktok.miaPoints >= 50000);
+  assert.equal(classic.duel.energy.tiktok, 100);
+
+  const comment = arena.ingestArenaActivity(fair, {
+    platform: "youtube",
+    eventType: "COMMENT",
+    userLabel: "Chatter",
+    miaPoints: 0,
+    eventId: "fair-comment-yt"
+  });
+  assert.equal(comment.points, 2);
+  assert.equal(comment.state.platforms.youtube.miaPoints, 3);
+  assert.equal(comment.state.platforms.tiktok.miaPoints, arena.FAIR_PAID_SCORE_CAP);
+});
+
+test("duplicate event id does not score twice", () => {
+  let state = arena.createArenaState();
+  const first = arena.ingestArenaActivity(state, {
+    platform: "kick",
+    eventType: "COMMENT",
+    userLabel: "A",
+    eventId: "same-event"
+  });
+  assert.equal(first.applied, true);
+  const second = arena.ingestArenaActivity(first.state, {
+    platform: "kick",
+    eventType: "COMMENT",
+    userLabel: "A",
+    eventId: "same-event"
+  });
+  assert.equal(second.applied, false);
+  assert.equal(second.reason, "duplicate_event");
+  assert.equal(second.state.platforms.kick.miaPoints, first.state.platforms.kick.miaPoints);
+  assert.equal(second.state.platforms.kick.events, 1);
+  assert.equal(second.state.platforms.tiktok.miaPoints, 0);
+});
+
 if (!process.exitCode) {
   console.log("platform_arena_contract: all passed");
 }
