@@ -35,6 +35,20 @@ Fast preflight (`165/165`) nestačí — neběží slow sady (`media_catalog`, `
 
 **Známý stav před thaw (fast audit 2026-08-08):** `ingest_contract` = false green; `platform_bridges_contract` = správný model.
 
+### Thaw run 2026-10-01 — **není CLEAN**
+
+`node --check index.js` = exit 0. Full preflight před opravou i po ní: **288/292, exit 1**. Žádná runtime regrese. Žádný provozní WARN (jen slovo „warning“ v názvech procházejících testů `status_snapshot` a `master_canon_0065`).
+
+| Sada | Koš | Důvod |
+|------|-----|--------|
+| `ingest_contract` | zastaralý test (opraveno v TC-04) | před opravou `❌` + exit 0; po opravě summary `passed: 5 / failed: 0`, exit 0 |
+| `media_catalog` | environment | gitignore `incoming-images/videos/` a `videos_2/` — scan dir `videos` chybí |
+| `story_animation` | environment | gitignore `mia-output-overlay/assets/kojnozrout/` — `story-bank-manifest.json` není na disku |
+| `graphics_body` | environment | gitignore `animation-bank/` — `pushBankClipPreview` pro `gift/rose` vrací `clip_not_found` (`13b`) |
+| `master_canon_0001` | environment | gitignore `.cursor/` — chybí `.cursor/rules/mia-canon.mdc` |
+
+TC-06 **CLEAN neoznačeno**: TC-05 pořád má čtyři environmentální FAIL. Produkční runtime se kvůli nim neměnil.
+
 ---
 
 ## PRE-MIGRATION BASELINE — **CLOSED** (2026-08-08)
