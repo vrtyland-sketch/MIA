@@ -423,6 +423,65 @@ test("duplicate event id does not score twice", () => {
   assert.equal(second.state.platforms.tiktok.miaPoints, 0);
 });
 
+test("FAIR arenaBoost score is zero while classic boost still scales", () => {
+  const rewards = require("../scripts/MIA_CHAT_REWARD_ENGINE");
+  const random = Math.random;
+  Math.random = () => 0;
+  try {
+    const classic = rewards.evaluateChatReward({
+      platform: "kick",
+      eventType: "GIFT",
+      message: "stack push",
+      userLabel: "classic-boost",
+      miaPoints: 50000
+    });
+    assert.equal(classic.hit, true);
+    assert.equal(classic.reward.rewardId, "arena_boost");
+    assert.equal(classic.arenaBoost, Math.max(5, Math.round(50000 * 0.15) || 8));
+    assert.equal(classic.arenaBoost, 7500);
+    assert.match(classic.line, /arény/i);
+
+    const classicSmall = rewards.evaluateChatReward({
+      platform: "kick",
+      eventType: "GIFT",
+      message: "stack push",
+      userLabel: "classic-boost-small",
+      miaPoints: 0
+    });
+    assert.equal(classicSmall.arenaBoost, 8);
+
+    const fair = rewards.evaluateChatReward({
+      platform: "kick",
+      eventType: "GIFT",
+      message: "stack push",
+      userLabel: "fair-boost",
+      miaPoints: 50000,
+      scoringMode: "fair"
+    });
+    assert.equal(fair.hit, true);
+    assert.equal(fair.reward.rewardId, "arena_boost");
+    assert.equal(fair.arenaBoost, 0);
+    assert.match(fair.line, /arény/i);
+  } finally {
+    Math.random = random;
+  }
+});
+
+test("normal FAIR comments stay on the free-action table", () => {
+  const state = arena.createArenaState({ scoringMode: "fair" });
+  const comment = arena.ingestArenaActivity(state, {
+    platform: "kick",
+    eventType: "COMMENT",
+    userLabel: "Chatter",
+    miaPoints: 0,
+    eventId: "fair-free-comment"
+  });
+  assert.equal(comment.applied, true);
+  assert.equal(comment.points, 2);
+  assert.equal(comment.state.platforms.kick.miaPoints, 2);
+  assert.equal(comment.state.scoringMode, "fair");
+});
+
 if (!process.exitCode) {
   console.log("platform_arena_contract: all passed");
 }

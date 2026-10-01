@@ -210,6 +210,7 @@ const SUITES = [
   { name: "delivery_runtime", cmd: "node", args: ["tests/delivery_runtime_contract.js"] },
   { name: "platform_bridges", cmd: "node", args: ["tests/platform_bridges_contract.js"] },
   { name: "platform_integration_layer", cmd: "node", args: ["tests/platform_integration_layer_contract.js"] },
+  { name: "platform_arena", cmd: "node", args: ["tests/platform_arena_contract.js"] },
   { name: "platform_arena_e2e", cmd: "node", args: ["tests/platform_arena_e2e_contract.js"] },
   { name: "kick_chat_reply", cmd: "node", args: ["tests/kick_chat_reply_contract.js"] },
   { name: "env_wiring", cmd: "node", args: ["tests/env_wiring_contract.js"] },

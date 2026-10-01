@@ -44,6 +44,17 @@ function getGiftWeight(userLabel = "") {
   return row;
 }
 
+/**
+ * Classic boost still scales from the event's MIA points.
+ * FAIR boost score is always 0: the paid gift already spent the FAIR
+ * score budget, and a reward must not mint more arena points from coins,
+ * bits, superchat value, or item power. The public reward line still plays.
+ */
+function resolveArenaBoost(miaPoints = 0, scoringMode = "classic") {
+  if (safeString(scoringMode).toLowerCase() === "fair") return 0;
+  return Math.max(5, Math.round(toNumber(miaPoints, 0) * 0.15) || 8);
+}
+
 function buildPublicRewardLine(platform, reward, itemLabel = "") {
   const profile = roster.getKojProfile(platform);
   const koj = profile.name || "Kojnožrout";
@@ -78,6 +89,7 @@ function evaluateChatReward({
   message = "",
   userLabel = "",
   miaPoints = 0,
+  scoringMode = "classic",
   backpackModule = null,
   backpackState = null
 } = {}) {
@@ -136,13 +148,14 @@ function evaluateChatReward({
     hook,
     backpackState: nextBackpack,
     arenaBoost:
-      roll.rewardId === "arena_boost" ? Math.max(5, Math.round(toNumber(miaPoints, 0) * 0.15) || 8) : 0
+      roll.rewardId === "arena_boost" ? resolveArenaBoost(miaPoints, scoringMode) : 0
   };
 }
 
 module.exports = {
   noteGift,
   getGiftWeight,
+  resolveArenaBoost,
   evaluateChatReward,
   buildPublicRewardLine
 };

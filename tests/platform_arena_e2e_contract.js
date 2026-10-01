@@ -46,7 +46,7 @@ function upper(value) {
 
 function bridgePayload(platform, kind, extra = {}) {
   const eventId = extra.eventId || `${platform}-${kind}-1`;
-  const username = `tester_${platform}`;
+  const username = extra.username || `tester_${platform}`;
   const message = extra.message || `ahoj z ${platform}`;
   const base = {
     source:
@@ -78,6 +78,10 @@ function bridgePayload(platform, kind, extra = {}) {
     base.coins = extra.coins;
     base.repeatCount = 1;
     base.giftId = `${platform}-gift`;
+    if (extra.message) {
+      base.message = extra.message;
+      base.comment = extra.message;
+    }
   }
 
   if (platform === "tiktok") base.uniqueId = username;
@@ -129,7 +133,7 @@ async function test(name, fn) {
   }
 }
 
-function buildPipeline(initialState) {
+function buildPipeline(initialState, options = {}) {
   let arenaState = initialState;
   const arenaFile = path.join(os.tmpdir(), `mia-arena-e2e-${process.pid}.json`);
   const seenNormalized = [];
@@ -159,9 +163,9 @@ function buildPipeline(initialState) {
     setArenaState: (next) => {
       arenaState = next;
     },
-    chatRewardModule: {},
-    kojRosterModule: {},
-    setOverlay: () => ({}),
+    chatRewardModule: options.chatRewardModule || {},
+    kojRosterModule: options.kojRosterModule || {},
+    setOverlay: options.setOverlay || (() => ({})),
     invalidateOverlayStateCache: () => {},
     writeLog: () => {},
     scheduleWorldSave: () => {}
@@ -242,7 +246,8 @@ function buildPipeline(initialState) {
     getArenaState: () => arenaState,
     setArenaState: (next) => {
       arenaState = next;
-    }
+    },
+    applyWorldLayer: (normalized) => world.applyWorldLayer(normalized)
   };
 }
 
@@ -473,6 +478,118 @@ async function run() {
     assert.ok(powers[2] > arena.FAIR_BATTLE_TOTAL_SWING_CAP);
     assert.ok(swings[3] > swings[0]);
     if (fs.existsSync(duel.arenaFile)) fs.unlinkSync(duel.arenaFile);
+  });
+
+  const chatReward = require("../scripts/MIA_CHAT_REWARD_ENGINE");
+
+  function sumPoints(state) {
+    return PLATFORMS.reduce((total, id) => total + state.platforms[id].miaPoints, 0);
+  }
+
+  await test("FAIR Kick gift arena_boost stays inside the paid score budget", async () => {
+    const overlays = [];
+    const duel = buildPipeline(arena.createArenaState({ scoringMode: "fair" }), {
+      chatRewardModule: chatReward,
+      setOverlay: (payload) => {
+        overlays.push(payload);
+        return {};
+      }
+    });
+    primeDuel(duel, "fair", 1000);
+    const random = Math.random;
+    Math.random = () => 0;
+    try {
+      const beforeSum = sumPoints(duel.getArenaState());
+      const beforePoints = pointsOf(duel.getArenaState());
+      const response = await invokeIngest(
+        duel.handleIngest,
+        bridgePayload("kick", "gift", {
+          eventId: "fair-kick-stack-push",
+          coins: 50000,
+          giftName: "Rose",
+          message: "stack push",
+          username: "fair_boost_kick"
+        })
+      );
+      assert.equal(response.status, 200);
+      assert.equal(response.body.ok, true);
+      assert.equal(response.body.deduped, undefined);
+      assert.equal(response.body.normalizedEvent.platform, "kick");
+      assert.equal(response.body.normalizedEvent.eventType, "GIFT");
+      assert.ok(response.body.normalizedEvent.support.miaPoints > arena.FAIR_PAID_SCORE_CAP);
+      assert.match(String(response.body.normalizedEvent.message || ""), /stack push/);
+
+      const state = duel.getArenaState();
+      const action = state.battle.actions[0];
+      assert.ok(action);
+      assert.equal(action.attacker, "kick");
+      assert.equal(action.effect, "damage");
+      assert.equal(action.power, arena.FAIR_BATTLE_POWER_PER_TARGET);
+      assert.equal(action.targets.length, 3);
+      const swing = swingAgainst(beforePoints, pointsOf(state), "kick");
+      assert.equal(swing, arena.FAIR_BATTLE_TOTAL_SWING_CAP);
+      assert.equal(sumPoints(state) - beforeSum, arena.FAIR_PAID_SCORE_CAP);
+      assert.ok(overlays.some((row) => /arény/i.test(String(row && row.text))));
+
+      const scored = pointsOf(state);
+      const actions = state.battle.actions.length;
+      const gifts = state.platforms.kick.gifts;
+      duel.applyWorldLayer(response.body.normalizedEvent);
+      assert.deepEqual(pointsOf(duel.getArenaState()), scored);
+      assert.equal(duel.getArenaState().battle.actions.length, actions);
+      assert.equal(duel.getArenaState().platforms.kick.gifts, gifts);
+      assert.equal(sumPoints(duel.getArenaState()) - beforeSum, arena.FAIR_PAID_SCORE_CAP);
+    } finally {
+      Math.random = random;
+      if (fs.existsSync(duel.arenaFile)) fs.unlinkSync(duel.arenaFile);
+    }
+  });
+
+  await test("classic arenaBoost still scales and the same eventId cannot score twice", async () => {
+    const duel = buildPipeline(arena.createArenaState(), {
+      chatRewardModule: chatReward
+    });
+    const random = Math.random;
+    Math.random = () => 0;
+    try {
+      const response = await invokeIngest(
+        duel.handleIngest,
+        bridgePayload("kick", "gift", {
+          eventId: "classic-kick-stack-push",
+          coins: 50000,
+          giftName: "Rose",
+          message: "stack push",
+          username: "classic_boost_kick"
+        })
+      );
+      assert.equal(response.body.ok, true);
+      assert.equal(response.body.deduped, undefined);
+      const raw = response.body.normalizedEvent.support.miaPoints;
+      const boost = Math.max(5, Math.round(raw * 0.15) || 8);
+      const boostScore = Math.max(2, boost);
+      assert.ok(raw > 1000);
+      assert.equal(duel.getArenaState().platforms.kick.miaPoints, raw + boostScore);
+      assert.equal(duel.getArenaState().platforms.tiktok.miaPoints, 0);
+      const boostEventId = `${response.body.normalizedEvent.eventId}:arena_boost`;
+      assert.ok(duel.getArenaState().seenEventIds.includes(boostEventId));
+
+      const before = pointsOf(duel.getArenaState());
+      duel.applyWorldLayer(response.body.normalizedEvent);
+      assert.deepEqual(pointsOf(duel.getArenaState()), before);
+      const direct = arena.ingestArenaActivity(duel.getArenaState(), {
+        platform: "kick",
+        eventType: "COMMENT",
+        userLabel: "classic_boost_kick",
+        miaPoints: boostScore,
+        eventId: boostEventId
+      });
+      assert.equal(direct.applied, false);
+      assert.equal(direct.reason, "duplicate_event");
+      assert.equal(direct.state.platforms.kick.miaPoints, before.kick);
+    } finally {
+      Math.random = random;
+      if (fs.existsSync(duel.arenaFile)) fs.unlinkSync(duel.arenaFile);
+    }
   });
 
   if (fs.existsSync(pipeline.arenaFile)) fs.unlinkSync(pipeline.arenaFile);

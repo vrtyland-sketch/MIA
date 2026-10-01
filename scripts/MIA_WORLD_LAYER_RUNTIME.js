@@ -171,12 +171,17 @@ function createWorldLayerRuntime(deps = {}) {
       ["GIFT", "COMMENT", "LIKE"].includes(eventType)
     ) {
       try {
+        const rewardScoringMode = safeString(
+          platformArenaState && platformArenaState.scoringMode,
+          "classic"
+        ).toLowerCase();
         const reward = chatRewardModule.evaluateChatReward({
           platform: platformKey,
           eventType,
           message: safeString(normalized.message),
           userLabel,
           miaPoints,
+          scoringMode: rewardScoringMode,
           backpackModule: kojnozoutBackpackModule,
           backpackState: kojnozoutBackpackState
         });
@@ -187,9 +192,14 @@ function createWorldLayerRuntime(deps = {}) {
               setKojnozoutBackpackState(kojnozoutBackpackState);
             }
           }
+          const sourceEventId = safeString(normalized.eventId);
+          // FAIR paid score was already applied on the gift. The boost may
+          // still show the public reward, but it must not add arena points.
+          const boostScore =
+            rewardScoringMode === "fair" ? 0 : Number(reward.arenaBoost) || 0;
           if (
             arenaApplied !== false &&
-            reward.arenaBoost > 0 &&
+            boostScore > 0 &&
             platformArenaState &&
             typeof platformArenaModule?.ingestArenaActivity === "function"
           ) {
@@ -197,7 +207,8 @@ function createWorldLayerRuntime(deps = {}) {
               platform: platformKey,
               eventType: "COMMENT",
               userLabel,
-              miaPoints: reward.arenaBoost
+              eventId: sourceEventId ? `${sourceEventId}:arena_boost` : null,
+              miaPoints: boostScore
             });
             if (boost?.state) {
               platformArenaState = boost.state;
