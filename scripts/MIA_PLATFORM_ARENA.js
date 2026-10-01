@@ -31,6 +31,8 @@ const DUEL_GIFT_ENERGY_GAIN = 0.35;
  */
 const FAIR_PAID_SCORE_CAP = 4;
 const FAIR_PAID_ENERGY_GAIN = 8;
+const FAIR_BATTLE_POWER_PER_TARGET = arenaBattle.FAIR_BATTLE_POWER_PER_TARGET;
+const FAIR_BATTLE_TOTAL_SWING_CAP = arenaBattle.FAIR_BATTLE_TOTAL_SWING_CAP;
 const SEEN_EVENT_LIMIT = 200;
 
 function envFlag(name) {
@@ -244,6 +246,9 @@ function createArenaState(seed = {}) {
     seenEventIds: Array.isArray(seed.seenEventIds)
       ? seed.seenEventIds.map((id) => safeString(id)).filter(Boolean).slice(-SEEN_EVENT_LIMIT)
       : [],
+    seenBattleEventIds: Array.isArray(seed.seenBattleEventIds)
+      ? seed.seenBattleEventIds.map((id) => safeString(id)).filter(Boolean).slice(-SEEN_EVENT_LIMIT)
+      : [],
     battle:
       typeof arenaBattle.createBattleState === "function"
         ? arenaBattle.createBattleState(seed.battle || {})
@@ -418,6 +423,11 @@ function pushPlatformBattleAction(state, payload = {}) {
     return { state: next, action: null, reason: "action_interval" };
   }
 
+  const eventId = safeString(payload.eventId);
+  if (eventId && next.seenBattleEventIds.includes(eventId)) {
+    return { state: next, action: null, reason: "duplicate_event" };
+  }
+
   const attacker = normalizePlatform(payload.platform || payload.attacker || "tiktok");
   if (next.duel.active) {
     if (!next.duel.energy || typeof next.duel.energy !== "object") {
@@ -430,16 +440,28 @@ function pushPlatformBattleAction(state, payload = {}) {
     next.duel.energy[attacker] = Math.max(0, energy - DUEL_ACTION_ENERGY_COST);
   }
 
-  const result = arenaBattle.pushBattleAction(next.battle, payload);
+  const result = arenaBattle.pushBattleAction(next.battle, {
+    ...payload,
+    scoringMode: next.scoringMode
+  });
   next.battle = result.state;
 
   // Damage efekt: body z cílů na útočníka (token/Pokémon styl).
+  // FAIR also clamps the sum stolen from every target so a 3-way hit
+  // cannot multiply one paid action past FAIR_BATTLE_TOTAL_SWING_CAP.
   const action = result.action;
   if (action && action.effect === "damage" && action.power > 0) {
+    let fairSwingLeft =
+      next.scoringMode === "fair" ? FAIR_BATTLE_TOTAL_SWING_CAP : null;
     for (const target of action.targets || []) {
       const row = next.platforms[target];
       if (!row) continue;
-      const steal = Math.min(row.miaPoints, action.power);
+      let steal = Math.min(row.miaPoints, action.power);
+      if (fairSwingLeft != null) {
+        steal = Math.min(steal, fairSwingLeft);
+        if (steal <= 0) continue;
+        fairSwingLeft -= steal;
+      }
       row.miaPoints = Math.max(0, row.miaPoints - steal);
       next.platforms[action.attacker].miaPoints += steal;
       if (next.duel.active && next.duel.phase === "active") {
@@ -461,6 +483,9 @@ function pushPlatformBattleAction(state, payload = {}) {
     }
   }
 
+  if (eventId && action) {
+    next.seenBattleEventIds = next.seenBattleEventIds.concat(eventId).slice(-SEEN_EVENT_LIMIT);
+  }
   if (next.duel.active) {
     next.duel.lastActionAt = now;
   }
@@ -718,7 +743,7 @@ function getArenaSnapshot(state) {
     scoringMode: next.scoringMode,
     economyNote:
       next.scoringMode === "fair"
-        ? "FAIR: chat, follow, share a like zůstávají volné akce. Dárek přidá omezené skóre a omezenou energii, ne neomezené body podle mincí platformy."
+        ? "FAIR: chat, follow, share a like zůstávají volné akce. Dárek přidá omezené skóre a omezenou energii. Útok v duelu má pevný strop 2 body na soupeře a nejvýš 6 bodů celkem, nezávisle na mincích."
         : "Skóre = MIA body (naše měna). Nezávislé na výplatě platforem (~50 % TikTok).",
     updatedAt: next.updatedAt
   };
@@ -736,6 +761,8 @@ module.exports = {
   DUEL_ACTION_ENERGY_COST,
   FAIR_PAID_SCORE_CAP,
   FAIR_PAID_ENERGY_GAIN,
+  FAIR_BATTLE_POWER_PER_TARGET,
+  FAIR_BATTLE_TOTAL_SWING_CAP,
   STATE_PATH,
   normalizeScoringMode,
   resolveActivityPoints,

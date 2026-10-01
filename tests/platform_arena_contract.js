@@ -240,6 +240,167 @@ test("FAIR mode caps paid score and energy across unequal gifts", () => {
   assert.equal(comment.state.platforms.tiktok.miaPoints, arena.FAIR_PAID_SCORE_CAP);
 });
 
+function primeActiveDuel(mode, bank) {
+  let state = arena.createArenaState({ scoringMode: mode });
+  state = arena.startArenaDuel(state, { durationMs: 300000, skipPhases: true });
+  for (const id of arena.PLATFORMS) {
+    state.platforms[id].miaPoints = bank;
+    state.duel.energy[id] = 100;
+  }
+  return state;
+}
+
+function pointsOf(state) {
+  return Object.fromEntries(
+    arena.PLATFORMS.map((id) => [id, state.platforms[id].miaPoints])
+  );
+}
+
+function stolenFromOthers(before, after, attacker) {
+  let total = 0;
+  for (const id of arena.PLATFORMS) {
+    if (id === attacker) continue;
+    total += before[id] - after[id];
+  }
+  return total;
+}
+
+const UNEQUAL_GIFTS = [
+  { platform: "youtube", miaPoints: 1 },
+  { platform: "kick", miaPoints: 20 },
+  { platform: "twitch", miaPoints: 10000 },
+  { platform: "tiktok", miaPoints: 50000 }
+];
+
+test("FAIR active duel bounds battle damage for unequal gifts", () => {
+  let state = primeActiveDuel("fair", 1000);
+  assert.equal(state.duel.phase, "active");
+  assert.equal(state.duel.durationMs, 300000);
+  const powers = [];
+  const swings = [];
+
+  for (const gift of UNEQUAL_GIFTS) {
+    const scored = arena.ingestArenaActivity(state, {
+      platform: gift.platform,
+      eventType: "GIFT",
+      userLabel: gift.platform,
+      miaPoints: gift.miaPoints,
+      eventId: `fair-live-${gift.platform}`
+    });
+    assert.equal(scored.applied, true);
+    assert.ok(scored.points <= arena.FAIR_PAID_SCORE_CAP);
+    state = scored.state;
+    state.duel.lastActionAt = 0;
+    const before = pointsOf(state);
+    const push = arena.pushPlatformBattleAction(state, {
+      platform: gift.platform,
+      eventType: "GIFT",
+      userLabel: gift.platform,
+      miaPoints: gift.miaPoints,
+      item: { id: "box", label: "Box", role: "duel", power: 9000 },
+      eventId: `fair-live-${gift.platform}`
+    });
+    assert.equal(push.reason, "ok", gift.platform);
+    assert.equal(push.action.effect, "damage");
+    assert.equal(push.action.targets.length, 3);
+    assert.equal(push.action.power, arena.FAIR_BATTLE_POWER_PER_TARGET);
+    const swing = stolenFromOthers(before, pointsOf(push.state), gift.platform);
+    assert.equal(swing, push.action.power * push.action.targets.length);
+    assert.equal(swing, arena.FAIR_BATTLE_TOTAL_SWING_CAP);
+    powers.push(push.action.power);
+    swings.push(swing);
+    state = push.state;
+  }
+
+  assert.deepEqual(powers, [2, 2, 2, 2]);
+  assert.deepEqual(swings, [6, 6, 6, 6]);
+  assert.equal(arena.FAIR_BATTLE_POWER_PER_TARGET, 2);
+  assert.equal(arena.FAIR_BATTLE_TOTAL_SWING_CAP, 6);
+});
+
+test("classic active duel still scales battle power from raw mia points", () => {
+  let state = primeActiveDuel("classic", 100000);
+  const powers = [];
+  const swings = [];
+
+  for (const gift of UNEQUAL_GIFTS) {
+    state.duel.lastActionAt = 0;
+    const before = pointsOf(state);
+    const push = arena.pushPlatformBattleAction(state, {
+      platform: gift.platform,
+      eventType: "GIFT",
+      userLabel: gift.platform,
+      miaPoints: gift.miaPoints,
+      eventId: `classic-live-${gift.platform}`
+    });
+    assert.equal(push.reason, "ok", gift.platform);
+    const expected = Math.max(4, Math.round(gift.miaPoints * 0.12) || 8);
+    assert.equal(push.action.power, expected);
+    const swing = stolenFromOthers(before, pointsOf(push.state), gift.platform);
+    assert.equal(swing, expected * 3);
+    powers.push(push.action.power);
+    swings.push(swing);
+    state = push.state;
+  }
+
+  assert.deepEqual(powers, [8, 4, 1200, 6000]);
+  assert.equal(swings[3], 18000);
+  assert.ok(powers[3] > powers[2]);
+  assert.ok(powers[2] > powers[1]);
+  assert.ok(swings[3] > swings[0]);
+});
+
+test("duplicate event id does not score or battle twice in an active duel", () => {
+  let state = primeActiveDuel("fair", 1000);
+  const scored = arena.ingestArenaActivity(state, {
+    platform: "tiktok",
+    eventType: "GIFT",
+    userLabel: "Donor",
+    miaPoints: 50000,
+    eventId: "dup-whale"
+  });
+  assert.equal(scored.applied, true);
+  state = scored.state;
+  const battle = arena.pushPlatformBattleAction(state, {
+    platform: "tiktok",
+    eventType: "GIFT",
+    userLabel: "Donor",
+    miaPoints: 50000,
+    eventId: "dup-whale"
+  });
+  assert.equal(battle.reason, "ok");
+  assert.equal(battle.action.power, arena.FAIR_BATTLE_POWER_PER_TARGET);
+  const after = pointsOf(battle.state);
+  const actions = battle.state.battle.actions.length;
+
+  battle.state.duel.lastActionAt = 0;
+  battle.state.duel.energy.tiktok = 100;
+  const replayScore = arena.ingestArenaActivity(battle.state, {
+    platform: "tiktok",
+    eventType: "GIFT",
+    userLabel: "Donor",
+    miaPoints: 50000,
+    eventId: "dup-whale"
+  });
+  assert.equal(replayScore.applied, false);
+  assert.equal(replayScore.reason, "duplicate_event");
+  assert.deepEqual(pointsOf(replayScore.state), after);
+
+  const replayBattle = arena.pushPlatformBattleAction(replayScore.state, {
+    platform: "tiktok",
+    eventType: "GIFT",
+    userLabel: "Donor",
+    miaPoints: 50000,
+    eventId: "dup-whale"
+  });
+  assert.equal(replayBattle.reason, "duplicate_event");
+  assert.equal(replayBattle.action, null);
+  assert.deepEqual(pointsOf(replayBattle.state), after);
+  assert.equal(replayBattle.state.battle.actions.length, actions);
+  assert.equal(replayBattle.state.duel.energy.tiktok, 100);
+  assert.equal(replayBattle.state.platforms.kick.events, 0);
+});
+
 test("duplicate event id does not score twice", () => {
   let state = arena.createArenaState();
   const first = arena.ingestArenaActivity(state, {

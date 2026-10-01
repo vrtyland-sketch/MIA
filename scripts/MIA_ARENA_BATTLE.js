@@ -13,6 +13,28 @@ const roster = require("./MIA_KOJ_ROSTER");
 
 const PLATFORMS = ["tiktok", "kick", "twitch", "youtube"];
 
+/**
+ * FAIR duel damage ignores raw paid miaPoints and item power.
+ * One strike is 2 points per rival, and the whole strike moves at most 6.
+ * A 4-platform duel therefore swings by at most 6 (2 from each of 3 rivals),
+ * which is smaller than a single free comment cycle across the field and
+ * cannot decide a 5-minute duel by itself. Classic mode does not use these.
+ */
+const FAIR_BATTLE_POWER_PER_TARGET = 2;
+const FAIR_BATTLE_TOTAL_SWING_CAP = 6;
+
+function resolveBattlePower(payload = {}, effect = "damage", targetCount = 1) {
+  if (safeString(payload.scoringMode).toLowerCase() === "fair" && effect === "damage") {
+    const count = Math.max(1, Math.floor(toNumber(targetCount, 1)));
+    const share = Math.floor(FAIR_BATTLE_TOTAL_SWING_CAP / count);
+    return Math.max(1, Math.min(FAIR_BATTLE_POWER_PER_TARGET, share));
+  }
+  return Math.max(
+    4,
+    Math.round(toNumber(payload.miaPoints, 0) * 0.12) || toNumber(payload.item?.power, 8)
+  );
+}
+
 function safeString(value, fallback = "") {
   return typeof value === "string" && value.trim() ? value.trim() : fallback;
 }
@@ -113,11 +135,9 @@ function pushBattleAction(battleState = {}, payload = {}) {
       ? [attacker]
       : otherPlatforms(attacker);
 
-  // Box / damage item z Kick → Kick Koj hází box na ostatní.
-  const power = Math.max(
-    4,
-    Math.round(toNumber(payload.miaPoints, 0) * 0.12) || toNumber(payload.item?.power, 8)
-  );
+  // Classic: power follows raw MIA points, then item power.
+  // FAIR damage: fixed per-target power, independent of paid points and item power.
+  const power = resolveBattlePower(payload, move.effect, targets.length);
 
   const id = state.lastActionId + 1;
   const at = nowTs();
@@ -236,9 +256,12 @@ function getBattleSnapshot(battleState = {}) {
 
 module.exports = {
   PLATFORMS,
+  FAIR_BATTLE_POWER_PER_TARGET,
+  FAIR_BATTLE_TOTAL_SWING_CAP,
   createBattleState,
   resolveMoveFromItem,
   resolveMoveFromEvent,
+  resolveBattlePower,
   pushBattleAction,
   pruneBattleActions,
   getBattleSnapshot

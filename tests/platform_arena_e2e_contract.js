@@ -355,6 +355,126 @@ async function run() {
     assert.equal(pipeline.getArenaState().platforms.kick.gifts, 1);
   });
 
+  function primeDuel(target, mode, bank) {
+    let state = arena.createArenaState({ scoringMode: mode });
+    state = arena.startArenaDuel(state, { durationMs: 300000, skipPhases: true });
+    for (const id of PLATFORMS) {
+      state.platforms[id].miaPoints = bank;
+      state.duel.energy[id] = 100;
+    }
+    target.setArenaState(state);
+  }
+
+  function swingAgainst(before, after, attacker) {
+    let total = 0;
+    for (const id of PLATFORMS) {
+      if (id === attacker) continue;
+      total += before[id] - after[id];
+    }
+    return total;
+  }
+
+  const duelGifts = [
+    { platform: "youtube", coins: 1 },
+    { platform: "kick", coins: 20 },
+    { platform: "twitch", coins: 10000 },
+    { platform: "tiktok", coins: 50000 }
+  ];
+
+  async function runDuelGifts(target, label) {
+    const powers = [];
+    const swings = [];
+    const rawPoints = [];
+    for (const gift of duelGifts) {
+      const ready = target.getArenaState();
+      ready.duel.lastActionAt = 0;
+      target.setArenaState(ready);
+      const before = pointsOf(target.getArenaState());
+      const response = await invokeIngest(
+        target.handleIngest,
+        bridgePayload(gift.platform, "gift", {
+          eventId: `${label}-${gift.platform}-duel`,
+          coins: gift.coins,
+          giftName: gift.platform === "twitch" ? "Bits" : "Rose"
+        })
+      );
+      assert.equal(response.status, 200, gift.platform);
+      assert.equal(response.body && response.body.ok, true, gift.platform);
+      assert.equal(response.body.deduped, undefined, gift.platform);
+      assert.equal(response.body.normalizedEvent.eventType, "GIFT");
+      const raw = response.body.normalizedEvent.support.miaPoints;
+      const afterState = target.getArenaState();
+      const action = afterState.battle.actions[0];
+      assert.ok(action, gift.platform);
+      assert.equal(action.attacker, gift.platform);
+      assert.equal(action.effect, "damage");
+      assert.equal(action.targets.length, 3);
+      const swing = swingAgainst(before, pointsOf(afterState), gift.platform);
+      powers.push(action.power);
+      swings.push(swing);
+      rawPoints.push(raw);
+    }
+    return { powers, swings, rawPoints };
+  }
+
+  await test("FAIR active duel keeps battle damage bounded across unequal gifts", async () => {
+    const duel = buildPipeline(arena.createArenaState({ scoringMode: "fair" }));
+    primeDuel(duel, "fair", 1000);
+    assert.equal(duel.getArenaState().duel.phase, "active");
+    assert.equal(duel.getArenaState().duel.durationMs, 300000);
+    const { powers, swings, rawPoints } = await runDuelGifts(duel, "fair");
+    assert.ok(rawPoints[3] > rawPoints[2]);
+    assert.ok(rawPoints[2] > rawPoints[1]);
+    assert.ok(rawPoints[1] > rawPoints[0]);
+    assert.deepEqual(powers, [
+      arena.FAIR_BATTLE_POWER_PER_TARGET,
+      arena.FAIR_BATTLE_POWER_PER_TARGET,
+      arena.FAIR_BATTLE_POWER_PER_TARGET,
+      arena.FAIR_BATTLE_POWER_PER_TARGET
+    ]);
+    assert.deepEqual(swings, [
+      arena.FAIR_BATTLE_TOTAL_SWING_CAP,
+      arena.FAIR_BATTLE_TOTAL_SWING_CAP,
+      arena.FAIR_BATTLE_TOTAL_SWING_CAP,
+      arena.FAIR_BATTLE_TOTAL_SWING_CAP
+    ]);
+
+    const before = pointsOf(duel.getArenaState());
+    const actions = duel.getArenaState().battle.actions.length;
+    const replay = await invokeIngest(
+      duel.handleIngest,
+      bridgePayload("tiktok", "gift", {
+        eventId: "fair-tiktok-duel",
+        coins: 50000,
+        giftName: "Rose"
+      })
+    );
+    assert.equal(replay.body.deduped, true);
+    assert.deepEqual(pointsOf(duel.getArenaState()), before);
+    assert.equal(duel.getArenaState().battle.actions.length, actions);
+    assert.equal(duel.getArenaState().platforms.tiktok.gifts, 1);
+    if (fs.existsSync(duel.arenaFile)) fs.unlinkSync(duel.arenaFile);
+  });
+
+  await test("classic active duel still scales battle damage with gift value", async () => {
+    const duel = buildPipeline(arena.createArenaState());
+    primeDuel(duel, "classic", 1000000);
+    const { powers, swings, rawPoints } = await runDuelGifts(duel, "classic");
+    assert.deepEqual(
+      powers,
+      rawPoints.map((points) => Math.max(4, Math.round(points * 0.12) || 8))
+    );
+    assert.deepEqual(
+      swings,
+      powers.map((power) => power * 3)
+    );
+    assert.ok(rawPoints[3] > rawPoints[0]);
+    assert.ok(powers[3] > powers[2]);
+    assert.ok(powers[2] > arena.FAIR_BATTLE_TOTAL_SWING_CAP);
+    assert.ok(swings[3] > swings[0]);
+    if (fs.existsSync(duel.arenaFile)) fs.unlinkSync(duel.arenaFile);
+  });
+
   if (fs.existsSync(pipeline.arenaFile)) fs.unlinkSync(pipeline.arenaFile);
   if (fs.existsSync(tmpRuntime)) fs.unlinkSync(tmpRuntime);
   if (process.env.MIA_PLATFORM_LIVE_SIGNALS) {

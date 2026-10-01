@@ -41,6 +41,7 @@ function createWorldLayerRuntime(deps = {}) {
       typeof getKojnozoutBackpackState === "function" ? getKojnozoutBackpackState() : {};
     let kojnozoutDuelState = typeof getDuelState === "function" ? getDuelState() : {};
     let platformArenaState = typeof getArenaState === "function" ? getArenaState() : null;
+    let arenaApplied = true;
 
     if (typeof kojnozoutBackpackModule?.resolveItemFromEvent === "function") {
       const item = kojnozoutBackpackModule.resolveItemFromEvent(eventType, support);
@@ -122,7 +123,9 @@ function createWorldLayerRuntime(deps = {}) {
         if (arenaResult?.state) {
           platformArenaState = arenaResult.state;
         }
+        arenaApplied = arenaResult?.applied !== false;
         if (
+          arenaApplied &&
           eventType === "GIFT" &&
           platformArenaState &&
           (platformArenaState.duel?.active || platformArenaState.tournament?.active) &&
@@ -136,6 +139,7 @@ function createWorldLayerRuntime(deps = {}) {
             platform: platformKey,
             eventType,
             userLabel,
+            eventId: normalized.eventId || null,
             miaPoints,
             item: giftItem
           });
@@ -184,6 +188,7 @@ function createWorldLayerRuntime(deps = {}) {
             }
           }
           if (
+            arenaApplied !== false &&
             reward.arenaBoost > 0 &&
             platformArenaState &&
             typeof platformArenaModule?.ingestArenaActivity === "function"
@@ -201,6 +206,7 @@ function createWorldLayerRuntime(deps = {}) {
             }
           }
           if (
+            arenaApplied !== false &&
             platformArenaState &&
             typeof platformArenaModule?.pushPlatformBattleAction === "function" &&
             (platformArenaState.duel?.active || platformArenaState.tournament?.active)
@@ -209,6 +215,7 @@ function createWorldLayerRuntime(deps = {}) {
               platform: platformKey,
               eventType,
               userLabel,
+              eventId: normalized.eventId || null,
               miaPoints,
               item: reward.item || null
             });
