@@ -14,6 +14,10 @@ process.env.MIA_VIEWER_INVENTORY = "0";
 process.env.MIA_DIRECTOR = "0";
 process.env.MIA_COMBO_MOMENTS = "0";
 process.env.MIA_ARENA_SCORING = "classic";
+process.env.MIA_PLATFORM_LIVE_SIGNALS = require("path").join(
+  require("os").tmpdir(),
+  `mia-live-signals-e2e-${process.pid}.json`
+);
 
 const assert = require("assert/strict");
 const os = require("os");
@@ -353,6 +357,9 @@ async function run() {
 
   if (fs.existsSync(pipeline.arenaFile)) fs.unlinkSync(pipeline.arenaFile);
   if (fs.existsSync(tmpRuntime)) fs.unlinkSync(tmpRuntime);
+  if (process.env.MIA_PLATFORM_LIVE_SIGNALS) {
+    fs.rmSync(process.env.MIA_PLATFORM_LIVE_SIGNALS, { force: true });
+  }
 
   if (!process.exitCode) {
     console.log("platform_arena_e2e_contract: all passed");

@@ -5,9 +5,10 @@
  * Shows Multi-Platform Integration Layer readiness (no secrets printed raw).
  */
 
-const { assessAll } = require("../shared/platform_integration");
+const { assessAll, loadDotEnv } = require("../shared/platform_integration");
+const { loadStoredLiveSignals } = require("../shared/platform_integration/liveSignals");
 
-const report = assessAll();
+const report = assessAll(loadDotEnv(), { liveSignals: loadStoredLiveSignals() });
 console.log(JSON.stringify(report, null, 2));
 
 if (!report.summary.configuredReady) {

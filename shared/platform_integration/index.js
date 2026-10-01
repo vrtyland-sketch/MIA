@@ -12,6 +12,7 @@ const eventKinds = require("./eventKinds");
 const tokenStore = require("./tokenStore");
 const registry = require("./registry");
 const readiness = require("./readiness");
+const liveSignals = require("./liveSignals");
 const testHarness = require("./testHarness");
 
 module.exports = {
@@ -21,8 +22,10 @@ module.exports = {
   tokenStore,
   registry,
   readiness,
+  liveSignals,
   testHarness,
   assessAll: readiness.assessAll,
+  loadDotEnv: readiness.loadDotEnv,
   listPlatforms: registry.listPlatforms,
   streamPlatforms: registry.streamPlatforms,
   getPlatform: registry.getPlatform

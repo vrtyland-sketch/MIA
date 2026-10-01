@@ -1,5 +1,7 @@
 "use strict";
 
+const { notePlatformLiveSignal } = require("../../shared/platform_integration/liveSignals");
+
 async function phaseSession(ctx, deps) {
   const {
     streamSessionModule,
@@ -44,6 +46,12 @@ async function phaseSession(ctx, deps) {
       ctx.halt(ctx.buildDedupeResponse(normalized.eventId || null).body);
       return ctx;
     }
+  }
+
+  try {
+    notePlatformLiveSignal(normalized.platform, { eventType });
+  } catch (_err) {
+    /* live-readiness bookkeeping must not block ingest */
   }
 
   recordIngestSummary({

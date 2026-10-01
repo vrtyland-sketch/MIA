@@ -1,6 +1,9 @@
 "use strict";
 
 const assert = require("assert/strict");
+const fs = require("fs");
+const os = require("os");
+const path = require("path");
 const {
   validateAdapterShape,
   wrapLegacyBridge,
@@ -10,7 +13,8 @@ const {
   registry,
   readiness,
   testHarness,
-  tokenStore
+  tokenStore,
+  liveSignals
 } = require("../shared/platform_integration");
 const { detectPlatform, detectSource } = require("../shared/platform_normalizers/normalize_event");
 
@@ -163,6 +167,37 @@ async function run() {
     assert.equal(stale.summary.liveReady, false);
     assert.equal(stale.platforms.find((row) => row.id === "youtube").liveReady, false);
     assert.equal(stale.platforms.find((row) => row.id === "tiktok").liveReady, true);
+  });
+
+  await test("stored live signal keeps event type and drops chat text", () => {
+    const file = path.join(os.tmpdir(), `mia-live-signals-${process.pid}.json`);
+    const previous = process.env.MIA_PLATFORM_LIVE_SIGNALS;
+    process.env.MIA_PLATFORM_LIVE_SIGNALS = file;
+    try {
+      const noted = liveSignals.notePlatformLiveSignal("kick", {
+        eventType: "COMMENT",
+        message: "this chat text must not be stored"
+      });
+      assert.equal(noted.ok, true);
+      const stored = liveSignals.loadStoredLiveSignals();
+      assert.equal(stored.kick.eventType, "COMMENT");
+      assert.equal(Number.isFinite(stored.kick.at), true);
+      assert.equal(JSON.stringify(stored).includes("this chat text"), false);
+      const report = readiness.assessAll(
+        {
+          MIA_KICK_ENABLED: "1",
+          MIA_TWITCH_ENABLED: "0",
+          MIA_YOUTUBE_ENABLED: "0"
+        },
+        { liveSignals: stored, now: stored.kick.at }
+      );
+      assert.equal(report.platforms.find((row) => row.id === "kick").liveReady, true);
+      assert.equal(report.summary.liveReady, false);
+    } finally {
+      if (previous === undefined) delete process.env.MIA_PLATFORM_LIVE_SIGNALS;
+      else process.env.MIA_PLATFORM_LIVE_SIGNALS = previous;
+      fs.rmSync(file, { force: true });
+    }
   });
 }
 

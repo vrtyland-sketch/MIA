@@ -44,3 +44,5 @@ incoming-images/other/
 incoming-images/videos_2/
 mia-output-overlay/assets/animation-bank/
 mia-output-overlay/assets/kojnozrout/
+# Recent ingest timestamps only (no chat text, no credentials).
+data/platform-live-signals.json
