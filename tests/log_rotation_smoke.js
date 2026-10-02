@@ -43,6 +43,12 @@ test("prepareLogFile rotates when file exceeds max size", () => {
   }
 });
 
+test("cleanupOldLogs tolerates a missing logs directory", () => {
+  const missing = path.join(os.tmpdir(), `mia-log-missing-${process.pid}-${Date.now()}`);
+  assert.equal(fs.existsSync(missing), false);
+  assert.doesNotThrow(() => cleanupOldLogs(missing));
+});
+
 test("cleanupOldLogs removes jsonl older than retention", () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "mia-log-clean-"));
   const oldFile = path.join(dir, "ingest-2000-01-01.jsonl");

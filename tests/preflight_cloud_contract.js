@@ -439,6 +439,115 @@ test("live missing-asset stacks stay ENV_BLOCKED", () => {
   }
 });
 
+test("node 24 assertion banners do not turn a missing-asset failure into FAIL", () => {
+  const absent = probe([]);
+  const banners = [
+    "AssertionError [ERR_ASSERTION]: Expected inputs to be strictly deep-equal:",
+    "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:",
+    "AssertionError [ERR_ASSERTION]: Expected inputs to be strictly equal:"
+  ];
+  for (const banner of banners) {
+    const classified = classifyCloudSuite({
+      name: "story_animation",
+      exitCode: 1,
+      output: [
+        banner,
+        "+ actual - expected ... Lines skipped",
+        "story bank manifest exists",
+        "    at run (/workspace/tests/story_animation_contract.js:80:10)"
+      ].join("\n"),
+      missing: listMissingPrerequisites("story_animation", absent)
+    });
+    assert.equal(classified.disposition, "ENV_BLOCKED", banner);
+  }
+
+  const realDiff = classifyCloudSuite({
+    name: "story_animation",
+    exitCode: 1,
+    output: [
+      "AssertionError [ERR_ASSERTION]: Expected inputs to be strictly deep-equal:",
+      "+ actual - expected",
+      "+   frames: 0",
+      "-   frames: 3",
+      "composed.frames.length"
+    ].join("\n"),
+    missing: listMissingPrerequisites("story_animation", absent)
+  });
+  assert.equal(realDiff.disposition, "FAIL");
+});
+
+test("only diff simple and diff full are ignorable assertion metadata", () => {
+  const storyPath = "mia-output-overlay/assets/kojnozrout/story-bank-manifest.json";
+  const absent = probe([]);
+  const present = probe([storyPath]);
+  const missing = listMissingPrerequisites("story_animation", absent);
+  const stack = [
+    "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:",
+    "+ actual - expected",
+    "story bank manifest exists",
+    "    at run (/workspace/tests/story_animation_contract.js:80:10) {",
+    "  generatedMessage: true,",
+    "  code: 'ERR_ASSERTION',",
+    "  actual: false,",
+    "  expected: true,",
+    "  operator: 'strictEqual',",
+    "  diff: 'simple'",
+    "}"
+  ].join("\n");
+
+  function classify(output, probeImpl) {
+    return classifyCloudSuite({
+      name: "story_animation",
+      exitCode: 1,
+      output,
+      missing: listMissingPrerequisites("story_animation", probeImpl)
+    });
+  }
+
+  assert.equal(classify(stack, absent).disposition, "ENV_BLOCKED");
+  assert.equal(
+    classify(stack.replace("diff: 'simple'", "diff: 'full',"), absent).disposition,
+    "ENV_BLOCKED"
+  );
+  assert.equal(missing.length, 1);
+
+  assert.equal(
+    classify(
+      `${stack}\nAssertionError [ERR_ASSERTION]: composed.frames.length`,
+      absent
+    ).disposition,
+    "FAIL"
+  );
+  assert.equal(
+    classify(stack.replace("diff: 'simple'", "diff: 'other'"), absent).disposition,
+    "FAIL"
+  );
+  assert.equal(
+    classify(stack.replace("diff: 'simple'", "diff: simple"), absent).disposition,
+    "FAIL"
+  );
+  assert.equal(
+    classify(stack.replace("diff: 'simple'", 'diff: "simple"'), absent).disposition,
+    "FAIL"
+  );
+  assert.equal(classify(stack, present).disposition, "FAIL");
+
+  const strict = publishSuiteResult(
+    {
+      name: "story_animation",
+      ok: false,
+      exitCode: 1,
+      ms: 1,
+      output: stack,
+      fullOutput: stack
+    },
+    "strict",
+    absent
+  );
+  assert.equal(strict.disposition, undefined);
+  assert.equal(strict.ok, false);
+});
+
 if (!process.exitCode) {
   console.log("preflight_cloud_contract: all passed");
 }

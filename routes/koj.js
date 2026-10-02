@@ -74,7 +74,7 @@ function registerKojRoutes(app, ctx = {}) {
     }
   });
 
-  app.post("/koj/test-mode", (req, res) => {
+  app.post("/koj/test-mode", localAdminGuard, (req, res) => {
     try {
       const body = req.body || {};
       if (body.enabled === undefined) {

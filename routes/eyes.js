@@ -64,7 +64,7 @@ function registerEyesRoutes(app, ctx = {}) {
     }
   });
 
-  app.get("/mia/eyes/scan", async (req, res) => {
+  app.get("/mia/eyes/scan", localAdminGuard, async (req, res) => {
     if (!miaEyes || typeof miaEyes.scanCatalog !== "function") {
       return res.status(503).json({ ok: false, error: "mia_eyes_unavailable" });
     }
@@ -92,7 +92,7 @@ function registerEyesRoutes(app, ctx = {}) {
     }
   });
 
-  app.get("/mia/eyes/away", async (req, res) => {
+  app.get("/mia/eyes/away", localAdminGuard, async (req, res) => {
     if (!miaEyes || typeof miaEyes.scanAwayScene !== "function") {
       return res.status(503).json({ ok: false, error: "mia_eyes_away_unavailable" });
     }
@@ -456,7 +456,7 @@ function registerEyesRoutes(app, ctx = {}) {
     });
   });
 
-  app.get("/mia/display/self-check", async (req, res) => {
+  app.get("/mia/display/self-check", localAdminGuard, async (req, res) => {
     if (!displayVisionModule || typeof displayVisionModule.analyzeLayout !== "function") {
       return res.status(503).json({ ok: false, error: "display_vision_unavailable" });
     }
@@ -595,7 +595,7 @@ function registerEyesRoutes(app, ctx = {}) {
     }
   });
 
-  app.get("/mia/eyes/screenshot", async (req, res) => {
+  app.get("/mia/eyes/screenshot", localAdminGuard, async (req, res) => {
     if (!miaEyes || typeof miaEyes.captureScreenshot !== "function") {
       return res.status(503).json({ ok: false, error: "mia_eyes_unavailable" });
     }
@@ -621,7 +621,7 @@ function registerEyesRoutes(app, ctx = {}) {
     }
   });
 
-  app.post("/mia/eyes/webcam/sync", async (_req, res) => {
+  app.post("/mia/eyes/webcam/sync", localAdminGuard, async (_req, res) => {
     if (!miaEyes || typeof miaEyes.syncWebcamVisibility !== "function") {
       return res.status(503).json({ ok: false, error: "mia_eyes_unavailable" });
     }
@@ -665,7 +665,7 @@ function registerEyesRoutes(app, ctx = {}) {
     }
   });
 
-  app.post("/mia/vision/tick", async (_req, res) => {
+  app.post("/mia/vision/tick", localAdminGuard, async (_req, res) => {
     if (!obsVision || typeof obsVision.tick !== "function") {
       return res.status(503).json({ ok: false, error: "mia_vision_unavailable" });
     }

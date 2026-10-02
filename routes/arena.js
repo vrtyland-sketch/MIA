@@ -9,6 +9,7 @@ function registerArenaRoutes(app, ctx = {}) {
 
   const {
     localAdminGuard,
+    duelPeerGuard,
     runtimeConfig,
     kojnozoutDuelModule,
     kojnozoutBackpackModule,
@@ -63,7 +64,10 @@ function registerArenaRoutes(app, ctx = {}) {
     }
   });
 
-  app.get("/duel/export", (_req, res) => {
+  const duelSyncGuard =
+    typeof duelPeerGuard === "function" ? duelPeerGuard : localAdminGuard;
+
+  app.get("/duel/export", duelSyncGuard, (_req, res) => {
     try {
       if (typeof kojnozoutDuelModule.exportLocalSide !== "function") {
         return res.status(500).json({ ok: false, error: "duel_module_missing" });
@@ -74,7 +78,7 @@ function registerArenaRoutes(app, ctx = {}) {
     }
   });
 
-  app.post("/duel/opponent-sync", (req, res) => {
+  app.post("/duel/opponent-sync", duelSyncGuard, (req, res) => {
     try {
       const peerExport = req.body?.export || req.body || {};
       if (typeof kojnozoutDuelModule.syncOpponentFromPeer !== "function") {
@@ -95,7 +99,7 @@ function registerArenaRoutes(app, ctx = {}) {
     }
   });
 
-  app.post("/duel/opponent-points", (req, res) => {
+  app.post("/duel/opponent-points", localAdminGuard, (req, res) => {
     try {
       const points = Number(req.body?.points || req.body?.miaPoints || 0);
       if (typeof kojnozoutDuelModule.reportOpponentPoints !== "function") {

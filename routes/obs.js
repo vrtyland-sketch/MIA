@@ -7,6 +7,7 @@ function registerObsRoutes(app, ctx = {}) {
   if (!check.ok) return check;
 
   const {
+    localAdminGuard,
     fixObsOverlayBrowserLayouts,
     fixObsOverlaySceneTransforms,
     ensureObsVoiceBrowserReady,
@@ -26,7 +27,7 @@ function registerObsRoutes(app, ctx = {}) {
     typeof getObsConnected === "function" ? getObsConnected : () => Boolean(ctx.obsConnected);
   const obsClient = typeof getObs === "function" ? getObs : () => ctx.obs;
 
-  app.get("/obs/fix-overlays", async (_req, res) => {
+  app.get("/obs/fix-overlays", localAdminGuard, async (_req, res) => {
     try {
       const layout = await fixObsOverlayBrowserLayouts();
       const transforms = await fixObsOverlaySceneTransforms();
@@ -48,7 +49,7 @@ function registerObsRoutes(app, ctx = {}) {
     }
   });
 
-  app.get("/obs/ensure-voice", async (req, res) => {
+  app.get("/obs/ensure-voice", localAdminGuard, async (req, res) => {
     try {
       const forceRefresh = safeString(req.query?.force).toLowerCase() === "1";
       const voice = await ensureObsVoiceBrowserReady({ forceRefresh });
@@ -66,7 +67,7 @@ function registerObsRoutes(app, ctx = {}) {
     }
   });
 
-  app.get("/obs/ensure-streamer-cameras", async (_req, res) => {
+  app.get("/obs/ensure-streamer-cameras", localAdminGuard, async (_req, res) => {
     try {
       const rig = await ensureObsStreamerCameras();
       res.json({
@@ -80,7 +81,7 @@ function registerObsRoutes(app, ctx = {}) {
     }
   });
 
-  app.get("/obs/overlay-audit", async (_req, res) => {
+  app.get("/obs/overlay-audit", localAdminGuard, async (_req, res) => {
     try {
       const audit = await auditObsMiaBrowserSources();
       res.json({
@@ -97,7 +98,7 @@ function registerObsRoutes(app, ctx = {}) {
     }
   });
 
-  app.get("/obs/reconnect", async (_req, res) => {
+  app.get("/obs/reconnect", localAdminGuard, async (_req, res) => {
     try {
       const healthBefore = await buildObsHealthSnapshot();
       const result = await forceReconnectObs("http_reconnect");
@@ -117,7 +118,7 @@ function registerObsRoutes(app, ctx = {}) {
     }
   });
 
-  app.post("/obs/fix-layout", (_req, res) => {
+  app.post("/obs/fix-layout", localAdminGuard, (_req, res) => {
     if (typeof ctx.runObsMaintenanceScript !== "function") {
       return res.status(503).json({ ok: false, error: "obs_maintenance_unavailable" });
     }
@@ -142,7 +143,7 @@ function registerObsRoutes(app, ctx = {}) {
     }
   });
 
-  app.post("/obs/refresh-overlays", (_req, res) => {
+  app.post("/obs/refresh-overlays", localAdminGuard, (_req, res) => {
     if (typeof ctx.runObsMaintenanceScript !== "function") {
       return res.status(503).json({ ok: false, error: "obs_maintenance_unavailable" });
     }
@@ -167,7 +168,7 @@ function registerObsRoutes(app, ctx = {}) {
     }
   });
 
-  app.post("/obs/prep-stream", async (_req, res) => {
+  app.post("/obs/prep-stream", localAdminGuard, async (_req, res) => {
     if (typeof ctx.runObsMaintenanceScript !== "function") {
       return res.status(503).json({ ok: false, error: "obs_maintenance_unavailable" });
     }
@@ -216,7 +217,7 @@ function registerObsRoutes(app, ctx = {}) {
     }
   });
 
-  app.post("/obs/revive-voice", async (req, res) => {
+  app.post("/obs/revive-voice", localAdminGuard, async (req, res) => {
     try {
       const body = req.body && typeof req.body === "object" ? req.body : {};
       const speaker =

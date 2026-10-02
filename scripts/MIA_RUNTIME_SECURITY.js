@@ -21,14 +21,26 @@ function resolveIngestSecret() {
   return safeString(process.env.MIA_INGEST_SECRET);
 }
 
-function normalizeClientIp(req = {}) {
-  const raw =
-    safeString(req.headers["x-forwarded-for"]).split(",")[0] ||
-    req.ip ||
-    req.socket?.remoteAddress ||
-    "";
+function resolveDuelPeerSecret() {
+  return safeString(process.env.MIA_DUEL_PEER_SECRET);
+}
 
-  return raw.replace(/^::ffff:/, "");
+function stripMappedIpv4(value) {
+  return safeString(value).replace(/^::ffff:/i, "");
+}
+
+function socketPeerIp(req = {}) {
+  const socket = req.socket || req.connection;
+  if (!socket || typeof socket !== "object") return "";
+  return stripMappedIpv4(socket.remoteAddress);
+}
+
+function normalizeClientIp(req = {}) {
+  // Auth identity is the TCP peer. A client-supplied X-Forwarded-For, and
+  // Express req.ip when trust proxy copies that header, must not grant localhost.
+  const peer = socketPeerIp(req);
+  if (peer) return peer;
+  return stripMappedIpv4(req.ip);
 }
 
 function isLocalRequest(req = {}) {
@@ -93,12 +105,15 @@ function validateIngestAuth(req = {}) {
   return { ok: true, mode: "localhost" };
 }
 
-function validateLocalAdmin(req = {}) {
+function validateLocalAdmin(req = {}, options = {}) {
   if (isLocalRequest(req)) {
     return { ok: true, mode: "localhost" };
   }
 
-  const configuredSecret = resolveIngestSecret();
+  const configuredSecret =
+    typeof options.resolveIngestSecret === "function"
+      ? safeString(options.resolveIngestSecret())
+      : resolveIngestSecret();
   if (configuredSecret && extractIngestSecret(req) === configuredSecret) {
     return { ok: true, mode: "secret" };
   }
@@ -112,9 +127,6 @@ function validateLocalAdmin(req = {}) {
 }
 
 function isDebugRouteAllowed(req = {}) {
-  if (isDebugRoutesEnabled()) {
-    return true;
-  }
   if (isLocalRequest(req)) {
     return true;
   }
@@ -130,17 +142,43 @@ function createDebugRouteGuard() {
     if (isDebugRouteAllowed(req)) {
       return next();
     }
-    return res.status(404).json({
+    if (!isDebugRoutesEnabled()) {
+      return res.status(404).json({
+        ok: false,
+        error: "debug_routes_disabled",
+        message: "Debug routes are disabled (MIA_DEBUG_ROUTES=off)"
+      });
+    }
+    return res.status(401).json({
       ok: false,
-      error: "debug_routes_disabled",
-      message: "Debug routes are disabled (MIA_DEBUG_ROUTES=off)"
+      error: "debug_routes_unauthorized",
+      message: "Debug routes require localhost or ingest secret"
     });
   };
 }
 
-function createLocalAdminGuard() {
+function extractDuelPeerSecret(req = {}) {
+  return safeString(req.headers?.["x-mia-duel-peer"]);
+}
+
+function validateDuelPeer(req = {}, options = {}) {
+  const configured =
+    typeof options.resolvePeerSecret === "function"
+      ? safeString(options.resolvePeerSecret())
+      : resolveDuelPeerSecret();
+  if (!configured) {
+    return { ok: false };
+  }
+  const provided = extractDuelPeerSecret(req);
+  if (provided && provided === configured) {
+    return { ok: true, mode: "duel_peer" };
+  }
+  return { ok: false };
+}
+
+function createLocalAdminGuard(options = {}) {
   return (req, res, next) => {
-    const auth = validateLocalAdmin(req);
+    const auth = validateLocalAdmin(req, options);
     if (auth.ok) {
       return next();
     }
@@ -148,6 +186,23 @@ function createLocalAdminGuard() {
       ok: false,
       error: auth.error,
       message: auth.message
+    });
+  };
+}
+
+function createDuelPeerGuard(options = {}) {
+  return (req, res, next) => {
+    const admin = validateLocalAdmin(req, options);
+    if (admin.ok) {
+      return next();
+    }
+    if (validateDuelPeer(req, options).ok) {
+      return next();
+    }
+    return res.status(403).json({
+      ok: false,
+      error: "duel_peer_unauthorized",
+      message: "Duel sync requires localhost, the local admin secret, or the duel peer credential"
     });
   };
 }
@@ -170,6 +225,9 @@ function createIngestAuthGuard() {
 module.exports = {
   resolveBindHost,
   resolveIngestSecret,
+  resolveDuelPeerSecret,
+  extractDuelPeerSecret,
+  validateDuelPeer,
   normalizeClientIp,
   isLocalRequest,
   isDebugRoutesEnabled,
@@ -178,5 +236,6 @@ module.exports = {
   isDebugRouteAllowed,
   createDebugRouteGuard,
   createLocalAdminGuard,
+  createDuelPeerGuard,
   createIngestAuthGuard
 };

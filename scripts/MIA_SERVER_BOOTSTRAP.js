@@ -41,7 +41,7 @@ function createMiaServerStarter(deps = {}) {
       }
       if (typeof runtimeSecurityModule?.isDebugRoutesEnabled === "function") {
         console.log(
-          `[SECURITY] debug routes: ${runtimeSecurityModule.isDebugRoutesEnabled() ? "on" : "off (localhost only)"}`
+          `[SECURITY] debug routes: ${runtimeSecurityModule.isDebugRoutesEnabled() ? "on (localhost or ingest secret)" : "off (localhost or ingest secret)"}`
         );
       }
       console.log(`[OVERLAYS] ${overlayStaticDir}`);

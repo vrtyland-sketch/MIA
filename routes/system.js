@@ -57,7 +57,7 @@ function registerSystemRoutes(app, ctx = {}) {
     });
   });
 
-  app.post("/streamer/identity/reset", (_req, res) => {
+  app.post("/streamer/identity/reset", localAdminGuard, (_req, res) => {
     if (typeof streamerIdentityModule.clearPinnedBoss !== "function") {
       return res.status(500).json({ ok: false, error: "identity_module_missing" });
     }

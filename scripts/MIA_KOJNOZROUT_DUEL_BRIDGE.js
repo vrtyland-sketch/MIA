@@ -21,12 +21,19 @@ function buildPeerUrl(baseUrl, path) {
   return `${normalizePeerUrl(baseUrl)}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
+function peerAuthHeaders() {
+  const peerSecret = safeString(process.env.MIA_DUEL_PEER_SECRET);
+  if (!peerSecret) return {};
+  return { "x-mia-duel-peer": peerSecret };
+}
+
 async function fetchPeerExport(peerUrl, options = {}) {
   const timeout = Math.max(1000, Number(options.timeoutMs || 4000));
   const url = buildPeerUrl(peerUrl, "/duel/export");
 
   const response = await axios.get(url, {
     timeout,
+    headers: peerAuthHeaders(),
     validateStatus: (status) => status >= 200 && status < 300
   });
 
@@ -42,6 +49,7 @@ async function pushLocalExportToPeer(peerUrl, localExport, options = {}) {
     { export: localExport, ...localExport },
     {
       timeout,
+      headers: peerAuthHeaders(),
       validateStatus: (status) => status >= 200 && status < 300
     }
   );

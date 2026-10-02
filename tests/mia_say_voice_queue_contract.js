@@ -306,7 +306,7 @@ async function run() {
     assert.doesNotMatch(testRoute, /ttsEngine\.speak/);
     assert.doesNotMatch(testRoute, /setVoicePlaybackState/);
     assert.doesNotMatch(testRoute, /bumpVoicePlaybackSeq/);
-    assert.doesNotMatch(testRoute, /localAdminGuard/);
+    assert.match(testRoute, /localAdminGuard/);
     assert.match(compare, /ttsEngine\.speak/);
     assert.doesNotMatch(compare, /maybeDeliverMiaVoice/);
     assert.doesNotMatch(compare, /setVoicePlaybackState/);

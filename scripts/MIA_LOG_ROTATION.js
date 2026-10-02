@@ -47,6 +47,12 @@ function prepareLogFile(filePath) {
   }
 }
 
+function ensureRuntimeLogsDir(rootDir) {
+  const logsDir = path.join(path.resolve(String(rootDir || "")), "logs");
+  fs.mkdirSync(logsDir, { recursive: true });
+  return logsDir;
+}
+
 function cleanupOldLogs(logsDir) {
   const retentionMs = getRetentionDays() * 24 * 60 * 60 * 1000;
   const cutoff = Date.now() - retentionMs;
@@ -67,6 +73,7 @@ function cleanupOldLogs(logsDir) {
       }
     }
   } catch (err) {
+    if (err && err.code === "ENOENT") return;
     console.error("[LOG_ROTATION_CLEANUP]", err.message);
   }
 }
@@ -77,5 +84,6 @@ module.exports = {
   getMaxBytes,
   getRetentionDays,
   prepareLogFile,
+  ensureRuntimeLogsDir,
   cleanupOldLogs
 };

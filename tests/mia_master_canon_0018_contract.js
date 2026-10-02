@@ -1,8 +1,11 @@
 "use strict";
 
 const assert = require("assert");
+const { execFileSync } = require("child_process");
 const fs = require("fs");
+const os = require("os");
 const path = require("path");
+const { ensureRuntimeLogsDir } = require("../scripts/MIA_LOG_ROTATION");
 
 const ROOT = path.resolve(__dirname, "..");
 const MASTER = path.join(ROOT, "docs", "master-canon");
@@ -17,6 +20,36 @@ function pathExists(rel) {
   const full = path.join(ROOT, rel);
   if (fs.existsSync(full)) return true;
   return fs.existsSync(path.join(ROOT, rel.split("/")[0]));
+}
+
+function assertGitignoredLogsAnchor() {
+  const ignored = execFileSync("git", ["check-ignore", "--", "logs/"], {
+    cwd: ROOT,
+    encoding: "utf8"
+  }).trim();
+  assert.equal(ignored, "logs/");
+
+  const indexSrc = fs.readFileSync(path.join(ROOT, "index.js"), "utf8");
+  assert.ok(
+    indexSrc.includes("ensureRuntimeLogsDir(__dirname)"),
+    "index.js boots logs through ensureRuntimeLogsDir"
+  );
+
+  const scratch = fs.mkdtempSync(path.join(os.tmpdir(), "mia-logs-anchor-"));
+  const project = path.join(scratch, "missing", "runtime");
+  const repoLogs = path.join(ROOT, "logs");
+  const repoLogsExisted = fs.existsSync(repoLogs);
+  assert.equal(fs.existsSync(project), false);
+
+  try {
+    const created = ensureRuntimeLogsDir(project);
+    assert.equal(created, path.join(project, "logs"));
+    assert.equal(fs.statSync(created).isDirectory(), true);
+    assert.equal(fs.existsSync(path.join(scratch, "missing")), true);
+    assert.equal(fs.existsSync(repoLogs), repoLogsExisted);
+  } finally {
+    fs.rmSync(scratch, { recursive: true, force: true });
+  }
 }
 
 function pass(label) {
@@ -127,6 +160,10 @@ function run() {
   pass("monitoring system next doc 0019");
 
   for (const rel of monitoring.MONITORING_RUNTIME_ANCHORS) {
+    if (rel === "logs/") {
+      assertGitignoredLogsAnchor();
+      continue;
+    }
     assert.ok(pathExists(rel), `anchor exists: ${rel}`);
   }
   pass("runtime anchors");

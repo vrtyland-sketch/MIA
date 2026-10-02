@@ -83,6 +83,7 @@ function buildRouteContextHost(bindings = {}) {
       handleIngest: b.handleIngest,
       handleAudienceIngest: b.handleAudienceIngest,
       localAdminGuard: b.localAdminGuard,
+      duelPeerGuard: b.duelPeerGuard,
       debugRouteGuard: b.debugRouteGuard,
       buildPublicOverlayStateResponse: b.buildPublicOverlayStateResponse,
       buildOverlayStateCacheKey: b.buildOverlayStateCacheKey,

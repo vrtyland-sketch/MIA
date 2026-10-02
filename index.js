@@ -378,6 +378,7 @@ app.use(express.urlencoded({ extended: true }));
 let debugRouteGuard = null;
 let ingestAuthGuard = null;
 let localAdminGuard = null;
+let duelPeerGuard = null;
 
 let runtimeSecurityRuntimeApi = null;
 
@@ -415,8 +416,12 @@ function initRuntimeSecurityRuntime() {
     typeof runtimeSecurityModule.createLocalAdminGuard === "function"
       ? runtimeSecurityModule.createLocalAdminGuard()
       : (_req, _res, next) => next();
+  duelPeerGuard =
+    typeof runtimeSecurityModule.createDuelPeerGuard === "function"
+      ? runtimeSecurityModule.createDuelPeerGuard()
+      : localAdminGuard;
 
-  runtimeSecurityRuntimeApi = { debugRouteGuard, ingestAuthGuard, localAdminGuard };
+  runtimeSecurityRuntimeApi = { debugRouteGuard, ingestAuthGuard, localAdminGuard, duelPeerGuard };
   return runtimeSecurityRuntimeApi;
 }
 
@@ -437,8 +442,13 @@ const PORT = Number(
   3000
 );
 
-const logsDir = path.join(__dirname, "logs");
-fs.mkdirSync(logsDir, { recursive: true });
+const logsDir =
+  typeof logRotationModule.ensureRuntimeLogsDir === "function"
+    ? logRotationModule.ensureRuntimeLogsDir(__dirname)
+    : path.join(__dirname, "logs");
+if (typeof logRotationModule.ensureRuntimeLogsDir !== "function") {
+  fs.mkdirSync(logsDir, { recursive: true });
+}
 
 if (typeof logRotationModule.cleanupOldLogs === "function") {
   logRotationModule.cleanupOldLogs(logsDir);
@@ -1488,6 +1498,7 @@ function collectRouteContextBindingsHost() {
     handleIngest,
     handleAudienceIngest,
     localAdminGuard,
+    duelPeerGuard,
     debugRouteGuard,
     buildPublicOverlayStateResponse,
     buildOverlayStateCacheKey,

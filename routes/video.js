@@ -7,6 +7,7 @@ function registerVideoRoutes(app, ctx = {}) {
   if (!check.ok) return check;
 
   const {
+    localAdminGuard,
     videoEngine,
     ensureObsConnectedWithRetry,
     runtimeConfig,
@@ -18,7 +19,7 @@ function registerVideoRoutes(app, ctx = {}) {
     speakerRoutingModule
   } = ctx;
 
-  app.get("/video/test", async (req, res) => {
+  app.get("/video/test", localAdminGuard, async (req, res) => {
     if (!videoEngine || typeof videoEngine.enqueueGiftPlayback !== "function") {
       res.status(503).json({ ok: false, error: "video_engine_unavailable" });
       return;
@@ -155,7 +156,7 @@ function registerVideoRoutes(app, ctx = {}) {
     }
   });
 
-  app.get("/gift/voice-test", async (_req, res) => {
+  app.get("/gift/voice-test", localAdminGuard, async (_req, res) => {
     try {
       const shadow = require("../MIA_NEXT/engine_shadow_runtime");
       const gift = {

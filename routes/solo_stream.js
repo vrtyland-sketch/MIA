@@ -7,6 +7,7 @@ function registerSoloStreamRoutes(app, ctx = {}) {
   if (!check.ok) return check;
 
   const {
+    localAdminGuard,
     soloStreamModule,
     proactiveHostModule,
     streamState,
@@ -59,7 +60,7 @@ function registerSoloStreamRoutes(app, ctx = {}) {
     }
   });
 
-  app.post("/solo-stream/exit", async (_req, res) => {
+  app.post("/solo-stream/exit", localAdminGuard, async (_req, res) => {
     if (typeof soloStreamModule.applySoloStreamAction !== "function") {
       return res.status(503).json({ ok: false, error: "solo_stream_unavailable" });
     }
