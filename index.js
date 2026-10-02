@@ -442,8 +442,13 @@ const PORT = Number(
   3000
 );
 
-const logsDir = path.join(__dirname, "logs");
-fs.mkdirSync(logsDir, { recursive: true });
+const logsDir =
+  typeof logRotationModule.ensureRuntimeLogsDir === "function"
+    ? logRotationModule.ensureRuntimeLogsDir(__dirname)
+    : path.join(__dirname, "logs");
+if (typeof logRotationModule.ensureRuntimeLogsDir !== "function") {
+  fs.mkdirSync(logsDir, { recursive: true });
+}
 
 if (typeof logRotationModule.cleanupOldLogs === "function") {
   logRotationModule.cleanupOldLogs(logsDir);

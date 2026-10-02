@@ -47,6 +47,12 @@ function prepareLogFile(filePath) {
   }
 }
 
+function ensureRuntimeLogsDir(rootDir) {
+  const logsDir = path.join(path.resolve(String(rootDir || "")), "logs");
+  fs.mkdirSync(logsDir, { recursive: true });
+  return logsDir;
+}
+
 function cleanupOldLogs(logsDir) {
   const retentionMs = getRetentionDays() * 24 * 60 * 60 * 1000;
   const cutoff = Date.now() - retentionMs;
@@ -78,5 +84,6 @@ module.exports = {
   getMaxBytes,
   getRetentionDays,
   prepareLogFile,
+  ensureRuntimeLogsDir,
   cleanupOldLogs
 };
