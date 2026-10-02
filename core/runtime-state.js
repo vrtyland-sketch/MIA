@@ -38,10 +38,21 @@ const KOJ_CRITICAL_FIELDS = [
 ];
 
 let storePath = DEFAULT_PATH;
+let payloadPath = null;
+let pendingPath = null;
 let saveTimer = null;
 let dirty = false;
 let lastPayload = null;
 let intervalHandle = null;
+
+const ANNOTATION_GUARDED_FIELDS = new Set([
+  "version",
+  "updatedAt",
+  "kojRef",
+  "koj",
+  "bowl",
+  "queue"
+]);
 
 function toNumber(value, fallback = 0) {
   const n = Number(value);
@@ -92,25 +103,107 @@ function ensureDir(filePath) {
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 }
 
-function writePayload(payload) {
-  ensureDir(storePath);
-  const tmp = `${storePath}.tmp`;
-  fs.writeFileSync(tmp, JSON.stringify(payload, null, 2), "utf8");
-  fs.renameSync(tmp, storePath);
-  lastPayload = payload;
+function samePath(left, right) {
+  if (!left || !right) return false;
+  return path.resolve(left) === path.resolve(right);
 }
 
-function loadRuntimeState(filePath = storePath) {
-  storePath = filePath || DEFAULT_PATH;
-  if (!fs.existsSync(storePath)) return null;
+function readRuntimeFile(filePath) {
+  if (!filePath || !fs.existsSync(filePath)) return null;
   try {
-    const parsed = JSON.parse(fs.readFileSync(storePath, "utf8"));
-    if (!parsed || typeof parsed !== "object") return null;
-    lastPayload = parsed;
+    const parsed = JSON.parse(fs.readFileSync(filePath, "utf8"));
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return null;
     return parsed;
   } catch (_err) {
     return null;
   }
+}
+
+function commitPayload(filePath, payload) {
+  ensureDir(filePath);
+  const tmp = `${filePath}.tmp`;
+  fs.writeFileSync(tmp, JSON.stringify(payload, null, 2), "utf8");
+  fs.renameSync(tmp, filePath);
+  lastPayload = payload;
+  storePath = filePath;
+  payloadPath = filePath;
+}
+
+function loadRuntimeState(filePath = storePath) {
+  const requested = path.resolve(filePath || storePath || DEFAULT_PATH);
+  const owned = path.resolve(payloadPath || storePath || DEFAULT_PATH);
+  const pendingSameStore = Boolean(dirty && lastPayload && owned === requested);
+
+  if (dirty && lastPayload && owned !== requested) {
+    return readRuntimeFile(requested);
+  }
+
+  if (!pendingSameStore) storePath = requested;
+  const parsed = readRuntimeFile(requested);
+  if (!pendingSameStore && parsed) {
+    lastPayload = parsed;
+    payloadPath = requested;
+  }
+  return parsed;
+}
+
+function applyAnnotation(payload, metadata) {
+  const next = { ...payload };
+  for (const [key, value] of Object.entries(metadata || {})) {
+    if (ANNOTATION_GUARDED_FIELDS.has(key)) continue;
+    next[key] = value;
+  }
+  next.updatedAt = payload.updatedAt;
+  return next;
+}
+
+function armSaveTimer(delayMs) {
+  if (saveTimer) return;
+  saveTimer = setTimeout(() => {
+    saveTimer = null;
+    if (!dirty || !lastPayload) return;
+    const target = pendingPath || payloadPath || storePath;
+    try {
+      commitPayload(target, lastPayload);
+      dirty = false;
+      pendingPath = null;
+    } catch (_err) {
+      dirty = true;
+    }
+  }, delayMs);
+  if (typeof saveTimer.unref === "function") saveTimer.unref();
+}
+
+/**
+ * Attach metadata onto the current runtime snapshot without rebuilding Koj,
+ * bowl, or queue and without moving updatedAt. A dirty pending snapshot stays
+ * the in-memory authority. No file and no payload means nothing is created.
+ */
+function annotateRuntimeState(metadata = {}, options = {}) {
+  if (!metadata || typeof metadata !== "object" || Array.isArray(metadata)) {
+    return { ok: false, reason: "no_metadata" };
+  }
+
+  if (dirty && lastPayload) {
+    lastPayload = applyAnnotation(lastPayload, metadata);
+    return { ok: true, pending: true, updatedAt: lastPayload.updatedAt };
+  }
+
+  const active = path.resolve(storePath || DEFAULT_PATH);
+  const owned = payloadPath ? path.resolve(payloadPath) : null;
+  let base = lastPayload && owned === active ? lastPayload : null;
+  if (!base) {
+    base = readRuntimeFile(active);
+    if (!base) return { ok: false, reason: "no_runtime_state" };
+  }
+
+  lastPayload = applyAnnotation(base, metadata);
+  storePath = active;
+  payloadPath = active;
+  pendingPath = active;
+  dirty = true;
+  armSaveTimer(Math.max(250, toNumber(options.delayMs, 800)));
+  return { ok: true, pending: true, updatedAt: lastPayload.updatedAt };
 }
 
 function persistenceClock(value) {
@@ -150,11 +243,12 @@ function composeKojSeed(kojPersistedSeed = {}, runtimeState = null) {
 }
 
 function saveRuntimeState(input = {}, options = {}) {
-  storePath = options.filePath || storePath || DEFAULT_PATH;
+  storePath = path.resolve(options.filePath || storePath || DEFAULT_PATH);
   const payload = buildPayload(input);
   try {
-    writePayload(payload);
+    commitPayload(storePath, payload);
     dirty = false;
+    pendingPath = null;
     return { ok: true, path: storePath, updatedAt: payload.updatedAt };
   } catch (err) {
     dirty = true;
@@ -163,21 +257,12 @@ function saveRuntimeState(input = {}, options = {}) {
 }
 
 function scheduleSaveRuntimeState(input = {}, options = {}) {
+  storePath = path.resolve(options.filePath || storePath || DEFAULT_PATH);
+  payloadPath = storePath;
+  pendingPath = storePath;
   lastPayload = buildPayload(input);
   dirty = true;
-  const delayMs = Math.max(250, toNumber(options.delayMs, 2000));
-  if (saveTimer) return;
-  saveTimer = setTimeout(() => {
-    saveTimer = null;
-    if (!dirty || !lastPayload) return;
-    try {
-      writePayload(lastPayload);
-      dirty = false;
-    } catch (_err) {
-      dirty = true;
-    }
-  }, delayMs);
-  if (typeof saveTimer.unref === "function") saveTimer.unref();
+  armSaveTimer(Math.max(250, toNumber(options.delayMs, 2000)));
 }
 
 function flushRuntimeState(input = null) {
@@ -235,6 +320,7 @@ module.exports = {
   composeKojSeed,
   saveRuntimeState,
   scheduleSaveRuntimeState,
+  annotateRuntimeState,
   flushRuntimeState,
   startRuntimeStateInterval,
   stopRuntimeStateInterval,

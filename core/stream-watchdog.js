@@ -100,21 +100,8 @@ function createStreamWatchdog(options = {}) {
   function persistHealth(snapshot) {
     lastSnapshot = snapshot;
     try {
-      const prev =
-        runtimeState.getLastRuntimeState() || runtimeState.loadRuntimeState() || null;
-      // Never invent a fresh runtime-state from watchdog alone (avoids wiping/polluting seeds).
-      if (!prev || typeof prev !== "object") return;
-      runtimeState.scheduleSaveRuntimeState(
-        {
-          koj: prev.koj || {},
-          streamState: prev.bowl || {},
-          queueSnapshot: prev.queue || null,
-          extra: {
-            watchdog: snapshot
-          }
-        },
-        { delayMs: 800 }
-      );
+      if (typeof runtimeState.annotateRuntimeState !== "function") return;
+      runtimeState.annotateRuntimeState({ watchdog: snapshot });
     } catch (_err) {
       /* ignore */
     }
