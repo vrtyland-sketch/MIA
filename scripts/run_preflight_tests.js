@@ -478,8 +478,10 @@ const SUITES = [
 
 /**
  * Local files that some suites read. Cloud mode may call a failure
- * ENV_BLOCKED only when one of these is actually absent and the failure
- * text matches that absence. A different assertion stays FAIL.
+ * ENV_BLOCKED only when one of these is actually absent and every failure
+ * in the suite output is that absence. A different assertion stays FAIL.
+ * If a missing-asset failure and any other assertion appear together, the
+ * suite is FAIL.
  */
 const CLOUD_ENV_PREREQUISITES = [
   {
@@ -569,15 +571,99 @@ function graphicsFailureIsMissingRoseClip(output) {
   );
 }
 
-function failureMatchesMissingPrerequisite(suiteName, output, missing) {
+function specsForMissing(suiteName, missing) {
   const absent = new Set(missing || []);
-  if (absent.size === 0) return false;
-  return CLOUD_ENV_PREREQUISITES.some(
-    (spec) =>
-      spec.suite === suiteName &&
-      absent.has(spec.path) &&
-      spec.matches(String(output || ""))
+  return CLOUD_ENV_PREREQUISITES.filter(
+    (spec) => spec.suite === suiteName && absent.has(spec.path)
   );
+}
+
+function isIgnorableFailureLine(line) {
+  const text = String(line || "").trim();
+  if (!text) return true;
+  if (/^\s*at\s+\S/.test(line) || text.startsWith("at ")) return true;
+  if (text === "^" || text === "{" || text === "}" || text === "throw err;") return true;
+  if (/^node:\S+:\d+$/.test(text)) return true;
+  if (/^Node\.js v\d+/.test(text)) return true;
+  if (/^(?:errno|code|syscall|path|generatedMessage|actual|expected|operator|name|stack)\s*:/.test(text)) return true;
+  if (/^AssertionError(?: \[ERR_ASSERTION\])?: The expression evaluated to a falsy value:?$/.test(text)) return true;
+  if (/^AssertionError(?: \[ERR_ASSERTION\])?: Expected values to be strictly(?: deep)? equal:?$/.test(text)) return true;
+  if (/^AssertionError(?: \[ERR_ASSERTION\])?: Expected values to not be strictly equal:?$/.test(text)) return true;
+  if (/^(?:The expression evaluated to a falsy value|Expected values to be strictly(?: deep)? equal|Expected values to not be strictly equal):?$/.test(text)) return true;
+  if (text === "+ actual - expected") return true;
+  return false;
+}
+
+function stripNodeErrorBanners(text) {
+  const lines = String(text || "").split(/\r?\n/);
+  const kept = [];
+  let skipping = false;
+  for (const line of lines) {
+    const text = line.trim();
+    if (!skipping && /^node:\S+:\d+$/.test(text)) {
+      skipping = true;
+      continue;
+    }
+    if (skipping) {
+      if (text === "^") {
+        skipping = false;
+        continue;
+      }
+      if (/^(?:Error\b|AssertionError\b|❌|fail - |FAIL |not ok )/.test(text)) {
+        skipping = false;
+        kept.push(line);
+      }
+      continue;
+    }
+    kept.push(line);
+  }
+  return kept.join("\n");
+}
+
+function splitFailureBlocks(text) {
+  const lines = String(text || "").split(/\r?\n/);
+  const blocks = [];
+  let current = [];
+  const header = /^(?:AssertionError\b|Error\b|ENOENT:|❌|fail - |FAIL |not ok )/;
+  for (const line of lines) {
+    if (header.test(line.trim()) && current.some((row) => row.trim())) {
+      blocks.push(current.join("\n"));
+      current = [line];
+      continue;
+    }
+    current.push(line);
+  }
+  if (current.some((row) => row.trim())) blocks.push(current.join("\n"));
+  return blocks;
+}
+
+function blockIsExplained(block, specs) {
+  if (!specs.some((spec) => spec.matches(block))) return false;
+  for (const line of String(block).split(/\r?\n/)) {
+    if (isIgnorableFailureLine(line)) continue;
+    if (specs.some((spec) => spec.matches(line))) continue;
+    return false;
+  }
+  return true;
+}
+
+function failureIsOnlyMissingPrerequisites(suiteName, output, missing) {
+  const specs = specsForMissing(suiteName, missing);
+  if (specs.length === 0) return false;
+  const text = stripNodeErrorBanners(output);
+  if (!String(text).trim()) return false;
+
+  if (suiteName === "graphics_body") {
+    if (!graphicsFailureIsMissingRoseClip(text)) return false;
+    if (!specs.some((spec) => spec.kind === "rose-clip")) return false;
+    const start = text.indexOf("{");
+    const end = text.lastIndexOf("}");
+    const outside = `${text.slice(0, Math.max(start, 0))}\n${text.slice(end + 1)}`;
+    return outside.split(/\r?\n/).every((line) => isIgnorableFailureLine(line));
+  }
+
+  const blocks = splitFailureBlocks(text);
+  return blocks.length > 0 && blocks.every((block) => blockIsExplained(block, specs));
 }
 
 function classifyCloudSuite({ name, exitCode, output, missing }) {
@@ -585,10 +671,7 @@ function classifyCloudSuite({ name, exitCode, output, missing }) {
   if (exitCode === 0) {
     return { disposition: "PASS", missing: [] };
   }
-  if (
-    absent.length > 0 &&
-    failureMatchesMissingPrerequisite(name, output, absent)
-  ) {
+  if (failureIsOnlyMissingPrerequisites(name, output, absent)) {
     return { disposition: "ENV_BLOCKED", missing: absent };
   }
   return { disposition: "FAIL", missing: absent };

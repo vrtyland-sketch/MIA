@@ -281,6 +281,160 @@ test("this checkout reports real missing prerequisites and does not create them"
   }
 });
 
+test("pure ENV_BLOCKED, pure assertion FAIL, mixed output, and PASS stay distinct", () => {
+  const absent = probe([]);
+
+  const pureBlocked = classifyCloudSuite({
+    name: "story_animation",
+    exitCode: 1,
+    output: "AssertionError [ERR_ASSERTION]: story bank manifest exists",
+    missing: listMissingPrerequisites("story_animation", absent)
+  });
+  assert.equal(pureBlocked.disposition, "ENV_BLOCKED");
+
+  const pureFail = classifyCloudSuite({
+    name: "story_animation",
+    exitCode: 1,
+    output: "AssertionError: composed.frames.length",
+    missing: listMissingPrerequisites("story_animation", absent)
+  });
+  assert.equal(pureFail.disposition, "FAIL");
+
+  const mixed = classifyCloudSuite({
+    name: "story_animation",
+    exitCode: 1,
+    output: [
+      "AssertionError [ERR_ASSERTION]: story bank manifest exists",
+      "AssertionError: composed.frames.length"
+    ].join("\n"),
+    missing: listMissingPrerequisites("story_animation", absent)
+  });
+  assert.equal(mixed.disposition, "FAIL");
+
+  const passed = classifyCloudSuite({
+    name: "story_animation",
+    exitCode: 0,
+    output: [
+      "AssertionError [ERR_ASSERTION]: story bank manifest exists",
+      "AssertionError: composed.frames.length"
+    ].join("\n"),
+    missing: listMissingPrerequisites("story_animation", absent)
+  });
+  assert.equal(passed.disposition, "PASS");
+  assert.deepEqual(passed.missing, []);
+});
+
+test("a missing-asset line does not hide another assertion in the same output", () => {
+  const absent = probe([]);
+
+  const media = classifyCloudSuite({
+    name: "media_catalog",
+    exitCode: 1,
+    output: [
+      'assert.ok(prefixes.includes("videos"))',
+      'assert.strictEqual(photo.category, "profile_photo")'
+    ].join("\n"),
+    missing: listMissingPrerequisites("media_catalog", absent)
+  });
+  assert.equal(media.disposition, "FAIL");
+
+  const canon = classifyCloudSuite({
+    name: "master_canon_0001",
+    exitCode: 1,
+    output: [
+      "ENOENT: no such file or directory, open '/workspace/.cursor/rules/mia-canon.mdc'",
+      "constitution contains ## 1. Účel dokumentu"
+    ].join("\n"),
+    missing: listMissingPrerequisites("master_canon_0001", absent)
+  });
+  assert.equal(canon.disposition, "FAIL");
+
+  const graphics = classifyCloudSuite({
+    name: "graphics_body",
+    exitCode: 1,
+    output: `${graphicsOutput([
+      {
+        file: "mia_graphics_studio_13b_unified_preview_contract.js",
+        stderr: ROSE_STDERR
+      }
+    ])}\nfail - mood brain`,
+    missing: listMissingPrerequisites("graphics_body", absent)
+  });
+  assert.equal(graphics.disposition, "FAIL");
+});
+
+test("live missing-asset stacks stay ENV_BLOCKED", () => {
+  const absent = probe([]);
+  const cases = [
+    {
+      name: "media_catalog",
+      output: [
+        "node:internal/assert/utils:281",
+        "    throw err;",
+        "    ^",
+        "",
+        "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+        "",
+        '  assert.ok(prefixes.includes("videos"))',
+        "",
+        "    at testVideos2ScanDirs (/workspace/tests/media_catalog_contract.js:61:10)",
+        "    at main (/workspace/tests/media_catalog_contract.js:249:3) {",
+        "  generatedMessage: true,",
+        "  code: 'ERR_ASSERTION',",
+        "  actual: false,",
+        "  expected: true,",
+        "  operator: '=='",
+        "}",
+        "",
+        "Node.js v22.14.0"
+      ].join("\n")
+    },
+    {
+      name: "story_animation",
+      output: [
+        "❌ story animation contract failed: AssertionError [ERR_ASSERTION]: story bank manifest exists",
+        "    at run (/workspace/tests/story_animation_contract.js:80:10)",
+        "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {",
+        "  generatedMessage: false,",
+        "  code: 'ERR_ASSERTION',",
+        "  actual: false,",
+        "  expected: true,",
+        "  operator: '=='",
+        "}"
+      ].join("\n")
+    },
+    {
+      name: "master_canon_0001",
+      output: [
+        "node:fs:442",
+        "    return binding.readFileUtf8(path, stringToFlags(options.flag));",
+        "                   ^",
+        "",
+        "Error: ENOENT: no such file or directory, open '/workspace/.cursor/rules/mia-canon.mdc'",
+        "    at Object.readFileSync (node:fs:442:20)",
+        "    at read (/workspace/tests/mia_master_canon_0001_contract.js:11:13) {",
+        "  errno: -2,",
+        "  code: 'ENOENT',",
+        "  syscall: 'open',",
+        "  path: '/workspace/.cursor/rules/mia-canon.mdc'",
+        "}",
+        "",
+        "Node.js v22.14.0"
+      ].join("\n")
+    }
+  ];
+
+  for (const row of cases) {
+    const classified = classifyCloudSuite({
+      name: row.name,
+      exitCode: 1,
+      output: row.output,
+      missing: listMissingPrerequisites(row.name, absent)
+    });
+    assert.equal(classified.disposition, "ENV_BLOCKED", row.name);
+  }
+});
+
 if (!process.exitCode) {
   console.log("preflight_cloud_contract: all passed");
 }
