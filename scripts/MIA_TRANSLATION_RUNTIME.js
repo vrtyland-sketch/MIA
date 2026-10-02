@@ -133,6 +133,7 @@ function createTranslationRuntime(deps = {}) {
         recordReply: false
       },
       {
+        bypassActionQueue: true,
         onPlaybackStarted(playback) {
           presentTranslationCaption(playback, {
             owner,

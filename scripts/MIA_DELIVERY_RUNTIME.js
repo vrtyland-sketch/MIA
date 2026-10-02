@@ -961,7 +961,8 @@ async function maybeDeliverMiaVoice(actionResult = {}, voicePlanOverride = null,
   if (isVoicePlaybackActive() || voiceSpeakProcessing) {
     const admission = enqueueVoiceSpeak(actionResult, plan, {
       preempt: Boolean(plan.preempt || actionResult?.voicePreempt || actionResult?.meta?.miaInterrupt),
-      onPlaybackStarted
+      onPlaybackStarted,
+      bypassActionQueue: deliveryOptions?.bypassActionQueue === true
     });
     return voiceAdmission(
       actionResult,
@@ -1640,7 +1641,11 @@ function enqueueVoiceSpeak(actionResult = {}, plan = {}, options = {}) {
   // Phase 1 / Post-DoD: optional Action Queue — coalesce + single runner (default OFF).
   // Enable: MIA_ACTION_QUEUE=1 | runtimeConfig.phase1.actionQueue.enabled | admin toggle
   // Kill switch: MIA_ACTION_QUEUE=0
-  if (actionQueueModule.isActionQueueEnabled(runtimeConfig)) {
+  // bypassActionQueue is ephemeral delivery options only. It is not copied onto actionResult.
+  if (
+    actionQueueModule.isActionQueueEnabled(runtimeConfig) &&
+    options.bypassActionQueue !== true
+  ) {
     const coalesceMs = actionQueueModule.resolveCoalesceWindowMs(
       directedPlan,
       runtimeConfig,

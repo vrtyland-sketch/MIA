@@ -3,6 +3,10 @@
 const assert = require("assert/strict");
 const { createDeliveryRuntime } = require("../scripts/MIA_DELIVERY_RUNTIME");
 const { createTranslationRuntime } = require("../scripts/MIA_TRANSLATION_RUNTIME");
+const {
+  getSharedActionQueue,
+  resetSharedActionQueueForTest
+} = require("../core/action-queue");
 
 function test(name, fn) {
   return Promise.resolve()
@@ -525,6 +529,241 @@ async function run() {
       );
     });
 
+    await test("action queue on keeps two translations paired with their own captions", async () => {
+      process.env.MIA_ACTION_QUEUE = "1";
+      resetSharedActionQueueForTest();
+      const harness = createHarness();
+      await harness.anchor("PAID-A");
+      const first = await harness.translation.speakTranslatedLine({
+        text: "caption A",
+        source: "chat_translation_public",
+        eventId: "comment-a",
+        channel: "chat",
+        title: "A",
+        original: "alpha"
+      });
+      const second = await harness.translation.speakTranslatedLine({
+        text: "caption B",
+        source: "chat_translation_public",
+        eventId: "comment-b",
+        channel: "chat",
+        title: "B",
+        original: "beta"
+      });
+      await sleep(40);
+
+      assert.equal(first.queued, true);
+      assert.equal(second.queued, true);
+      assert.equal(first.bypassActionQueue, undefined);
+      assert.equal(second.onPlaybackStarted, undefined);
+      assert.equal(JSON.stringify(first).includes("bypassActionQueue"), false);
+      assert.equal(JSON.stringify(second).includes("onPlaybackStarted"), false);
+      assert.deepEqual(harness.spoken, ["PAID-A"]);
+      assert.equal(harness.api.getVoicePlaybackState().textPreview, "PAID-A");
+      assert.equal(harness.captions.length, 0);
+      assert.equal(harness.api.getVoiceSpeakQueueLength(), 2);
+      assert.equal(getSharedActionQueue().snapshot().size, 0);
+      assert.equal(
+        harness.logs.some((entry) => entry.stage === "action_queue_tts_coalesced"),
+        false
+      );
+      assert.equal(
+        harness.logs.some((entry) => entry.coalesceKey === "tts:anon:T1"),
+        false
+      );
+      assert.deepEqual(
+        queuedLogs(harness.logs).map((entry) => ({
+          text: entry.textPreview,
+          eventId: entry.eventId,
+          voiceClass: entry.voiceClass
+        })),
+        [
+          { text: "caption A", eventId: "comment-a", voiceClass: "chat" },
+          { text: "caption B", eventId: "comment-b", voiceClass: "chat" }
+        ]
+      );
+
+      await harness.release();
+      assert.deepEqual(harness.spoken, ["PAID-A", "caption A", "caption B"]);
+      assert.deepEqual(
+        harness.captions.map((row) => row.translated),
+        ["caption A", "caption B"]
+      );
+      assert.deepEqual(harness.captions[0].spokenSnapshot, ["PAID-A", "caption A"]);
+      assert.deepEqual(harness.captions[1].spokenSnapshot, ["PAID-A", "caption A", "caption B"]);
+      assert.equal(harness.captions[0].original, "alpha");
+      assert.equal(harness.captions[1].original, "beta");
+    });
+
+    await test("action queue on still keeps a waiting paid line ahead of translation", async () => {
+      process.env.MIA_ACTION_QUEUE = "1";
+      resetSharedActionQueueForTest();
+      const harness = createHarness();
+      await harness.anchor("PAID-A");
+      await harness.say("PAID-B", {
+        route: "support",
+        eventType: "GIFT",
+        tier: "T4",
+        meta: { eventId: "paid-b", userId: "payer-b" }
+      });
+      await sleep(40);
+      assert.equal(harness.api.getVoiceSpeakQueueLength(), 1);
+      const translated = await harness.translation.speakTranslatedLine({
+        text: "after paid",
+        source: "chat_translation_public",
+        eventId: "comment-after-paid",
+        channel: "chat"
+      });
+      assert.equal(translated.queued, true);
+      assert.equal(harness.api.getVoiceSpeakQueueLength(), 2);
+      assert.deepEqual(
+        queuedLogs(harness.logs).map((entry) => entry.textPreview),
+        ["PAID-B", "after paid"]
+      );
+      assert.equal(queuedLogs(harness.logs)[0].voiceClass, "paid_support");
+      assert.equal(queuedLogs(harness.logs)[1].voiceClass, "chat");
+      await harness.release();
+      assert.deepEqual(harness.spoken, ["PAID-A", "PAID-B", "after paid"]);
+    });
+
+    await test("action queue on still drops a stale translation without speech or caption", async () => {
+      process.env.MIA_ACTION_QUEUE = "1";
+      resetSharedActionQueueForTest();
+      await withClock(async (clock) => {
+        const harness = createHarness();
+        await harness.anchor("PAID-A");
+        const queued = await harness.translation.speakTranslatedLine({
+          text: "stale while action queue on",
+          source: "chat_translation_public",
+          eventId: "comment-stale-aq",
+          channel: "chat"
+        });
+        assert.equal(queued.queued, true);
+        assert.equal(getSharedActionQueue().snapshot().size, 0);
+        clock.advance(10001);
+        await harness.release();
+        assert.deepEqual(harness.spoken, ["PAID-A"]);
+        assert.equal(harness.captions.length, 0);
+        assert.ok(
+          dropped(harness.logs).some(
+            (entry) =>
+              entry.reason === "stale_non_paid" &&
+              entry.textPreview === "stale while action queue on"
+          )
+        );
+      });
+    });
+
+    await test("action queue on still dedupes one real comment event id", async () => {
+      process.env.MIA_ACTION_QUEUE = "1";
+      resetSharedActionQueueForTest();
+      const harness = createHarness();
+      await harness.anchor("PAID-A");
+      const first = await harness.translation.speakTranslatedLine({
+        text: "only once",
+        source: "chat_translation_public",
+        eventId: "comment-once",
+        channel: "chat"
+      });
+      const second = await harness.translation.speakTranslatedLine({
+        text: "only once again",
+        source: "chat_translation_public",
+        eventId: "comment-once",
+        channel: "chat"
+      });
+      assert.equal(first.queued, true);
+      assert.equal(second.reason, "duplicate_event_id");
+      assert.equal(harness.api.getVoiceSpeakQueueLength(), 1);
+      assert.equal(getSharedActionQueue().snapshot().size, 0);
+      await harness.release();
+      assert.deepEqual(
+        harness.spoken.filter((text) => text !== "PAID-A"),
+        ["only once"]
+      );
+      assert.deepEqual(
+        harness.captions.map((row) => row.translated),
+        ["only once"]
+      );
+    });
+
+    await test("action queue on still lets paid traffic evict a waiting translation", async () => {
+      process.env.MIA_ACTION_QUEUE = "1";
+      resetSharedActionQueueForTest();
+      const harness = createHarness();
+      await harness.anchor("PAID-A");
+      await harness.translation.speakTranslatedLine({
+        text: "evicted translation",
+        source: "chat_translation_public",
+        eventId: "comment-evict-aq",
+        channel: "chat"
+      });
+      for (let i = 1; i <= 6; i += 1) {
+        await harness.say(`PAID-AQ-${i}`, {
+          route: "support",
+          eventType: "GIFT",
+          tier: "T4",
+          meta: { eventId: `paid-aq-${i}`, userId: `payer-aq-${i}` }
+        });
+      }
+      await sleep(40);
+      assert.equal(harness.api.getVoiceSpeakQueueLength(), 6);
+      assert.ok(
+        dropped(harness.logs).some(
+          (entry) =>
+            entry.reason === "evict_oldest_lowest_priority" &&
+            entry.textPreview === "evicted translation"
+        )
+      );
+      await harness.release();
+      assert.equal(harness.spoken.includes("evicted translation"), false);
+      assert.equal(harness.captions.length, 0);
+      assert.deepEqual(
+        harness.spoken.filter((text) => text.startsWith("PAID-AQ-")),
+        ["PAID-AQ-1", "PAID-AQ-2", "PAID-AQ-3", "PAID-AQ-4", "PAID-AQ-5", "PAID-AQ-6"]
+      );
+    });
+
+    await test("action queue on still coalesces ordinary same-viewer gifts", async () => {
+      process.env.MIA_ACTION_QUEUE = "1";
+      resetSharedActionQueueForTest();
+      const harness = createHarness();
+      await harness.anchor("PAID-A");
+      await harness.say("gift thanks one", {
+        route: "support",
+        eventType: "GIFT",
+        tier: "T1",
+        userLabel: "Tomino",
+        meta: { eventId: "gift-1", userId: "tomino", tier: "T1" }
+      });
+      await harness.say("gift thanks two", {
+        route: "support",
+        eventType: "GIFT",
+        tier: "T1",
+        userLabel: "Tomino",
+        meta: { eventId: "gift-2", userId: "tomino", tier: "T1" }
+      });
+      await sleep(40);
+      assert.equal(
+        harness.logs.filter((entry) => entry.stage === "action_queue_tts_coalesced").length,
+        1
+      );
+      assert.equal(
+        harness.logs.find((entry) => entry.stage === "action_queue_tts_coalesced").coalesceKey,
+        "tts:tomino:T1"
+      );
+      assert.equal(
+        queuedLogs(harness.logs).filter((entry) => entry.textPreview.startsWith("gift thanks"))
+          .length,
+        1
+      );
+      assert.equal(harness.api.getVoiceSpeakQueueLength(), 1);
+      await harness.release();
+      assert.equal(
+        harness.spoken.filter((text) => text.startsWith("gift thanks")).length,
+        1
+      );
+    });
+
     await test("recordReply false skips session memory while normal voices still record", async () => {
       const harness = createHarness({ holdMs: 0 });
       await harness.say("normal reply", {
@@ -560,6 +799,7 @@ async function run() {
     console.log("---- TRANSLATION VOICE QUEUE CONTRACT ----");
     console.log("passed");
   } finally {
+    resetSharedActionQueueForTest();
     if (previousActionQueue === undefined) delete process.env.MIA_ACTION_QUEUE;
     else process.env.MIA_ACTION_QUEUE = previousActionQueue;
   }

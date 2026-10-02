@@ -146,6 +146,9 @@ async function run() {
     assert.equal(seen.plan.recordReply, false);
     assert.equal(seen.plan.text, "hello from chat");
     assert.equal(seen.plan.voiceSpeaker, "mia");
+    assert.equal(seen.options.bypassActionQueue, true);
+    assert.equal(seen.action.bypassActionQueue, undefined);
+    assert.equal(seen.plan.bypassActionQueue, undefined);
     assert.equal(typeof seen.options.onPlaybackStarted, "function");
     seen.options.onPlaybackStarted({
       playbackId: 7,
@@ -177,6 +180,7 @@ async function run() {
     assert.doesNotMatch(body, /bumpVoicePlaybackSeq/);
     assert.match(body, /maybeDeliverMiaVoice/);
     assert.match(body, /recordReply:\s*false/);
+    assert.match(body, /bypassActionQueue:\s*true/);
   });
 
   await test("index.js wires translationDeliveryRuntime with thin wrappers", () => {
