@@ -5,6 +5,10 @@ const fs = require("fs");
 const path = require("path");
 const { createDeliveryRuntime } = require("../scripts/MIA_DELIVERY_RUNTIME");
 const { createStartupOverlayRuntime } = require("../scripts/MIA_STARTUP_OVERLAY_RUNTIME");
+const {
+  getSharedActionQueue,
+  resetSharedActionQueueForTest
+} = require("../core/action-queue");
 
 const STARTUP_PHRASE =
   "MIA je online. Hlas funguje. Napiš mi do chatu nebo pošli gift Kojnožroutovi.";
@@ -110,8 +114,9 @@ function createHarness(options = {}) {
 
   const originalDeliver = delivery.maybeDeliverMiaVoice.bind(delivery);
   delivery.maybeDeliverMiaVoice = async (actionResult, plan, deliveryOptions) => {
-    voiceCalls.push({ actionResult, plan, deliveryOptions });
-    return originalDeliver(actionResult, plan, deliveryOptions);
+    const result = await originalDeliver(actionResult, plan, deliveryOptions);
+    voiceCalls.push({ actionResult, plan, deliveryOptions, result });
+    return result;
   };
 
   const startup = createStartupOverlayRuntime({
@@ -290,7 +295,7 @@ async function run() {
     assert.doesNotMatch(fn, /ttsEngine\.speak/);
     assert.doesNotMatch(fn, /setVoicePlaybackState/);
     assert.doesNotMatch(fn, /bumpVoicePlaybackSeq/);
-    assert.doesNotMatch(fn, /bypassActionQueue/);
+    assert.match(fn, /bypassActionQueue:\s*true/);
     assert.doesNotMatch(fn, /eventId/);
     assert.doesNotMatch(fn, /paid_support/);
     assert.doesNotMatch(fn, /voicePreempt/);
@@ -317,7 +322,14 @@ async function run() {
     assert.equal(call.plan.recordReply, false);
     assert.equal(call.plan.preempt, undefined);
     assert.equal(call.actionResult.eventId, undefined);
-    assert.equal(call.deliveryOptions.bypassActionQueue, undefined);
+    assert.equal(call.deliveryOptions.bypassActionQueue, true);
+    assert.equal(call.actionResult.bypassActionQueue, undefined);
+    assert.equal(call.plan.bypassActionQueue, undefined);
+    assert.equal(call.plan.onPlaybackStarted, undefined);
+    assert.equal(call.result.bypassActionQueue, undefined);
+    assert.equal(call.result.onPlaybackStarted, undefined);
+    assert.equal(JSON.stringify(call.result).includes("bypassActionQueue"), false);
+    assert.equal(JSON.stringify(call.result).includes("onPlaybackStarted"), false);
     assert.equal(typeof call.deliveryOptions.onPlaybackStarted, "function");
     assert.equal(harness.delivery.getVoiceSpeakQueueLength(), 0);
 
@@ -501,6 +513,207 @@ async function run() {
     );
     assert.equal(fallback.opts.source, "startup_ping");
     assert.equal(harness.refreshCount(), 1);
+  });
+
+  await test("action queue on keeps startup in the managed voice queue", async () => {
+    process.env.MIA_ACTION_QUEUE = "1";
+    resetSharedActionQueueForTest();
+    const harness = createHarness();
+    const paid = await harness.sayPaid("PAID-A");
+    assert.equal(paid.voiceAdmission.started, true);
+
+    await harness.startup.emitStartupOverlay();
+    await sleep(40);
+
+    const call = harness.voiceCalls.find((row) => row.plan?.source === "startup_voice");
+    assert.equal(call.deliveryOptions.bypassActionQueue, true);
+    assert.equal(call.actionResult.bypassActionQueue, undefined);
+    assert.equal(call.plan.bypassActionQueue, undefined);
+    assert.equal(call.plan.onPlaybackStarted, undefined);
+    assert.equal(call.actionResult.onPlaybackStarted, undefined);
+    assert.equal(call.result.bypassActionQueue, undefined);
+    assert.equal(call.result.onPlaybackStarted, undefined);
+    assert.equal(call.result.voiceAdmission.bypassActionQueue, undefined);
+    assert.equal(JSON.stringify(call.result).includes("bypassActionQueue"), false);
+    assert.equal(JSON.stringify(call.result).includes("onPlaybackStarted"), false);
+    assert.equal(JSON.stringify(call.actionResult).includes("bypassActionQueue"), false);
+    assert.equal(JSON.stringify(call.plan).includes("onPlaybackStarted"), false);
+
+    assert.equal(harness.delivery.getVoicePlaybackState().textPreview, "PAID-A");
+    assert.equal(harness.spoken.includes(STARTUP_PHRASE), false);
+    assert.equal(startupMirrorsOnly(harness.startupMirrors).length, 0);
+    assert.equal(harness.delivery.getVoiceSpeakQueueLength(), 1);
+    assert.equal(getSharedActionQueue().snapshot().size, 0);
+    assert.equal(
+      harness.logs.some((entry) => entry.stage === "action_queue_tts_enqueued"),
+      false
+    );
+    assert.equal(
+      harness.logs.some((entry) => entry.stage === "action_queue_tts_coalesced"),
+      false
+    );
+    assert.equal(
+      harness.logs.some((entry) => entry.coalesceKey === "tts:anon:T1"),
+      false
+    );
+    const queued = harness.logs.filter((entry) => entry.stage === "voice_speak_queued");
+    assert.equal(queued.length, 1);
+    assert.equal(queued[0].voiceClass, "system");
+    assert.equal(queued[0].textPreview, STARTUP_PHRASE.slice(0, 80));
+
+    await harness.release();
+    const playback = harness.delivery.getVoicePlaybackState();
+    const mirror = startupMirrorsOnly(harness.startupMirrors);
+    assert.equal(harness.spoken.includes(STARTUP_PHRASE), true);
+    assert.equal(mirror.length, 1);
+    assert.equal(mirror[0].text, STARTUP_PHRASE);
+    assert.equal(mirror[0].holdUntilTs, playback.holdUntilTs);
+    assert.equal(playback.textPreview, STARTUP_PHRASE);
+  });
+
+  await test("action queue on does not attach the startup hook to another voice", async () => {
+    process.env.MIA_ACTION_QUEUE = "1";
+    resetSharedActionQueueForTest();
+    const harness = createHarness();
+    await harness.sayPaid("PAID-A");
+    await harness.startup.emitStartupOverlay();
+
+    const otherMirrors = [];
+    await harness.delivery.maybeDeliverMiaVoice(
+      {
+        ok: true,
+        route: "system",
+        meta: { source: "ordinary_system" },
+        overlayPayload: { owner: "mia", text: "ordinary system line" }
+      },
+      {
+        shouldSpeak: true,
+        text: "ordinary system line",
+        voiceMode: "primary",
+        voiceSpeaker: "mia",
+        primaryOwner: "mia",
+        source: "ordinary_system",
+        recordReply: false
+      },
+      {
+        onPlaybackStarted(playback) {
+          otherMirrors.push(playback);
+        }
+      }
+    );
+    await sleep(40);
+
+    assert.equal(harness.delivery.getVoiceSpeakQueueLength(), 2);
+    assert.equal(
+      harness.logs.filter(
+        (entry) =>
+          entry.stage === "voice_speak_queued" && entry.textPreview === STARTUP_PHRASE.slice(0, 80)
+      ).length,
+      1
+    );
+    assert.equal(
+      harness.logs.filter(
+        (entry) =>
+          entry.stage === "action_queue_tts_enqueued" &&
+          entry.textPreview === "ordinary system line"
+      ).length,
+      1
+    );
+    assert.equal(
+      harness.logs.some(
+        (entry) =>
+          entry.stage === "action_queue_tts_enqueued" &&
+          String(entry.textPreview || "").startsWith("MIA je online")
+      ),
+      false
+    );
+    assert.equal(harness.spoken.includes(STARTUP_PHRASE), false);
+    assert.equal(startupMirrorsOnly(harness.startupMirrors).length, 0);
+
+    await harness.release();
+    assert.deepEqual(
+      harness.spoken.filter((text) => text === STARTUP_PHRASE || text === "ordinary system line"),
+      [STARTUP_PHRASE, "ordinary system line"]
+    );
+    assert.deepEqual(
+      startupMirrorsOnly(harness.startupMirrors).map((row) => row.text),
+      [STARTUP_PHRASE]
+    );
+    assert.deepEqual(
+      otherMirrors.map((row) => row.text),
+      ["ordinary system line"]
+    );
+    assert.equal(otherMirrors[0].playbackId > 0, true);
+    assert.notEqual(
+      startupMirrorsOnly(harness.startupMirrors)[0].holdUntilTs,
+      undefined
+    );
+    assert.equal(
+      otherMirrors.some((row) => row.text === STARTUP_PHRASE),
+      false
+    );
+  });
+
+  await test("action queue on still coalesces same-viewer T1 gifts", async () => {
+    process.env.MIA_ACTION_QUEUE = "1";
+    resetSharedActionQueueForTest();
+    const harness = createHarness();
+    await harness.sayPaid("PAID-A");
+    await harness.delivery.maybeDeliverMiaVoice(
+      {
+        ok: true,
+        route: "support",
+        eventType: "GIFT",
+        tier: "T1",
+        meta: { eventId: "gift-1", userId: "tomino", tier: "T1" },
+        overlayPayload: { owner: "mia", text: "gift thanks one", userLabel: "Tomino" }
+      },
+      {
+        shouldSpeak: true,
+        text: "gift thanks one",
+        voiceMode: "primary",
+        voiceSpeaker: "mia",
+        primaryOwner: "mia",
+        tier: "T1"
+      }
+    );
+    await harness.delivery.maybeDeliverMiaVoice(
+      {
+        ok: true,
+        route: "support",
+        eventType: "GIFT",
+        tier: "T1",
+        meta: { eventId: "gift-2", userId: "tomino", tier: "T1" },
+        overlayPayload: { owner: "mia", text: "gift thanks two", userLabel: "Tomino" }
+      },
+      {
+        shouldSpeak: true,
+        text: "gift thanks two",
+        voiceMode: "primary",
+        voiceSpeaker: "mia",
+        primaryOwner: "mia",
+        tier: "T1"
+      }
+    );
+    await sleep(40);
+
+    const coalesced = harness.logs.filter((entry) => entry.stage === "action_queue_tts_coalesced");
+    assert.equal(coalesced.length, 1);
+    assert.equal(coalesced[0].coalesceKey, "tts:tomino:T1");
+    assert.equal(
+      harness.logs.filter(
+        (entry) =>
+          entry.stage === "voice_speak_queued" &&
+          String(entry.textPreview || "").startsWith("gift thanks")
+      ).length,
+      1
+    );
+    assert.equal(harness.delivery.getVoiceSpeakQueueLength(), 1);
+    await harness.release();
+    assert.equal(
+      harness.spoken.filter((text) => String(text).startsWith("gift thanks")).length,
+      1
+    );
   });
 
   console.log("startup_voice_queue_contract: all passed");

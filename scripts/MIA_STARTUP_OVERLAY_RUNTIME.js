@@ -447,7 +447,8 @@ function createStartupOverlayRuntime(deps = {}) {
               {
                 onPlaybackStarted(playback) {
                   presentStartupSpeech(playback);
-                }
+                },
+                bypassActionQueue: true
               }
             );
           } catch (err) {
