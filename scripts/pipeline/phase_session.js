@@ -50,6 +50,19 @@ async function phaseSession(ctx, deps) {
       ctx.halt(ctx.buildDedupeResponse(normalized.eventId || null).body);
       return ctx;
     }
+
+    if (
+      eventType === "GIFT" &&
+      dedupe.reservation === "pending" &&
+      dedupe.identity === "trusted"
+    ) {
+      ctx.meta.giftReservation = {
+        owner: true,
+        key: dedupe.key || null,
+        trustedSourceId: dedupe.trustedSourceId || null,
+        reservation: "pending"
+      };
+    }
   }
 
   try {

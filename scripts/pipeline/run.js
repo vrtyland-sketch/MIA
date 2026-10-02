@@ -30,6 +30,7 @@ async function runEventPipeline(ctx, deps, phases = DEFAULT_PHASES) {
     ctx.commit(deps);
   } catch (err) {
     if (
+      ctx?.meta?.giftReservation?.owner === true &&
       ctx?.eventType === "GIFT" &&
       typeof deps?.ingestDeduper?.abortTrustedGift === "function"
     ) {

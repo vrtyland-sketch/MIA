@@ -270,6 +270,77 @@ async function run() {
     assert.equal(env.effects.world, 1);
   });
 
+  await test("a rejected duplicate cannot release the in-flight owner's reservation", async () => {
+    const env = harness();
+    let entered = 0;
+    let release;
+    const hold = new Promise((resolve) => {
+      release = resolve;
+    });
+    const normalized = gift("owner");
+    const phases = [
+      phaseSession,
+      async (ctx) => {
+        entered += 1;
+        if (entered === 1) await hold;
+        return env.observe(ctx);
+      },
+      env.economyWorld
+    ];
+
+    const ctxA = makeCtx(normalized);
+    const first = runEventPipeline(ctxA, env.deps, phases);
+    await new Promise((resolve) => setImmediate(resolve));
+    assert.equal(entered, 1);
+    assert.equal(ctxA.meta.giftReservation.owner, true);
+    assert.equal(ctxA.meta.giftReservation.reservation, "pending");
+    assert.equal(ctxA.meta.giftReservation.key, "tiktok|GIFT|owner");
+
+    const ctxB = makeCtx(normalized);
+    ctxB.commit = () => {
+      throw new Error("duplicate-during-commit");
+    };
+    await assert.rejects(
+      () => runEventPipeline(ctxB, env.deps, phases),
+      /duplicate-during-commit/
+    );
+    assert.equal(ctxB.meta.deduped, true);
+    assert.equal(ctxB.meta.giftReservation, undefined);
+    assert.equal(entered, 1);
+    assert.equal(ctxA.meta.giftReservation.reservation, "pending");
+    assert.equal(
+      hasLog(env.logs, "ingest-dedupe-lifecycle", "reservation_released_before_side_effects"),
+      false
+    );
+    assert.equal(hasLog(env.logs, "ingest-deduped", "trusted_source_pending"), true);
+
+    const ctxC = makeCtx(normalized);
+    const third = await runEventPipeline(ctxC, env.deps, phases);
+    assert.equal(third.body.deduped, true);
+    assert.equal(ctxC.meta.giftReservation, undefined);
+    assert.equal(entered, 1);
+    assert.equal(ctxA.meta.giftReservation.owner, true);
+    assert.equal(ctxA.meta.giftReservation.reservation, "pending");
+
+    release();
+    const finished = await first;
+    assert.equal(finished.body.ok, true);
+    assert.equal(ctxA.meta.giftReservation.owner, true);
+    assert.equal(ctxA.meta.giftReservation.reservation, "committed");
+    assert.equal(env.effects.bowl, 1);
+    assert.equal(env.effects.economy, 1);
+    assert.equal(env.effects.world, 1);
+
+    const retry = await runEventPipeline(makeCtx(normalized), env.deps, phases);
+    assert.equal(retry.body.deduped, true);
+    assert.equal(retry.body.reason, "duplicate_ingest_within_window");
+    assert.equal(hasLog(env.logs, "ingest-deduped", "trusted_source_committed"), true);
+    assert.equal(
+      hasLog(env.logs, "ingest-dedupe-lifecycle", "reservation_released_before_side_effects"),
+      false
+    );
+  });
+
   await test("a successful trusted gift suppresses a retry inside the window", async () => {
     const env = harness();
     const normalized = gift("done");
