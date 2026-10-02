@@ -43,6 +43,7 @@ function registerTtsRoutes(app, ctx = {}) {
     voiceHoldUntilTs,
     mirrorSpeechOverlayFromVoice,
     invalidateOverlayStateCache,
+    maybeDeliverMiaVoice,
     bumpVoicePlaybackSeq,
     getVoicePlaybackState,
     setVoicePlaybackState,
@@ -163,47 +164,94 @@ function registerTtsRoutes(app, ctx = {}) {
             )
           : "cs";
 
-      const voiceResult = await ttsEngine.speak({
-        text,
-        speaker,
-        runtimeConfig,
-        language: langCode
-      });
-      if (!voiceResult?.ok) {
-        return res.status(500).json({ ok: false, error: voiceResult?.reason || "tts_failed" });
+      if (typeof maybeDeliverMiaVoice !== "function") {
+        return res.status(503).json({
+          ok: false,
+          queued: false,
+          started: false,
+          speaker,
+          language: langCode,
+          text,
+          error: "voice_queue_missing"
+        });
       }
 
-      const now = Date.now();
-      const playbackId = typeof bumpVoicePlaybackSeq === "function" ? bumpVoicePlaybackSeq() : 0;
-      const voicePlaybackState = {
-        playbackId,
-        speaker,
-        audioUrl: voiceResult.audioUrl,
-        textPreview: text.slice(0, 120),
-        updatedAt: now,
-        holdUntilTs: voiceHoldUntilTs(now, voiceResult.durationMs)
+      const delivered = await maybeDeliverMiaVoice(
+        {
+          ok: true,
+          route: "system",
+          meta: { source: "mia_say_remote", language: langCode },
+          overlayPayload: {
+            owner: speaker,
+            route: "system",
+            text,
+            meta: { source: "mia_say_remote", language: langCode }
+          }
+        },
+        {
+          shouldSpeak: true,
+          text,
+          voiceMode: "primary",
+          voiceSpeaker: speaker,
+          primaryOwner: speaker,
+          source: "mia_say_remote",
+          language: langCode,
+          recordReply: false
+        },
+        {
+          bypassActionQueue: true,
+          onPlaybackStarted(playback) {
+            if (typeof mirrorSpeechOverlayFromVoice !== "function") return;
+            mirrorSpeechOverlayFromVoice({
+              speaker: playback?.speaker || speaker,
+              text: playback?.text || text,
+              holdUntilTs: playback?.holdUntilTs,
+              source: "mia_say_remote"
+            });
+            if (typeof invalidateOverlayStateCache === "function") {
+              invalidateOverlayStateCache();
+            }
+          }
+        }
+      );
+
+      const admission = delivered?.voiceAdmission || {
+        accepted: false,
+        queued: false,
+        started: false,
+        reason: "voice_not_accepted"
       };
-      if (typeof setVoicePlaybackState === "function") {
-        setVoicePlaybackState(voicePlaybackState);
+      if (admission.accepted !== true) {
+        const reason = admission.reason || "voice_not_accepted";
+        const status = reason === "tts_disabled" ? 503 : 500;
+        return res.status(status).json({
+          ok: false,
+          queued: false,
+          started: false,
+          speaker,
+          language: langCode,
+          text,
+          error: reason
+        });
       }
 
-      mirrorSpeechOverlayFromVoice({
-        speaker,
-        text,
-        holdUntilTs: voicePlaybackState.holdUntilTs,
-        source: "mia_say_remote",
-        meta: { language: langCode, voice: voiceResult.voice }
-      });
-      invalidateOverlayStateCache();
-
+      const started = admission.started === true;
+      const playback = started && delivered?.voicePlayback ? delivered.voicePlayback : null;
+      const audioUrl = started ? safeString(playback?.audioUrl) : "";
       res.json({
         ok: true,
+        queued: admission.queued === true,
+        started,
         speaker,
         language: langCode,
-        voice: voiceResult.voice,
         text,
-        audioUrl: voiceResult.audioUrl,
-        voicePlayback: voicePlaybackState
+        ...(audioUrl ? { audioUrl } : {}),
+        ...(playback
+          ? {
+              voicePlayback: playback,
+              ...(Number(playback.playbackId) > 0 ? { playbackId: playback.playbackId } : {})
+            }
+          : {})
       });
     } catch (err) {
       res.status(500).json({ ok: false, error: err.message });
