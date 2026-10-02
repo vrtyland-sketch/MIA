@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "platforms": {},
+  "duel": {
+    "active": false,
+    "phase": "idle"
+  },
+  "tournament": {
+    "active": false
+  },
+  "users": {},
+  "updatedAt": 0
+}

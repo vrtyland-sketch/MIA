@@ -31,6 +31,19 @@ _tmp_master.bundle
 _push_diag_top_blobs.txt
 _git_push_verbose.log.err
 data/avatar-cache/
+
+# Live community / user runtime stores. Local copies stay on disk.
+# Sanitized stand-ins: data/*.example.json and tests/fixtures/session-memory.example.json
+data/mia-session-memory.json
+data/viewer-memory.json
+data/viewer-inventory.json
+data/platform-arena.json
+data/story-memory.json
+data/gift-map-stats.json
+data/streamer-identity.json
+data/kojnozout-world.json
+data/kojnozout-world.json.bak
+tests/.tmp-session-memory-*.json
 *.log
 .DS_Store
 Thumbs.db
