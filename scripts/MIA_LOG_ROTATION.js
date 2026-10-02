@@ -67,6 +67,7 @@ function cleanupOldLogs(logsDir) {
       }
     }
   } catch (err) {
+    if (err && err.code === "ENOENT") return;
     console.error("[LOG_ROTATION_CLEANUP]", err.message);
   }
 }

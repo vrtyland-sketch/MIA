@@ -7,6 +7,7 @@ function registerVoiceRoutes(app, ctx = {}) {
   if (!check.ok) return check;
 
   const {
+    localAdminGuard,
     voiceLayer,
     streamState,
     getStreamState,
@@ -18,7 +19,7 @@ function registerVoiceRoutes(app, ctx = {}) {
     executeOverlay
   } = ctx;
 
-  app.post("/voice/command", async (req, res) => {
+  app.post("/voice/command", localAdminGuard, async (req, res) => {
     try {
       const input = req.body || {};
       const outputState = typeof getOutputState === "function" ? getOutputState() : {};

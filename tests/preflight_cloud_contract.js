@@ -439,6 +439,43 @@ test("live missing-asset stacks stay ENV_BLOCKED", () => {
   }
 });
 
+test("node 24 assertion banners do not turn a missing-asset failure into FAIL", () => {
+  const absent = probe([]);
+  const banners = [
+    "AssertionError [ERR_ASSERTION]: Expected inputs to be strictly deep-equal:",
+    "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:",
+    "AssertionError [ERR_ASSERTION]: Expected inputs to be strictly equal:"
+  ];
+  for (const banner of banners) {
+    const classified = classifyCloudSuite({
+      name: "story_animation",
+      exitCode: 1,
+      output: [
+        banner,
+        "+ actual - expected ... Lines skipped",
+        "story bank manifest exists",
+        "    at run (/workspace/tests/story_animation_contract.js:80:10)"
+      ].join("\n"),
+      missing: listMissingPrerequisites("story_animation", absent)
+    });
+    assert.equal(classified.disposition, "ENV_BLOCKED", banner);
+  }
+
+  const realDiff = classifyCloudSuite({
+    name: "story_animation",
+    exitCode: 1,
+    output: [
+      "AssertionError [ERR_ASSERTION]: Expected inputs to be strictly deep-equal:",
+      "+ actual - expected",
+      "+   frames: 0",
+      "-   frames: 3",
+      "composed.frames.length"
+    ].join("\n"),
+    missing: listMissingPrerequisites("story_animation", absent)
+  });
+  assert.equal(realDiff.disposition, "FAIL");
+});
+
 if (!process.exitCode) {
   console.log("preflight_cloud_contract: all passed");
 }

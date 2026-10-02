@@ -1,7 +1,11 @@
 "use strict";
 
 const assert = require("assert/strict");
+const fs = require("fs");
+const path = require("path");
 const security = require("../scripts/MIA_RUNTIME_SECURITY");
+
+const ROOT = path.resolve(__dirname, "..");
 
 function test(name, fn) {
   try {
@@ -104,4 +108,113 @@ test("local admin guard allows localhost for media mutators", () => {
     query: {}
   });
   assert.equal(auth.ok, true);
+});
+
+test("forwarded header cannot impersonate localhost", () => {
+  const prev = process.env.MIA_INGEST_SECRET;
+  delete process.env.MIA_INGEST_SECRET;
+  const auth = security.validateIngestAuth({
+    ip: "127.0.0.1",
+    socket: { remoteAddress: "203.0.113.8" },
+    headers: { "x-forwarded-for": "127.0.0.1" },
+    query: {}
+  });
+  assert.equal(auth.ok, false);
+  assert.equal(auth.error, "ingest_localhost_only");
+  const admin = security.validateLocalAdmin({
+    ip: "127.0.0.1",
+    socket: { remoteAddress: "203.0.113.8" },
+    headers: { "x-forwarded-for": "127.0.0.1, 10.0.0.2" },
+    query: {}
+  });
+  assert.equal(admin.ok, false);
+  assert.equal(admin.error, "local_admin_only");
+  if (prev === undefined) delete process.env.MIA_INGEST_SECRET;
+  else process.env.MIA_INGEST_SECRET = prev;
+});
+
+test("local socket stays local when the forwarded header names another client", () => {
+  const auth = security.validateLocalAdmin({
+    ip: "203.0.113.8",
+    socket: { remoteAddress: "::ffff:127.0.0.1" },
+    headers: { "x-forwarded-for": "203.0.113.8" },
+    query: {}
+  });
+  assert.equal(auth.ok, true);
+  assert.equal(auth.mode, "localhost");
+});
+
+test("debug routes enabled still reject a remote client without a secret", () => {
+  const prevRoutes = process.env.MIA_DEBUG_ROUTES;
+  const prevSecret = process.env.MIA_INGEST_SECRET;
+  delete process.env.MIA_DEBUG_ROUTES;
+  delete process.env.MIA_INGEST_SECRET;
+  assert.equal(security.isDebugRoutesEnabled(), true);
+  assert.equal(
+    security.isDebugRouteAllowed({ ip: "192.168.0.22", headers: {}, query: {} }),
+    false
+  );
+  assert.equal(
+    security.isDebugRouteAllowed({
+      ip: "192.168.0.22",
+      socket: { remoteAddress: "192.168.0.22" },
+      headers: { "x-forwarded-for": "127.0.0.1" },
+      query: {}
+    }),
+    false
+  );
+  assert.equal(
+    security.isDebugRouteAllowed({ ip: "127.0.0.1", headers: {}, query: {} }),
+    true
+  );
+  if (prevRoutes === undefined) delete process.env.MIA_DEBUG_ROUTES;
+  else process.env.MIA_DEBUG_ROUTES = prevRoutes;
+  if (prevSecret === undefined) delete process.env.MIA_INGEST_SECRET;
+  else process.env.MIA_INGEST_SECRET = prevSecret;
+});
+
+test("debug routes accept a remote client that presents the ingest secret", () => {
+  const prevRoutes = process.env.MIA_DEBUG_ROUTES;
+  process.env.MIA_DEBUG_ROUTES = "on";
+  process.env.MIA_INGEST_SECRET = "test-secret-123";
+  assert.equal(
+    security.isDebugRouteAllowed({
+      ip: "192.168.0.22",
+      headers: { "x-mia-ingest-secret": "test-secret-123" },
+      query: {}
+    }),
+    true
+  );
+  delete process.env.MIA_INGEST_SECRET;
+  if (prevRoutes === undefined) delete process.env.MIA_DEBUG_ROUTES;
+  else process.env.MIA_DEBUG_ROUTES = prevRoutes;
+});
+
+test("remaining control routes require localhost or ingest secret", () => {
+  const checks = [
+    ["routes/obs.js", 'app.get("/obs/fix-overlays", localAdminGuard'],
+    ["routes/obs.js", 'app.get("/obs/reconnect", localAdminGuard'],
+    ["routes/obs.js", 'app.post("/obs/prep-stream", localAdminGuard'],
+    ["routes/obs.js", 'app.post("/obs/revive-voice", localAdminGuard'],
+    ["routes/voice.js", 'app.post("/voice/command", localAdminGuard'],
+    ["routes/debug.js", 'app.get("/gift-visual/test", debugRouteGuard'],
+    ["routes/overlay.js", 'app.get("/overlay/clear", localAdminGuard'],
+    ["routes/overlay.js", 'app.get("/overlay/test", localAdminGuard'],
+    ["routes/system.js", 'app.post("/streamer/identity/reset", localAdminGuard'],
+    ["routes/solo_stream.js", 'app.post("/solo-stream/exit", localAdminGuard'],
+    ["routes/video.js", 'app.get("/video/test", localAdminGuard'],
+    ["routes/video.js", 'app.get("/gift/voice-test", localAdminGuard'],
+    ["routes/arena.js", 'app.get("/duel/export", localAdminGuard'],
+    ["routes/arena.js", 'app.post("/duel/opponent-sync", localAdminGuard'],
+    ["routes/arena.js", 'app.post("/duel/opponent-points", localAdminGuard'],
+    ["routes/eyes.js", 'app.get("/mia/eyes/scan", localAdminGuard'],
+    ["routes/eyes.js", 'app.get("/mia/eyes/away", localAdminGuard'],
+    ["routes/eyes.js", 'app.post("/mia/vision/tick", localAdminGuard']
+  ];
+  for (const [rel, needle] of checks) {
+    const src = fs.readFileSync(path.join(ROOT, rel), "utf8");
+    assert.ok(src.includes(needle), needle);
+  }
+  const overlay = fs.readFileSync(path.join(ROOT, "routes/overlay.js"), "utf8");
+  assert.match(overlay, /app\.get\("\/overlay-state", \(req, res\)/);
 });

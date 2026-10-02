@@ -144,6 +144,12 @@ const FAST_SUITE_NAMES = [
   "mia_eyes_ctx",
   "overlay_state_cache_ctx",
   "ingest_deduper_ctx",
+  "ingest_dedupe",
+  "voice_speak_queue",
+  "overlay_voice_queue",
+  "gift_voice_routing",
+  "kojnozout_persistence",
+  "log_rotation",
   "obs_vision_ctx",
   "overlay_timing_ctx",
   "overlay_queue_ctx",
@@ -344,6 +350,12 @@ const SUITES = [
   { name: "streamer_media_command", cmd: "node", args: ["tests/streamer_media_command_contract.js"] },
   { name: "streamer_showcase", cmd: "node", args: ["tests/streamer_showcase_contract.js"] },
   { name: "obs_persistent_layers", cmd: "node", args: ["tests/obs_persistent_layers_contract.js"] },
+  { name: "voice_speak_queue", cmd: "node", args: ["tests/voice_speak_queue_contract.js"] },
+  { name: "overlay_voice_queue", cmd: "node", args: ["tests/overlay_voice_queue_integration_smoke.js"] },
+  { name: "gift_voice_routing", cmd: "node", args: ["tests/gift_voice_routing_contract.js"] },
+  { name: "kojnozout_persistence", cmd: "node", args: ["tests/kojnozout_persistence_contract.js"] },
+  { name: "ingest_dedupe", cmd: "node", args: ["tests/ingest_dedupe_smoke.js"] },
+  { name: "log_rotation", cmd: "node", args: ["tests/log_rotation_smoke.js"] },
   { name: "runtime_perf", cmd: "node", args: ["tests/runtime_perf_contract.js"] },
   { name: "combo_overlay", cmd: "node", args: ["tests/combo_overlay_contract.js"] },
   { name: "combo_wave_ui", cmd: "node", args: ["tests/combo_wave_ui_contract.js"] },
@@ -602,11 +614,10 @@ function isIgnorableFailureLine(line) {
   if (/^node:\S+:\d+$/.test(text)) return true;
   if (/^Node\.js v\d+/.test(text)) return true;
   if (/^(?:errno|code|syscall|path|generatedMessage|actual|expected|operator|name|stack)\s*:/.test(text)) return true;
-  if (/^AssertionError(?: \[ERR_ASSERTION\])?: The expression evaluated to a falsy value:?$/.test(text)) return true;
-  if (/^AssertionError(?: \[ERR_ASSERTION\])?: Expected values to be strictly(?: deep)? equal:?$/.test(text)) return true;
-  if (/^AssertionError(?: \[ERR_ASSERTION\])?: Expected values to not be strictly equal:?$/.test(text)) return true;
-  if (/^(?:The expression evaluated to a falsy value|Expected values to be strictly(?: deep)? equal|Expected values to not be strictly equal):?$/.test(text)) return true;
-  if (text === "+ actual - expected") return true;
+  if (/^(?:AssertionError(?: \[ERR_ASSERTION\])?: )?(?:The expression evaluated to a falsy value|Expected (?:values|inputs) to be strictly(?: deep-equal| deep equal| equal)|Expected (?:values|inputs) to not be strictly(?: deep-equal| deep equal| equal)):?$/.test(text)) return true;
+  if (/^(?:AssertionError(?: \[ERR_ASSERTION\])?: )?Expected "(?:actual|expected)" to be strictly unequal to:/.test(text)) return true;
+  if (/^\+ actual - expected(?:\s+\.\.\. Lines skipped)?$/.test(text)) return true;
+  if (text === "... Lines skipped") return true;
   if (/^✅(?:\s|$)/.test(text)) return true;
   if (/^ok - /.test(text)) return true;
   return false;

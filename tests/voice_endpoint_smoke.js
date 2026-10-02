@@ -77,11 +77,11 @@ function loadIndexWithVoiceRoute(options = {}) {
 
   const expressApp = {
     use() {},
-    get(path, handler) {
-      routes.get.set(path, handler);
+    get(path, ...handlers) {
+      routes.get.set(path, handlers[handlers.length - 1]);
     },
-    post(path, handler) {
-      routes.post.set(path, handler);
+    post(path, ...handlers) {
+      routes.post.set(path, handlers[handlers.length - 1]);
     },
     listen(_port, cb) {
       if (typeof cb === "function") cb();

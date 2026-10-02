@@ -92,7 +92,7 @@ function registerDebugRoutes(app, ctx = {}) {
     }
   });
 
-  app.get("/gift-visual/test", async (req, res) => {
+  app.get("/gift-visual/test", debugRouteGuard, async (req, res) => {
     if (typeof giftVisualComposerModule.composeGiftMoment !== "function") {
       return res.status(503).json({ ok: false, error: "gift_visual_composer_missing" });
     }

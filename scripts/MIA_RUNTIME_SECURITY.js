@@ -21,14 +21,22 @@ function resolveIngestSecret() {
   return safeString(process.env.MIA_INGEST_SECRET);
 }
 
-function normalizeClientIp(req = {}) {
-  const raw =
-    safeString(req.headers["x-forwarded-for"]).split(",")[0] ||
-    req.ip ||
-    req.socket?.remoteAddress ||
-    "";
+function stripMappedIpv4(value) {
+  return safeString(value).replace(/^::ffff:/i, "");
+}
 
-  return raw.replace(/^::ffff:/, "");
+function socketPeerIp(req = {}) {
+  const socket = req.socket || req.connection;
+  if (!socket || typeof socket !== "object") return "";
+  return stripMappedIpv4(socket.remoteAddress);
+}
+
+function normalizeClientIp(req = {}) {
+  // Auth identity is the TCP peer. A client-supplied X-Forwarded-For, and
+  // Express req.ip when trust proxy copies that header, must not grant localhost.
+  const peer = socketPeerIp(req);
+  if (peer) return peer;
+  return stripMappedIpv4(req.ip);
 }
 
 function isLocalRequest(req = {}) {
@@ -112,9 +120,6 @@ function validateLocalAdmin(req = {}) {
 }
 
 function isDebugRouteAllowed(req = {}) {
-  if (isDebugRoutesEnabled()) {
-    return true;
-  }
   if (isLocalRequest(req)) {
     return true;
   }
@@ -130,10 +135,17 @@ function createDebugRouteGuard() {
     if (isDebugRouteAllowed(req)) {
       return next();
     }
-    return res.status(404).json({
+    if (!isDebugRoutesEnabled()) {
+      return res.status(404).json({
+        ok: false,
+        error: "debug_routes_disabled",
+        message: "Debug routes are disabled (MIA_DEBUG_ROUTES=off)"
+      });
+    }
+    return res.status(401).json({
       ok: false,
-      error: "debug_routes_disabled",
-      message: "Debug routes are disabled (MIA_DEBUG_ROUTES=off)"
+      error: "debug_routes_unauthorized",
+      message: "Debug routes require localhost or ingest secret"
     });
   };
 }

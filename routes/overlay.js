@@ -104,7 +104,7 @@ function registerOverlayRoutes(app, ctx = {}) {
     }
   });
 
-  app.get("/overlay/test", async (req, res) => {
+  app.get("/overlay/test", localAdminGuard, async (req, res) => {
     const testOverlay = setOverlay(
       {
         owner: "mia",
@@ -138,7 +138,7 @@ function registerOverlayRoutes(app, ctx = {}) {
     res.json({ ok: true });
   });
 
-  app.get("/overlay/clear", (_req, res) => {
+  app.get("/overlay/clear", localAdminGuard, (_req, res) => {
     if (typeof ctx.resetOverlayState === "function") {
       ctx.resetOverlayState();
     }
