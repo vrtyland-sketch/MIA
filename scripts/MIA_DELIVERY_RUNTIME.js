@@ -66,8 +66,240 @@ function isVoicePlaybackActive(now = Date.now()) {
   return Number(voicePlaybackState.holdUntilTs || 0) > now;
 }
 
-function scheduleVoiceSpeakDrain(delayMs = null) {
-  if (voiceSpeakDrainTimer) return;
+// Waiting-queue policy. The cap stays 6. Higher rank is kept.
+// proactive < media < system < chat < paid_support.
+const VOICE_SPEAK_STALE_MS = 10000;
+const VOICE_SPEAK_COALESCE_MS = 2500;
+const VOICE_CLASS_RANK = {
+  proactive: 10,
+  media: 20,
+  system: 30,
+  chat: 40,
+  paid_support: 50
+};
+
+function voiceClassRank(voiceClass) {
+  return VOICE_CLASS_RANK[voiceClass] || VOICE_CLASS_RANK.system;
+}
+
+function deriveVoiceSpeakClass(actionResult = {}, plan = {}) {
+  const route = safeString(
+    actionResult?.route || actionResult?.overlayPayload?.route
+  ).toLowerCase();
+  const source = safeString(
+    actionResult?.meta?.source ||
+      actionResult?.overlayPayload?.meta?.source ||
+      plan?.source ||
+      plan?.kind
+  ).toLowerCase();
+  const intent = safeString(
+    actionResult?.responseContract?.intent ||
+      actionResult?.meta?.intent ||
+      plan?.intent
+  ).toLowerCase();
+  const eventType = safeString(
+    actionResult?.eventType || actionResult?.normalized?.eventType
+  ).toUpperCase();
+
+  if (
+    route === "support" ||
+    eventType === "GIFT" ||
+    actionResult?.meta?.giftMapOverlay === true ||
+    actionResult?.overlayPayload?.meta?.giftMapOverlay === true ||
+    plan?.kind === "gift"
+  ) {
+    return "paid_support";
+  }
+
+  if (
+    source === "solo_stream" ||
+    source === "proactive_host" ||
+    source === "idle" ||
+    intent === "solo_stream" ||
+    intent === "proactive_host" ||
+    plan?.kind === "idle"
+  ) {
+    return "proactive";
+  }
+
+  if (
+    source === "streamer_media_command" ||
+    intent === "streamer_media_ack" ||
+    intent === "streamer_media_reject"
+  ) {
+    return "media";
+  }
+
+  if (
+    source === "voice_command" ||
+    route === "voice" ||
+    route === "system" ||
+    intent === "voice_command" ||
+    intent === "capybara_wait" ||
+    actionResult?.meta?.achievementVoice === true ||
+    actionResult?.meta?.companionVoiceOnly === true
+  ) {
+    return "system";
+  }
+
+  if (
+    route === "community" ||
+    route === "comment" ||
+    route === "chat" ||
+    eventType === "COMMENT" ||
+    eventType === "LIKE" ||
+    eventType === "FOLLOW" ||
+    eventType === "SHARE" ||
+    eventType === "JOIN"
+  ) {
+    return "chat";
+  }
+
+  return "system";
+}
+
+function voiceUserKey(actionResult = {}, plan = {}) {
+  return safeString(
+    actionResult?.meta?.userId ||
+      actionResult?.user?.userId ||
+      actionResult?.normalized?.user?.userId ||
+      actionResult?.userLabel ||
+      actionResult?.overlayPayload?.userLabel ||
+      actionResult?.overlayPayload?.user ||
+      plan?.userKey
+  ).toLowerCase();
+}
+
+function readVoiceEventId(actionResult = {}, plan = {}) {
+  return safeString(
+    actionResult?.meta?.eventId ||
+      actionResult?.eventId ||
+      actionResult?.normalized?.eventId ||
+      plan?.eventId
+  );
+}
+
+function readVoiceTier(actionResult = {}, plan = {}) {
+  return safeString(
+    plan?.tier ||
+      actionResult?.tier ||
+      actionResult?.meta?.streamTier ||
+      actionResult?.meta?.tier ||
+      actionResult?.support?.tier ||
+      actionResult?.overlayPayload?.tier
+  ).toUpperCase();
+}
+
+function buildVoiceQueueMeta(actionResult = {}, plan = {}) {
+  try {
+    const voiceClass = deriveVoiceSpeakClass(actionResult, plan);
+    const tier = readVoiceTier(actionResult, plan);
+    const eventId = readVoiceEventId(actionResult, plan);
+    return {
+      class: voiceClass,
+      user: voiceUserKey(actionResult, plan),
+      eventId,
+      eventIds: eventId ? [eventId] : [],
+      queuedAt: Date.now(),
+      count: 1,
+      tier,
+      smallGift: voiceClass === "paid_support" && (tier === "T0" || tier === "T1")
+    };
+  } catch (_err) {
+    return {
+      class: "system",
+      user: "",
+      eventId: "",
+      eventIds: [],
+      queuedAt: Date.now(),
+      count: 1,
+      tier: "",
+      smallGift: false
+    };
+  }
+}
+
+function queueHasEventId(eventId) {
+  if (!eventId) return false;
+  return voiceSpeakQueue.some((item) => {
+    if (safeString(item?.meta?.eventId) === eventId) return true;
+    return (
+      Array.isArray(item?.meta?.eventIds) && item.meta.eventIds.includes(eventId)
+    );
+  });
+}
+
+function isStaleNonPaidVoice(entry, now = Date.now()) {
+  if (entry?.meta?.class === "paid_support") return false;
+  const queuedAt = Number(entry?.meta?.queuedAt);
+  if (!Number.isFinite(queuedAt) || queuedAt <= 0) return false;
+  return now - queuedAt > VOICE_SPEAK_STALE_MS;
+}
+
+function logVoiceSpeakDrop(entry, reason) {
+  writeLog("mia-events", {
+    ts: Date.now(),
+    stage: "voice_speak_dropped",
+    reason,
+    policy: reason,
+    voiceClass: entry?.meta?.class || null,
+    user: entry?.meta?.user || null,
+    eventId: entry?.meta?.eventId || null,
+    queuedAt: entry?.meta?.queuedAt || null,
+    maxQueue: MAX_VOICE_SPEAK_QUEUE,
+    speaker: entry?.plan?.voiceSpeaker || entry?.plan?.primaryOwner || "mia",
+    textPreview: safeString(entry?.plan?.text).slice(0, 80)
+  });
+}
+
+function tryCoalesceSmallGift(meta) {
+  if (meta?.class !== "paid_support" || meta.smallGift !== true || !meta.user) {
+    return false;
+  }
+
+  const match = voiceSpeakQueue.find((item) => {
+    if (item?.meta?.class !== "paid_support" || item?.meta?.smallGift !== true) {
+      return false;
+    }
+    if (item.meta.user !== meta.user) return false;
+    if (safeString(item.meta.tier).toUpperCase() !== meta.tier) return false;
+    const age = Number(meta.queuedAt) - Number(item.meta.queuedAt || 0);
+    return age >= 0 && age <= VOICE_SPEAK_COALESCE_MS;
+  });
+  if (!match) return false;
+
+  match.meta.count = Number(match.meta.count || 1) + 1;
+  if (meta.eventId) {
+    if (!Array.isArray(match.meta.eventIds)) match.meta.eventIds = [];
+    if (!match.meta.eventIds.includes(meta.eventId)) {
+      match.meta.eventIds.push(meta.eventId);
+    }
+  }
+
+  writeLog("mia-events", {
+    ts: Date.now(),
+    stage: "voice_speak_coalesced",
+    reason: "small_gift_same_viewer",
+    policy: "small_gift_same_viewer",
+    voiceClass: "paid_support",
+    user: match.meta.user,
+    eventId: meta.eventId || null,
+    queuedAt: match.meta.queuedAt,
+    count: match.meta.count,
+    windowMs: VOICE_SPEAK_COALESCE_MS,
+    tier: match.meta.tier || null,
+    textPreview: safeString(match?.plan?.text).slice(0, 80)
+  });
+  return true;
+}
+
+function scheduleVoiceSpeakDrain(delayMs = null, options = {}) {
+  const force = options?.force === true;
+  if (voiceSpeakDrainTimer) {
+    if (!force) return;
+    clearTimeout(voiceSpeakDrainTimer);
+    voiceSpeakDrainTimer = null;
+  }
 
   const now = Date.now();
   const delay =
@@ -88,7 +320,14 @@ async function drainVoiceSpeakQueue() {
     return;
   }
 
-  const next = voiceSpeakQueue.shift();
+  let next = null;
+  while (voiceSpeakQueue.length > 0) {
+    if (!isStaleNonPaidVoice(voiceSpeakQueue[0])) {
+      next = voiceSpeakQueue.shift();
+      break;
+    }
+    logVoiceSpeakDrop(voiceSpeakQueue.shift(), "stale_non_paid");
+  }
   if (!next) return;
 
   voiceSpeakProcessing = true;
@@ -1172,19 +1411,72 @@ function enqueueVoiceSpeak(actionResult = {}, plan = {}, options = {}) {
   }
 
   function pushVoiceSpeakEntry(entryActionResult, entryPlan, entryPreempt) {
-    while (voiceSpeakQueue.length >= MAX_VOICE_SPEAK_QUEUE) {
-      const dropped = voiceSpeakQueue.shift();
-      writeLog("mia-events", {
-        ts: Date.now(),
-        stage: "voice_speak_dropped",
-        reason: "queue_overflow",
-        maxQueue: MAX_VOICE_SPEAK_QUEUE,
-        speaker: dropped?.plan?.voiceSpeaker || dropped?.plan?.primaryOwner || "mia",
-        textPreview: safeString(dropped?.plan?.text).slice(0, 80)
-      });
+    const meta = buildVoiceQueueMeta(entryActionResult, entryPlan);
+
+    if (meta.eventId && queueHasEventId(meta.eventId)) {
+      logVoiceSpeakDrop(
+        { actionResult: entryActionResult, plan: entryPlan, meta },
+        "duplicate_event_id"
+      );
+      scheduleVoiceSpeakDrain();
+      return;
     }
 
-    const entry = { actionResult: entryActionResult, plan: { ...entryPlan } };
+    if (tryCoalesceSmallGift(meta)) {
+      scheduleVoiceSpeakDrain();
+      return;
+    }
+
+    if (voiceSpeakQueue.length >= MAX_VOICE_SPEAK_QUEUE) {
+      const incomingRank = voiceClassRank(meta.class);
+      let lowestRank = Infinity;
+      for (const item of voiceSpeakQueue) {
+        const rank = voiceClassRank(item?.meta?.class);
+        if (rank < lowestRank) lowestRank = rank;
+      }
+
+      if (incomingRank < lowestRank) {
+        const protectsPaid = voiceSpeakQueue.every(
+          (item) => item?.meta?.class === "paid_support"
+        );
+        logVoiceSpeakDrop(
+          { actionResult: entryActionResult, plan: entryPlan, meta },
+          protectsPaid
+            ? "drop_incoming_protect_paid_support"
+            : "drop_incoming_lower_priority"
+        );
+        scheduleVoiceSpeakDrain();
+        return;
+      }
+
+      let evictIndex = -1;
+      let oldestTs = Infinity;
+      for (let i = 0; i < voiceSpeakQueue.length; i += 1) {
+        const item = voiceSpeakQueue[i];
+        if (voiceClassRank(item?.meta?.class) !== lowestRank) continue;
+        const ts = Number(item?.meta?.queuedAt) || 0;
+        if (evictIndex < 0 || ts < oldestTs || (ts === oldestTs && i < evictIndex)) {
+          evictIndex = i;
+          oldestTs = ts;
+        }
+      }
+
+      if (evictIndex >= 0) {
+        const dropped = voiceSpeakQueue.splice(evictIndex, 1)[0];
+        logVoiceSpeakDrop(
+          dropped,
+          dropped?.meta?.class === "paid_support"
+            ? "evict_oldest_paid_support"
+            : "evict_oldest_lowest_priority"
+        );
+      }
+    }
+
+    const entry = {
+      actionResult: entryActionResult,
+      plan: { ...entryPlan },
+      meta
+    };
     if (entryPreempt) voiceSpeakQueue.unshift(entry);
     else voiceSpeakQueue.push(entry);
 
@@ -1193,6 +1485,10 @@ function enqueueVoiceSpeak(actionResult = {}, plan = {}, options = {}) {
       stage: entryPreempt ? "voice_speak_preempt_queued" : "voice_speak_queued",
       queueLength: voiceSpeakQueue.length,
       maxQueue: MAX_VOICE_SPEAK_QUEUE,
+      voiceClass: meta.class,
+      user: meta.user || null,
+      eventId: meta.eventId || null,
+      queuedAt: meta.queuedAt,
       speaker: entryPlan.voiceSpeaker || entryPlan.primaryOwner || "mia",
       textPreview: safeString(entryPlan.text).slice(0, 80)
     });
@@ -1343,6 +1639,13 @@ function enqueueVoiceSpeak(actionResult = {}, plan = {}, options = {}) {
     },
     setVoicePlaybackState: (next) => {
       voicePlaybackState = next;
+      if (
+        !isVoicePlaybackActive() &&
+        voiceSpeakQueue.length > 0 &&
+        !voiceSpeakProcessing
+      ) {
+        scheduleVoiceSpeakDrain(0, { force: true });
+      }
     },
     getVoicePlaybackState: () => voicePlaybackState,
     getVoicePlaybackSeq: () => voicePlaybackSeq,
