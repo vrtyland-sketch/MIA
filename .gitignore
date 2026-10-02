@@ -49,6 +49,9 @@ data/kojnozout-state.json
 data/kojnozout-state.json.bak
 data/mia-action-queue.json
 data/mia-theme.json
+# Generated visual-review stills. Local copies stay on disk.
+data/media-review-frames/
+data/video-review-frames/
 tests/.tmp-session-memory-*.json
 *.log
 .DS_Store

@@ -117,7 +117,7 @@ const CURATED = {
     tier: "T3",
     contentKind: "story_music",
     theme: "community_brand",
-    visualSummary: "LV — PRSTITEL TEAM van u řeky, komunitní branding clip, T3",
+    visualSummary: "LV — community team van u řeky, komunitní branding clip, T3",
     tags: ["lv_edit", "community", "brand"]
   },
   "videos/lv_7518585147663322421_20260305173214.mp4": {
@@ -180,7 +180,7 @@ const CURATED = {
     tier: "T3",
     contentKind: "donator_moment",
     theme: "top_donator",
-    visualSummary: "PixVerse — TOP DONATORS Martin279 personal tribute, komunitní T3",
+    visualSummary: "PixVerse — TOP DONATORS community tribute, komunitní T3",
     tags: ["lv_edit", "donator", "personal"]
   },
   "videos_2/lv_0_20260411115935.mp4": {
@@ -201,7 +201,7 @@ const CURATED = {
     tier: "T4",
     contentKind: "story_epic",
     theme: "community_duel_promo",
-    visualSummary: "LAJKOVACÍ DUELY promo — Prstitel vs Tomino, VS grafika + auta; intro černé, obsah od ~90 s",
+    visualSummary: "community duel promo — VS grafika + auta; intro černé, obsah od ~90 s",
     tags: ["photos_export", "duel", "community", "promo"]
   },
   "videos_2/lv_7574590375705480453_20260516152347 (1).mp4": {
