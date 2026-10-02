@@ -27,15 +27,30 @@ function createStartupOverlayRuntime(deps = {}) {
     deliveryRuntime,
     mirrorSpeechOverlayFromVoice,
     invalidateOverlayStateCache,
-    voiceHoldUntilTs,
     obsBrowserRefreshOnConnectEnabled,
     refreshObsMiaBrowserSources,
     projectRoot,
     preflightTestsModule
   } = deps;
 
+  const STARTUP_VOICE_PHRASE =
+    "MIA je online. Hlas funguje. Napiš mi do chatu nebo pošli gift Kojnožroutovi.";
+
   let lastStartupCheck = null;
   let lastPreflightReport = null;
+
+  function presentStartupSpeech(playback) {
+    if (typeof mirrorSpeechOverlayFromVoice !== "function") return;
+    mirrorSpeechOverlayFromVoice({
+      speaker: playback?.speaker || "mia",
+      text: playback?.text || STARTUP_VOICE_PHRASE,
+      holdUntilTs: playback?.holdUntilTs,
+      source: "startup_voice_mirror"
+    });
+    if (typeof invalidateOverlayStateCache === "function") {
+      invalidateOverlayStateCache();
+    }
+  }
 
   function resolveStartupCheckDurationMs() {
     const raw = Number(process.env.MIA_STARTUP_CHECK_MS || 120000);
@@ -400,37 +415,51 @@ function createStartupOverlayRuntime(deps = {}) {
         ttsEngine && typeof ttsEngine.resolveConfig === "function"
           ? ttsEngine.resolveConfig(runtimeConfig)
           : null;
-      const phrase =
-        "MIA je online. Hlas funguje. Napiš mi do chatu nebo pošli gift Kojnožroutovi.";
 
       const splitOverlays =
         typeof MIA_SPLIT_OVERLAYS === "function" ? MIA_SPLIT_OVERLAYS() : {};
 
       if (ttsCfg?.enabled && ttsEngine) {
-        const voiceResult = await ttsEngine.speak({
-          text: phrase,
-          speaker: "mia",
-          runtimeConfig
-        });
-        if (voiceResult?.ok) {
-          const now = Date.now();
-          const runtime = typeof deliveryRuntime === "function" ? deliveryRuntime() : null;
-          const playbackId = runtime?.bumpVoicePlaybackSeq?.() ?? 0;
-          runtime?.setVoicePlaybackState?.({
-            playbackId,
-            speaker: "mia",
-            audioUrl: voiceResult.audioUrl,
-            textPreview: phrase,
-            updatedAt: now,
-            holdUntilTs: voiceHoldUntilTs(now, voiceResult.durationMs)
-          });
-          mirrorSpeechOverlayFromVoice({
-            speaker: "mia",
-            text: phrase,
-            holdUntilTs: runtime?.getVoicePlaybackState?.()?.holdUntilTs,
-            source: "startup_voice_mirror"
-          });
-          invalidateOverlayStateCache();
+        const runtime = typeof deliveryRuntime === "function" ? deliveryRuntime() : null;
+        if (typeof runtime?.maybeDeliverMiaVoice === "function") {
+          try {
+            await runtime.maybeDeliverMiaVoice(
+              {
+                ok: true,
+                route: "system",
+                meta: { source: "startup_voice" },
+                overlayPayload: {
+                  owner: "mia",
+                  route: "system",
+                  text: STARTUP_VOICE_PHRASE,
+                  meta: { source: "startup_voice" }
+                }
+              },
+              {
+                shouldSpeak: true,
+                text: STARTUP_VOICE_PHRASE,
+                voiceMode: "primary",
+                voiceSpeaker: "mia",
+                primaryOwner: "mia",
+                source: "startup_voice",
+                recordReply: false
+              },
+              {
+                onPlaybackStarted(playback) {
+                  presentStartupSpeech(playback);
+                }
+              }
+            );
+          } catch (err) {
+            if (typeof writeLog === "function") {
+              writeLog("mia-errors", {
+                source: "startup_voice",
+                error: err?.message || String(err)
+              });
+            }
+          }
+        } else if (typeof writeLog === "function") {
+          writeLog("mia-errors", { source: "startup_voice", error: "voice_queue_missing" });
         }
       } else {
         await executeOverlay(
