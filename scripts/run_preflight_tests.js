@@ -236,6 +236,7 @@ const SUITES = [
   { name: "translation_runtime", cmd: "node", args: ["tests/translation_runtime_contract.js"] },
   { name: "translation_voice_queue", cmd: "node", args: ["tests/translation_voice_queue_contract.js"] },
   { name: "showcase_runtime", cmd: "node", args: ["tests/showcase_runtime_contract.js"] },
+  { name: "showcase_voice_queue", cmd: "node", args: ["tests/showcase_voice_queue_contract.js"] },
   { name: "obs_safe_call", cmd: "node", args: ["tests/obs_safe_call_contract.js"] },
   { name: "boss_mission_runtime", cmd: "node", args: ["tests/boss_mission_runtime_contract.js"] },
   { name: "voice_timing", cmd: "node", args: ["tests/voice_timing_contract.js"] },

@@ -52,8 +52,10 @@ function createDeliveryRuntime(deps = {}) {
   let voiceSpeakQueue = [];
   let voiceSpeakDrainTimer = null;
   let voiceSpeakProcessing = false;
-  // Ephemeral playback hooks. Never copied onto actionResult or persisted queue payloads.
+  // Ephemeral playback hooks. Never copied onto actionResult, plan, or persisted queue payloads.
   const playbackStartHooks = new Map();
+  const playbackDropHooks = new Map();
+  const playbackFailHooks = new Map();
   const MAX_VOICE_SPEAK_QUEUE = Math.max(
     1,
     Number(process.env.MIA_VOICE_SPEAK_QUEUE_MAX || runtimeConfig?.voice?.speakQueueMax || 6)
@@ -266,6 +268,18 @@ function logVoiceSpeakDrop(entry, reason) {
     speaker: entry?.plan?.voiceSpeaker || entry?.plan?.primaryOwner || "mia",
     textPreview: safeString(entry?.plan?.text).slice(0, 80)
   });
+  // Only entries that were actually waiting carry onDropped. Immediate
+  // admission rejections log a synthetic object and resolve via the return value.
+  void runEphemeralVoiceHook(
+    entry?.onDropped,
+    {
+      reason,
+      voiceClass: entry?.meta?.class || null,
+      text: safeString(entry?.plan?.text),
+      eventId: entry?.meta?.eventId || null
+    },
+    "voice_playback_dropped_hook"
+  );
 }
 
 function tryCoalesceSmallGift(meta) {
@@ -347,17 +361,35 @@ async function drainVoiceSpeakQueue() {
   if (!next) return;
 
   voiceSpeakProcessing = true;
+  let playbackStarted = false;
+  let playbackFailReason = "tts_failed";
   try {
-    await executeVoicePlanDelivery(next.actionResult, next.plan, {
+    const delivered = await executeVoicePlanDelivery(next.actionResult, next.plan, {
       onPlaybackStarted: next.onPlaybackStarted
     });
+    playbackStarted = delivered?.voiceAdmission?.started === true;
+    playbackFailReason = delivered?.voiceAdmission?.reason || playbackFailReason;
   } catch (err) {
+    playbackStarted = false;
+    playbackFailReason = err?.message || "tts_failed";
     writeLog("mia-errors", {
       source: "voice_speak_queue",
       error: err.message
     });
   } finally {
     voiceSpeakProcessing = false;
+  }
+
+  if (!playbackStarted) {
+    void runEphemeralVoiceHook(
+      next.onPlaybackFailed,
+      {
+        reason: playbackFailReason,
+        voiceClass: next?.meta?.class || null,
+        text: safeString(next?.plan?.text)
+      },
+      "voice_playback_failed_hook"
+    );
   }
 
   if (!isVoicePlaybackActive()) {
@@ -918,6 +950,19 @@ async function runPlaybackStartedHook(hook, playback) {
   }
 }
 
+async function runEphemeralVoiceHook(hook, info, source) {
+  if (typeof hook !== "function") return;
+  try {
+    await hook(info);
+  } catch (err) {
+    writeLog("mia-errors", {
+      source: source || "voice_ephemeral_hook",
+      reason: info?.reason || null,
+      error: err?.message || String(err)
+    });
+  }
+}
+
 async function maybeDeliverMiaVoice(actionResult = {}, voicePlanOverride = null, deliveryOptions = null) {
   const ttsCfg =
     ttsEngine && typeof ttsEngine.resolveConfig === "function"
@@ -927,6 +972,12 @@ async function maybeDeliverMiaVoice(actionResult = {}, voicePlanOverride = null,
   const onPlaybackStarted =
     typeof deliveryOptions?.onPlaybackStarted === "function"
       ? deliveryOptions.onPlaybackStarted
+      : null;
+  const onDropped =
+    typeof deliveryOptions?.onDropped === "function" ? deliveryOptions.onDropped : null;
+  const onPlaybackFailed =
+    typeof deliveryOptions?.onPlaybackFailed === "function"
+      ? deliveryOptions.onPlaybackFailed
       : null;
 
   if (!ttsCfg?.enabled || !ttsEngine || typeof ttsEngine.speak !== "function") {
@@ -962,6 +1013,8 @@ async function maybeDeliverMiaVoice(actionResult = {}, voicePlanOverride = null,
     const admission = enqueueVoiceSpeak(actionResult, plan, {
       preempt: Boolean(plan.preempt || actionResult?.voicePreempt || actionResult?.meta?.miaInterrupt),
       onPlaybackStarted,
+      onDropped,
+      onPlaybackFailed,
       bypassActionQueue: deliveryOptions?.bypassActionQueue === true
     });
     return voiceAdmission(
@@ -1202,7 +1255,11 @@ async function executeVoicePlanDelivery(actionResult = {}, plan = {}, deliveryOp
     });
   }
 
-  if (plan?.source !== "startup_voice" && plan?.source !== "mia_say_remote") {
+  if (
+    plan?.source !== "startup_voice" &&
+    plan?.source !== "mia_say_remote" &&
+    plan?.source !== "koj_state_showcase_voice"
+  ) {
     mirrorSpeechOverlayFromVoice({
       speaker,
       text,
@@ -1527,6 +1584,12 @@ function enqueueVoiceSpeak(actionResult = {}, plan = {}, options = {}) {
       typeof entryOptions?.onPlaybackStarted === "function"
         ? entryOptions.onPlaybackStarted
         : null;
+    const onDropped =
+      typeof entryOptions?.onDropped === "function" ? entryOptions.onDropped : null;
+    const onPlaybackFailed =
+      typeof entryOptions?.onPlaybackFailed === "function"
+        ? entryOptions.onPlaybackFailed
+        : null;
     const meta = buildVoiceQueueMeta(entryActionResult, entryPlan);
     pruneStaleNonPaidVoice(meta.queuedAt);
 
@@ -1616,6 +1679,8 @@ function enqueueVoiceSpeak(actionResult = {}, plan = {}, options = {}) {
       meta
     };
     if (onPlaybackStarted) entry.onPlaybackStarted = onPlaybackStarted;
+    if (onDropped) entry.onDropped = onDropped;
+    if (onPlaybackFailed) entry.onPlaybackFailed = onPlaybackFailed;
     if (entryPreempt) voiceSpeakQueue.unshift(entry);
     else voiceSpeakQueue.push(entry);
 
@@ -1702,6 +1767,9 @@ function enqueueVoiceSpeak(actionResult = {}, plan = {}, options = {}) {
     });
     const playbackHook =
       typeof options.onPlaybackStarted === "function" ? options.onPlaybackStarted : null;
+    const dropHook = typeof options.onDropped === "function" ? options.onDropped : null;
+    const failHook =
+      typeof options.onPlaybackFailed === "function" ? options.onPlaybackFailed : null;
 
     writeLog("mia-events", {
       ts: Date.now(),
@@ -1719,7 +1787,7 @@ function enqueueVoiceSpeak(actionResult = {}, plan = {}, options = {}) {
 
     if (queued.coalesced) {
       // Spam gift thanks merged — skip duplicate TTS speak; runner keeps latest payload.
-      // The incoming playback hook is not attached to the already queued line.
+      // Incoming playback, drop, and failure hooks stay off the already queued line.
       return {
         accepted: true,
         queued: false,
@@ -1729,8 +1797,10 @@ function enqueueVoiceSpeak(actionResult = {}, plan = {}, options = {}) {
       };
     }
 
-    if (playbackHook && queued.action?.id) {
-      playbackStartHooks.set(queued.action.id, playbackHook);
+    if (queued.action?.id) {
+      if (playbackHook) playbackStartHooks.set(queued.action.id, playbackHook);
+      if (dropHook) playbackDropHooks.set(queued.action.id, dropHook);
+      if (failHook) playbackFailHooks.set(queued.action.id, failHook);
     }
 
     const runner = actionQueueModule.getSharedActionQueueRunner({
@@ -1739,13 +1809,24 @@ function enqueueVoiceSpeak(actionResult = {}, plan = {}, options = {}) {
         if (!delivery) {
           return { ok: false, reason: "missing_delivery" };
         }
-        const hook = playbackStartHooks.get(action?.id);
-        if (action?.id) playbackStartHooks.delete(action.id);
+        const actionId = action?.id;
+        const hook = actionId ? playbackStartHooks.get(actionId) : null;
+        const queuedDropHook = actionId ? playbackDropHooks.get(actionId) : null;
+        const queuedFailHook = actionId ? playbackFailHooks.get(actionId) : null;
+        if (actionId) {
+          playbackStartHooks.delete(actionId);
+          playbackDropHooks.delete(actionId);
+          playbackFailHooks.delete(actionId);
+        }
+        const entryOptions = {};
+        if (hook) entryOptions.onPlaybackStarted = hook;
+        if (queuedDropHook) entryOptions.onDropped = queuedDropHook;
+        if (queuedFailHook) entryOptions.onPlaybackFailed = queuedFailHook;
         pushVoiceSpeakEntry(
           delivery.actionResult,
           delivery.plan,
           delivery.preempt === true || action.preempt === true,
-          hook ? { onPlaybackStarted: hook } : null
+          Object.keys(entryOptions).length ? entryOptions : null
         );
         return { ok: true };
       },
@@ -1786,7 +1867,9 @@ function enqueueVoiceSpeak(actionResult = {}, plan = {}, options = {}) {
   }
 
   return pushVoiceSpeakEntry(actionResult, directedPlan, preempt, {
-    onPlaybackStarted: options.onPlaybackStarted
+    onPlaybackStarted: options.onPlaybackStarted,
+    onDropped: options.onDropped,
+    onPlaybackFailed: options.onPlaybackFailed
   });
 }
   return {
