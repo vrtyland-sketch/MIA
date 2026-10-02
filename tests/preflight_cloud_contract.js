@@ -406,6 +406,10 @@ test("live missing-asset stacks stay ENV_BLOCKED", () => {
     {
       name: "master_canon_0001",
       output: [
+        "✅ master canon files on disk",
+        "✅ constitution structure (8 sections, v1.0)",
+        "✅ alignment audit covers all sections",
+        "✅ master canon index",
         "node:fs:442",
         "    return binding.readFileUtf8(path, stringToFlags(options.flag));",
         "                   ^",

@@ -591,6 +591,8 @@ function isIgnorableFailureLine(line) {
   if (/^AssertionError(?: \[ERR_ASSERTION\])?: Expected values to not be strictly equal:?$/.test(text)) return true;
   if (/^(?:The expression evaluated to a falsy value|Expected values to be strictly(?: deep)? equal|Expected values to not be strictly equal):?$/.test(text)) return true;
   if (text === "+ actual - expected") return true;
+  if (/^✅(?:\s|$)/.test(text)) return true;
+  if (/^ok - /.test(text)) return true;
   return false;
 }
 
@@ -662,7 +664,11 @@ function failureIsOnlyMissingPrerequisites(suiteName, output, missing) {
     return outside.split(/\r?\n/).every((line) => isIgnorableFailureLine(line));
   }
 
-  const blocks = splitFailureBlocks(text);
+  const blocks = splitFailureBlocks(text).filter((block) =>
+    String(block)
+      .split(/\r?\n/)
+      .some((line) => !isIgnorableFailureLine(line))
+  );
   return blocks.length > 0 && blocks.every((block) => blockIsExplained(block, specs));
 }
 
