@@ -8,9 +8,7 @@ function createTranslationRuntime(deps = {}) {
   const {
     writeLog,
     safeString,
-    ttsEngine,
     runtimeConfig,
-    voiceHoldUntilTs,
     deliveryRuntime,
     translationRuntime,
     setOverlay,
@@ -20,6 +18,43 @@ function createTranslationRuntime(deps = {}) {
     getUserLabel
   } = deps;
 
+  function presentTranslationCaption(playback, caption) {
+    const holdUntil = Number(playback?.holdUntilTs || 0);
+    const holdMs = Math.max(0, holdUntil - Date.now());
+    const captionMeta = caption.meta;
+
+    if (typeof translationRuntime?.setLiveCaption === "function") {
+      translationRuntime.setLiveCaption({
+        ...captionMeta,
+        speaker: caption.owner,
+        text: caption.phrase,
+        holdMs
+      });
+    }
+
+    if (typeof setOverlay === "function") {
+      setOverlay(
+        {
+          owner: caption.owner,
+          speaker: caption.owner,
+          route: "community",
+          title: caption.title,
+          text: caption.phrase,
+          subtext: caption.subtext,
+          stage: "translation",
+          mood: caption.owner === "kojnozout" ? "playful" : "warm",
+          holdMs,
+          priority: 5,
+          meta: captionMeta
+        },
+        { force: true, priority: 5, holdMs }
+      );
+    }
+    if (typeof invalidateOverlayStateCache === "function") {
+      invalidateOverlayStateCache();
+    }
+  }
+
   async function speakTranslatedLine({
     text,
     language = "cs",
@@ -28,98 +63,122 @@ function createTranslationRuntime(deps = {}) {
     subtext = "",
     original = "",
     channel = "streamer",
-    source = "translation"
+    source = "translation",
+    eventId = ""
   } = {}) {
     const phrase = safeString(text);
     if (!phrase) return { ok: false, reason: "empty" };
-    if (!ttsEngine || typeof ttsEngine.speak !== "function") {
-      return { ok: false, reason: "tts_disabled" };
+
+    const runtime = typeof deliveryRuntime === "function" ? deliveryRuntime() : null;
+    if (!runtime || typeof runtime.maybeDeliverMiaVoice !== "function") {
+      return { ok: false, reason: "voice_queue_missing" };
     }
 
     const owner = speaker === "kojnozout" ? "kojnozout" : "mia";
-    const voiceResult = await ttsEngine.speak({
-      text: phrase,
-      speaker: owner,
-      runtimeConfig,
-      language
-    });
-    if (!voiceResult?.ok) {
-      return { ok: false, reason: voiceResult?.reason || "tts_failed" };
-    }
-
-    const now = Date.now();
-    const holdUntil = voiceHoldUntilTs(now, voiceResult.durationMs);
-    const holdMs = Math.max(9000, holdUntil - now);
+    const spokenSource = safeString(source) || "translation";
+    const targetLanguage = safeString(language) || "cs";
+    const captionSubtext = safeString(subtext);
+    const captionOriginal = safeString(original || subtext);
+    const trustedEventId = safeString(eventId);
+    const chatTranslation = spokenSource === "chat_translation_public";
     const captionMeta = {
-      source,
-      language,
+      source: spokenSource,
+      language: targetLanguage,
       title,
-      subtext: safeString(subtext),
-      original: safeString(original || subtext),
+      subtext: captionSubtext,
+      original: captionOriginal,
       translated: phrase,
       channel,
       translation: true,
       publicCaption: true
     };
 
-    const runtime = typeof deliveryRuntime === "function" ? deliveryRuntime() : null;
-    const playbackId = runtime?.bumpVoicePlaybackSeq?.() ?? 0;
-    runtime?.setVoicePlaybackState?.({
-      playbackId,
-      speaker: owner,
-      audioUrl: voiceResult.audioUrl,
-      textPreview: phrase,
-      title,
-      subtext: safeString(subtext),
-      original: safeString(original || subtext),
-      translated: phrase,
-      channel,
-      updatedAt: now,
-      holdUntilTs: holdUntil,
-      meta: captionMeta
-    });
-
-    if (typeof translationRuntime?.setLiveCaption === "function") {
-      translationRuntime.setLiveCaption({
-        ...captionMeta,
-        speaker: owner,
-        text: phrase,
-        holdMs
-      });
-    }
-
-    setOverlay(
-      {
-        owner,
-        speaker: owner,
-        route: "community",
-        title,
-        text: phrase,
-        subtext: safeString(subtext),
-        stage: "translation",
-        mood: owner === "kojnozout" ? "playful" : "warm",
-        holdMs,
-        priority: 5,
-        meta: captionMeta
+    const actionResult = {
+      ok: true,
+      meta: {
+        source: spokenSource,
+        language: targetLanguage
       },
-      { force: true, priority: 5, holdMs }
-    );
-    invalidateOverlayStateCache();
+      overlayPayload: {
+        owner,
+        text: phrase,
+        meta: {
+          source: spokenSource,
+          language: targetLanguage
+        }
+      }
+    };
 
-    const waitMs = Math.min(9000, Math.max(0, holdUntil - Date.now()));
-    if (waitMs > 0) {
-      await new Promise((resolve) => setTimeout(resolve, waitMs));
+    if (chatTranslation) {
+      actionResult.route = "community";
+      actionResult.eventType = "COMMENT";
+      actionResult.overlayPayload.route = "community";
     }
+    if (trustedEventId) {
+      actionResult.eventId = trustedEventId;
+      actionResult.meta.eventId = trustedEventId;
+    }
+
+    const delivered = await runtime.maybeDeliverMiaVoice(
+      actionResult,
+      {
+        shouldSpeak: true,
+        text: phrase,
+        voiceMode: "primary",
+        voiceSpeaker: owner,
+        primaryOwner: owner,
+        voiceSpeakerLocked: true,
+        source: spokenSource,
+        language: targetLanguage,
+        recordReply: false
+      },
+      {
+        onPlaybackStarted(playback) {
+          presentTranslationCaption(playback, {
+            owner,
+            phrase,
+            title,
+            subtext: captionSubtext,
+            meta: captionMeta
+          });
+        }
+      }
+    );
+
+    const admission = delivered?.voiceAdmission || {
+      accepted: false,
+      queued: false,
+      started: false,
+      reason: "voice_not_accepted"
+    };
+
+    if (admission.accepted !== true) {
+      return {
+        ok: false,
+        accepted: false,
+        queued: false,
+        started: false,
+        reason: admission.reason || "voice_not_accepted",
+        language: targetLanguage,
+        speaker: owner,
+        title,
+        subtext: captionSubtext
+      };
+    }
+
+    const started = admission.started === true;
+    const playedUrl = started ? safeString(delivered?.voicePlayback?.audioUrl) : "";
 
     return {
       ok: true,
-      language,
+      accepted: true,
+      queued: admission.queued === true,
+      started,
+      language: targetLanguage,
       speaker: owner,
-      voice: voiceResult.voice,
-      audioUrl: voiceResult.audioUrl,
-      durationMs: voiceResult.durationMs,
       title,
-      subtext: safeString(subtext)
+      subtext: captionSubtext,
+      ...(playedUrl ? { audioUrl: playedUrl } : {})
     };
   }
 
@@ -211,7 +270,8 @@ function createTranslationRuntime(deps = {}) {
       subtext: caption.subtext,
       original: message,
       channel: plan.channel,
-      source: "chat_translation_public"
+      source: "chat_translation_public",
+      eventId: safeString(normalized.eventId)
     });
 
     const payload = {

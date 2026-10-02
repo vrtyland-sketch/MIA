@@ -52,6 +52,8 @@ function createDeliveryRuntime(deps = {}) {
   let voiceSpeakQueue = [];
   let voiceSpeakDrainTimer = null;
   let voiceSpeakProcessing = false;
+  // Ephemeral playback hooks. Never copied onto actionResult or persisted queue payloads.
+  const playbackStartHooks = new Map();
   const MAX_VOICE_SPEAK_QUEUE = Math.max(
     1,
     Number(process.env.MIA_VOICE_SPEAK_QUEUE_MAX || runtimeConfig?.voice?.speakQueueMax || 6)
@@ -346,7 +348,9 @@ async function drainVoiceSpeakQueue() {
 
   voiceSpeakProcessing = true;
   try {
-    await executeVoicePlanDelivery(next.actionResult, next.plan);
+    await executeVoicePlanDelivery(next.actionResult, next.plan, {
+      onPlaybackStarted: next.onPlaybackStarted
+    });
   } catch (err) {
     writeLog("mia-errors", {
       source: "voice_speak_queue",
@@ -895,14 +899,43 @@ async function executeVideo(actionResult, normalizedEvent, eventId, options = {}
   }
 }
 
-async function maybeDeliverMiaVoice(actionResult = {}, voicePlanOverride = null) {
+function voiceAdmission(result, admission) {
+  const base = result && typeof result === "object" ? result : {};
+  return { ...base, voiceAdmission: admission };
+}
+
+async function runPlaybackStartedHook(hook, playback) {
+  if (typeof hook !== "function") return;
+  if (!playback || Number(playback.playbackId) <= 0) return;
+  try {
+    await hook(playback);
+  } catch (err) {
+    writeLog("mia-errors", {
+      source: "voice_playback_started_hook",
+      playbackId: playback.playbackId,
+      error: err?.message || String(err)
+    });
+  }
+}
+
+async function maybeDeliverMiaVoice(actionResult = {}, voicePlanOverride = null, deliveryOptions = null) {
   const ttsCfg =
     ttsEngine && typeof ttsEngine.resolveConfig === "function"
       ? ttsEngine.resolveConfig(runtimeConfig)
       : null;
 
+  const onPlaybackStarted =
+    typeof deliveryOptions?.onPlaybackStarted === "function"
+      ? deliveryOptions.onPlaybackStarted
+      : null;
+
   if (!ttsCfg?.enabled || !ttsEngine || typeof ttsEngine.speak !== "function") {
-    return actionResult;
+    return voiceAdmission(actionResult, {
+      accepted: false,
+      queued: false,
+      started: false,
+      reason: "tts_disabled"
+    });
   }
 
   const plan =
@@ -913,7 +946,12 @@ async function maybeDeliverMiaVoice(actionResult = {}, voicePlanOverride = null)
         : null;
 
   if (!plan?.shouldSpeak) {
-    return actionResult;
+    return voiceAdmission(actionResult, {
+      accepted: false,
+      queued: false,
+      started: false,
+      reason: "not_speaking"
+    });
   }
 
   if (actionResult?.voicePreempt || actionResult?.meta?.miaInterrupt) {
@@ -921,32 +959,55 @@ async function maybeDeliverMiaVoice(actionResult = {}, voicePlanOverride = null)
   }
 
   if (isVoicePlaybackActive() || voiceSpeakProcessing) {
-    enqueueVoiceSpeak(actionResult, plan, {
-      preempt: Boolean(plan.preempt || actionResult?.voicePreempt || actionResult?.meta?.miaInterrupt)
+    const admission = enqueueVoiceSpeak(actionResult, plan, {
+      preempt: Boolean(plan.preempt || actionResult?.voicePreempt || actionResult?.meta?.miaInterrupt),
+      onPlaybackStarted
     });
-    return actionResult;
+    return voiceAdmission(
+      actionResult,
+      admission || {
+        accepted: false,
+        queued: false,
+        started: false,
+        reason: "not_queued"
+      }
+    );
   }
 
   voiceSpeakProcessing = true;
   try {
-    return await executeVoicePlanDelivery(actionResult, plan);
+    return await executeVoicePlanDelivery(actionResult, plan, { onPlaybackStarted });
   } finally {
     voiceSpeakProcessing = false;
   }
 }
 
-async function executeVoicePlanDelivery(actionResult = {}, plan = {}) {
+async function executeVoicePlanDelivery(actionResult = {}, plan = {}, deliveryOptions = null) {
+  const onPlaybackStarted =
+    typeof deliveryOptions?.onPlaybackStarted === "function"
+      ? deliveryOptions.onPlaybackStarted
+      : null;
   const ttsCfg =
     ttsEngine && typeof ttsEngine.resolveConfig === "function"
       ? ttsEngine.resolveConfig(runtimeConfig)
       : null;
 
   if (!ttsCfg?.enabled || !ttsEngine || typeof ttsEngine.speak !== "function") {
-    return actionResult;
+    return voiceAdmission(actionResult, {
+      accepted: false,
+      queued: false,
+      started: false,
+      reason: "tts_disabled"
+    });
   }
 
   if (!plan?.shouldSpeak) {
-    return actionResult;
+    return voiceAdmission(actionResult, {
+      accepted: false,
+      queued: false,
+      started: false,
+      reason: "not_speaking"
+    });
   }
 
   const {
@@ -992,7 +1053,12 @@ async function executeVoicePlanDelivery(actionResult = {}, plan = {}) {
     speaker,
     textPreview: text.slice(0, 80)
   });
-    return actionResult;
+    return voiceAdmission(actionResult, {
+      accepted: false,
+      queued: false,
+      started: false,
+      reason: "tts_speak_deduped"
+    });
   }
 
   // Stejná věta nesmí znít podruhé jiným characterem (MIA+Koj double speak).
@@ -1006,9 +1072,14 @@ async function executeVoicePlanDelivery(actionResult = {}, plan = {}) {
       stage: "tts_speak_deduped_utterance",
       voiceMode,
       speaker,
-      textPreview: text.slice(0, 80)
+    textPreview: text.slice(0, 80)
+  });
+    return voiceAdmission(actionResult, {
+      accepted: false,
+      queued: false,
+      started: false,
+      reason: "tts_speak_deduped_utterance"
     });
-    return actionResult;
   }
 
   const voiceResult = await ttsEngine.speak({
@@ -1029,7 +1100,12 @@ async function executeVoicePlanDelivery(actionResult = {}, plan = {}) {
       reason: voiceResult?.reason || "tts_failed",
       text: text.slice(0, 120)
     });
-    return actionResult;
+    return voiceAdmission(actionResult, {
+      accepted: false,
+      queued: false,
+      started: false,
+      reason: voiceResult?.reason || "tts_failed"
+    });
   }
 
   writeLog("mia-events", {
@@ -1076,6 +1152,16 @@ async function executeVoicePlanDelivery(actionResult = {}, plan = {}) {
     audioSink: "mia_voice",
     exclusiveAudio: true
   };
+
+  await runPlaybackStartedHook(onPlaybackStarted, {
+    playbackId: voicePlaybackState.playbackId,
+    speaker,
+    audioUrl: voicePlaybackState.audioUrl,
+    text,
+    holdUntilTs: voicePlaybackState.holdUntilTs,
+    durationMs: voiceResult.durationMs,
+    language: actionResult?.meta?.language || plan?.language || ""
+  });
 
   // Phase 13x — async upgrade to amplitude lip from TTS file (non-blocking)
   const audioPath =
@@ -1231,12 +1317,21 @@ async function executeVoicePlanDelivery(actionResult = {}, plan = {}) {
     }
   };
 
-  return typeof speakerRoutingModule.applyVoiceOverlayPolicy === "function"
-    ? speakerRoutingModule.applyVoiceOverlayPolicy(withMeta, voiceMode, speaker)
-    : withMeta;
+  const delivered =
+    typeof speakerRoutingModule.applyVoiceOverlayPolicy === "function"
+      ? speakerRoutingModule.applyVoiceOverlayPolicy(withMeta, voiceMode, speaker)
+      : withMeta;
+
+  return voiceAdmission(delivered, {
+    accepted: true,
+    queued: false,
+    started: true,
+    playbackId: voicePlaybackState.playbackId
+  });
 }
 
 function recordVoicePlanReply(actionResult = {}, plan = {}, speaker = "mia", text = "") {
+  if (plan?.recordReply === false) return;
   if (typeof sessionMemoryModule.observeBotReply !== "function") {
     return;
   }
@@ -1424,7 +1519,11 @@ function enqueueVoiceSpeak(actionResult = {}, plan = {}, options = {}) {
     directedPlan = plan;
   }
 
-  function pushVoiceSpeakEntry(entryActionResult, entryPlan, entryPreempt) {
+  function pushVoiceSpeakEntry(entryActionResult, entryPlan, entryPreempt, entryOptions = null) {
+    const onPlaybackStarted =
+      typeof entryOptions?.onPlaybackStarted === "function"
+        ? entryOptions.onPlaybackStarted
+        : null;
     const meta = buildVoiceQueueMeta(entryActionResult, entryPlan);
     pruneStaleNonPaidVoice(meta.queuedAt);
 
@@ -1434,12 +1533,25 @@ function enqueueVoiceSpeak(actionResult = {}, plan = {}, options = {}) {
         "duplicate_event_id"
       );
       scheduleVoiceSpeakDrain();
-      return;
+      return {
+        accepted: false,
+        queued: false,
+        started: false,
+        reason: "duplicate_event_id",
+        voiceClass: meta.class
+      };
     }
 
     if (tryCoalesceSmallGift(meta)) {
       scheduleVoiceSpeakDrain();
-      return;
+      return {
+        accepted: true,
+        queued: false,
+        started: false,
+        coalesced: true,
+        reason: "small_gift_same_viewer",
+        voiceClass: meta.class
+      };
     }
 
     if (voiceSpeakQueue.length >= MAX_VOICE_SPEAK_QUEUE) {
@@ -1461,7 +1573,15 @@ function enqueueVoiceSpeak(actionResult = {}, plan = {}, options = {}) {
             : "drop_incoming_lower_priority"
         );
         scheduleVoiceSpeakDrain();
-        return;
+        return {
+          accepted: false,
+          queued: false,
+          started: false,
+          reason: protectsPaid
+            ? "drop_incoming_protect_paid_support"
+            : "drop_incoming_lower_priority",
+          voiceClass: meta.class
+        };
       }
 
       let evictIndex = -1;
@@ -1492,6 +1612,7 @@ function enqueueVoiceSpeak(actionResult = {}, plan = {}, options = {}) {
       plan: { ...entryPlan },
       meta
     };
+    if (onPlaybackStarted) entry.onPlaybackStarted = onPlaybackStarted;
     if (entryPreempt) voiceSpeakQueue.unshift(entry);
     else voiceSpeakQueue.push(entry);
 
@@ -1508,6 +1629,12 @@ function enqueueVoiceSpeak(actionResult = {}, plan = {}, options = {}) {
       textPreview: safeString(entryPlan.text).slice(0, 80)
     });
     scheduleVoiceSpeakDrain();
+    return {
+      accepted: true,
+      queued: true,
+      started: false,
+      voiceClass: meta.class
+    };
   }
 
   // Phase 1 / Post-DoD: optional Action Queue — coalesce + single runner (default OFF).
@@ -1566,6 +1693,8 @@ function enqueueVoiceSpeak(actionResult = {}, plan = {}, options = {}) {
         delivery: { actionResult, plan: { ...directedPlan }, preempt }
       }
     });
+    const playbackHook =
+      typeof options.onPlaybackStarted === "function" ? options.onPlaybackStarted : null;
 
     writeLog("mia-events", {
       ts: Date.now(),
@@ -1583,7 +1712,18 @@ function enqueueVoiceSpeak(actionResult = {}, plan = {}, options = {}) {
 
     if (queued.coalesced) {
       // Spam gift thanks merged — skip duplicate TTS speak; runner keeps latest payload.
-      return;
+      // The incoming playback hook is not attached to the already queued line.
+      return {
+        accepted: true,
+        queued: false,
+        started: false,
+        coalesced: true,
+        reason: "action_queue_coalesced"
+      };
+    }
+
+    if (playbackHook && queued.action?.id) {
+      playbackStartHooks.set(queued.action.id, playbackHook);
     }
 
     const runner = actionQueueModule.getSharedActionQueueRunner({
@@ -1592,10 +1732,13 @@ function enqueueVoiceSpeak(actionResult = {}, plan = {}, options = {}) {
         if (!delivery) {
           return { ok: false, reason: "missing_delivery" };
         }
+        const hook = playbackStartHooks.get(action?.id);
+        if (action?.id) playbackStartHooks.delete(action.id);
         pushVoiceSpeakEntry(
           delivery.actionResult,
           delivery.plan,
-          delivery.preempt === true || action.preempt === true
+          delivery.preempt === true || action.preempt === true,
+          hook ? { onPlaybackStarted: hook } : null
         );
         return { ok: true };
       },
@@ -1627,10 +1770,17 @@ function enqueueVoiceSpeak(actionResult = {}, plan = {}, options = {}) {
       }
     });
     runner.kick(0);
-    return;
+    return {
+      accepted: true,
+      queued: true,
+      started: false,
+      via: "action_queue"
+    };
   }
 
-  pushVoiceSpeakEntry(actionResult, directedPlan, preempt);
+  return pushVoiceSpeakEntry(actionResult, directedPlan, preempt, {
+    onPlaybackStarted: options.onPlaybackStarted
+  });
 }
   return {
     executeOverlay,
