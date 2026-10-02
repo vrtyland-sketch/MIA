@@ -19,6 +19,8 @@ const FAST_SUITE_NAMES = [
   "combo_overlay",
   "combo_wave_ui",
   "sprint_a_security",
+  "control_route_http_auth",
+  "duel_peer_credential",
   "ingest_contract",
   "shadow_pipeline",
   "speaker_routing",
@@ -460,6 +462,8 @@ const SUITES = [
   { name: "ingest_contract", cmd: "node", args: ["tests/ingest_contract_smoke.js"] },
   { name: "item_care", cmd: "node", args: ["tests/kojnozout_item_care_contract.js"] },
   { name: "sprint_a_security", cmd: "node", args: ["tests/sprint_a_security_contract.js"] },
+  { name: "control_route_http_auth", cmd: "node", args: ["tests/control_route_http_auth_contract.js"] },
+  { name: "duel_peer_credential", cmd: "node", args: ["tests/duel_peer_credential_contract.js"] },
   { name: "sprint_b", cmd: "node", args: ["tests/sprint_b_contract.js"] },
   { name: "sprint_c", cmd: "node", args: ["tests/sprint_c_contract.js"] },
   { name: "sprint_d", cmd: "node", args: ["tests/sprint_d_contract.js"] },
@@ -614,6 +618,7 @@ function isIgnorableFailureLine(line) {
   if (/^node:\S+:\d+$/.test(text)) return true;
   if (/^Node\.js v\d+/.test(text)) return true;
   if (/^(?:errno|code|syscall|path|generatedMessage|actual|expected|operator|name|stack)\s*:/.test(text)) return true;
+  if (/^diff:\s*(?:'simple'|'full'),?$/.test(text)) return true;
   if (/^(?:AssertionError(?: \[ERR_ASSERTION\])?: )?(?:The expression evaluated to a falsy value|Expected (?:values|inputs) to be strictly(?: deep-equal| deep equal| equal)|Expected (?:values|inputs) to not be strictly(?: deep-equal| deep equal| equal)):?$/.test(text)) return true;
   if (/^(?:AssertionError(?: \[ERR_ASSERTION\])?: )?Expected "(?:actual|expected)" to be strictly unequal to:/.test(text)) return true;
   if (/^\+ actual - expected(?:\s+\.\.\. Lines skipped)?$/.test(text)) return true;

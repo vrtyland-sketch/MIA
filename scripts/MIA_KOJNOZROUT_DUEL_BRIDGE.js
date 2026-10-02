@@ -22,9 +22,9 @@ function buildPeerUrl(baseUrl, path) {
 }
 
 function peerAuthHeaders() {
-  const secret = safeString(process.env.MIA_INGEST_SECRET);
-  if (!secret) return {};
-  return { "x-mia-ingest-secret": secret };
+  const peerSecret = safeString(process.env.MIA_DUEL_PEER_SECRET);
+  if (!peerSecret) return {};
+  return { "x-mia-duel-peer": peerSecret };
 }
 
 async function fetchPeerExport(peerUrl, options = {}) {

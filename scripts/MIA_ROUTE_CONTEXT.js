@@ -62,6 +62,7 @@ function createRouteContextRuntime(deps = {}) {
       handleIngest: deps.handleIngest,
       handleAudienceIngest: deps.handleAudienceIngest,
       localAdminGuard: deps.localAdminGuard,
+      duelPeerGuard: deps.duelPeerGuard,
       debugRouteGuard: deps.debugRouteGuard,
       buildPublicOverlayStateResponse: deps.buildPublicOverlayStateResponse,
       overlayStateCache: deps.overlayStateCache,

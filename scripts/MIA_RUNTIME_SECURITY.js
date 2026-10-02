@@ -21,6 +21,10 @@ function resolveIngestSecret() {
   return safeString(process.env.MIA_INGEST_SECRET);
 }
 
+function resolveDuelPeerSecret() {
+  return safeString(process.env.MIA_DUEL_PEER_SECRET);
+}
+
 function stripMappedIpv4(value) {
   return safeString(value).replace(/^::ffff:/i, "");
 }
@@ -101,12 +105,15 @@ function validateIngestAuth(req = {}) {
   return { ok: true, mode: "localhost" };
 }
 
-function validateLocalAdmin(req = {}) {
+function validateLocalAdmin(req = {}, options = {}) {
   if (isLocalRequest(req)) {
     return { ok: true, mode: "localhost" };
   }
 
-  const configuredSecret = resolveIngestSecret();
+  const configuredSecret =
+    typeof options.resolveIngestSecret === "function"
+      ? safeString(options.resolveIngestSecret())
+      : resolveIngestSecret();
   if (configuredSecret && extractIngestSecret(req) === configuredSecret) {
     return { ok: true, mode: "secret" };
   }
@@ -150,9 +157,28 @@ function createDebugRouteGuard() {
   };
 }
 
-function createLocalAdminGuard() {
+function extractDuelPeerSecret(req = {}) {
+  return safeString(req.headers?.["x-mia-duel-peer"]);
+}
+
+function validateDuelPeer(req = {}, options = {}) {
+  const configured =
+    typeof options.resolvePeerSecret === "function"
+      ? safeString(options.resolvePeerSecret())
+      : resolveDuelPeerSecret();
+  if (!configured) {
+    return { ok: false };
+  }
+  const provided = extractDuelPeerSecret(req);
+  if (provided && provided === configured) {
+    return { ok: true, mode: "duel_peer" };
+  }
+  return { ok: false };
+}
+
+function createLocalAdminGuard(options = {}) {
   return (req, res, next) => {
-    const auth = validateLocalAdmin(req);
+    const auth = validateLocalAdmin(req, options);
     if (auth.ok) {
       return next();
     }
@@ -160,6 +186,23 @@ function createLocalAdminGuard() {
       ok: false,
       error: auth.error,
       message: auth.message
+    });
+  };
+}
+
+function createDuelPeerGuard(options = {}) {
+  return (req, res, next) => {
+    const admin = validateLocalAdmin(req, options);
+    if (admin.ok) {
+      return next();
+    }
+    if (validateDuelPeer(req, options).ok) {
+      return next();
+    }
+    return res.status(403).json({
+      ok: false,
+      error: "duel_peer_unauthorized",
+      message: "Duel sync requires localhost, the local admin secret, or the duel peer credential"
     });
   };
 }
@@ -182,6 +225,9 @@ function createIngestAuthGuard() {
 module.exports = {
   resolveBindHost,
   resolveIngestSecret,
+  resolveDuelPeerSecret,
+  extractDuelPeerSecret,
+  validateDuelPeer,
   normalizeClientIp,
   isLocalRequest,
   isDebugRoutesEnabled,
@@ -190,5 +236,6 @@ module.exports = {
   isDebugRouteAllowed,
   createDebugRouteGuard,
   createLocalAdminGuard,
+  createDuelPeerGuard,
   createIngestAuthGuard
 };

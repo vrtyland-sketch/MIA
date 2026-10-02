@@ -8,6 +8,7 @@ const path = require("path");
 const { createDeliveryRuntime } = require("../scripts/MIA_DELIVERY_RUNTIME");
 const { createTtsEngine } = require("../scripts/MIA_TTS_ENGINE");
 const { registerTtsRoutes } = require("../routes/tts");
+const { createLocalAdminGuard } = require("../scripts/MIA_RUNTIME_SECURITY");
 const {
   getSharedActionQueue,
   resetSharedActionQueueForTest
@@ -137,6 +138,7 @@ function createHarness(options = {}) {
   };
 
   registerTtsRoutes(app, {
+    localAdminGuard: createLocalAdminGuard(),
     ttsEngine: {
       resolveConfig: () => ({ enabled: options.ttsEnabled !== false }),
       speak: async () => {
@@ -187,7 +189,12 @@ function createHarness(options = {}) {
 
   function getTest(query = "") {
     const params = new URLSearchParams(query.replace(/^\?/, ""));
-    return invoke("get", "/tts/test", { query: Object.fromEntries(params), headers: {} });
+    return invoke("get", "/tts/test", {
+      query: Object.fromEntries(params),
+      headers: {},
+      ip: "127.0.0.1",
+      socket: { remoteAddress: "127.0.0.1" }
+    });
   }
 
   async function sayPaid(text = "PAID-A", eventId = `${text}-id`) {

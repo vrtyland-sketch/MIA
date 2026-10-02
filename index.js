@@ -378,6 +378,7 @@ app.use(express.urlencoded({ extended: true }));
 let debugRouteGuard = null;
 let ingestAuthGuard = null;
 let localAdminGuard = null;
+let duelPeerGuard = null;
 
 let runtimeSecurityRuntimeApi = null;
 
@@ -415,8 +416,12 @@ function initRuntimeSecurityRuntime() {
     typeof runtimeSecurityModule.createLocalAdminGuard === "function"
       ? runtimeSecurityModule.createLocalAdminGuard()
       : (_req, _res, next) => next();
+  duelPeerGuard =
+    typeof runtimeSecurityModule.createDuelPeerGuard === "function"
+      ? runtimeSecurityModule.createDuelPeerGuard()
+      : localAdminGuard;
 
-  runtimeSecurityRuntimeApi = { debugRouteGuard, ingestAuthGuard, localAdminGuard };
+  runtimeSecurityRuntimeApi = { debugRouteGuard, ingestAuthGuard, localAdminGuard, duelPeerGuard };
   return runtimeSecurityRuntimeApi;
 }
 
@@ -1488,6 +1493,7 @@ function collectRouteContextBindingsHost() {
     handleIngest,
     handleAudienceIngest,
     localAdminGuard,
+    duelPeerGuard,
     debugRouteGuard,
     buildPublicOverlayStateResponse,
     buildOverlayStateCacheKey,

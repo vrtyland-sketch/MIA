@@ -39,6 +39,7 @@ function buildRouteContextCtx(host = {}) {
     handleIngest: routes.handleIngest,
     handleAudienceIngest: routes.handleAudienceIngest,
     localAdminGuard: routes.localAdminGuard,
+    duelPeerGuard: routes.duelPeerGuard,
     debugRouteGuard: routes.debugRouteGuard,
     buildPublicOverlayStateResponse: routes.buildPublicOverlayStateResponse,
     overlayStateCache: modules.overlayStateCache,

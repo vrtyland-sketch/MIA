@@ -46,7 +46,7 @@ function registerTtsRoutes(app, ctx = {}) {
     getDuelStateActive
   } = ctx;
 
-  app.get("/tts/test", async (req, res) => {
+  app.get("/tts/test", localAdminGuard, async (req, res) => {
     try {
       if (!ttsEngine) {
         return res.status(503).json({ ok: false, error: "tts_engine_missing" });
