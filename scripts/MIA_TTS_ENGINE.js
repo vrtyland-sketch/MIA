@@ -158,7 +158,13 @@ function createTtsEngine(deps = {}) {
     deps.cacheDir ||
     path.join(__dirname, "..", "mia-output-overlay", "audio-cache");
 
-  async function speak({ text, speaker = "mia", runtimeConfig = {}, language = "" } = {}) {
+  async function speak({
+    text,
+    speaker = "mia",
+    runtimeConfig = {},
+    language = "",
+    cacheKeySalt = ""
+  } = {}) {
     const cfg = resolveConfig(runtimeConfig);
     const clean = safeString(text);
     if (!clean) {
@@ -184,10 +190,11 @@ function createTtsEngine(deps = {}) {
       speaker === "kojnozout"
         ? safeString(edgeVoiceOverride, cfg.edgeVoiceKoj)
         : safeString(edgeVoiceOverride, cfg.edgeVoice);
+    const salt = safeString(cacheKeySalt);
     const hash = crypto
       .createHash("sha1")
       .update(
-        `${VOICE_PROFILE_VERSION}:${speaker}:${cfg.provider}:${voiceKey}:${langCode}:${prosody?.rate}:${prosody?.pitch}:${prosody?.volume}:${clipped}`
+        `${VOICE_PROFILE_VERSION}:${speaker}:${cfg.provider}:${voiceKey}:${langCode}:${prosody?.rate}:${prosody?.pitch}:${prosody?.volume}:${clipped}${salt ? `:${salt}` : ""}`
       )
       .digest("hex");
     const fileName = `${hash}.mp3`;

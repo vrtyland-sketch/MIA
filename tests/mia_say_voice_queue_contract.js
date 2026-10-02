@@ -278,7 +278,7 @@ function sayMirrorsOnly(mirrors) {
 async function run() {
   process.env.MIA_ACTION_QUEUE = "0";
 
-  await test("mia/say source uses managed delivery and leaves /tts/test direct", () => {
+  await test("mia/say source uses managed delivery and /tts/test stays immediate-only", () => {
     const src = fs.readFileSync(path.join(ROOT, "routes", "tts.js"), "utf8");
     const sayStart = src.indexOf('app.post("/mia/say"');
     const sayEnd = src.indexOf('app.get("/mia-mic"');
@@ -299,8 +299,16 @@ async function run() {
     assert.doesNotMatch(say, /bumpVoicePlaybackSeq/);
     assert.doesNotMatch(say, /eventId/);
     assert.doesNotMatch(say, /voicePreempt/);
-    assert.match(testRoute, /setVoicePlaybackState/);
-    assert.match(testRoute, /ttsEngine\.speak/);
+    assert.match(testRoute, /maybeDeliverMiaVoice/);
+    assert.match(testRoute, /requireImmediateStart:\s*true/);
+    assert.match(testRoute, /source:\s*"tts_test"/);
+    assert.match(testRoute, /bypassActionQueue:\s*true/);
+    assert.doesNotMatch(testRoute, /ttsEngine\.speak/);
+    assert.doesNotMatch(testRoute, /setVoicePlaybackState/);
+    assert.doesNotMatch(testRoute, /bumpVoicePlaybackSeq/);
+    assert.doesNotMatch(testRoute, /localAdminGuard/);
+    assert.match(compare, /ttsEngine\.speak/);
+    assert.doesNotMatch(compare, /maybeDeliverMiaVoice/);
     assert.doesNotMatch(compare, /setVoicePlaybackState/);
 
     const indexSrc = fs.readFileSync(path.join(ROOT, "index.js"), "utf8");
