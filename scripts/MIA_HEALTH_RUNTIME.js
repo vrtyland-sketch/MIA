@@ -4,6 +4,90 @@
  * Health and diagnose HTTP payloads.
  */
 
+const YOUTUBE_HEALTH_FIELDS = [
+  "enabled",
+  "started",
+  "ready",
+  "status",
+  "inFlight",
+  "liveChatId",
+  "videoId",
+  "pollMs",
+  "lastPollAt",
+  "lastSuccessAt",
+  "lastErrorAt",
+  "lastError",
+  "lastHttpStatus",
+  "lastDeliveredAt",
+  "deliveredCount",
+  "dedupeSize"
+];
+
+const YOUTUBE_DIAGNOSE_FIELDS = [
+  ...YOUTUBE_HEALTH_FIELDS,
+  "pageToken",
+  "lastMessageId",
+  "lastMessageUser",
+  "lastMessagePreview"
+];
+
+function emptyYouTubeStatus(fields, status = "unavailable") {
+  const out = { status };
+  for (const key of fields) {
+    if (key === "status") continue;
+    if (key === "enabled" || key === "started" || key === "ready" || key === "inFlight") {
+      out[key] = false;
+    } else if (
+      key === "pollMs" ||
+      key === "lastPollAt" ||
+      key === "lastSuccessAt" ||
+      key === "lastErrorAt" ||
+      key === "lastHttpStatus" ||
+      key === "lastDeliveredAt" ||
+      key === "deliveredCount" ||
+      key === "dedupeSize"
+    ) {
+      out[key] = 0;
+    } else {
+      out[key] = "";
+    }
+  }
+  return out;
+}
+
+function pickYouTubeStatus(snapshot, fields) {
+  if (!snapshot || typeof snapshot !== "object") return emptyYouTubeStatus(fields);
+  const out = {};
+  for (const key of fields) {
+    if (key === "enabled" || key === "started" || key === "ready" || key === "inFlight") {
+      out[key] = snapshot[key] === true;
+    } else if (
+      key === "pollMs" ||
+      key === "lastPollAt" ||
+      key === "lastSuccessAt" ||
+      key === "lastErrorAt" ||
+      key === "lastHttpStatus" ||
+      key === "lastDeliveredAt" ||
+      key === "deliveredCount" ||
+      key === "dedupeSize"
+    ) {
+      out[key] = Number(snapshot[key]) || 0;
+    } else if (typeof snapshot[key] === "string") {
+      out[key] = snapshot[key];
+    } else {
+      out[key] = "";
+    }
+  }
+  return out;
+}
+
+function readYouTubeBridge(module, fields) {
+  if (typeof module?.getYouTubePollSnapshot !== "function") {
+    return emptyYouTubeStatus(fields);
+  }
+  return pickYouTubeStatus(module.getYouTubePollSnapshot(), fields);
+}
+
 function createHealthRuntime(deps = {}) {
   const {
     kojnozoutModule,
@@ -12,6 +96,7 @@ function createHealthRuntime(deps = {}) {
     kickBridgeModule,
     twitchBridgeModule,
     telegramBridgeModule,
+    youtubeBridgeModule,
     getPort,
     getObsConnected,
     nowIso,
@@ -48,6 +133,8 @@ function createHealthRuntime(deps = {}) {
       typeof twitchBridgeModule?.getTwitchBridgeStatus === "function"
         ? twitchBridgeModule.getTwitchBridgeStatus()
         : null;
+
+    const youtubeBridge = readYouTubeBridge(youtubeBridgeModule, YOUTUBE_HEALTH_FIELDS);
 
     const port = typeof getPort === "function" ? getPort() : 3000;
     const obsConnected = typeof getObsConnected === "function" ? getObsConnected() : false;
@@ -87,10 +174,18 @@ function createHealthRuntime(deps = {}) {
           ? {
               route: `Twitch bridge → ${runtimeConfig?.twitch?.ingestUrl || baseIngest}`
             }
-          : null
+          : null,
+        youtube: {
+          mode: "live_chat_poll",
+          route: "YouTube bridge → /ingest",
+          enabled: youtubeBridge.enabled === true,
+          ready: youtubeBridge.ready === true,
+          status: youtubeBridge.status || ""
+        }
       },
       kickBridge: kickStatus,
       twitchBridge: twitchStatus,
+      youtubeBridge,
       bowlPercent: kojSnap?.bowlPercent ?? null,
       overlays: {
         mode: typeof resolveObsOverlayMode === "function" ? resolveObsOverlayMode() : "split",
@@ -191,6 +286,7 @@ function createHealthRuntime(deps = {}) {
         typeof kickBridgeModule?.getKickBridgeStatus === "function"
           ? kickBridgeModule.getKickBridgeStatus()
           : null,
+      youtubeBridge: readYouTubeBridge(youtubeBridgeModule, YOUTUBE_DIAGNOSE_FIELDS),
       telegramBridge:
         typeof telegramBridgeModule?.getTelegramBridgeStatus === "function"
           ? telegramBridgeModule.getTelegramBridgeStatus()

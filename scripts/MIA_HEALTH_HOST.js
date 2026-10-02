@@ -13,6 +13,7 @@ function buildHealthHost(bindings = {}) {
       kickBridgeModule: b.kickBridgeModule,
       twitchBridgeModule: b.twitchBridgeModule,
       telegramBridgeModule: b.telegramBridgeModule,
+      youtubeBridgeModule: b.youtubeBridgeModule,
       overlayStateModule: b.overlayStateModule,
       getTtsEngine: b.getTtsEngine,
       llmAdapterModule: b.llmAdapterModule,

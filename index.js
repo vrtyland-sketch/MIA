@@ -51,6 +51,7 @@ const kojnozoutWorldPersistenceModule = safeRequire("./scripts/MIA_KOJNOZROUT_WO
 const kojnozoutVitalsModule = safeRequire("./scripts/MIA_KOJNOZROUT_VITALS", {});
 const kickBridgeModule = safeRequire("./scripts/MIA_KICK_BRIDGE", {});
 const twitchBridgeModule = safeRequire("./scripts/MIA_TWITCH_BRIDGE", {});
+const youtubeBridgeModule = safeRequire("./scripts/MIA_YOUTUBE_BRIDGE", {});
 const telegramBridgeModule = safeRequire("./scripts/MIA_TELEGRAM_BRIDGE", {});
 const voiceLayerModule = safeRequire("./scripts/MIA_VOICE_CONTROL_LAYER", {});
 const shadowRuntime = safeRequire("./MIA_NEXT/engine_shadow_runtime", {});
@@ -1348,6 +1349,7 @@ function collectHealthBindingsHost() {
     kickBridgeModule,
     twitchBridgeModule,
     telegramBridgeModule,
+    youtubeBridgeModule,
     overlayStateModule,
     getTtsEngine: ttsEngineRuntime,
     llmAdapterModule,

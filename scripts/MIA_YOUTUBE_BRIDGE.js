@@ -13,12 +13,25 @@ const YT_API = "https://www.googleapis.com/youtube/v3";
 const ACTIVE = {
   timer: null,
   started: false,
+  enabled: false,
   closedByUser: false,
+  status: "",
   inFlight: false,
   pageToken: "",
   liveChatId: "",
-  dedupe: new Map(),
-  lastConfig: null
+  videoId: "",
+  pollMs: 0,
+  lastPollAt: 0,
+  lastSuccessAt: 0,
+  lastErrorAt: 0,
+  lastError: "",
+  lastHttpStatus: 0,
+  lastDeliveredAt: 0,
+  deliveredCount: 0,
+  lastMessageId: "",
+  lastMessageUser: "",
+  lastMessagePreview: "",
+  dedupe: new Map()
 };
 
 function log(...args) {
@@ -55,6 +68,51 @@ function rememberDedupe(key, ttlMs = 120_000) {
   pruneDedupe(now);
   ACTIVE.dedupe.set(key, now + ttlMs);
   return true;
+}
+
+function haltPollLoop() {
+  ACTIVE.closedByUser = true;
+  if (ACTIVE.timer) {
+    clearInterval(ACTIVE.timer);
+    ACTIVE.timer = null;
+  }
+  ACTIVE.started = false;
+}
+
+function bridgeReady() {
+  return (
+    ACTIVE.enabled === true &&
+    ACTIVE.started === true &&
+    Boolean(ACTIVE.liveChatId) &&
+    ACTIVE.timer != null &&
+    ACTIVE.closedByUser !== true
+  );
+}
+
+function notePollError(message, httpStatus = 0) {
+  ACTIVE.lastErrorAt = Date.now();
+  ACTIVE.lastError = safeString(message, "poll_error").slice(0, 180);
+  ACTIVE.lastHttpStatus = Number(httpStatus) || 0;
+}
+
+function notePollSuccess(httpStatus = 200) {
+  ACTIVE.lastSuccessAt = Date.now();
+  ACTIVE.lastHttpStatus = Number(httpStatus) || 200;
+  ACTIVE.lastError = "";
+  ACTIVE.lastErrorAt = 0;
+}
+
+function recordDelivery(payload = {}) {
+  ACTIVE.deliveredCount += 1;
+  ACTIVE.lastDeliveredAt = Date.now();
+  ACTIVE.lastMessageId = safeString(payload.messageId);
+  ACTIVE.lastMessageUser = safeString(payload.username || payload.nickname || payload.userId);
+  ACTIVE.lastMessagePreview = safeString(payload.message || payload.text || payload.content).slice(0, 80);
+}
+
+function conciseHttpError(res) {
+  const msg = res?.data?.error?.message || res?.data?.error?.status || "";
+  return safeString(typeof msg === "string" ? msg : "").slice(0, 180) || `http_${res?.status || "error"}`;
 }
 
 async function postToIngest(ingestUrl, payload, headers = {}) {
@@ -146,6 +204,7 @@ async function pollOnce(config = {}, options = {}) {
 
   ACTIVE.inFlight = true;
   const pageToken = ACTIVE.pageToken || "";
+  ACTIVE.lastPollAt = Date.now();
   try {
     const res =
       typeof fetchPage === "function"
@@ -163,6 +222,7 @@ async function pollOnce(config = {}, options = {}) {
           });
 
     if (res.status >= 400) {
+      notePollError(conciseHttpError(res), res.status);
       warn("poll failed", res.status, res.data?.error?.message || res.data);
       return { ok: false, skipped: false, reason: "http_error", status: res.status };
     }
@@ -183,11 +243,16 @@ async function pollOnce(config = {}, options = {}) {
         await postToIngest(ingestUrl, payload, headers);
       }
 
+      recordDelivery(payload);
       rememberDedupe(id);
     }
 
     ACTIVE.pageToken = nextPageToken || ACTIVE.pageToken;
+    notePollSuccess(res.status);
     return { ok: true, skipped: false, pageToken: ACTIVE.pageToken };
+  } catch (err) {
+    notePollError(err?.message, err?.response?.status);
+    throw err;
   } finally {
     ACTIVE.inFlight = false;
   }
@@ -195,45 +260,89 @@ async function pollOnce(config = {}, options = {}) {
 
 function getYouTubePollSnapshot() {
   const now = Date.now();
+  const dedupe = [...ACTIVE.dedupe.entries()].map(([id, expiresAt]) => ({
+    id,
+    expiresAt,
+    ttlRemainingMs: expiresAt - now
+  }));
   return {
-    pageToken: ACTIVE.pageToken,
+    enabled: ACTIVE.enabled === true,
+    started: ACTIVE.started === true,
+    ready: bridgeReady(),
+    status: ACTIVE.status || "",
     inFlight: ACTIVE.inFlight === true,
-    dedupe: [...ACTIVE.dedupe.entries()].map(([id, expiresAt]) => ({
-      id,
-      expiresAt,
-      ttlRemainingMs: expiresAt - now
-    }))
+    liveChatId: ACTIVE.liveChatId || "",
+    videoId: ACTIVE.videoId || "",
+    pollMs: ACTIVE.pollMs || 0,
+    pageToken: ACTIVE.pageToken || "",
+    lastPollAt: ACTIVE.lastPollAt || 0,
+    lastSuccessAt: ACTIVE.lastSuccessAt || 0,
+    lastErrorAt: ACTIVE.lastErrorAt || 0,
+    lastError: ACTIVE.lastError || "",
+    lastHttpStatus: ACTIVE.lastHttpStatus || 0,
+    lastDeliveredAt: ACTIVE.lastDeliveredAt || 0,
+    deliveredCount: ACTIVE.deliveredCount || 0,
+    lastMessageId: ACTIVE.lastMessageId || "",
+    lastMessageUser: ACTIVE.lastMessageUser || "",
+    lastMessagePreview: ACTIVE.lastMessagePreview || "",
+    dedupeSize: dedupe.length,
+    dedupe
   };
 }
 
 function resetYouTubePollState(seed = {}) {
+  haltPollLoop();
   ACTIVE.pageToken = safeString(seed.pageToken);
   ACTIVE.liveChatId = safeString(seed.liveChatId);
+  ACTIVE.videoId = safeString(seed.videoId);
   ACTIVE.dedupe.clear();
   ACTIVE.inFlight = false;
   ACTIVE.closedByUser = false;
+  ACTIVE.started = false;
+  ACTIVE.enabled = false;
+  ACTIVE.status = "";
+  ACTIVE.pollMs = 0;
+  ACTIVE.lastPollAt = 0;
+  ACTIVE.lastSuccessAt = 0;
+  ACTIVE.lastErrorAt = 0;
+  ACTIVE.lastError = "";
+  ACTIVE.lastHttpStatus = 0;
+  ACTIVE.lastDeliveredAt = 0;
+  ACTIVE.deliveredCount = 0;
+  ACTIVE.lastMessageId = "";
+  ACTIVE.lastMessageUser = "";
+  ACTIVE.lastMessagePreview = "";
 }
 
 function stopYouTubeBridge() {
-  ACTIVE.closedByUser = true;
-  if (ACTIVE.timer) {
-    clearInterval(ACTIVE.timer);
-    ACTIVE.timer = null;
-  }
-  ACTIVE.started = false;
+  haltPollLoop();
+  ACTIVE.status = "stopped";
   log("stopped");
   return { ok: true };
 }
 
 async function startYouTubeBridge(options = {}) {
   const config = options.config || options || {};
+  ACTIVE.videoId = safeString(config.videoId);
+  haltPollLoop();
+
   if (config.enabled === false) {
+    ACTIVE.enabled = false;
+    ACTIVE.closedByUser = false;
+    ACTIVE.status = "disabled";
+    ACTIVE.liveChatId = "";
+    ACTIVE.pollMs = 0;
     log("disabled (youtube.enabled=false)");
     return { ok: false, reason: "disabled" };
   }
 
+  ACTIVE.enabled = true;
   const apiKey = safeString(config.apiKey);
   if (!apiKey) {
+    ACTIVE.closedByUser = false;
+    ACTIVE.status = "missing_api_key";
+    ACTIVE.liveChatId = "";
+    ACTIVE.pollMs = 0;
     warn("Missing YOUTUBE_API_KEY");
     return { ok: false, reason: "missing_api_key" };
   }
@@ -242,27 +351,37 @@ async function startYouTubeBridge(options = {}) {
   try {
     liveChatId = await resolveLiveChatId(config);
   } catch (err) {
+    ACTIVE.closedByUser = false;
+    ACTIVE.status = "resolve_failed";
+    ACTIVE.liveChatId = "";
+    ACTIVE.pollMs = 0;
+    notePollError(err?.message || "resolve_failed", err?.response?.status);
     error("resolveLiveChatId failed:", err.message);
     return { ok: false, reason: "resolve_failed", error: err.message };
   }
 
   if (!liveChatId) {
+    ACTIVE.closedByUser = false;
+    ACTIVE.status = "missing_live_chat_id";
+    ACTIVE.liveChatId = "";
+    ACTIVE.pollMs = 0;
     warn("Missing YOUTUBE_LIVE_CHAT_ID or resolvable YOUTUBE_VIDEO_ID");
     return { ok: false, reason: "missing_live_chat_id" };
   }
 
-  if (ACTIVE.started) stopYouTubeBridge();
   ACTIVE.closedByUser = false;
   ACTIVE.liveChatId = liveChatId;
   ACTIVE.pageToken = "";
-  ACTIVE.lastConfig = config;
   ACTIVE.started = true;
+  ACTIVE.status = "running";
 
   const pollMs = Math.max(2500, Number(config.pollMs) || 4000);
+  ACTIVE.pollMs = pollMs;
   const ctx = {
     onEvent: options.onEvent,
     ingestUrl: safeString(config.ingestUrl, "http://127.0.0.1:3000/ingest"),
-    ingestSecret: safeString(config.ingestSecret)
+    ingestSecret: safeString(config.ingestSecret),
+    fetchPage: options.fetchPage
   };
 
   log("starting chat-only poll", { liveChatId, pollMs });

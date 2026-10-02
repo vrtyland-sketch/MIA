@@ -129,12 +129,78 @@ async function run() {
     assert.equal(payload.tts.apiKeyConfigured, true);
     assert.equal(payload.overlay.queueSize, 2);
     assert.equal(payload.overlay.chatFeed.length, 2);
+    assert.equal(payload.youtubeBridge.status, "unavailable");
+  });
+
+  await test("health and diagnose expose compact YouTube status without secrets", async () => {
+    const runtime = createHealthRuntime({
+      getPort: () => 3000,
+      nowIso: () => "2026-10-02T00:00:00.000Z",
+      getKojnozoutState: () => ({}),
+      getStreamState: () => ({}),
+      youtubeBridgeModule: {
+        getYouTubePollSnapshot: () => ({
+          enabled: true,
+          started: false,
+          ready: false,
+          status: "missing_api_key",
+          inFlight: false,
+          liveChatId: "",
+          videoId: "vid-1",
+          pollMs: 0,
+          pageToken: "tok-secret-page",
+          lastPollAt: 0,
+          lastSuccessAt: 0,
+          lastErrorAt: 10,
+          lastError: "quotaExceeded",
+          lastHttpStatus: 403,
+          lastDeliveredAt: 20,
+          deliveredCount: 4,
+          lastMessageId: "m1",
+          lastMessageUser: "Viewer",
+          lastMessagePreview: "ahoj",
+          dedupeSize: 4,
+          dedupe: [{ id: "m1" }],
+          apiKey: "super-secret-key",
+          ingestSecret: "ingest-secret-value",
+          authorization: "Bearer abc"
+        })
+      },
+      runtimeConfig: {
+        youtube: { apiKey: "super-secret-key", ingestSecret: "ingest-secret-value" }
+      }
+    });
+    const health = runtime.buildHealthPayload();
+    const diagnose = await runtime.buildDiagnosePayload();
+    assert.equal(health.youtubeBridge.status, "missing_api_key");
+    assert.equal(health.youtubeBridge.ready, false);
+    assert.equal(health.youtubeBridge.enabled, true);
+    assert.equal(health.youtubeBridge.dedupe, undefined);
+    assert.equal(health.youtubeBridge.pageToken, undefined);
+    assert.equal(health.ingestRouting.youtube.mode, "live_chat_poll");
+    assert.equal(health.ingestRouting.youtube.route, "YouTube bridge → /ingest");
+    assert.equal(health.ingestRouting.youtube.status, "missing_api_key");
+    assert.equal(diagnose.youtubeBridge.lastError, "quotaExceeded");
+    assert.equal(diagnose.youtubeBridge.lastHttpStatus, 403);
+    assert.equal(diagnose.youtubeBridge.pageToken, "tok-secret-page");
+    assert.equal(diagnose.youtubeBridge.lastMessagePreview, "ahoj");
+    assert.equal(diagnose.youtubeBridge.dedupe, undefined);
+    const packed = JSON.stringify({ health, diagnose });
+    assert.equal(packed.includes("super-secret-key"), false);
+    assert.equal(packed.includes("ingest-secret-value"), false);
+    assert.equal(packed.includes("Bearer abc"), false);
+    assert.equal(packed.includes("apiKey"), false);
   });
 
   await test("index.js wires healthRuntime with thin buildHealthPayload wrapper", () => {
     const indexSrc = fs.readFileSync(path.join(ROOT, "index.js"), "utf8");
     assert.match(indexSrc, /initHealthRuntime/);
     assert.match(indexSrc, /MIA_HEALTH_RUNTIME/);
+    assert.match(
+      indexSrc,
+      /const youtubeBridgeModule = safeRequire\("\.\/scripts\/MIA_YOUTUBE_BRIDGE", \{\}\);/
+    );
+    assert.match(indexSrc, /youtubeBridgeModule,/);
     assert.match(indexSrc, /MIA_HEALTH_CTX/);
     assert.match(
       indexSrc,

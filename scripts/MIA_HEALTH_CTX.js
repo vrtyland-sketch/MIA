@@ -16,6 +16,7 @@ function buildHealthCtx(host = {}) {
     kickBridgeModule: modules.kickBridgeModule,
     twitchBridgeModule: modules.twitchBridgeModule,
     telegramBridgeModule: modules.telegramBridgeModule,
+    youtubeBridgeModule: modules.youtubeBridgeModule,
     getPort: core.getPort,
     getObsConnected: state.getObsConnected,
     nowIso: core.nowIso,

@@ -265,7 +265,12 @@ function createPlatformBridges(deps = {}) {
     const cfg = runtimeConfig?.youtube || {};
     if (!cfg.enabled) {
       writeLog("youtube-bridge", { status: "disabled" });
-      return { ok: false, reason: "disabled" };
+      if (typeof youtubeBridgeModule?.start !== "function") {
+        return { ok: false, reason: "disabled" };
+      }
+      return youtubeBridgeModule.start({
+        config: { ...cfg, enabled: false }
+      });
     }
 
     const ingestUrl = bridgeUsesIngestHttp(cfg);

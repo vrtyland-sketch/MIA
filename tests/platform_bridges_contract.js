@@ -136,6 +136,36 @@ async function run() {
     assert.match(reply.text, /Napiš mi text/);
   });
 
+  await test("disabled YouTube start delegates to the single bridge module", () => {
+    let seen = null;
+    const api = createPlatformBridges({
+      app: {},
+      runtimeConfig: { youtube: { enabled: false, apiKey: "yt-test-key" } },
+      writeLog: () => {},
+      cloneJson: (v) => v,
+      safeString: (v, fb) => (typeof v === "string" && v.trim() ? v.trim() : fb || ""),
+      processEvent: async () => ({ status: 200, body: { ok: true } }),
+      kickBridgeModule: {},
+      twitchBridgeModule: {},
+      telegramBridgeModule: {},
+      youtubeBridgeModule: {
+        start(opts) {
+          seen = opts;
+          return { ok: false, reason: "disabled" };
+        }
+      },
+      responseEngine: {},
+      getOutputState: () => ({}),
+      getKojnozoutState: () => ({})
+    });
+
+    const result = api.startYouTubeBridge();
+    assert.equal(result.reason, "disabled");
+    assert.equal(seen.config.enabled, false);
+    assert.equal(api.youtubeBridge, undefined);
+    assert.equal(api.getYouTubePollSnapshot, undefined);
+  });
+
   await test("index.js wires initPlatformBridgesRuntime and bootstrap", () => {
     const indexSrc = fs.readFileSync(path.join(ROOT, "index.js"), "utf8");
     assert.match(indexSrc, /initPlatformBridgesRuntime/);
