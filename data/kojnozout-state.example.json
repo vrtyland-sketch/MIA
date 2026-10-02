@@ -1,0 +1,16 @@
+{
+  "hunger": 68,
+  "energy": 58,
+  "socialState": 8,
+  "bowlPercent": 0,
+  "bowlState": 0,
+  "bowlFillPercent": 0,
+  "bowlVisualLevel": "low",
+  "mood": "idle",
+  "stage": "idle",
+  "behavior": "watching",
+  "feedPoints": 0,
+  "totalFeedEvents": 0,
+  "totalCommunityPings": 0,
+  "updatedAt": 0
+}

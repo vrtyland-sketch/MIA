@@ -12,6 +12,13 @@ const storyMemory = require("../scripts/MIA_STORY_MEMORY");
 const viewerMemory = require("../core/viewer-memory");
 const viewerInventory = require("../core/viewer-inventory");
 const gifts = require("../shared/gifts/runtime");
+const lexicon = require("../scripts/MIA_CHAT_LEXICON");
+const kojPersistence = require("../scripts/MIA_KOJNOZROUT_PERSISTENCE");
+const { createKojnozoutState } = require("../scripts/MIA_KOJNOZROUT_ENGINE");
+const runtimeState = require("../core/runtime-state");
+const { buildRuntimeStateSeedCtx } = require("../scripts/MIA_RUNTIME_STATE_SEED_CTX");
+const actionQueue = require("../core/action-queue");
+const themeManager = require("../core/theme-manager");
 
 const ROOT = path.resolve(__dirname, "..");
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), "mia-privacy-absence-"));
@@ -130,6 +137,98 @@ test("missing gift-map stats initialize an empty community instead of crashing",
   }
 });
 
+test("missing chat lexicon is an empty store and does not write a file", () => {
+  const lexiconPath = path.join(ROOT, "data", "mia-chat-lexicon.json");
+  const parked = park(lexiconPath);
+  try {
+    const missing = lexicon.loadStoreFromDisk(lexiconPath);
+    assert.equal(missing.stats.messagesSeen, 0);
+    assert.deepEqual(missing.users, {});
+    assert.deepEqual(missing.recentSamples, []);
+    assert.equal(fs.existsSync(lexiconPath), false);
+
+    const corruptPath = path.join(dir, "bad-lexicon.json");
+    fs.writeFileSync(corruptPath, "{");
+    const corrupt = lexicon.loadStoreFromDisk(corruptPath);
+    assert.equal(corrupt.stats.messagesSeen, 0);
+    assert.deepEqual(corrupt.users, {});
+    assert.deepEqual(corrupt.recentSamples, []);
+  } finally {
+    unpark(lexiconPath, parked);
+  }
+});
+
+test("missing Koj state and runtime state boot from defaults", () => {
+  const kojPath = path.join(ROOT, "data", "kojnozout-state.json");
+  const kojBak = `${kojPath}.bak`;
+  const runtimePath = path.join(ROOT, "data", "runtime-state.json");
+  const parkedKoj = park(kojPath);
+  const parkedBak = park(kojBak);
+  const parkedRuntime = park(runtimePath);
+  try {
+    const seed = kojPersistence.loadPersistedSeed(kojPath);
+    assert.deepEqual(seed, {});
+    const booted = createKojnozoutState(seed);
+    assert.equal(booted.hunger, 68);
+    assert.equal(booted.energy, 58);
+    assert.equal(booted.bowlPercent, 0);
+    assert.equal(booted.mood, "idle");
+    assert.equal(fs.existsSync(kojPath), false);
+    assert.equal(fs.existsSync(kojBak), false);
+
+    fs.writeFileSync(kojPath, "{");
+    assert.deepEqual(kojPersistence.loadPersistedSeed(kojPath), {});
+    fs.unlinkSync(kojPath);
+
+    assert.equal(runtimeState.loadRuntimeState(runtimePath), null);
+    const ctx = buildRuntimeStateSeedCtx({
+      modules: {
+        kojnozoutWorldPersistenceModule: {
+          loadWorldSeed: () => ({ backpack: null, duel: null, ok: true, reason: "missing" })
+        },
+        kojnozoutPersistenceModule: {
+          loadPersistedSeed: () => ({})
+        }
+      }
+    });
+    assert.deepEqual(ctx.kojnozoutPersistedSeed, {});
+    assert.equal(createKojnozoutState(ctx.kojnozoutPersistedSeed).hunger, 68);
+    assert.equal(fs.existsSync(runtimePath), false);
+  } finally {
+    if (fs.existsSync(kojPath)) fs.unlinkSync(kojPath);
+    unpark(kojPath, parkedKoj);
+    unpark(kojBak, parkedBak);
+    unpark(runtimePath, parkedRuntime);
+  }
+});
+
+test("missing action queue and theme use defaults and do not create files", () => {
+  const queuePath = path.join(ROOT, "data", "mia-action-queue.json");
+  const themePath = path.join(ROOT, "data", "mia-theme.json");
+  const parkedQueue = park(queuePath);
+  const parkedTheme = park(themePath);
+  const previousQueue = process.env.MIA_ACTION_QUEUE;
+  delete process.env.MIA_ACTION_QUEUE;
+  try {
+    delete require.cache[require.resolve("../core/action-queue")];
+    const freshQueue = require("../core/action-queue");
+    assert.equal(freshQueue.isActionQueueEnabled({}), false);
+    assert.equal(fs.existsSync(queuePath), false);
+
+    themeManager._resetForTests();
+    assert.equal(themeManager.getActiveThemeId(), themeManager.DEFAULT_THEME_ID);
+    assert.equal(themeManager.getActiveThemeId(), "cyber");
+    assert.equal(fs.existsSync(themePath), false);
+  } finally {
+    if (previousQueue === undefined) delete process.env.MIA_ACTION_QUEUE;
+    else process.env.MIA_ACTION_QUEUE = previousQueue;
+    delete require.cache[require.resolve("../core/action-queue")];
+    themeManager._resetForTests();
+    unpark(queuePath, parkedQueue);
+    unpark(themePath, parkedTheme);
+  }
+});
+
 test("runtime stores are ignored and sanitized examples stay visible to git", () => {
   const ignored = execFileSync(
     "git",
@@ -144,11 +243,17 @@ test("runtime stores are ignored and sanitized examples stay visible to git", ()
       "data/story-memory.json",
       "data/gift-map-stats.json",
       "data/kojnozout-world.json",
-      "tests/.tmp-session-memory-test.json"
+      "tests/.tmp-session-memory-test.json",
+      "data/mia-chat-lexicon.json",
+      "data/runtime-state.json",
+      "data/kojnozout-state.json",
+      "data/kojnozout-state.json.bak",
+      "data/mia-action-queue.json",
+      "data/mia-theme.json"
     ],
     { cwd: ROOT, encoding: "utf8" }
   );
-  assert.equal(ignored.trim().split("\n").length, 10);
+  assert.equal(ignored.trim().split("\n").length, 16);
 
   for (const example of [
     "data/streamer-identity.example.json",
@@ -159,7 +264,12 @@ test("runtime stores are ignored and sanitized examples stay visible to git", ()
     "data/story-memory.example.json",
     "data/gift-map-stats.example.json",
     "data/kojnozout-world.example.json",
-    "tests/fixtures/session-memory.example.json"
+    "tests/fixtures/session-memory.example.json",
+    "data/mia-chat-lexicon.example.json",
+    "data/runtime-state.example.json",
+    "data/kojnozout-state.example.json",
+    "data/mia-action-queue.example.json",
+    "data/mia-theme.example.json"
   ]) {
     const parsed = JSON.parse(fs.readFileSync(path.join(ROOT, example), "utf8"));
     assert.equal(typeof parsed, "object");

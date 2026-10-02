@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "updatedAt": 0,
+  "stats": {
+    "messagesSeen": 0,
+    "uniqueWords": 0,
+    "uniquePhrases": 0,
+    "spicyHits": 0
+  },
+  "tone": {
+    "spiceLevel": 0,
+    "casualLevel": 0,
+    "energyLevel": 0,
+    "lastUpdated": 0
+  },
+  "words": {},
+  "phrases": {},
+  "spicy": {},
+  "users": {},
+  "recentSamples": []
+}

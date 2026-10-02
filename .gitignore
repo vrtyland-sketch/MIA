@@ -43,6 +43,12 @@ data/gift-map-stats.json
 data/streamer-identity.json
 data/kojnozout-world.json
 data/kojnozout-world.json.bak
+data/mia-chat-lexicon.json
+data/runtime-state.json
+data/kojnozout-state.json
+data/kojnozout-state.json.bak
+data/mia-action-queue.json
+data/mia-theme.json
 tests/.tmp-session-memory-*.json
 *.log
 .DS_Store
