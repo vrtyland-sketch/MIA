@@ -229,6 +229,7 @@ const SUITES = [
   { name: "startup_overlay_runtime", cmd: "node", args: ["tests/startup_overlay_runtime_contract.js"] },
   { name: "startup_voice_queue", cmd: "node", args: ["tests/startup_voice_queue_contract.js"] },
   { name: "mia_say_voice_queue", cmd: "node", args: ["tests/mia_say_voice_queue_contract.js"] },
+  { name: "tts_test_voice_queue", cmd: "node", args: ["tests/tts_test_voice_queue_contract.js"] },
   { name: "health_runtime", cmd: "node", args: ["tests/health_runtime_contract.js"] },
   { name: "obs_post_connect_runtime", cmd: "node", args: ["tests/obs_post_connect_runtime_contract.js"] },
   { name: "route_context", cmd: "node", args: ["tests/route_context_contract.js"] },

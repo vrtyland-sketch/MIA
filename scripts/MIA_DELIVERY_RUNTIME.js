@@ -1009,6 +1009,20 @@ async function maybeDeliverMiaVoice(actionResult = {}, voicePlanOverride = null,
     plan.preempt = true;
   }
 
+  // Ephemeral. Never copied onto actionResult, the voice plan, or persisted queues.
+  const requireImmediateStart = deliveryOptions?.requireImmediateStart === true;
+  if (
+    requireImmediateStart &&
+    (isVoicePlaybackActive() || voiceSpeakProcessing || voiceSpeakQueue.length > 0)
+  ) {
+    return voiceAdmission(actionResult, {
+      accepted: false,
+      queued: false,
+      started: false,
+      reason: "voice_busy"
+    });
+  }
+
   if (isVoicePlaybackActive() || voiceSpeakProcessing) {
     const admission = enqueueVoiceSpeak(actionResult, plan, {
       preempt: Boolean(plan.preempt || actionResult?.voicePreempt || actionResult?.meta?.miaInterrupt),
@@ -1096,7 +1110,9 @@ async function executeVoicePlanDelivery(actionResult = {}, plan = {}, deliveryOp
       : (a, b) => normalizeSpeakText(a) === normalizeSpeakText(b);
   const textKey = normalizeSpeakText(text).slice(0, 200);
 
+  const allowRepeat = plan?.source === "tts_test";
   if (
+    !allowRepeat &&
     ttsDedupeKey === lastTtsSpeakKey &&
     nowBeforeSpeak - lastTtsSpeakAt < 4500
   ) {
@@ -1117,6 +1133,7 @@ async function executeVoicePlanDelivery(actionResult = {}, plan = {}, deliveryOp
 
   // Stejná věta nesmí znít podruhé jiným characterem (MIA+Koj double speak).
   if (
+    !allowRepeat &&
     textKey &&
     textKey === lastTtsTextKey &&
     nowBeforeSpeak - lastTtsSpeakAt < 6000
@@ -1136,15 +1153,18 @@ async function executeVoicePlanDelivery(actionResult = {}, plan = {}, deliveryOp
     });
   }
 
+  const cacheKeySalt = safeString(plan?.cacheKeySalt);
   const voiceResult = await ttsEngine.speak({
     text,
     speaker,
     runtimeConfig,
     language:
+      plan?.language ||
       actionResult?.meta?.language ||
       actionResult?.overlayPayload?.meta?.language ||
       languageModule.resolveDefaultLanguage?.(runtimeConfig) ||
-      "cs"
+      "cs",
+    ...(cacheKeySalt ? { cacheKeySalt } : {})
   });
 
   if (!voiceResult?.ok) {
@@ -1214,7 +1234,11 @@ async function executeVoicePlanDelivery(actionResult = {}, plan = {}, deliveryOp
     text,
     holdUntilTs: voicePlaybackState.holdUntilTs,
     durationMs: voiceResult.durationMs,
-    language: actionResult?.meta?.language || plan?.language || ""
+    language: plan?.language || actionResult?.meta?.language || "",
+    provider: voiceResult.provider,
+    voice: voiceResult.voice,
+    prosody: voiceResult.prosody || null,
+    cached: Boolean(voiceResult.cached)
   });
 
   // Phase 13x — async upgrade to amplitude lip from TTS file (non-blocking)
@@ -1258,7 +1282,8 @@ async function executeVoicePlanDelivery(actionResult = {}, plan = {}, deliveryOp
   if (
     plan?.source !== "startup_voice" &&
     plan?.source !== "mia_say_remote" &&
-    plan?.source !== "koj_state_showcase_voice"
+    plan?.source !== "koj_state_showcase_voice" &&
+    plan?.source !== "tts_test"
   ) {
     mirrorSpeechOverlayFromVoice({
       speaker,

@@ -40,13 +40,9 @@ function registerTtsRoutes(app, ctx = {}) {
     translateModule,
     deliverMicTranslation,
     MIA_OVERLAY_BASE,
-    voiceHoldUntilTs,
     mirrorSpeechOverlayFromVoice,
     invalidateOverlayStateCache,
     maybeDeliverMiaVoice,
-    bumpVoicePlaybackSeq,
-    getVoicePlaybackState,
-    setVoicePlaybackState,
     getDuelStateActive
   } = ctx;
 
@@ -74,40 +70,106 @@ function registerTtsRoutes(app, ctx = {}) {
         safeString(req.query.text) ||
         (speaker === "kojnozout" ? pack.kojnozout : pack.mia);
       const forceFresh = safeString(req.query.fresh).toLowerCase() === "1";
-      const voiceResult = await ttsEngine.speak({
-        text: forceFresh ? `${phrase} ${Date.now()}` : phrase,
-        speaker,
-        runtimeConfig,
-        language: langCode
-      });
+      const cacheKeySalt = forceFresh
+        ? `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`
+        : "";
 
-      if (!voiceResult?.ok) {
-        return res.status(500).json({ ok: false, error: voiceResult?.reason || "tts_failed" });
+      if (typeof maybeDeliverMiaVoice !== "function") {
+        return res.status(503).json({
+          ok: false,
+          queued: false,
+          started: false,
+          speaker,
+          language: langCode,
+          phrase,
+          error: "voice_queue_missing"
+        });
       }
 
-      const now = Date.now();
-      const playbackId = typeof bumpVoicePlaybackSeq === "function" ? bumpVoicePlaybackSeq() : 0;
-      const voicePlaybackState = {
-        playbackId,
-        speaker,
-        audioUrl: voiceResult.audioUrl,
-        textPreview: phrase,
-        updatedAt: now,
-        holdUntilTs: voiceHoldUntilTs(now, voiceResult.durationMs)
+      let synth = null;
+      const delivered = await maybeDeliverMiaVoice(
+        {
+          ok: true,
+          route: "system",
+          meta: { source: "tts_test", language: langCode },
+          overlayPayload: {
+            owner: speaker,
+            route: "system",
+            text: phrase,
+            meta: { source: "tts_test", language: langCode }
+          }
+        },
+        {
+          shouldSpeak: true,
+          text: phrase,
+          voiceMode: "primary",
+          voiceSpeaker: speaker,
+          primaryOwner: speaker,
+          source: "tts_test",
+          language: langCode,
+          recordReply: false,
+          ...(cacheKeySalt ? { cacheKeySalt } : {})
+        },
+        {
+          bypassActionQueue: true,
+          requireImmediateStart: true,
+          onPlaybackStarted(playback) {
+            synth = {
+              provider: playback?.provider,
+              voice: playback?.voice,
+              prosody: playback?.prosody || null,
+              cached: Boolean(playback?.cached),
+              audioUrl: playback?.audioUrl
+            };
+            if (typeof mirrorSpeechOverlayFromVoice === "function") {
+              mirrorSpeechOverlayFromVoice({
+                speaker: playback?.speaker || speaker,
+                text: phrase,
+                holdUntilTs: playback?.holdUntilTs,
+                source: "tts_test_mirror",
+                meta: { language: langCode, voice: playback?.voice }
+              });
+            }
+            if (typeof invalidateOverlayStateCache === "function") {
+              invalidateOverlayStateCache();
+            }
+          }
+        }
+      );
+
+      const admission = delivered?.voiceAdmission || {
+        accepted: false,
+        queued: false,
+        started: false,
+        reason: "voice_not_accepted"
       };
-      if (typeof setVoicePlaybackState === "function") {
-        setVoicePlaybackState(voicePlaybackState);
+      if (admission.reason === "voice_busy") {
+        return res.status(409).json({
+          ok: false,
+          queued: false,
+          started: false,
+          speaker,
+          language: langCode,
+          phrase,
+          error: "voice_busy"
+        });
+      }
+      if (admission.accepted !== true || admission.started !== true) {
+        const reason = admission.reason || "tts_failed";
+        const status = reason === "tts_disabled" ? 503 : 500;
+        return res.status(status).json({
+          ok: false,
+          queued: false,
+          started: false,
+          speaker,
+          language: langCode,
+          phrase,
+          error: reason
+        });
       }
 
-      mirrorSpeechOverlayFromVoice({
-        speaker,
-        text: phrase,
-        holdUntilTs: voicePlaybackState.holdUntilTs,
-        source: "tts_test_mirror",
-        meta: { language: langCode, voice: voiceResult.voice }
-      });
-      invalidateOverlayStateCache();
-
+      const playback = delivered.voicePlayback || null;
+      const voiceName = synth?.voice || "";
       const base = typeof MIA_OVERLAY_BASE === "function" ? MIA_OVERLAY_BASE() : "";
       res.json({
         ok: true,
@@ -119,15 +181,15 @@ function registerTtsRoutes(app, ctx = {}) {
             : langCode,
         message:
           speaker === "kojnozout"
-            ? `Kojnožrout — ${langCode} (${voiceResult.voice})`
-            : `MIA — ${langCode} (${voiceResult.voice})`,
+            ? `Kojnožrout — ${langCode} (${voiceName})`
+            : `MIA — ${langCode} (${voiceName})`,
         phrase,
-        audioUrl: voiceResult.audioUrl,
-        provider: voiceResult.provider,
-        voice: voiceResult.voice,
-        prosody: voiceResult.prosody || null,
-        cached: Boolean(voiceResult.cached),
-        voicePlayback: voicePlaybackState,
+        audioUrl: synth?.audioUrl || playback?.audioUrl || "",
+        provider: synth?.provider,
+        voice: synth?.voice,
+        prosody: synth?.prosody || null,
+        cached: Boolean(synth?.cached),
+        voicePlayback: playback,
         compareUrl: `${base}/tts/compare`,
         altTest: `${base}/tts/test?speaker=${speaker === "kojnozout" ? "koj" : "mia"}&lang=${langCode}&fresh=1`,
         langs: Object.keys(TTS_TEST_PHRASES),
