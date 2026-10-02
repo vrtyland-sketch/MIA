@@ -3,19 +3,22 @@
 const fs = require("fs");
 const path = require("path");
 
+const { inspectLiveKojVisuals } = require("./MIA_KOJNOZROUT_ASSETS");
+
 const PROJECT_ROOT = path.resolve(__dirname, "..");
 const INBOX = path.join(PROJECT_ROOT, "incoming-images");
 
 const READINESS_WEIGHTS = {
   server: 5,
-  obs: 25,
+  obs: 15,
   video_engine: 15,
   media_catalog: 15,
   overlays: 10,
   tts: 15,
   media_files: 5,
   kick_bridge: 5,
-  ingest_auth: 5
+  ingest_auth: 5,
+  koj_visuals: 10
 };
 
 const STREAM_READY_REQUIRED = new Set([
@@ -24,7 +27,8 @@ const STREAM_READY_REQUIRED = new Set([
   "video_engine",
   "media_catalog",
   "overlays",
-  "tts"
+  "tts",
+  "koj_visuals"
 ]);
 
 const OVERLAY_MANIFEST = [
@@ -229,6 +233,16 @@ function buildStartupCheck(ctx = {}) {
       "TTS hlas",
       ctx.ttsEnabled === true,
       ctx.ttsEnabled ? safeString(ctx.ttsSpeaker, "enabled") : "vypnuto v .env"
+    )
+  );
+
+  const kojVisuals = ctx.kojVisuals || inspectLiveKojVisuals();
+  checks.push(
+    checkItem(
+      "koj_visuals",
+      "Koj visuals",
+      kojVisuals.ok === true && kojVisuals.liveProductionArtReady !== false,
+      kojVisuals.detail || "Koj visuals missing: moods, pose catalog, props"
     )
   );
 

@@ -34,6 +34,7 @@ const FAST_SUITE_NAMES = [
   "koj_public_snapshot",
   "koj_walk_unify",
   "koj_runtime_split",
+  "koj_live_assets",
   "overlay_layout",
   "graphics_r1",
   "event_pipeline",
@@ -207,6 +208,7 @@ const SUITES = [
   { name: "koj_public_snapshot", cmd: "node", args: ["tests/koj_public_snapshot_contract.js"] },
   { name: "koj_walk_unify", cmd: "node", args: ["tests/kojnozout_walk_unify_contract.js"] },
   { name: "koj_runtime_split", cmd: "node", args: ["tests/kojnozout_runtime_split_contract.js"] },
+  { name: "koj_live_assets", cmd: "node", args: ["tests/koj_live_assets_contract.js"] },
   { name: "overlay_layout", cmd: "node", args: ["tests/overlay_layout_contract.js"] },
   { name: "graphics_r1", cmd: "node", args: ["tests/mia_graphics_r1_contract.js"] },
   { name: "event_pipeline", cmd: "node", args: ["tests/event_pipeline_contract.js"] },
@@ -521,6 +523,54 @@ const CLOUD_ENV_PREREQUISITES = [
     path: "mia-output-overlay/assets/kojnozrout/story-bank-manifest.json",
     kind: "file",
     matches: (output) => output.includes("story bank manifest exists")
+  },
+  {
+    suite: "koj_live_assets",
+    path: "mia-output-overlay/assets/kojnozrout/moods",
+    kind: "dir",
+    matches: (output) =>
+      output.includes("KOJ_LIVE_ASSET_MISSING") &&
+      output.includes("mia-output-overlay/assets/kojnozrout/moods")
+  },
+  {
+    suite: "koj_live_assets",
+    path: "mia-output-overlay/assets/kojnozrout/pose-catalog.js",
+    kind: "file",
+    matches: (output) =>
+      output.includes("KOJ_LIVE_ASSET_MISSING") &&
+      output.includes("mia-output-overlay/assets/kojnozrout/pose-catalog.js")
+  },
+  {
+    suite: "koj_live_assets",
+    path: "mia-output-overlay/assets/kojnozrout/props/bowl.png",
+    kind: "file",
+    matches: (output) =>
+      output.includes("KOJ_LIVE_ASSET_MISSING") &&
+      output.includes("mia-output-overlay/assets/kojnozrout/props/bowl.png")
+  },
+  {
+    suite: "koj_live_assets",
+    path: "mia-output-overlay/assets/kojnozrout/props/ball.png",
+    kind: "file",
+    matches: (output) =>
+      output.includes("KOJ_LIVE_ASSET_MISSING") &&
+      output.includes("mia-output-overlay/assets/kojnozrout/props/ball.png")
+  },
+  {
+    suite: "koj_live_assets",
+    path: "mia-output-overlay/assets/kojnozrout/props/mic.png",
+    kind: "file",
+    matches: (output) =>
+      output.includes("KOJ_LIVE_ASSET_MISSING") &&
+      output.includes("mia-output-overlay/assets/kojnozrout/props/mic.png")
+  },
+  {
+    suite: "koj_live_assets",
+    path: "mia-output-overlay/assets/kojnozrout/props/hand.png",
+    kind: "file",
+    matches: (output) =>
+      output.includes("KOJ_LIVE_ASSET_MISSING") &&
+      output.includes("mia-output-overlay/assets/kojnozrout/props/hand.png")
   },
   {
     suite: "graphics_body",

@@ -1,7 +1,19 @@
 "use strict";
 
 const assert = require("assert/strict");
-const { buildStartupCheck, computeReadiness } = require("../scripts/MIA_STARTUP_CHECK");
+const {
+  buildStartupCheck,
+  computeReadiness,
+  READINESS_WEIGHTS
+} = require("../scripts/MIA_STARTUP_CHECK");
+const { inspectLiveKojVisuals } = require("../scripts/MIA_KOJNOZROUT_ASSETS");
+
+const READY_VISUALS = {
+  ok: true,
+  liveProductionArtReady: true,
+  fallbackAvailable: true,
+  detail: "live production art ready"
+};
 
 function test(name, fn) {
   try {
@@ -24,7 +36,8 @@ test("buildStartupCheck returns readiness percent without preflight", () => {
     videoSnapshot: { tierSources: { T1: [1, 2, 3, 4] }, pendingJobs: 0 },
     mediaCatalog: { obsAssignments: new Array(31), totalPhotos: 10, totalVideos: 10 },
     kickBridgeEnabled: false,
-    includePreflight: false
+    includePreflight: false,
+    kojVisuals: READY_VISUALS
   });
 
   assert.equal(report.phase, "done");
@@ -32,6 +45,9 @@ test("buildStartupCheck returns readiness percent without preflight", () => {
   assert.ok(report.readinessPercent >= 80);
   assert.equal(report.streamReady, true);
   assert.match(report.streamReadyLabel, /Připravena/);
+  const visuals = report.checks.find((row) => row.id === "koj_visuals");
+  assert.equal(visuals.ok, true);
+  assert.equal(visuals.detail, "live production art ready");
 });
 
 test("stream not ready when OBS offline", () => {
@@ -48,6 +64,48 @@ test("stream not ready when OBS offline", () => {
   assert.ok(report.readinessPercent < 100);
 });
 
+test("stream not ready when live Koj art is missing", () => {
+  const report = buildStartupCheck({
+    port: 3000,
+    obsConnected: true,
+    ttsEnabled: true,
+    videoSnapshot: { tierSources: { T1: [1, 2, 3, 4] }, pendingJobs: 0 },
+    mediaCatalog: { obsAssignments: new Array(31), totalPhotos: 10, totalVideos: 10 },
+    includePreflight: false,
+    kojVisuals: {
+      ok: false,
+      liveProductionArtReady: false,
+      fallbackAvailable: true,
+      detail: "Koj visuals missing: moods, pose catalog, props"
+    }
+  });
+  const visuals = report.checks.find((row) => row.id === "koj_visuals");
+  assert.equal(visuals.ok, false);
+  assert.equal(visuals.detail, "Koj visuals missing: moods, pose catalog, props");
+  assert.equal(report.streamReady, false);
+  assert.match(report.streamReadyLabel, /ne připravena/);
+});
+
+test("startup koj_visuals follows the live asset inspector", () => {
+  const live = inspectLiveKojVisuals();
+  const report = buildStartupCheck({
+    port: 3000,
+    obsConnected: true,
+    ttsEnabled: true,
+    videoSnapshot: { tierSources: { T1: [1, 2, 3, 4] }, pendingJobs: 0 },
+    mediaCatalog: { obsAssignments: new Array(31), totalPhotos: 10, totalVideos: 10 },
+    includePreflight: false
+  });
+  const visuals = report.checks.find((row) => row.id === "koj_visuals");
+  assert.equal(visuals.ok, live.ok === true);
+  assert.equal(visuals.detail, live.detail);
+  if (live.ok !== true) {
+    assert.equal(report.streamReady, false);
+    assert.equal(live.liveProductionArtReady, false);
+    assert.equal(live.fallbackAvailable, true);
+  }
+});
+
 test("computeReadiness weights sum to 100", () => {
   const checks = [
     { id: "server", label: "MIA", ok: true, detail: "" },
@@ -58,8 +116,11 @@ test("computeReadiness weights sum to 100", () => {
     { id: "tts", label: "TTS", ok: true, detail: "" },
     { id: "media_files", label: "Files", ok: true, detail: "" },
     { id: "kick_bridge", label: "Kick", ok: true, detail: "" },
-    { id: "ingest_auth", label: "Auth", ok: true, detail: "" }
+    { id: "ingest_auth", label: "Auth", ok: true, detail: "" },
+    { id: "koj_visuals", label: "Koj visuals", ok: true, detail: "live production art ready" }
   ];
+  const weightSum = Object.values(READINESS_WEIGHTS).reduce((sum, weight) => sum + weight, 0);
+  assert.equal(weightSum, 100);
   const readiness = computeReadiness(checks, { kickBridgeEnabled: false });
   assert.equal(readiness.readinessPercent, 100);
   assert.equal(readiness.streamReady, true);
