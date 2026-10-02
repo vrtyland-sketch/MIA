@@ -67,6 +67,26 @@ function extractOverlayText(payload, actionResult = {}) {
   );
 }
 
+function resolveGiftBankVoiceText(actionResult = {}) {
+  const payload = actionResult.overlayPayload || actionResult.overlay;
+  if (!payload || typeof payload !== "object") return "";
+  if (payload.meta?.giftMapOverlay !== true) return "";
+  if (
+    payload.meta?.giftMemoryApplied === true ||
+    actionResult.meta?.giftMemoryApplied === true
+  ) {
+    return "";
+  }
+
+  return safeString(
+    payload.meta?.giftVoiceText ||
+      actionResult.meta?.giftVoiceText ||
+      actionResult.speech_text ||
+      actionResult.responseContract?.speech_text ||
+      actionResult.response?.text
+  );
+}
+
 function isKojGiftVoice(actionResult = {}) {
   const route = safeString(actionResult.route).toLowerCase();
   if (route !== "support") {
@@ -105,6 +125,10 @@ function resolveKojGiftVoiceLine(actionResult = {}) {
   }
 
   const payload = actionResult.overlayPayload || actionResult.overlay;
+  const bankVoice = resolveGiftBankVoiceText(actionResult);
+  if (bankVoice) {
+    return bankVoice;
+  }
   const fromOverlay = extractOverlayText(payload, actionResult);
   if (fromOverlay) {
     return fromOverlay;
@@ -291,12 +315,13 @@ function resolveVoiceDeliveryPlan(actionResult = {}) {
   const primaryOwner = normalizeOwner(payload);
   const companionOwner = normalizeOwner(companion);
   const primaryText = extractOverlayText(payload, actionResult);
+  const spokenPrimaryText = resolveGiftBankVoiceText(actionResult) || primaryText;
   const companionText = safeString(companion?.text);
 
-  if (primaryOwner === "kojnozout" && primaryText) {
+  if (primaryOwner === "kojnozout" && spokenPrimaryText) {
     return scrubDuplicateCompanionVoice({
       voiceMode: "primary",
-      text: primaryText,
+      text: spokenPrimaryText,
       voiceSpeaker: "kojnozout",
       primaryOwner,
       companionOwner,
@@ -308,11 +333,11 @@ function resolveVoiceDeliveryPlan(actionResult = {}) {
     });
   }
 
-  if (primaryOwner === "mia" && primaryText) {
+  if (primaryOwner === "mia" && spokenPrimaryText) {
     // MIA primary: Koj companion remains visual-only (never same TTS line).
     return {
       voiceMode: "primary",
-      text: primaryText,
+      text: spokenPrimaryText,
       voiceSpeaker: "mia",
       primaryOwner,
       companionOwner,

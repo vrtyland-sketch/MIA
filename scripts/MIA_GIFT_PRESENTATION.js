@@ -317,6 +317,13 @@ function applyGiftMapOverlay(actionResult = {}, support = {}, ctx = {}) {
     basePayload?.meta?.giftMemoryApplied === true ||
     next.meta?.giftMemoryApplied === true;
 
+  const deliveryText = safeString(
+    next.speech_text ||
+      next.responseContract?.speech_text ||
+      next.response?.text ||
+      basePayload.text
+  );
+
   // Personalizovaná paměť má přednost před katalogovým „X poslal Rose“.
   const overlayText = memoryApplied
     ? safeString(basePayload.text, mapOverlayText)
@@ -369,6 +376,7 @@ function applyGiftMapOverlay(actionResult = {}, support = {}, ctx = {}) {
       ...(basePayload.meta || {}),
       giftMapOverlay: true,
       giftMemoryApplied: memoryApplied,
+      ...(memoryApplied ? {} : { giftVoiceText: deliveryText }),
       giftKey: safeString(support?.giftKey || ctx?.giftKey),
       giftCare: safeString(support?.giftCare || ctx?.giftCare),
       streak,
@@ -382,10 +390,15 @@ function applyGiftMapOverlay(actionResult = {}, support = {}, ctx = {}) {
     next.overlay = next.overlayPayload;
   }
 
+  if (!memoryApplied && deliveryText) {
+    next.speech_text = deliveryText;
+  }
+
   next.meta = {
     ...(next.meta || {}),
     giftMapOverlayText: overlayText,
     giftMemoryApplied: memoryApplied,
+    ...(memoryApplied ? {} : { giftVoiceText: deliveryText }),
     giftKey: safeString(support?.giftKey || ctx?.giftKey),
     achievementUnlock: next.overlayPayload.meta.achievementUnlock
   };
