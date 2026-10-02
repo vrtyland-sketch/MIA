@@ -54,4 +54,40 @@ function buildRuntimeStateSeedCtx(host = {}) {
   };
 }
 
-module.exports = { buildRuntimeStateSeedCtx };
+function bootPersistedWorld(worldSeed = {}, modules = {}) {
+  const seed = worldSeed && typeof worldSeed === "object" ? worldSeed : {};
+  if (seed.ok === false) {
+    return {
+      ok: false,
+      degraded: true,
+      worldEnabled: false,
+      recovered: false,
+      reason: seed.reason || "world_state_corrupt",
+      error: seed.error || "world_state_malformed",
+      backpack: null,
+      duel: null
+    };
+  }
+
+  const backpackModule = modules.kojnozoutBackpackModule || {};
+  const duelModule = modules.kojnozoutDuelModule || {};
+  const backpack = typeof backpackModule.createBackpackState === "function"
+    ? backpackModule.createBackpackState(seed.backpack || {})
+    : { users: {}, totalItems: 0 };
+  const duel = typeof duelModule.createDuelState === "function"
+    ? duelModule.createDuelState(seed.duel || {})
+    : { active: false, phase: "idle" };
+
+  return {
+    ok: true,
+    degraded: false,
+    worldEnabled: true,
+    recovered: Boolean(seed.recovered),
+    reason: seed.reason || "loaded",
+    error: undefined,
+    backpack,
+    duel
+  };
+}
+
+module.exports = { buildRuntimeStateSeedCtx, bootPersistedWorld };

@@ -528,6 +528,16 @@ let ecosystemState = { orchestratorId: "core", turnHistory: [] };
 let itemDisplayState = { queue: [], current: null };
 let arenaBattleDemo = null;
 let runtimeStateSeedsReady = false;
+let worldBoot = {
+  ok: true,
+  degraded: false,
+  worldEnabled: false,
+  recovered: false,
+  reason: "uninitialized",
+  error: undefined,
+  backpack: null,
+  duel: null
+};
 
 function collectRuntimeStateSeedBindingsHost() {
   return {
@@ -565,7 +575,8 @@ function initRuntimeStateSeedRuntime() {
       platformArenaState,
       kojnozoutDuelState,
       ecosystemState,
-      itemDisplayState
+      itemDisplayState,
+      worldBoot
     };
   }
 
@@ -596,10 +607,32 @@ function initRuntimeStateSeedRuntime() {
       ? ctx.kojnozoutModule.createKojnozoutState(ctx.kojnozoutPersistedSeed || {})
       : {};
 
-  kojnozoutBackpackState =
-    typeof ctx.kojnozoutBackpackModule?.createBackpackState === "function"
-      ? ctx.kojnozoutBackpackModule.createBackpackState(ctx.worldSeed?.backpack || {})
-      : { users: {}, totalItems: 0 };
+  worldBoot = typeof runtimeStateSeedCtxModule.bootPersistedWorld === "function"
+    ? runtimeStateSeedCtxModule.bootPersistedWorld(ctx.worldSeed, {
+        kojnozoutBackpackModule: ctx.kojnozoutBackpackModule,
+        kojnozoutDuelModule: ctx.kojnozoutDuelModule
+      })
+    : {
+        ok: false,
+        degraded: true,
+        worldEnabled: false,
+        recovered: false,
+        reason: "world_state_corrupt",
+        error: "world_state_malformed",
+        backpack: null,
+        duel: null
+      };
+
+  if (worldBoot.worldEnabled === false) {
+    console.error(
+      `[kojnozout-world] boot refused (${worldBoot.reason}/${worldBoot.error}). Backpack and duel were not initialized.`
+    );
+    kojnozoutBackpackState = null;
+    kojnozoutDuelState = null;
+  } else {
+    kojnozoutBackpackState = worldBoot.backpack;
+    kojnozoutDuelState = worldBoot.duel;
+  }
 
   platformArenaState =
     typeof ctx.platformArenaModule?.loadArenaState === "function"
@@ -607,11 +640,6 @@ function initRuntimeStateSeedRuntime() {
       : typeof ctx.platformArenaModule?.createArenaState === "function"
         ? ctx.platformArenaModule.createArenaState()
         : null;
-
-  kojnozoutDuelState =
-    typeof ctx.kojnozoutDuelModule?.createDuelState === "function"
-      ? ctx.kojnozoutDuelModule.createDuelState(ctx.worldSeed?.duel || {})
-      : { active: false, phase: "idle" };
 
   ecosystemState =
     typeof ctx.ecosystemOrchestratorModule?.createEcosystemState === "function"
@@ -636,7 +664,8 @@ function initRuntimeStateSeedRuntime() {
     platformArenaState,
     kojnozoutDuelState,
     ecosystemState,
-    itemDisplayState
+    itemDisplayState,
+    worldBoot
   };
 }
 
