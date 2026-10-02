@@ -64,6 +64,7 @@ function createHarness(options = {}) {
   const startupMirrors = [];
   const startupInvalidations = [];
   const overlays = [];
+  const deliveryOverlays = [];
   const replies = [];
   const logs = [];
   const events = [];
@@ -76,7 +77,10 @@ function createHarness(options = {}) {
     writeLog: (_file, row) => logs.push(row),
     safeString,
     cloneJson: (value, fallback) => value || fallback,
-    setOverlay: () => ({ accepted: true }),
+    setOverlay: (payload, opts) => {
+      deliveryOverlays.push({ payload, opts });
+      return { accepted: true };
+    },
     getOverlayState: () => ({}),
     invalidateOverlayStateCache: () => {},
     getOutputState: () => ({}),
@@ -149,6 +153,7 @@ function createHarness(options = {}) {
     mirrorSpeechOverlayFromVoice: (row) => {
       startupMirrors.push(row);
       events.push("startup-mirror");
+      return delivery.mirrorSpeechOverlayFromVoice(row);
     },
     invalidateOverlayStateCache: () => {
       startupInvalidations.push(startupMirrors.length);
@@ -235,6 +240,7 @@ function createHarness(options = {}) {
     spoken,
     startupMirrors,
     startupInvalidations,
+    deliveryOverlays,
     overlays,
     replies,
     logs,
@@ -320,6 +326,12 @@ async function run() {
     assert.equal(mirror[0].source, "startup_voice_mirror");
     assert.equal(mirror[0].text, STARTUP_PHRASE);
     assert.equal(mirror[0].holdUntilTs, playback.holdUntilTs);
+    assert.deepEqual(
+      harness.deliveryOverlays
+        .filter((row) => row.payload?.text === STARTUP_PHRASE && row.payload?.meta?.voiceMirror)
+        .map((row) => row.payload.meta.source),
+      ["startup_voice_mirror"]
+    );
     assert.ok(harness.startupInvalidations.some((count) => count >= 1));
     assert.deepEqual(
       harness.events.filter((name) => name === "speak:" + STARTUP_PHRASE || name === "startup-mirror" || name === "refresh"),
@@ -347,6 +359,13 @@ async function run() {
     );
     assert.equal(memory.replies.length, 1);
     assert.equal(memory.replies[0].text, "normal-reply");
+    assert.ok(
+      memory.deliveryOverlays.some(
+        (row) =>
+          row.payload?.text === "normal-reply" &&
+          row.payload?.meta?.source === "tts_primary_mirror"
+      )
+    );
     assert.equal(
       memory.voiceCalls.find((row) => row.plan?.text === "normal-reply").plan.recordReply,
       undefined

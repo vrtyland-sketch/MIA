@@ -1202,16 +1202,18 @@ async function executeVoicePlanDelivery(actionResult = {}, plan = {}, deliveryOp
     });
   }
 
-  mirrorSpeechOverlayFromVoice({
-    speaker,
-    text,
-    holdUntilTs: voicePlaybackState.holdUntilTs,
-    source: voiceMode === "companion" ? "tts_companion_mirror" : "tts_primary_mirror",
-    meta: {
-      voiceMode,
-      playbackId: voicePlaybackState.playbackId
-    }
-  });
+  if (plan?.source !== "startup_voice") {
+    mirrorSpeechOverlayFromVoice({
+      speaker,
+      text,
+      holdUntilTs: voicePlaybackState.holdUntilTs,
+      source: voiceMode === "companion" ? "tts_companion_mirror" : "tts_primary_mirror",
+      meta: {
+        voiceMode,
+        playbackId: voicePlaybackState.playbackId
+      }
+    });
+  }
   invalidateOverlayStateCache();
 
   if (voicePriorityLayer && typeof voicePriorityLayer.activateVoicePriority === "function") {
