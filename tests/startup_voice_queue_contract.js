@@ -192,7 +192,31 @@ function createHarness(options = {}) {
   }
 
   async function release() {
-    holdMs = 0;
+    holdMs = 40;
+    const playback = delivery.getVoicePlaybackState();
+    if (
+      delivery.getVoiceSpeakQueueLength() === 0 &&
+      playback &&
+      Number(playback.holdUntilTs) > Date.now()
+    ) {
+      await delivery.maybeDeliverMiaVoice(
+        {
+          ok: true,
+          route: "system",
+          meta: { source: "release_tick" },
+          overlayPayload: { owner: "mia", text: "release-tick" }
+        },
+        {
+          shouldSpeak: true,
+          text: "release-tick",
+          voiceMode: "primary",
+          voiceSpeaker: "mia",
+          primaryOwner: "mia",
+          source: "release_tick",
+          recordReply: false
+        }
+      );
+    }
     delivery.setVoicePlaybackState(null);
     let spins = 0;
     while (delivery.getVoiceSpeakQueueLength() > 0) {
@@ -200,7 +224,7 @@ function createHarness(options = {}) {
       if (spins > 200) {
         throw new Error(`queue did not drain, length=${delivery.getVoiceSpeakQueueLength()}`);
       }
-      await sleep(40);
+      await sleep(20);
     }
     await sleep(80);
   }
@@ -303,9 +327,10 @@ async function run() {
     );
     assert.equal(harness.refreshCount(), 1);
     assert.equal(harness.replies.length, 0);
-
     await harness.release();
-    await harness.delivery.maybeDeliverMiaVoice(
+
+    const memory = createHarness({ holdMs: 0 });
+    await memory.delivery.maybeDeliverMiaVoice(
       {
         ok: true,
         route: "community",
@@ -320,8 +345,13 @@ async function run() {
         primaryOwner: "mia"
       }
     );
-    assert.equal(harness.replies.length, 1);
-    assert.equal(harness.replies[0].text, "normal-reply");
+    assert.equal(memory.replies.length, 1);
+    assert.equal(memory.replies[0].text, "normal-reply");
+    assert.equal(
+      memory.voiceCalls.find((row) => row.plan?.text === "normal-reply").plan.recordReply,
+      undefined
+    );
+    await memory.release();
   });
 
   await test("active paid speech keeps the floor and startup waits as system", async () => {
