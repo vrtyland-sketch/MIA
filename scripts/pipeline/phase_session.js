@@ -39,6 +39,10 @@ async function phaseSession(ctx, deps) {
         eventType,
         key: dedupe.key,
         ageMs: dedupe.ageMs,
+        reason: dedupe.reason || null,
+        reservation: dedupe.reservation || null,
+        identity: dedupe.identity || null,
+        trustedSourceId: dedupe.trustedSourceId || null,
         user: normalized.user?.nickname || normalized.user?.username || null,
         message: safeString(normalized.message).slice(0, 120)
       });

@@ -126,7 +126,8 @@ function run() {
     assert.equal(guard.checkDuplicate(first).duplicate, false);
     const duplicate = guard.checkDuplicate(replay);
     assert.equal(duplicate.duplicate, true);
-    assert.equal(duplicate.reason, "trusted_source_id");
+    assert.equal(duplicate.reason, "trusted_source_pending");
+    assert.equal(duplicate.reservation, "pending");
     assert.equal(duplicate.trustedSourceId, "txn-9");
     assert.equal(duplicate.key, "tiktok|GIFT|txn-9");
     assert.equal(logs.some((row) => row.channel === "ingest-deduped"), false);

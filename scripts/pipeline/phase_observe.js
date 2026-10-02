@@ -18,7 +18,8 @@ async function phaseObserve(ctx, deps) {
     applyCareQuestProgress,
     deliverQuestCompleteMoment,
     writeLog,
-    safeString
+    safeString,
+    ingestDeduper
   } = deps;
 
   const { normalized, eventType } = ctx;
@@ -155,6 +156,11 @@ async function phaseObserve(ctx, deps) {
     eventType === "FOLLOW" ||
     eventType === "SHARE"
   ) {
+    // First irreversible GIFT write is setKojnozoutState inside applyCareQuestProgress.
+    // Commit the trusted id before that call so a later failure cannot replay it.
+    if (eventType === "GIFT" && typeof ingestDeduper?.commitTrustedGift === "function") {
+      ingestDeduper.commitTrustedGift(normalized);
+    }
     try {
       const questProgress = applyCareQuestProgress(normalized);
       if (questProgress.questCompleted) {

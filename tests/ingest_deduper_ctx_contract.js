@@ -35,6 +35,8 @@ async function run() {
       })
     );
     assert.equal(typeof api.checkDuplicate, "function");
+    assert.equal(typeof api.commitTrustedGift, "function");
+    assert.equal(typeof api.abortTrustedGift, "function");
   });
 
   await test("index.js uses collectIngestDeduperBindingsHost and buildIngestDeduperHost", () => {

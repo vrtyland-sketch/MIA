@@ -21,12 +21,26 @@ const DEFAULT_PHASES = [
 ];
 
 async function runEventPipeline(ctx, deps, phases = DEFAULT_PHASES) {
-  for (const phase of phases) {
-    if (ctx.meta.halted) break;
-    await phase(ctx, deps);
-  }
+  try {
+    for (const phase of phases) {
+      if (ctx.meta.halted) break;
+      await phase(ctx, deps);
+    }
 
-  ctx.commit(deps);
+    ctx.commit(deps);
+  } catch (err) {
+    if (
+      ctx?.eventType === "GIFT" &&
+      typeof deps?.ingestDeduper?.abortTrustedGift === "function"
+    ) {
+      try {
+        deps.ingestDeduper.abortTrustedGift(ctx.normalized, err);
+      } catch (_settleErr) {
+        /* lifecycle diagnostics must not hide the pipeline error */
+      }
+    }
+    throw err;
+  }
 
   if (ctx.meta.halted) {
     return { status: 200, body: ctx.meta.haltBody };

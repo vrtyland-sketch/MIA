@@ -97,11 +97,35 @@ function createIngestDeduper(deps = {}) {
   const recent = new Map();
 
   function prune(now) {
-    for (const [key, seenAt] of recent.entries()) {
-      if (now - seenAt > windowMs * 2) {
+    for (const [key, entry] of recent.entries()) {
+      if (!entry || entry.status === "pending") continue;
+      if (now - entry.at > windowMs * 2) {
         recent.delete(key);
       }
     }
+  }
+
+  function logLifecycle(entry) {
+    if (!appendJsonLog) return;
+    try {
+      appendJsonLog("ingest-dedupe-lifecycle", entry);
+    } catch (_err) {
+      /* lifecycle diagnostics must not block ingest */
+    }
+  }
+
+  function trustedGiftResult(normalized, key, extra = {}) {
+    const result = {
+      duplicate: Boolean(extra.duplicate),
+      key,
+      windowMs,
+      trustedSourceId: resolveGiftTrustedSourceId(normalized) || null,
+      identity: "trusted",
+      reason: extra.reason,
+      reservation: extra.reservation
+    };
+    if (extra.ageMs !== undefined) result.ageMs = extra.ageMs;
+    return result;
   }
 
   function buildDedupeKey(normalized = {}) {
@@ -168,40 +192,147 @@ function createIngestDeduper(deps = {}) {
       return untrusted;
     }
 
-    const seenAt = recent.get(key);
+    const eventType = safeString(normalized.eventType || normalized.type, "UNKNOWN").toUpperCase();
+    const entry = recent.get(key);
 
-    if (seenAt && now - seenAt < windowMs) {
+    if (eventType === "GIFT") {
+      if (entry?.status === "pending") {
+        return trustedGiftResult(normalized, key, {
+          duplicate: true,
+          ageMs: now - entry.at,
+          reason: "trusted_source_pending",
+          reservation: "pending"
+        });
+      }
+
+      if (entry?.status === "committed" && now - entry.at < windowMs) {
+        return trustedGiftResult(normalized, key, {
+          duplicate: true,
+          ageMs: now - entry.at,
+          reason: "trusted_source_committed",
+          reservation: "committed"
+        });
+      }
+
+      recent.set(key, { status: "pending", at: now });
+      return trustedGiftResult(normalized, key, {
+        duplicate: false,
+        reason: "trusted_source_id",
+        reservation: "pending"
+      });
+    }
+
+    if (entry && now - entry.at < windowMs) {
       return {
         duplicate: true,
         key,
-        ageMs: now - seenAt,
+        ageMs: now - entry.at,
         windowMs,
-        trustedSourceId: resolveGiftTrustedSourceId(normalized) || null,
-        identity: safeString(normalized.eventType || normalized.type).toUpperCase() === "GIFT"
-          ? "trusted"
-          : null,
-        reason: safeString(normalized.eventType || normalized.type).toUpperCase() === "GIFT"
-          ? "trusted_source_id"
-          : null
+        trustedSourceId: null,
+        identity: null,
+        reason: null
       };
     }
 
-    recent.set(key, now);
+    recent.set(key, { status: "committed", at: now });
 
-    const eventType = safeString(normalized.eventType || normalized.type, "UNKNOWN").toUpperCase();
     return {
       duplicate: false,
       key,
       windowMs,
-      trustedSourceId: eventType === "GIFT" ? resolveGiftTrustedSourceId(normalized) || null : null,
-      identity: eventType === "GIFT" ? "trusted" : null,
-      reason: eventType === "GIFT" ? "trusted_source_id" : null
+      trustedSourceId: null,
+      identity: null,
+      reason: null
+    };
+  }
+
+  function commitTrustedGift(normalized = {}) {
+    const eventType = safeString(normalized.eventType || normalized.type, "UNKNOWN").toUpperCase();
+    if (eventType !== "GIFT") {
+      return { committed: false, reason: "not_gift" };
+    }
+
+    const key = buildDedupeKey(normalized);
+    if (!key) {
+      return { committed: false, key: null, reason: "no_trusted_gift_source_id" };
+    }
+
+    const entry = recent.get(key);
+    if (!entry) {
+      return { committed: false, key, reason: "no_pending_reservation" };
+    }
+    if (entry.status === "committed") {
+      return { committed: true, key, reservation: "committed", already: true };
+    }
+
+    const now = nowTs();
+    recent.set(key, { status: "committed", at: now });
+    return { committed: true, key, reservation: "committed", at: now };
+  }
+
+  function abortTrustedGift(normalized = {}, err) {
+    const eventType = safeString(normalized.eventType || normalized.type, "UNKNOWN").toUpperCase();
+    if (eventType !== "GIFT") {
+      return { action: "ignored" };
+    }
+
+    const key = buildDedupeKey(normalized);
+    if (!key) {
+      return { action: "ignored", reason: "no_trusted_gift_source_id" };
+    }
+
+    const entry = recent.get(key);
+    if (!entry) {
+      return { action: "ignored", key };
+    }
+
+    const trustedSourceId = resolveGiftTrustedSourceId(normalized) || null;
+    const platform = safeString(normalized.platform, "unknown").toLowerCase();
+    const error = err && (err.message || String(err));
+
+    if (entry.status === "pending") {
+      recent.delete(key);
+      logLifecycle({
+        eventType: "GIFT",
+        duplicate: false,
+        identity: "trusted",
+        reason: "reservation_released_before_side_effects",
+        reservation: "released",
+        trustedSourceId,
+        key,
+        platform,
+        error: error || null
+      });
+      return {
+        action: "released",
+        key,
+        reason: "reservation_released_before_side_effects"
+      };
+    }
+
+    logLifecycle({
+      eventType: "GIFT",
+      duplicate: false,
+      identity: "trusted",
+      reason: "downstream_failure_after_commit",
+      reservation: "committed",
+      trustedSourceId,
+      key,
+      platform,
+      error: error || null
+    });
+    return {
+      action: "retained",
+      key,
+      reason: "downstream_failure_after_commit"
     };
   }
 
   return {
     checkDuplicate,
-    buildDedupeKey
+    buildDedupeKey,
+    commitTrustedGift,
+    abortTrustedGift
   };
 }
 
