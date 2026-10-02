@@ -571,7 +571,9 @@ async function run() {
       assert.equal(duel.getArenaState().platforms.kick.miaPoints, raw + boostScore);
       assert.equal(duel.getArenaState().platforms.tiktok.miaPoints, 0);
       const boostEventId = `${response.body.normalizedEvent.eventId}:arena_boost`;
-      assert.ok(duel.getArenaState().seenEventIds.includes(boostEventId));
+      assert.ok(
+        duel.getArenaState().seenEventIds.some((row) => (row && row.id) === boostEventId)
+      );
 
       const before = pointsOf(duel.getArenaState());
       duel.applyWorldLayer(response.body.normalizedEvent);

@@ -482,6 +482,137 @@ test("normal FAIR comments stay on the free-action table", () => {
   assert.equal(comment.state.scoringMode, "fair");
 });
 
+test("duplicate event id still blocks after more than 200 newer events", () => {
+  assert.ok(arena.SEEN_EVENT_HARD_CAP > 200);
+  assert.ok(arena.SEEN_EVENT_TTL_MS >= arena.DEFAULT_TOURNAMENT_MS);
+
+  let state = arena.createArenaState({ scoringMode: "fair" });
+  const first = arena.ingestArenaActivity(state, {
+    platform: "kick",
+    eventType: "GIFT",
+    userLabel: "Donor",
+    miaPoints: 50000,
+    eventId: "durable-whale"
+  });
+  assert.equal(first.applied, true);
+  assert.equal(first.state.platforms.kick.miaPoints, arena.FAIR_PAID_SCORE_CAP);
+  state = first.state;
+
+  for (let i = 0; i < 201; i += 1) {
+    const newer = arena.ingestArenaActivity(state, {
+      platform: "tiktok",
+      eventType: "COMMENT",
+      userLabel: "Crowd",
+      eventId: `newer-score-${i}`
+    });
+    assert.equal(newer.applied, true);
+    state = newer.state;
+  }
+
+  const replay = arena.ingestArenaActivity(state, {
+    platform: "kick",
+    eventType: "GIFT",
+    userLabel: "Donor",
+    miaPoints: 50000,
+    eventId: "durable-whale"
+  });
+  assert.equal(replay.applied, false);
+  assert.equal(replay.reason, "duplicate_event");
+  assert.equal(replay.state.platforms.kick.miaPoints, arena.FAIR_PAID_SCORE_CAP);
+
+  const restored = arena.createArenaState(JSON.parse(JSON.stringify(replay.state)));
+  const afterRestore = arena.ingestArenaActivity(restored, {
+    platform: "kick",
+    eventType: "GIFT",
+    userLabel: "Donor",
+    miaPoints: 50000,
+    eventId: "durable-whale"
+  });
+  assert.equal(afterRestore.applied, false);
+  assert.equal(afterRestore.reason, "duplicate_event");
+});
+
+test("legacy string event ids stay duplicate-protected", () => {
+  const state = arena.createArenaState({
+    seenEventIds: ["legacy-id"]
+  });
+  const replay = arena.ingestArenaActivity(state, {
+    platform: "youtube",
+    eventType: "COMMENT",
+    userLabel: "A",
+    eventId: "legacy-id"
+  });
+  assert.equal(replay.applied, false);
+  assert.equal(replay.reason, "duplicate_event");
+  assert.equal(replay.state.platforms.youtube.miaPoints, 0);
+});
+
+test("event id older than the dedup window can score again", () => {
+  let state = arena.createArenaState();
+  state = arena.ingestArenaActivity(state, {
+    platform: "twitch",
+    eventType: "COMMENT",
+    userLabel: "A",
+    eventId: "expired-id"
+  }).state;
+  state.seenEventIds = state.seenEventIds.map((row) =>
+    row.id === "expired-id"
+      ? { id: row.id, at: Date.now() - arena.SEEN_EVENT_TTL_MS - 1000 }
+      : row
+  );
+  const again = arena.ingestArenaActivity(state, {
+    platform: "twitch",
+    eventType: "COMMENT",
+    userLabel: "A",
+    eventId: "expired-id"
+  });
+  assert.equal(again.applied, true);
+  assert.equal(again.points, 2);
+  assert.equal(again.state.platforms.twitch.events, 2);
+});
+
+test("battle event id still blocks after more than 200 newer battles", () => {
+  let state = primeActiveDuel("classic", 5000);
+  const first = arena.pushPlatformBattleAction(state, {
+    platform: "kick",
+    eventType: "GIFT",
+    userLabel: "Donor",
+    miaPoints: 80,
+    eventId: "durable-battle"
+  });
+  assert.equal(first.reason, "ok");
+  state = first.state;
+
+  for (let i = 0; i < 201; i += 1) {
+    state.duel.lastActionAt = 0;
+    state.duel.energy.kick = 100;
+    const newer = arena.pushPlatformBattleAction(state, {
+      platform: "kick",
+      eventType: "GIFT",
+      userLabel: "Donor",
+      miaPoints: 20,
+      eventId: `newer-battle-${i}`
+    });
+    assert.equal(newer.reason, "ok", `newer-battle-${i}`);
+    state = newer.state;
+  }
+
+  const before = pointsOf(state);
+  state.duel.lastActionAt = 0;
+  state.duel.energy.kick = 100;
+  const replay = arena.pushPlatformBattleAction(state, {
+    platform: "kick",
+    eventType: "GIFT",
+    userLabel: "Donor",
+    miaPoints: 50000,
+    eventId: "durable-battle"
+  });
+  assert.equal(replay.reason, "duplicate_event");
+  assert.equal(replay.action, null);
+  assert.deepEqual(pointsOf(replay.state), before);
+  assert.equal(replay.state.duel.energy.kick, 100);
+});
+
 if (!process.exitCode) {
   console.log("platform_arena_contract: all passed");
 }

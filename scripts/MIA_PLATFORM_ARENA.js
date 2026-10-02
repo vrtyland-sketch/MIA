@@ -33,7 +33,14 @@ const FAIR_PAID_SCORE_CAP = 4;
 const FAIR_PAID_ENERGY_GAIN = 8;
 const FAIR_BATTLE_POWER_PER_TARGET = arenaBattle.FAIR_BATTLE_POWER_PER_TARGET;
 const FAIR_BATTLE_TOTAL_SWING_CAP = arenaBattle.FAIR_BATTLE_TOTAL_SWING_CAP;
-const SEEN_EVENT_LIMIT = 200;
+
+/**
+ * Duplicate event ids are remembered for a bounded time and saved with the
+ * arena state. A newer flood must not forget an id that is still inside the
+ * window. The hard cap only stops unbounded growth during that window.
+ */
+const SEEN_EVENT_TTL_MS = 6 * 60 * 60 * 1000;
+const SEEN_EVENT_HARD_CAP = 4000;
 
 function envFlag(name) {
   const v = String(process.env[name] || "").trim().toLowerCase();
@@ -243,12 +250,8 @@ function createArenaState(seed = {}) {
     },
     users: seed.users && typeof seed.users === "object" ? seed.users : {},
     scoringMode: normalizeScoringMode(seed.scoringMode),
-    seenEventIds: Array.isArray(seed.seenEventIds)
-      ? seed.seenEventIds.map((id) => safeString(id)).filter(Boolean).slice(-SEEN_EVENT_LIMIT)
-      : [],
-    seenBattleEventIds: Array.isArray(seed.seenBattleEventIds)
-      ? seed.seenBattleEventIds.map((id) => safeString(id)).filter(Boolean).slice(-SEEN_EVENT_LIMIT)
-      : [],
+    seenEventIds: normalizeSeenEvents(seed.seenEventIds),
+    seenBattleEventIds: normalizeSeenEvents(seed.seenBattleEventIds),
     battle:
       typeof arenaBattle.createBattleState === "function"
         ? arenaBattle.createBattleState(seed.battle || {})
@@ -320,6 +323,38 @@ function resolveActivityPoints(eventType, miaPoints, scoringMode = "classic") {
   return base;
 }
 
+function normalizeSeenEvents(list, now = nowTs()) {
+  if (!Array.isArray(list)) return [];
+  const byId = new Map();
+  for (const row of list) {
+    const id = safeString(typeof row === "string" ? row : row && row.id);
+    if (!id) continue;
+    const at = typeof row === "string" ? now : toNumber(row && row.at, now);
+    if (!Number.isFinite(at) || at <= 0) continue;
+    if (now - at > SEEN_EVENT_TTL_MS) continue;
+    const prev = byId.get(id);
+    if (!prev || at >= prev.at) byId.set(id, { id, at });
+  }
+  return [...byId.values()]
+    .sort((a, b) => a.at - b.at || (a.id < b.id ? -1 : 1))
+    .slice(-SEEN_EVENT_HARD_CAP);
+}
+
+function hasSeenEvent(list, eventId, now = nowTs()) {
+  const id = safeString(eventId);
+  if (!id) return false;
+  return normalizeSeenEvents(list, now).some((row) => row.id === id);
+}
+
+function rememberSeenEvent(list, eventId, now = nowTs()) {
+  const id = safeString(eventId);
+  const next = normalizeSeenEvents(list, now);
+  if (!id) return next;
+  const kept = next.filter((row) => row.id !== id);
+  kept.push({ id, at: now });
+  return kept.slice(-SEEN_EVENT_HARD_CAP);
+}
+
 function emptyEnergyMap() {
   const energy = {};
   for (const id of PLATFORMS) energy[id] = 0;
@@ -338,7 +373,7 @@ function ingestArenaActivity(state, payload = {}) {
   const eventType = safeString(payload.eventType, "COMMENT").toUpperCase();
   const userLabel = safeString(payload.userLabel, "divák");
   const eventId = safeString(payload.eventId);
-  if (eventId && next.seenEventIds.includes(eventId)) {
+  if (eventId && hasSeenEvent(next.seenEventIds, eventId)) {
     return {
       state: next,
       applied: false,
@@ -353,7 +388,7 @@ function ingestArenaActivity(state, payload = {}) {
   if (points <= 0) return { state: next, applied: false, reason: "no_points" };
 
   if (eventId) {
-    next.seenEventIds = next.seenEventIds.concat(eventId).slice(-SEEN_EVENT_LIMIT);
+    next.seenEventIds = rememberSeenEvent(next.seenEventIds, eventId);
   }
 
   const row = next.platforms[platform];
@@ -424,7 +459,7 @@ function pushPlatformBattleAction(state, payload = {}) {
   }
 
   const eventId = safeString(payload.eventId);
-  if (eventId && next.seenBattleEventIds.includes(eventId)) {
+  if (eventId && hasSeenEvent(next.seenBattleEventIds, eventId, now)) {
     return { state: next, action: null, reason: "duplicate_event" };
   }
 
@@ -484,7 +519,7 @@ function pushPlatformBattleAction(state, payload = {}) {
   }
 
   if (eventId && action) {
-    next.seenBattleEventIds = next.seenBattleEventIds.concat(eventId).slice(-SEEN_EVENT_LIMIT);
+    next.seenBattleEventIds = rememberSeenEvent(next.seenBattleEventIds, eventId, now);
   }
   if (next.duel.active) {
     next.duel.lastActionAt = now;
@@ -763,6 +798,8 @@ module.exports = {
   FAIR_PAID_ENERGY_GAIN,
   FAIR_BATTLE_POWER_PER_TARGET,
   FAIR_BATTLE_TOTAL_SWING_CAP,
+  SEEN_EVENT_TTL_MS,
+  SEEN_EVENT_HARD_CAP,
   STATE_PATH,
   normalizeScoringMode,
   resolveActivityPoints,
