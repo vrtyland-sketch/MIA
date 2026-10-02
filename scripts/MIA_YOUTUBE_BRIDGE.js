@@ -14,6 +14,7 @@ const ACTIVE = {
   timer: null,
   started: false,
   closedByUser: false,
+  inFlight: false,
   pageToken: "",
   liveChatId: "",
   dedupe: new Map(),
@@ -36,14 +37,24 @@ function safeString(v, fb = "") {
   return typeof v === "string" && v.trim() ? v.trim() : fb;
 }
 
-function rememberDedupe(key, ttlMs = 120_000) {
-  const now = Date.now();
-  for (const [k, exp] of ACTIVE.dedupe.entries()) {
-    if (exp <= now) ACTIVE.dedupe.delete(k);
+function pruneDedupe(now = Date.now()) {
+  for (const [key, exp] of ACTIVE.dedupe.entries()) {
+    if (exp <= now) ACTIVE.dedupe.delete(key);
   }
-  if (!key || ACTIVE.dedupe.has(key)) return true;
+}
+
+function hasDelivered(key) {
+  if (!key) return false;
+  pruneDedupe();
+  return ACTIVE.dedupe.has(key);
+}
+
+function rememberDedupe(key, ttlMs = 120_000) {
+  if (!key) return false;
+  const now = Date.now();
+  pruneDedupe(now);
   ACTIVE.dedupe.set(key, now + ttlMs);
-  return false;
+  return true;
 }
 
 async function postToIngest(ingestUrl, payload, headers = {}) {
@@ -121,44 +132,86 @@ function mapChatItemToIngest(item = {}) {
   };
 }
 
-async function pollOnce(config, { onEvent, ingestUrl, ingestSecret }) {
+async function pollOnce(config = {}, options = {}) {
+  if (ACTIVE.inFlight) {
+    return { ok: false, skipped: true, reason: "in_flight" };
+  }
+
+  const { onEvent, ingestUrl, ingestSecret, fetchPage } = options;
   const apiKey = safeString(config.apiKey);
   const liveChatId = ACTIVE.liveChatId || safeString(config.liveChatId);
-  if (!apiKey || !liveChatId) return;
-
-  const res = await axios.get(`${YT_API}/liveChat/messages`, {
-    params: {
-      liveChatId,
-      part: "snippet,authorDetails",
-      maxResults: 50,
-      pageToken: ACTIVE.pageToken || undefined,
-      key: apiKey
-    },
-    timeout: 12000,
-    validateStatus: () => true
-  });
-
-  if (res.status >= 400) {
-    warn("poll failed", res.status, res.data?.error?.message || res.data);
-    return;
+  if (!apiKey || !liveChatId) {
+    return { ok: false, skipped: false, reason: "not_ready" };
   }
 
-  ACTIVE.pageToken = safeString(res.data?.nextPageToken) || ACTIVE.pageToken;
+  ACTIVE.inFlight = true;
+  const pageToken = ACTIVE.pageToken || "";
+  try {
+    const res =
+      typeof fetchPage === "function"
+        ? await fetchPage({ pageToken, liveChatId, apiKey })
+        : await axios.get(`${YT_API}/liveChat/messages`, {
+            params: {
+              liveChatId,
+              part: "snippet,authorDetails",
+              maxResults: 50,
+              pageToken: pageToken || undefined,
+              key: apiKey
+            },
+            timeout: 12000,
+            validateStatus: () => true
+          });
 
-  const items = Array.isArray(res.data?.items) ? res.data.items : [];
-  for (const item of items) {
-    const id = safeString(item.id);
-    if (rememberDedupe(id)) continue;
-    const payload = mapChatItemToIngest(item);
-    if (!payload) continue;
-
-    const headers = ingestSecret ? { "x-mia-ingest-secret": ingestSecret } : {};
-    if (typeof onEvent === "function") {
-      await onEvent(payload);
-    } else {
-      await postToIngest(ingestUrl, payload, headers);
+    if (res.status >= 400) {
+      warn("poll failed", res.status, res.data?.error?.message || res.data);
+      return { ok: false, skipped: false, reason: "http_error", status: res.status };
     }
+
+    const nextPageToken = safeString(res.data?.nextPageToken);
+    const items = Array.isArray(res.data?.items) ? res.data.items : [];
+    for (const item of items) {
+      const id = safeString(item.id);
+      if (!id || hasDelivered(id)) continue;
+
+      const payload = mapChatItemToIngest(item);
+      if (!payload) continue;
+
+      const headers = ingestSecret ? { "x-mia-ingest-secret": ingestSecret } : {};
+      if (typeof onEvent === "function") {
+        await onEvent(payload);
+      } else {
+        await postToIngest(ingestUrl, payload, headers);
+      }
+
+      rememberDedupe(id);
+    }
+
+    ACTIVE.pageToken = nextPageToken || ACTIVE.pageToken;
+    return { ok: true, skipped: false, pageToken: ACTIVE.pageToken };
+  } finally {
+    ACTIVE.inFlight = false;
   }
+}
+
+function getYouTubePollSnapshot() {
+  const now = Date.now();
+  return {
+    pageToken: ACTIVE.pageToken,
+    inFlight: ACTIVE.inFlight === true,
+    dedupe: [...ACTIVE.dedupe.entries()].map(([id, expiresAt]) => ({
+      id,
+      expiresAt,
+      ttlRemainingMs: expiresAt - now
+    }))
+  };
+}
+
+function resetYouTubePollState(seed = {}) {
+  ACTIVE.pageToken = safeString(seed.pageToken);
+  ACTIVE.liveChatId = safeString(seed.liveChatId);
+  ACTIVE.dedupe.clear();
+  ACTIVE.inFlight = false;
+  ACTIVE.closedByUser = false;
 }
 
 function stopYouTubeBridge() {
@@ -236,5 +289,8 @@ module.exports = {
   start,
   stop,
   mapChatItemToIngest,
-  resolveLiveChatId
+  resolveLiveChatId,
+  pollOnce,
+  getYouTubePollSnapshot,
+  resetYouTubePollState
 };
