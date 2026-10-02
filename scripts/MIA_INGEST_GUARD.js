@@ -153,7 +153,7 @@ function createIngestDeduper(deps = {}) {
       };
       if (appendJsonLog) {
         try {
-          appendJsonLog("ingest-deduped", {
+          appendJsonLog("ingest-identity", {
             eventType: "GIFT",
             duplicate: false,
             reason: untrusted.reason,

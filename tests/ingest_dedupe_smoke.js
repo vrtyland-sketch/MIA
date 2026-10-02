@@ -115,7 +115,10 @@ function run() {
   });
 
   test("replay of the same trusted gift event id is a duplicate", () => {
-    const guard = deduper();
+    const logs = [];
+    const guard = deduper({
+      appendJsonLog: (channel, entry) => logs.push({ channel, entry })
+    });
     const first = normalizeEvent(rose({ transactionId: "txn-9" }));
     const replay = normalizeEvent(rose({ transactionId: "txn-9" }));
 
@@ -126,6 +129,8 @@ function run() {
     assert.equal(duplicate.reason, "trusted_source_id");
     assert.equal(duplicate.trustedSourceId, "txn-9");
     assert.equal(duplicate.key, "tiktok|GIFT|txn-9");
+    assert.equal(logs.some((row) => row.channel === "ingest-deduped"), false);
+    assert.equal(logs.some((row) => row.channel === "ingest-identity"), false);
   });
 
   test("generic gift id is catalog identity and is not a trusted event id", () => {
@@ -177,8 +182,19 @@ function run() {
     assert.equal(second.duplicate, false);
     assert.equal(second.reason, "no_trusted_gift_source_id");
     assert.equal(logs.length, 2);
-    assert.ok(logs.every((row) => row.channel === "ingest-deduped"));
-    assert.ok(logs.every((row) => row.entry.reason === "no_trusted_gift_source_id"));
+    assert.equal(logs.some((row) => row.channel === "ingest-deduped"), false);
+    assert.ok(logs.every((row) => row.channel === "ingest-identity"));
+    assert.ok(
+      logs.every(
+        (row) =>
+          row.entry.eventType === "GIFT" &&
+          row.entry.duplicate === false &&
+          row.entry.identity === "untrusted" &&
+          row.entry.reason === "no_trusted_gift_source_id" &&
+          row.entry.platform === "tiktok" &&
+          row.entry.trustedSourceId === null
+      )
+    );
     assert.equal(guard.checkDuplicate(normalized).duplicate, false);
   });
 
