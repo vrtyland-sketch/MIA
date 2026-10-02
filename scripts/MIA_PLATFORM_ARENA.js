@@ -35,12 +35,22 @@ const FAIR_BATTLE_POWER_PER_TARGET = arenaBattle.FAIR_BATTLE_POWER_PER_TARGET;
 const FAIR_BATTLE_TOTAL_SWING_CAP = arenaBattle.FAIR_BATTLE_TOTAL_SWING_CAP;
 
 /**
- * Duplicate event ids are remembered for a bounded time and saved with the
- * arena state. A newer flood must not forget an id that is still inside the
- * window. The hard cap only stops unbounded growth during that window.
+ * Duplicate event ids stay protected until SEEN_EVENT_TTL_MS has elapsed
+ * and are saved with the arena state. An id leaves the record only when
+ * that TTL has expired. SEEN_EVENT_HARD_CAP is a diagnostic threshold:
+ * crossing it logs one warning and does not drop an unexpired id.
  */
 const SEEN_EVENT_TTL_MS = 6 * 60 * 60 * 1000;
 const SEEN_EVENT_HARD_CAP = 4000;
+let seenEventCapWarned = false;
+
+function warnIfSeenEventCapExceeded(count) {
+  if (seenEventCapWarned || count <= SEEN_EVENT_HARD_CAP) return;
+  seenEventCapWarned = true;
+  console.warn(
+    `[platform-arena] ${count} duplicate ids are still inside the ${SEEN_EVENT_TTL_MS}ms window, above diagnostic threshold ${SEEN_EVENT_HARD_CAP}. Unexpired ids stay protected.`
+  );
+}
 
 function envFlag(name) {
   const v = String(process.env[name] || "").trim().toLowerCase();
@@ -335,9 +345,10 @@ function normalizeSeenEvents(list, now = nowTs()) {
     const prev = byId.get(id);
     if (!prev || at >= prev.at) byId.set(id, { id, at });
   }
-  return [...byId.values()]
-    .sort((a, b) => a.at - b.at || (a.id < b.id ? -1 : 1))
-    .slice(-SEEN_EVENT_HARD_CAP);
+  const kept = [...byId.values()]
+    .sort((a, b) => a.at - b.at || (a.id < b.id ? -1 : 1));
+  warnIfSeenEventCapExceeded(kept.length);
+  return kept;
 }
 
 function hasSeenEvent(list, eventId, now = nowTs()) {
@@ -352,7 +363,8 @@ function rememberSeenEvent(list, eventId, now = nowTs()) {
   if (!id) return next;
   const kept = next.filter((row) => row.id !== id);
   kept.push({ id, at: now });
-  return kept.slice(-SEEN_EVENT_HARD_CAP);
+  warnIfSeenEventCapExceeded(kept.length);
+  return kept;
 }
 
 function emptyEnergyMap() {
