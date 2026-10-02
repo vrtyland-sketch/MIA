@@ -180,6 +180,9 @@
     "test:stream-ready": "node scripts/run_preflight_tests.js --full && node tests/media_catalog_contract.js",
     "generate:story-assets": "node scripts/kojnozrout_generate_story_assets.js"
   },
+  "overrides": {
+    "qs": "6.16.0"
+  },
   "dependencies": {
     "axios": "^1.14.0",
     "cors": "^2.8.6",
