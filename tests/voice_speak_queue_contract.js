@@ -440,6 +440,137 @@ async function run() {
       });
     });
 
+    await test("six stale chats are pruned before a fresh proactive is admitted", async () => {
+      await withClock(async (clock) => {
+        const harness = createQueueHarness();
+        harness.setHold(60000);
+        await harness.anchorPlayback();
+        for (let i = 1; i <= 6; i += 1) {
+          await harness.say(`stale-chat-${i}`, chatAction(`stale-chat-${i}`));
+        }
+        assert.equal(harness.api.getVoiceSpeakQueueLength(), 6);
+        clock.advance(10001);
+        await harness.say("fresh-proactive", {
+          route: "community",
+          responseContract: { intent: "proactive_host" },
+          meta: { source: "proactive_host", eventId: "fresh-proactive" }
+        });
+        assert.equal(harness.api.getVoiceSpeakQueueLength(), 1);
+        assert.deepEqual(droppedTexts(harness.logs), [
+          "stale-chat-1",
+          "stale-chat-2",
+          "stale-chat-3",
+          "stale-chat-4",
+          "stale-chat-5",
+          "stale-chat-6"
+        ]);
+        assert.ok(
+          droppedEntries(harness.logs).every((entry) => entry.reason === "stale_non_paid")
+        );
+        const queued = harness.logs.filter((entry) => entry.stage === "voice_speak_queued");
+        assert.equal(queued[queued.length - 1].textPreview, "fresh-proactive");
+        assert.equal(queued[queued.length - 1].voiceClass, "proactive");
+        await harness.release();
+        assert.deepEqual(
+          harness.spoken.filter((text) => text !== "anchor-speaking"),
+          ["fresh-proactive"]
+        );
+      });
+    });
+
+    await test("six stale chats are pruned before a fresh media line is admitted", async () => {
+      await withClock(async (clock) => {
+        const harness = createQueueHarness();
+        harness.setHold(60000);
+        await harness.anchorPlayback();
+        for (let i = 1; i <= 6; i += 1) {
+          await harness.say(`stale-chat-${i}`, chatAction(`stale-chat-${i}`));
+        }
+        clock.advance(10001);
+        await harness.say("fresh-media", {
+          route: "community",
+          responseContract: { intent: "streamer_media_ack" },
+          meta: { eventId: "fresh-media" }
+        });
+        assert.equal(harness.api.getVoiceSpeakQueueLength(), 1);
+        assert.equal(droppedEntries(harness.logs).length, 6);
+        assert.ok(
+          droppedEntries(harness.logs).every(
+            (entry) => entry.reason === "stale_non_paid" && entry.voiceClass === "chat"
+          )
+        );
+        await harness.release();
+        assert.deepEqual(
+          harness.spoken.filter((text) => text !== "anchor-speaking"),
+          ["fresh-media"]
+        );
+      });
+    });
+
+    await test("paid entries older than 10s stay through enqueue pruning", async () => {
+      await withClock(async (clock) => {
+        const harness = createQueueHarness();
+        harness.setHold(60000);
+        await harness.anchorPlayback();
+        for (let i = 1; i <= 6; i += 1) {
+          await harness.say(`old-gift-${i}`, paidAction(`old-gift-${i}`, { userId: `viewer-${i}` }));
+        }
+        clock.advance(15000);
+        await harness.say("fresh-proactive", {
+          route: "community",
+          responseContract: { intent: "proactive_host" },
+          meta: { source: "proactive_host", eventId: "fresh-proactive" }
+        });
+        assert.equal(harness.api.getVoiceSpeakQueueLength(), 6);
+        assert.deepEqual(droppedTexts(harness.logs), ["fresh-proactive"]);
+        assert.equal(
+          droppedEntries(harness.logs)[0].reason,
+          "drop_incoming_protect_paid_support"
+        );
+        assert.equal(
+          droppedEntries(harness.logs).some((entry) => entry.reason === "stale_non_paid"),
+          false
+        );
+        await harness.release();
+        assert.deepEqual(
+          harness.spoken.filter((text) => text.startsWith("old-gift-")),
+          ["old-gift-1", "old-gift-2", "old-gift-3", "old-gift-4", "old-gift-5", "old-gift-6"]
+        );
+      });
+    });
+
+    await test("enqueue pruning removes only stale non-paid entries", async () => {
+      await withClock(async (clock) => {
+        const harness = createQueueHarness();
+        harness.setHold(60000);
+        await harness.anchorPlayback();
+        await harness.say("paid-old", paidAction("paid-old"));
+        await harness.say("stale-chat", chatAction("stale-chat"));
+        await harness.say("stale-system", {
+          route: "voice",
+          meta: { source: "voice_command", eventId: "stale-system" }
+        });
+        clock.advance(6000);
+        await harness.say("live-chat", chatAction("live-chat"));
+        clock.advance(5001);
+        await harness.say("fresh-proactive", {
+          route: "community",
+          responseContract: { intent: "proactive_host" },
+          meta: { source: "proactive_host", eventId: "fresh-proactive" }
+        });
+        assert.deepEqual(droppedTexts(harness.logs), ["stale-chat", "stale-system"]);
+        assert.ok(
+          droppedEntries(harness.logs).every((entry) => entry.reason === "stale_non_paid")
+        );
+        assert.equal(harness.api.getVoiceSpeakQueueLength(), 3);
+        await harness.release();
+        assert.deepEqual(
+          harness.spoken.filter((text) => text !== "anchor-speaking"),
+          ["paid-old", "live-chat", "fresh-proactive"]
+        );
+      });
+    });
+
     await test("paid gift older than 10s stays eligible", async () => {
       await withClock(async (clock) => {
         const harness = createQueueHarness();

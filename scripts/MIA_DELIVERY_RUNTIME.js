@@ -236,6 +236,20 @@ function isStaleNonPaidVoice(entry, now = Date.now()) {
   return now - queuedAt > VOICE_SPEAK_STALE_MS;
 }
 
+function pruneStaleNonPaidVoice(now = Date.now()) {
+  let write = 0;
+  for (let read = 0; read < voiceSpeakQueue.length; read += 1) {
+    const item = voiceSpeakQueue[read];
+    if (isStaleNonPaidVoice(item, now)) {
+      logVoiceSpeakDrop(item, "stale_non_paid");
+      continue;
+    }
+    voiceSpeakQueue[write] = item;
+    write += 1;
+  }
+  voiceSpeakQueue.length = write;
+}
+
 function logVoiceSpeakDrop(entry, reason) {
   writeLog("mia-events", {
     ts: Date.now(),
@@ -1412,6 +1426,7 @@ function enqueueVoiceSpeak(actionResult = {}, plan = {}, options = {}) {
 
   function pushVoiceSpeakEntry(entryActionResult, entryPlan, entryPreempt) {
     const meta = buildVoiceQueueMeta(entryActionResult, entryPlan);
+    pruneStaleNonPaidVoice(meta.queuedAt);
 
     if (meta.eventId && queueHasEventId(meta.eventId)) {
       logVoiceSpeakDrop(
