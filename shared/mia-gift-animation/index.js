@@ -268,7 +268,14 @@ function startAskWords(input = {}) {
     void finalizeAskWords(null, { reason: "timeout" });
   }, timeoutMs + 50);
 
-  return { ok: true, pendingAsk, brief };
+  // One pass over the feed for a reply that arrived before this ask existed.
+  // Later replies are captured by ingest pushChatFeed -> tryCaptureWordsFromChat.
+  const queued = pollChatFeedForWords();
+  if (queued && typeof queued.then === "function") {
+    queued.catch(() => {});
+  }
+
+  return { ok: true, pendingAsk: getStatus().pendingAsk, brief };
 }
 
 async function finalizeAskWords(words, meta = {}) {

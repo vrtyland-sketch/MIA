@@ -126,14 +126,14 @@ function registerEyesRoutes(app, ctx = {}) {
     }
   });
 
-  app.post("/mia/koj/render-report", (req, res) => {
+  app.post("/mia/koj/render-report", localAdminGuard, (req, res) => {
     const body = req.body && typeof req.body === "object" ? req.body : {};
     kojRenderReport.last = body;
     kojRenderReport.receivedAt = Date.now();
     res.json({ ok: true });
   });
 
-  app.get("/mia/koj/render-report", (_req, res) => {
+  app.get("/mia/koj/render-report", localAdminGuard, (_req, res) => {
     const now = Date.now();
     const ageMs = kojRenderReport.receivedAt ? now - kojRenderReport.receivedAt : null;
     res.json({
@@ -437,14 +437,14 @@ function registerEyesRoutes(app, ctx = {}) {
     }
   });
 
-  app.post("/mia/speech/render-report", (req, res) => {
+  app.post("/mia/speech/render-report", localAdminGuard, (req, res) => {
     const body = req.body && typeof req.body === "object" ? req.body : {};
     speechRenderReport.last = body;
     speechRenderReport.receivedAt = Date.now();
     res.json({ ok: true });
   });
 
-  app.get("/mia/speech/render-report", (_req, res) => {
+  app.get("/mia/speech/render-report", localAdminGuard, (_req, res) => {
     const now = Date.now();
     const ageMs = speechRenderReport.receivedAt ? now - speechRenderReport.receivedAt : null;
     res.json({

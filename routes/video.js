@@ -199,7 +199,7 @@ function registerVideoRoutes(app, ctx = {}) {
     }
   });
 
-  app.get("/video/diag", async (_req, res) => {
+  app.get("/video/diag", localAdminGuard, async (_req, res) => {
     const giftScene = runtimeConfig?.obs?.sceneName || "SPINAK_ENGINE_GIFTS";
     const sampleSource = runtimeConfig?.obs?.tierSources?.T1?.[0] || "T1_VIDEO_01";
 

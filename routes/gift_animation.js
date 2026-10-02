@@ -79,8 +79,7 @@ function registerGiftAnimationRoutes(app, ctx = {}) {
         : null)
   });
 
-  app.get("/api/gift-animation/status", (_req, res) => {
-    giftAnim.pollChatFeedForWords();
+  app.get("/api/gift-animation/status", localAdminGuard, (_req, res) => {
     res.json(giftAnim.getStatus());
   });
 
@@ -136,8 +135,7 @@ function registerGiftAnimationRoutes(app, ctx = {}) {
     }
   });
 
-  app.get("/api/gift-animation/active", (_req, res) => {
-    giftAnim.pollChatFeedForWords();
+  app.get("/api/gift-animation/active", localAdminGuard, (_req, res) => {
     const status = giftAnim.getStatus();
     res.json({
       ok: true,
