@@ -2410,8 +2410,8 @@ async function deliverActionVoice(actionResult = {}) {
   return deliveryRuntime().deliverActionVoice(actionResult);
 }
 
-async function maybeDeliverMiaVoice(actionResult = {}, voicePlanOverride = null) {
-  return deliveryRuntime().maybeDeliverMiaVoice(actionResult, voicePlanOverride);
+async function maybeDeliverMiaVoice(actionResult = {}, voicePlanOverride = null, deliveryOptions = null) {
+  return deliveryRuntime().maybeDeliverMiaVoice(actionResult, voicePlanOverride, deliveryOptions);
 }
 
 function scheduleDeferredMiaVoice(actionResult = {}, delayMs = 0) {

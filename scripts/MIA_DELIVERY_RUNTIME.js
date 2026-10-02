@@ -1202,7 +1202,7 @@ async function executeVoicePlanDelivery(actionResult = {}, plan = {}, deliveryOp
     });
   }
 
-  if (plan?.source !== "startup_voice") {
+  if (plan?.source !== "startup_voice" && plan?.source !== "mia_say_remote") {
     mirrorSpeechOverlayFromVoice({
       speaker,
       text,
