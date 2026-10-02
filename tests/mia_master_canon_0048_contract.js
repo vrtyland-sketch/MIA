@@ -11,10 +11,7 @@ const battle = require("../shared/mia-battle-core");
 const world = require("../shared/mia-world-core");
 const community = require("../shared/mia-community-core");
 const architecture = require("../shared/mia-architecture-core");
-
-function pathExists(rel) {
-  return fs.existsSync(path.join(ROOT, rel));
-}
+const { assertRuntimeAnchors } = require("./runtime_anchor_assert");
 
 function read(rel) {
   return fs.readFileSync(path.join(ROOT, rel), "utf8");
@@ -152,9 +149,7 @@ function run() {
   assert.equal(streamSys.nextDocId, "0088");
   pass("stream system next doc 0049");
 
-  for (const rel of creature.CVE_RUNTIME_ANCHORS) {
-    assert.ok(pathExists(rel), `anchor exists: ${rel}`);
-  }
+  assertRuntimeAnchors(creature.CVE_RUNTIME_ANCHORS);
   pass("runtime anchors");
 
   const readme = read("docs/master-canon/README.md");

@@ -14,10 +14,7 @@ const inventory = require("../shared/mia-inventory-core");
 const personality = require("../shared/mia-personality-core");
 const emotion = require("../shared/mia-emotion-core");
 const architecture = require("../shared/mia-architecture-core");
-
-function pathExists(rel) {
-  return fs.existsSync(path.join(ROOT, rel));
-}
+const { assertRuntimeAnchors } = require("./runtime_anchor_assert");
 
 function read(rel) {
   return fs.readFileSync(path.join(ROOT, rel), "utf8");
@@ -214,9 +211,7 @@ function run() {
   assert.equal(gameSys.nextDocId, "0088");
   pass("game system next doc 0048");
 
-  for (const rel of character.CE_RUNTIME_ANCHORS) {
-    assert.ok(pathExists(rel), `anchor exists: ${rel}`);
-  }
+  assertRuntimeAnchors(character.CE_RUNTIME_ANCHORS);
   pass("runtime anchors");
 
   const readme = read("docs/master-canon/README.md");
