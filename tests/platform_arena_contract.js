@@ -1,6 +1,10 @@
 "use strict";
 
 const assert = require("assert");
+const fs = require("fs");
+const os = require("os");
+const path = require("path");
+const { spawnSync } = require("child_process");
 const arena = require("../scripts/MIA_PLATFORM_ARENA");
 
 function test(name, fn) {
@@ -608,6 +612,270 @@ test("battle event id still blocks after more than 200 newer battles", () => {
     eventId: "durable-battle"
   });
   assert.equal(replay.reason, "duplicate_event");
+  assert.equal(replay.action, null);
+  assert.deepEqual(pointsOf(replay.state), before);
+  assert.equal(replay.state.duel.energy.kick, 100);
+});
+
+test("duplicate replay just before the 6h window still blocks", () => {
+  let state = arena.ingestArenaActivity(arena.createArenaState(), {
+    platform: "youtube",
+    eventType: "COMMENT",
+    userLabel: "A",
+    eventId: "almost-expired"
+  }).state;
+  // One second inside the TTL. Equality with the TTL is still valid (`>`),
+  // and a 1s margin stays inside even if the clock moves during the replay.
+  const at = Date.now() - arena.SEEN_EVENT_TTL_MS + 1000;
+  state.seenEventIds = state.seenEventIds.map((row) =>
+    row.id === "almost-expired" ? { id: row.id, at } : row
+  );
+  const replay = arena.ingestArenaActivity(state, {
+    platform: "youtube",
+    eventType: "COMMENT",
+    userLabel: "A",
+    eventId: "almost-expired"
+  });
+  assert.equal(replay.applied, false);
+  assert.equal(replay.reason, "duplicate_event");
+  assert.equal(replay.state.platforms.youtube.miaPoints, 2);
+  const kept = replay.state.seenEventIds.find((row) => row.id === "almost-expired");
+  assert.ok(kept);
+  assert.ok(Date.now() - kept.at <= arena.SEEN_EVENT_TTL_MS);
+});
+
+test("replay just after the 6h window can score again", () => {
+  let state = arena.ingestArenaActivity(arena.createArenaState(), {
+    platform: "twitch",
+    eventType: "COMMENT",
+    userLabel: "A",
+    eventId: "just-expired"
+  }).state;
+  state.seenEventIds = state.seenEventIds.map((row) =>
+    row.id === "just-expired"
+      ? { id: row.id, at: Date.now() - arena.SEEN_EVENT_TTL_MS - 1 }
+      : row
+  );
+  const again = arena.ingestArenaActivity(state, {
+    platform: "twitch",
+    eventType: "COMMENT",
+    userLabel: "A",
+    eventId: "just-expired"
+  });
+  assert.equal(again.applied, true);
+  assert.equal(again.points, 2);
+  assert.equal(again.state.platforms.twitch.events, 2);
+  assert.equal(again.state.platforms.twitch.miaPoints, 4);
+});
+
+test("persisted dedup state survives process restart", () => {
+  const file = path.join(os.tmpdir(), `mia-arena-dedup-restart-${process.pid}.json`);
+  try {
+    let state = arena.ingestArenaActivity(arena.createArenaState(), {
+      platform: "kick",
+      eventType: "COMMENT",
+      userLabel: "A",
+      eventId: "persist-score"
+    }).state;
+    state = arena.startArenaDuel(state, { durationMs: 300000, skipPhases: true });
+    for (const id of arena.PLATFORMS) {
+      state.platforms[id].miaPoints = 5000;
+      state.duel.energy[id] = 100;
+    }
+    state.duel.lastActionAt = 0;
+    const battle = arena.pushPlatformBattleAction(state, {
+      platform: "kick",
+      eventType: "GIFT",
+      userLabel: "Donor",
+      miaPoints: 20,
+      eventId: "persist-battle"
+    });
+    assert.equal(battle.reason, "ok");
+    arena.saveArenaState(battle.state, file);
+
+    const script = `
+      const arena = require(${JSON.stringify(require.resolve("../scripts/MIA_PLATFORM_ARENA"))});
+      const loaded = arena.loadArenaState(process.argv[1]);
+      const score = arena.ingestArenaActivity(loaded, {
+        platform: "kick",
+        eventType: "COMMENT",
+        userLabel: "A",
+        eventId: "persist-score"
+      });
+      const battleState = score.state;
+      battleState.duel.lastActionAt = 0;
+      battleState.duel.energy.kick = 100;
+      const battle = arena.pushPlatformBattleAction(battleState, {
+        platform: "kick",
+        eventType: "GIFT",
+        userLabel: "Donor",
+        miaPoints: 20,
+        eventId: "persist-battle"
+      });
+      process.stdout.write(JSON.stringify({
+        scoreApplied: score.applied,
+        scoreReason: score.reason,
+        scorePoints: score.state.platforms.kick.miaPoints,
+        battleReason: battle.reason,
+        battleAction: battle.action,
+        battleEnergy: battle.state.duel.energy.kick
+      }));
+    `;
+    const child = spawnSync(process.execPath, ["-e", script, file], {
+      encoding: "utf8"
+    });
+    assert.equal(child.status, 0, child.stderr || child.stdout);
+    const fresh = JSON.parse(child.stdout);
+    assert.equal(fresh.scoreApplied, false);
+    assert.equal(fresh.scoreReason, "duplicate_event");
+    assert.equal(fresh.scorePoints, battle.state.platforms.kick.miaPoints);
+    assert.equal(fresh.battleReason, "duplicate_event");
+    assert.equal(fresh.battleAction, null);
+    assert.equal(fresh.battleEnergy, 100);
+  } finally {
+    fs.rmSync(file, { force: true });
+  }
+});
+
+test("legacy string ids loaded from disk stay duplicate-protected", () => {
+  const file = path.join(os.tmpdir(), `mia-arena-dedup-legacy-${process.pid}.json`);
+  try {
+    fs.writeFileSync(file, JSON.stringify({
+      seenEventIds: ["legacy-file-id"],
+      seenBattleEventIds: ["legacy-file-battle"]
+    }));
+    const loaded = arena.loadArenaState(file);
+    assert.ok(loaded.seenEventIds.some((row) => row.id === "legacy-file-id" && row.at > 0));
+    assert.ok(loaded.seenBattleEventIds.some((row) => row.id === "legacy-file-battle" && row.at > 0));
+
+    const replay = arena.ingestArenaActivity(loaded, {
+      platform: "youtube",
+      eventType: "COMMENT",
+      userLabel: "A",
+      eventId: "legacy-file-id"
+    });
+    assert.equal(replay.applied, false);
+    assert.equal(replay.reason, "duplicate_event");
+    assert.equal(replay.state.platforms.youtube.miaPoints, 0);
+
+    let battleState = arena.startArenaDuel(loaded, { durationMs: 300000, skipPhases: true });
+    for (const id of arena.PLATFORMS) {
+      battleState.platforms[id].miaPoints = 1000;
+      battleState.duel.energy[id] = 100;
+    }
+    battleState.duel.lastActionAt = 0;
+    const battle = arena.pushPlatformBattleAction(battleState, {
+      platform: "kick",
+      eventType: "GIFT",
+      userLabel: "Donor",
+      miaPoints: 20,
+      eventId: "legacy-file-battle"
+    });
+    assert.equal(battle.reason, "duplicate_event");
+    assert.equal(battle.action, null);
+    assert.equal(battle.state.duel.energy.kick, 100);
+  } finally {
+    fs.rmSync(file, { force: true });
+  }
+});
+
+test("more than 4000 unique score events inside 6h do not forget a still-valid id", () => {
+  const originalId = "cap-score-original";
+  let state = arena.createArenaState();
+  const first = arena.ingestArenaActivity(state, {
+    platform: "kick",
+    eventType: "COMMENT",
+    userLabel: "A",
+    eventId: originalId
+  });
+  assert.equal(first.applied, true);
+  state = first.state;
+  const originalAt = state.seenEventIds.find((row) => row.id === originalId).at;
+  const flood = arena.SEEN_EVENT_HARD_CAP;
+  for (let i = 0; i < flood; i += 1) {
+    const newer = arena.ingestArenaActivity(state, {
+      platform: "tiktok",
+      eventType: "COMMENT",
+      userLabel: "Crowd",
+      eventId: `cap-score-${i}`
+    });
+    assert.equal(newer.applied, true, `cap-score-${i}`);
+    state = newer.state;
+  }
+  const ageMs = Date.now() - originalAt;
+  assert.ok(ageMs < arena.SEEN_EVENT_TTL_MS, `fixture left the 6h window: ageMs=${ageMs}`);
+  const ids = [originalId];
+  for (let i = 0; i < flood; i += 1) ids.push(`cap-score-${i}`);
+  const storedIds = new Set(state.seenEventIds.map((row) => row.id));
+  const missing = ids.filter((id) => !storedIds.has(id));
+  const dropped = missing[0] || originalId;
+  const beforePoints = state.platforms.kick.miaPoints;
+  const replay = arena.ingestArenaActivity(state, {
+    platform: "kick",
+    eventType: "COMMENT",
+    userLabel: "A",
+    eventId: dropped
+  });
+  assert.equal(
+    replay.reason,
+    "duplicate_event",
+    `cap accepted ${dropped} again after ${ids.length} unique in-window ids; missing=${missing.length}; ageMs=${ageMs}; ttlMs=${arena.SEEN_EVENT_TTL_MS}; stored=${state.seenEventIds.length}; applied=${replay.applied}; kickPoints=${replay.state.platforms.kick.miaPoints}; beforePoints=${beforePoints}`
+  );
+  assert.equal(replay.applied, false);
+  assert.equal(replay.state.platforms.kick.miaPoints, beforePoints);
+});
+
+test("more than 4000 unique battle ids inside 6h do not forget a still-valid id", () => {
+  const originalId = "cap-battle-original";
+  let state = primeActiveDuel("classic", 100000);
+  state.duel.endsAt = Date.now() + 60 * 60 * 1000;
+  state.duel.lastActionAt = 0;
+  const first = arena.pushPlatformBattleAction(state, {
+    platform: "kick",
+    eventType: "GIFT",
+    userLabel: "Donor",
+    miaPoints: 20,
+    eventId: originalId
+  });
+  assert.equal(first.reason, "ok");
+  state = first.state;
+  const originalAt = state.seenBattleEventIds.find((row) => row.id === originalId).at;
+  const flood = arena.SEEN_EVENT_HARD_CAP;
+  for (let i = 0; i < flood; i += 1) {
+    state.duel.lastActionAt = 0;
+    state.duel.energy.kick = 100;
+    const newer = arena.pushPlatformBattleAction(state, {
+      platform: "kick",
+      eventType: "GIFT",
+      userLabel: "Donor",
+      miaPoints: 20,
+      eventId: `cap-battle-${i}`
+    });
+    assert.equal(newer.reason, "ok", `cap-battle-${i}`);
+    state = newer.state;
+  }
+  const ageMs = Date.now() - originalAt;
+  assert.ok(ageMs < arena.SEEN_EVENT_TTL_MS, `fixture left the 6h window: ageMs=${ageMs}`);
+  const ids = [originalId];
+  for (let i = 0; i < flood; i += 1) ids.push(`cap-battle-${i}`);
+  const storedIds = new Set(state.seenBattleEventIds.map((row) => row.id));
+  const missing = ids.filter((id) => !storedIds.has(id));
+  const dropped = missing[0] || originalId;
+  const before = pointsOf(state);
+  state.duel.lastActionAt = 0;
+  state.duel.energy.kick = 100;
+  const replay = arena.pushPlatformBattleAction(state, {
+    platform: "kick",
+    eventType: "GIFT",
+    userLabel: "Donor",
+    miaPoints: 50000,
+    eventId: dropped
+  });
+  assert.equal(
+    replay.reason,
+    "duplicate_event",
+    `cap accepted battle ${dropped} again after ${ids.length} unique in-window ids; missing=${missing.length}; ageMs=${ageMs}; ttlMs=${arena.SEEN_EVENT_TTL_MS}; stored=${state.seenBattleEventIds.length}; energy=${replay.state.duel.energy.kick}; points=${JSON.stringify(pointsOf(replay.state))}; before=${JSON.stringify(before)}`
+  );
   assert.equal(replay.action, null);
   assert.deepEqual(pointsOf(replay.state), before);
   assert.equal(replay.state.duel.energy.kick, 100);
