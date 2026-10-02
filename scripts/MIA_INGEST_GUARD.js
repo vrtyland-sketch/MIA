@@ -1,5 +1,7 @@
 "use strict";
 
+const { readTrustedGiftSourceId } = require("../shared/platform_normalizers/normalize_event");
+
 function isEmptyScalar(value) {
   if (value === null || value === undefined) {
     return true;
@@ -51,9 +53,47 @@ function safeString(value, fallback = "") {
   return typeof value === "string" && value.trim() ? value.trim() : fallback;
 }
 
+function readExplicitId(value) {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return String(value);
+  }
+  if (typeof value === "string" && value.trim()) {
+    return value.trim();
+  }
+  return "";
+}
+
+function resolveGiftTrustedSourceId(normalized = {}) {
+  const direct = readExplicitId(normalized.trustedSourceId);
+  if (direct) return direct;
+
+  const fromRaw = readTrustedGiftSourceId(normalized.raw || {});
+  if (fromRaw) return fromRaw;
+
+  const fromSanitized = readTrustedGiftSourceId(normalized.sanitizedRaw || {});
+  if (fromSanitized) return fromSanitized;
+
+  if (normalized.eventIdentityTrusted === true) {
+    return readExplicitId(normalized.eventId);
+  }
+
+  return readTrustedGiftSourceId({
+    messageId: normalized.messageId,
+    msgId: normalized.msgId,
+    uuid: normalized.uuid,
+    transactionId: normalized.transactionId
+  });
+}
+
 function createIngestDeduper(deps = {}) {
   const windowMs = Math.max(1000, Number(deps.windowMs || 4500));
   const nowTs = typeof deps.nowTs === "function" ? deps.nowTs : () => Date.now();
+  const appendJsonLog =
+    typeof deps.appendJsonLog === "function"
+      ? deps.appendJsonLog
+      : typeof deps.writeLog === "function"
+        ? deps.writeLog
+        : null;
   const recent = new Map();
 
   function prune(now) {
@@ -74,15 +114,9 @@ function createIngestDeduper(deps = {}) {
     ).toLowerCase();
 
     if (eventType === "GIFT") {
-      const support = normalized.support || {};
-      return [
-        platform,
-        eventType,
-        userKey,
-        safeString(support.giftId || support.giftName, "gift").toLowerCase(),
-        String(support.coins ?? support.totalCoins ?? 0),
-        String(support.repeatCount ?? 1)
-      ].join("|");
+      const trustedSourceId = resolveGiftTrustedSourceId(normalized);
+      if (!trustedSourceId) return null;
+      return [platform, eventType, trustedSourceId].join("|");
     }
 
     const message = safeString(
@@ -108,6 +142,32 @@ function createIngestDeduper(deps = {}) {
     prune(now);
 
     const key = buildDedupeKey(normalized);
+    if (!key && safeString(normalized.eventType || normalized.type, "UNKNOWN").toUpperCase() === "GIFT") {
+      const untrusted = {
+        duplicate: false,
+        key: null,
+        windowMs,
+        trustedSourceId: null,
+        identity: "untrusted",
+        reason: "no_trusted_gift_source_id"
+      };
+      if (appendJsonLog) {
+        try {
+          appendJsonLog("ingest-deduped", {
+            eventType: "GIFT",
+            duplicate: false,
+            reason: untrusted.reason,
+            identity: untrusted.identity,
+            trustedSourceId: null,
+            platform: safeString(normalized.platform, "unknown").toLowerCase()
+          });
+        } catch (_err) {
+          /* identity reporting must not block ingest */
+        }
+      }
+      return untrusted;
+    }
+
     const seenAt = recent.get(key);
 
     if (seenAt && now - seenAt < windowMs) {
@@ -115,16 +175,27 @@ function createIngestDeduper(deps = {}) {
         duplicate: true,
         key,
         ageMs: now - seenAt,
-        windowMs
+        windowMs,
+        trustedSourceId: resolveGiftTrustedSourceId(normalized) || null,
+        identity: safeString(normalized.eventType || normalized.type).toUpperCase() === "GIFT"
+          ? "trusted"
+          : null,
+        reason: safeString(normalized.eventType || normalized.type).toUpperCase() === "GIFT"
+          ? "trusted_source_id"
+          : null
       };
     }
 
     recent.set(key, now);
 
+    const eventType = safeString(normalized.eventType || normalized.type, "UNKNOWN").toUpperCase();
     return {
       duplicate: false,
       key,
-      windowMs
+      windowMs,
+      trustedSourceId: eventType === "GIFT" ? resolveGiftTrustedSourceId(normalized) || null : null,
+      identity: eventType === "GIFT" ? "trusted" : null,
+      reason: eventType === "GIFT" ? "trusted_source_id" : null
     };
   }
 

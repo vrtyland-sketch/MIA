@@ -50,6 +50,34 @@ function pickFirstString(...values) {
   return "";
 }
 
+function readExplicitId(value) {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return String(value);
+  }
+  if (typeof value === "string" && value.trim()) {
+    return value.trim();
+  }
+  return "";
+}
+
+// Explicit gift event/transaction ids. Generic payload `id` is a catalog id, not an event.
+const GIFT_TRUSTED_SOURCE_FIELDS = Object.freeze([
+  "eventId",
+  "messageId",
+  "msgId",
+  "uuid",
+  "transactionId"
+]);
+
+function readTrustedGiftSourceId(input = {}) {
+  if (!input || typeof input !== "object") return "";
+  for (const field of GIFT_TRUSTED_SOURCE_FIELDS) {
+    const id = readExplicitId(input[field]);
+    if (id) return id;
+  }
+  return "";
+}
+
 function clone(value) {
   return JSON.parse(JSON.stringify(value));
 }
@@ -533,6 +561,7 @@ function buildSupportPayload(input = {}) {
     coins;
 
   return {
+    // `id` stays a catalog fallback. It is not a trusted gift event id.
     giftId: input.giftId ?? input.id ?? null,
     giftName: pickFirstString(input.giftName, input.gift, input.name, input.value1),
     coins,
@@ -621,14 +650,17 @@ function sanitizeRawInput(input = {}, eventType = "UNKNOWN") {
 
 function buildEventIdentity(input = {}, platform = "unknown", eventType = "UNKNOWN", user = null) {
   const ts = nowTs();
+  const giftTrustedSourceId = eventType === "GIFT" ? readTrustedGiftSourceId(input) : "";
 
-  const sourceEventId = pickFirstString(
-    input.eventId,
-    input.messageId,
-    input.id,
-    input.uuid,
-    input.traceId
-  );
+  const sourceEventId = eventType === "GIFT"
+    ? giftTrustedSourceId
+    : pickFirstString(
+        input.eventId,
+        input.messageId,
+        input.id,
+        input.uuid,
+        input.traceId
+      );
 
   const userPart =
     user && user.userId !== null && user.userId !== undefined
@@ -663,7 +695,9 @@ function buildEventIdentity(input = {}, platform = "unknown", eventType = "UNKNO
     ts,
     isoTime: new Date(ts).toISOString(),
     eventId,
-    traceId
+    traceId,
+    trustedSourceId: eventType === "GIFT" ? (giftTrustedSourceId || null) : null,
+    eventIdentityTrusted: eventType === "GIFT" ? Boolean(giftTrustedSourceId) : Boolean(sourceEventId)
   };
 }
 
@@ -711,6 +745,8 @@ function normalizeEvent(input = {}) {
 
   if (eventType === "GIFT") {
     normalized.support = buildSupportPayload(sanitizedInput);
+    normalized.trustedSourceId = identity.trustedSourceId;
+    normalized.eventIdentityTrusted = identity.eventIdentityTrusted;
   }
 
   if (
@@ -738,6 +774,8 @@ module.exports = {
   normalizeUser,
   resolveStableUserId,
   buildSupportPayload,
+  GIFT_TRUSTED_SOURCE_FIELDS,
+  readTrustedGiftSourceId,
   buildCommunityImpact,
   getExplicitIntent,
   sanitizeRawInput
