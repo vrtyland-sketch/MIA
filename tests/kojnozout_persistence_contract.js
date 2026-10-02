@@ -361,7 +361,7 @@ async function run() {
       assert.equal(loadedKoj.feedPoints, 133);
       assert.equal(loadedKoj.bowlPercent, 42);
       assert.equal(loadedKoj.evolutionTier, "hatchling");
-      assert.equal(loadedKoj.updatedAt, undefined);
+      assert.equal(loadedKoj.updatedAt, 1700000000000);
       const loadedWorld = world.loadWorldSeed(worldFile);
       assert.equal(loadedWorld.ok, true);
       assert.equal(loadedWorld.reason, "primary");
@@ -429,6 +429,7 @@ async function run() {
       assert.equal(loadedKoj.bowlPercent, 80);
       assert.equal(loadedKoj.feedPoints, 500);
       assert.equal(loadedKoj.totalFeedEvents, 7);
+      assert.equal(loadedKoj.updatedAt, newerKoj.updatedAt);
       assert.equal(loadedWorld.ok, true);
       assert.equal(loadedWorld.recovered, true);
       assert.equal(loadedWorld.reason, "newest_backup");
@@ -437,6 +438,38 @@ async function run() {
       assert.equal(loadedWorld.backpack.items[0].qty, 4);
       assert.equal(loadedWorld.duel.active, true);
       assert.equal(loadedWorld.duel.score, 9);
+    } finally {
+      cleanup(dir);
+    }
+  });
+
+  await test("save stamps nextUpdatedAt and still round-trips explicit bowl zero", async () => {
+    const dir = makeDir();
+    const filePath = path.join(dir, "kojnozout-state.json");
+    try {
+      koj.loadPersistedSeed(filePath);
+      assert.equal(
+        koj.flushSaveKojnozoutState({
+          bowlPercent: 0,
+          hunger: 80,
+          mood: "hungry",
+          updatedAt: 1,
+          lastFedAt: 1
+        }),
+        true
+      );
+      const saved = readJson(filePath);
+      assert.equal(saved.bowlPercent, 0);
+      assert.equal(saved.hunger, 80);
+      assert.notEqual(saved.updatedAt, 1);
+      assert.ok(saved.updatedAt > 1);
+      assert.equal(koj.PERSISTED_FIELDS.includes("updatedAt"), false);
+      const loaded = koj.loadPersistedSeed(filePath);
+      assert.equal(loaded.bowlPercent, 0);
+      assert.equal(loaded.hunger, 80);
+      assert.equal(loaded.mood, "hungry");
+      assert.equal(loaded.updatedAt, saved.updatedAt);
+      assert.equal(loaded.lastFedAt, 1);
     } finally {
       cleanup(dir);
     }

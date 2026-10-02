@@ -117,7 +117,11 @@ function loadPersistedSeed(filePath = DEFAULT_STORE) {
   storePath = filePath || DEFAULT_STORE;
   const chosen = chooseNewestPayload(storePath);
   if (!chosen) return {};
-  return fieldsFromPayload(chosen);
+  const seed = fieldsFromPayload(chosen);
+  // Carry the clock chooseNewestPayload already used. Do not add updatedAt to
+  // PERSISTED_FIELDS: saves still stamp nextUpdatedAt() inside extractPersistedState.
+  if (chosen.updatedAt !== undefined) seed.updatedAt = chosen.updatedAt;
+  return seed;
 }
 
 function writeAllSync(fd, body) {

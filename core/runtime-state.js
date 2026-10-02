@@ -113,24 +113,30 @@ function loadRuntimeState(filePath = storePath) {
   }
 }
 
+function persistenceClock(value) {
+  if (value === undefined || value === null || value === "") return 0;
+  const n = Number(value);
+  return Number.isFinite(n) ? n : 0;
+}
+
 /**
  * Merge critical bits into an existing koj seed without replacing kojnozout-state.json.
+ * Runtime-state wins only when its koj snapshot is non-empty and its updatedAt is
+ * greater than or equal to the persisted file updatedAt. Explicit bowl 0 is a real
+ * value. A missing bowl field is not a missing snapshot, and lastFedAt is not the clock.
  */
 function composeKojSeed(kojPersistedSeed = {}, runtimeState = null) {
   const seed = { ...(kojPersistedSeed || {}) };
   const rs = runtimeState || loadRuntimeState();
   if (!rs || typeof rs !== "object") return seed;
 
-  const rsUpdated = toNumber(rs.updatedAt, 0);
-  const seedUpdated = toNumber(seed.updatedAt ?? seed.lastFedAt, 0);
+  const hasRuntimeKoj =
+    rs.koj && typeof rs.koj === "object" && Object.keys(rs.koj).length > 0;
+  if (!hasRuntimeKoj) return seed;
 
-  // Prefer runtime-state only when it looks fresher or seed is empty of bowl.
-  const seedBowl = toNumber(seed.bowlPercent ?? seed.bowlFillPercent, 0);
-  const useRuntime =
-    (rs.koj && typeof rs.koj === "object" && Object.keys(rs.koj).length > 0) &&
-    (rsUpdated >= seedUpdated || seedBowl <= 0);
-
-  if (!useRuntime) return seed;
+  const rsUpdated = persistenceClock(rs.updatedAt);
+  const seedUpdated = persistenceClock(seed.updatedAt);
+  if (rsUpdated < seedUpdated) return seed;
 
   for (const field of KOJ_CRITICAL_FIELDS) {
     if (rs.koj[field] !== undefined) seed[field] = rs.koj[field];
