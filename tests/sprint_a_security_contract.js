@@ -198,8 +198,8 @@ test("remaining control routes require localhost or ingest secret", () => {
     ["routes/obs.js", 'app.post("/obs/revive-voice", localAdminGuard'],
     ["routes/voice.js", 'app.post("/voice/command", localAdminGuard'],
     ["routes/debug.js", 'app.get("/gift-visual/test", debugRouteGuard'],
-    ["routes/overlay.js", 'app.get("/overlay/clear", localAdminGuard'],
-    ["routes/overlay.js", 'app.get("/overlay/test", localAdminGuard'],
+    ["routes/overlay.js", 'app.get("/overlay/clear", adminGuard'],
+    ["routes/overlay.js", 'app.get("/overlay/test", adminGuard'],
     ["routes/system.js", 'app.post("/streamer/identity/reset", localAdminGuard'],
     ["routes/solo_stream.js", 'app.post("/solo-stream/exit", localAdminGuard'],
     ["routes/video.js", 'app.get("/video/test", localAdminGuard'],
@@ -208,6 +208,9 @@ test("remaining control routes require localhost or ingest secret", () => {
     ["routes/arena.js", 'app.post("/duel/opponent-sync", duelSyncGuard'],
     ["routes/koj.js", 'app.post("/koj/test-mode", localAdminGuard'],
     ["routes/tts.js", 'app.get("/tts/test", localAdminGuard'],
+    ["routes/tts.js", 'app.get("/tts/compare", localAdminGuard'],
+    ["routes/overlay.js", 'app.get("/ping-overlay", adminGuard'],
+    ["routes/eyes.js", 'app.get("/mia/display/self-check", localAdminGuard'],
     ["routes/arena.js", 'app.post("/duel/opponent-points", localAdminGuard'],
     ["routes/eyes.js", 'app.get("/mia/eyes/scan", localAdminGuard'],
     ["routes/eyes.js", 'app.get("/mia/eyes/away", localAdminGuard'],
@@ -219,4 +222,10 @@ test("remaining control routes require localhost or ingest secret", () => {
   }
   const overlay = fs.readFileSync(path.join(ROOT, "routes/overlay.js"), "utf8");
   assert.match(overlay, /app\.get\("\/overlay-state", \(req, res\)/);
+  assert.match(overlay, /app\.post\("\/overlay\/layout", adminGuard, saveOverlayLayout\)/);
+  assert.match(overlay, /app\.post\("\/overlay\/layout\/reset", adminGuard, resetOverlayLayout\)/);
+  assert.match(overlay, /app\.post\("\/api\/rig-anchors", adminGuard, saveRigAnchors\)/);
+  assert.match(overlay, /const adminGuard = requireLocalAdminGuard\(localAdminGuard\)/);
+  assert.doesNotMatch(overlay, /app\.post\("\/overlay\/layout", saveOverlayLayout\)/);
+  assert.doesNotMatch(overlay, /app\.post\("\/api\/rig-anchors", saveRigAnchors\)/);
 });

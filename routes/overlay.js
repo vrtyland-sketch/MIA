@@ -6,6 +6,16 @@ const { validateApp, safeString } = require("./_helpers");
 
 const RIG_ANCHOR_CHARS = new Set(["koj", "mia"]);
 
+function requireLocalAdminGuard(guard) {
+  if (typeof guard === "function") return guard;
+  return (_req, res) => {
+    res.status(403).json({
+      ok: false,
+      error: "local_admin_guard_missing"
+    });
+  };
+}
+
 function registerOverlayRoutes(app, ctx = {}) {
   const check = validateApp(app);
   if (!check.ok) return check;
@@ -75,7 +85,9 @@ function registerOverlayRoutes(app, ctx = {}) {
     }
   });
 
-  app.get("/ping-overlay", async (_req, res) => {
+  const adminGuard = requireLocalAdminGuard(localAdminGuard);
+
+  app.get("/ping-overlay", adminGuard, async (_req, res) => {
     try {
       if (typeof executeOverlay !== "function") {
         return res.status(503).json({ ok: false, error: "overlay_unavailable" });
@@ -104,7 +116,7 @@ function registerOverlayRoutes(app, ctx = {}) {
     }
   });
 
-  app.get("/overlay/test", localAdminGuard, async (req, res) => {
+  app.get("/overlay/test", adminGuard, async (req, res) => {
     const testOverlay = setOverlay(
       {
         owner: "mia",
@@ -131,14 +143,14 @@ function registerOverlayRoutes(app, ctx = {}) {
     });
   });
 
-  app.post("/overlay/clear", localAdminGuard, (_req, res) => {
+  app.post("/overlay/clear", adminGuard, (_req, res) => {
     if (typeof ctx.resetOverlayState === "function") {
       ctx.resetOverlayState();
     }
     res.json({ ok: true });
   });
 
-  app.get("/overlay/clear", localAdminGuard, (_req, res) => {
+  app.get("/overlay/clear", adminGuard, (_req, res) => {
     if (typeof ctx.resetOverlayState === "function") {
       ctx.resetOverlayState();
     }
@@ -148,7 +160,7 @@ function registerOverlayRoutes(app, ctx = {}) {
   /**
    * Soft Neon Rig Desk — write anchors JSON next to static overlay assets.
    * Body: { characterId|character, artId?, idleAsset?, anchors|{…} }
-   * Local-admin when guard is configured; still usable on loopback installs.
+   * Local-admin only. A missing guard denies the write.
    */
   const saveRigAnchors = (req, res) => {
     try {
@@ -241,20 +253,11 @@ function registerOverlayRoutes(app, ctx = {}) {
       }
     };
 
-    if (typeof localAdminGuard === "function") {
-      app.post("/overlay/layout", localAdminGuard, saveOverlayLayout);
-      app.post("/overlay/layout/reset", localAdminGuard, resetOverlayLayout);
-    } else {
-      app.post("/overlay/layout", saveOverlayLayout);
-      app.post("/overlay/layout/reset", resetOverlayLayout);
-    }
+    app.post("/overlay/layout", adminGuard, saveOverlayLayout);
+    app.post("/overlay/layout/reset", adminGuard, resetOverlayLayout);
   }
 
-  if (typeof localAdminGuard === "function") {
-    app.post("/api/rig-anchors", localAdminGuard, saveRigAnchors);
-  } else {
-    app.post("/api/rig-anchors", saveRigAnchors);
-  }
+  app.post("/api/rig-anchors", adminGuard, saveRigAnchors);
   app.get("/api/rig-anchors/:characterId", (req, res) => {
     const characterId = safeString(req.params.characterId, "").toLowerCase();
     if (!RIG_ANCHOR_CHARS.has(characterId)) {

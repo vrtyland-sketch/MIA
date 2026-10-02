@@ -456,7 +456,7 @@ function registerEyesRoutes(app, ctx = {}) {
     });
   });
 
-  app.get("/mia/display/self-check", async (req, res) => {
+  app.get("/mia/display/self-check", localAdminGuard, async (req, res) => {
     if (!displayVisionModule || typeof displayVisionModule.analyzeLayout !== "function") {
       return res.status(503).json({ ok: false, error: "display_vision_unavailable" });
     }

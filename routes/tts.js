@@ -446,7 +446,7 @@ function registerTtsRoutes(app, ctx = {}) {
     }
   });
 
-  app.get("/tts/compare", async (_req, res) => {
+  app.get("/tts/compare", localAdminGuard, async (_req, res) => {
     try {
       if (!ttsEngine) {
         return res.status(503).json({ ok: false, error: "tts_engine_missing" });
