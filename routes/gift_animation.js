@@ -6,6 +6,16 @@ const { validateApp, safeString, mergeRoutes } = require("./_helpers");
  * Gift animation API — generate / ask-words / status for stream OBS use.
  */
 
+function closedLocalAdminGuard(guard) {
+  if (typeof guard === "function") return guard;
+  return function localAdminGuardUnavailable(_req, res) {
+    res.status(503).json({
+      ok: false,
+      error: "LOCAL_ADMIN_GUARD_UNAVAILABLE"
+    });
+  };
+}
+
 function registerGiftAnimationRoutes(app, ctx = {}) {
   const check = validateApp(app);
   if (!check.ok) return check;
@@ -98,7 +108,9 @@ function registerGiftAnimationRoutes(app, ctx = {}) {
     res.json(giftAnim.previewBrief(body));
   });
 
-  app.post("/api/gift-animation/generate", localAdminGuard, async (req, res) => {
+  const adminWriteGuard = closedLocalAdminGuard(ctx.localAdminGuard);
+
+  app.post("/api/gift-animation/generate", adminWriteGuard, async (req, res) => {
     try {
       const body = req.body && typeof req.body === "object" ? req.body : {};
       const mode = safeString(body.mode || body.flow, "generate");
@@ -112,7 +124,7 @@ function registerGiftAnimationRoutes(app, ctx = {}) {
     }
   });
 
-  app.post("/api/gift-animation/ask-words", localAdminGuard, (req, res) => {
+  app.post("/api/gift-animation/ask-words", adminWriteGuard, (req, res) => {
     const body = req.body && typeof req.body === "object" ? req.body : {};
     res.json(giftAnim.startAskWords(body));
   });

@@ -454,6 +454,143 @@ async function main() {
       assert.equal(blockedJobDirs.length, writes);
     });
 
+    await test("generate and ask-words fail closed when the guard is missing", async () => {
+      chatFeed.length = 0;
+      const started = ask();
+      const pendingId = started.pendingAsk && started.pendingAsk.id;
+      assert.ok(pendingId);
+      const writes = blockedJobDirs.length;
+      const jobs = jobNames();
+      const closedApps = [];
+      try {
+        for (const ctx of [{}, { localAdminGuard: null }, { localAdminGuard: "nope" }]) {
+          const closedApp = express();
+          closedApp.use(express.json());
+          registerGiftAnimationRoutes(closedApp, ctx);
+          closedApps.push(await listen(closedApp));
+        }
+        for (const closed of closedApps) {
+          for (const remoteAddress of [REMOTE, "127.0.0.1"]) {
+            const generate = await closed.request({
+              method: "POST",
+              path: "/api/gift-animation/generate",
+              remoteAddress,
+              body: { giftKey: "ROSE", username: USER, encodeVideo: false }
+            });
+            const askWords = await closed.request({
+              method: "POST",
+              path: "/api/gift-animation/ask-words",
+              remoteAddress,
+              body: { giftKey: "ROSE", username: USER, wordsTimeoutMs: 5000 }
+            });
+            assert.equal(generate.status, 503);
+            assert.deepEqual(generate.body, {
+              ok: false,
+              error: "LOCAL_ADMIN_GUARD_UNAVAILABLE"
+            });
+            assert.equal(askWords.status, 503);
+            assert.deepEqual(askWords.body, {
+              ok: false,
+              error: "LOCAL_ADMIN_GUARD_UNAVAILABLE"
+            });
+          }
+        }
+      } finally {
+        await Promise.all(
+          closedApps.map(
+            (closed) => new Promise((resolve) => closed.server.close(resolve))
+          )
+        );
+      }
+      assert.equal(giftAnim.getStatus().pendingAsk.id, pendingId);
+      assert.equal(blockedJobDirs.length, writes);
+      assert.deepEqual(jobNames(), jobs);
+
+      const status = await httpServer.request({
+        method: "GET",
+        path: "/api/gift-animation/status",
+        remoteAddress: "127.0.0.1"
+      });
+      const active = await httpServer.request({
+        method: "GET",
+        path: "/api/gift-animation/active",
+        remoteAddress: "127.0.0.1"
+      });
+      assert.equal(status.status, 200);
+      assert.equal(active.status, 200);
+      assert.equal(status.body.pendingAsk.id, pendingId);
+      assert.equal(active.body.pendingAsk.id, pendingId);
+      assert.equal(blockedJobDirs.length, writes);
+      assert.deepEqual(jobNames(), jobs);
+    });
+
+    await test("a real admin guard allows loopback and rejects remote writes", async () => {
+      chatFeed.length = 0;
+      const pendingBefore = giftAnim.getStatus().pendingAsk;
+      const writes = blockedJobDirs.length;
+      const jobs = jobNames();
+      const remoteGenerate = await httpServer.request({
+        method: "POST",
+        path: "/api/gift-animation/generate",
+        remoteAddress: REMOTE,
+        body: { giftKey: "ROSE", username: USER, encodeVideo: false }
+      });
+      const remoteAsk = await httpServer.request({
+        method: "POST",
+        path: "/api/gift-animation/ask-words",
+        remoteAddress: REMOTE,
+        body: { giftKey: "ROSE", username: USER, wordsTimeoutMs: 5000 }
+      });
+      assert.equal(remoteGenerate.status, 403);
+      assert.equal(remoteAsk.status, 403);
+      assert.equal(giftAnim.getStatus().pendingAsk && giftAnim.getStatus().pendingAsk.id, pendingBefore.id);
+      assert.equal(blockedJobDirs.length, writes);
+
+      const localAsk = await httpServer.request({
+        method: "POST",
+        path: "/api/gift-animation/ask-words",
+        remoteAddress: "127.0.0.1",
+        body: { giftKey: "ROSE", username: USER, wordsTimeoutMs: 5000, profileImageUrl: "" }
+      });
+      assert.equal(localAsk.status, 200);
+      assert.equal(localAsk.body.ok, true);
+      assert.equal(localAsk.body.pendingAsk.status, "waiting_words");
+      assert.notEqual(localAsk.body.pendingAsk.id, pendingBefore.id);
+      assert.equal(blockedJobDirs.length, writes);
+      assert.deepEqual(jobNames(), jobs);
+
+      const originalGenerate = giftAnim.generateNow;
+      let generateCalls = 0;
+      giftAnim.generateNow = async () => {
+        generateCalls += 1;
+        return { ok: true, stub: true };
+      };
+      try {
+        const localGenerate = await httpServer.request({
+          method: "POST",
+          path: "/api/gift-animation/generate",
+          remoteAddress: "127.0.0.1",
+          body: { giftKey: "ROSE", username: USER, encodeVideo: false }
+        });
+        const deniedGenerate = await httpServer.request({
+          method: "POST",
+          path: "/api/gift-animation/generate",
+          remoteAddress: REMOTE,
+          body: { giftKey: "ROSE", username: USER, encodeVideo: false }
+        });
+        assert.equal(localGenerate.status, 200);
+        assert.equal(localGenerate.body.stub, true);
+        assert.equal(generateCalls, 1);
+        assert.equal(deniedGenerate.status, 403);
+        assert.equal(generateCalls, 1);
+      } finally {
+        giftAnim.generateNow = originalGenerate;
+      }
+      assert.equal(blockedJobDirs.length, writes);
+      assert.deepEqual(jobNames(), jobs);
+      assert.equal(giftAnim.getStatus().pendingAsk.id, localAsk.body.pendingAsk.id);
+    });
+
     await test("overlay state and gift job reads stay unguarded", () => {
       const overlay = fs.readFileSync(path.join(__dirname, "..", "routes", "overlay.js"), "utf8");
       const giftRoutes = fs.readFileSync(path.join(__dirname, "..", "routes", "gift_animation.js"), "utf8");
@@ -472,8 +609,8 @@ async function main() {
     await new Promise((resolve) => httpServer.server.close(resolve));
   }
 
-  if (process.exitCode) process.exit(process.exitCode);
   console.log("route_audit_http_contract: all passed");
+  process.exit(process.exitCode || 0);
 }
 
 main().catch((err) => {
