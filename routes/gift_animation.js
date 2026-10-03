@@ -97,7 +97,9 @@ function registerGiftAnimationRoutes(app, ctx = {}) {
     res.json({ ok: true, config: giftAnim.getConfig() });
   });
 
-  app.post("/api/gift-animation/config", localAdminGuard, (req, res) => {
+  const adminWriteGuard = closedLocalAdminGuard(ctx.localAdminGuard);
+
+  app.post("/api/gift-animation/config", adminWriteGuard, (req, res) => {
     const body = req.body && typeof req.body === "object" ? req.body : {};
     const next = giftAnim.saveDiskConfig(body);
     res.json({ ok: true, config: next });
@@ -107,8 +109,6 @@ function registerGiftAnimationRoutes(app, ctx = {}) {
     const body = req.body && typeof req.body === "object" ? req.body : {};
     res.json(giftAnim.previewBrief(body));
   });
-
-  const adminWriteGuard = closedLocalAdminGuard(ctx.localAdminGuard);
 
   app.post("/api/gift-animation/generate", adminWriteGuard, async (req, res) => {
     try {
@@ -129,7 +129,7 @@ function registerGiftAnimationRoutes(app, ctx = {}) {
     res.json(giftAnim.startAskWords(body));
   });
 
-  app.post("/api/gift-animation/words", localAdminGuard, async (req, res) => {
+  app.post("/api/gift-animation/words", adminWriteGuard, async (req, res) => {
     try {
       const body = req.body && typeof req.body === "object" ? req.body : {};
       const words = safeString(body.words || body.extraWords || body.text);

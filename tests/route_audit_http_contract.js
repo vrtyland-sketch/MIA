@@ -32,6 +32,7 @@ const { registerGiftAnimationRoutes } = require("../routes/gift_animation");
 const { createLocalAdminGuard } = require("../scripts/MIA_RUNTIME_SECURITY");
 const { createIngestUtilsRuntime } = require("../scripts/MIA_INGEST_UTILS_RUNTIME");
 const giftAnim = require("../shared/mia-gift-animation");
+const { CONFIG_PATH: GIFT_ANIM_CONFIG_PATH } = require("../shared/mia-gift-animation/config");
 
 const ADMIN = "route-audit-admin";
 const WRONG = "route-audit-wrong";
@@ -454,13 +455,17 @@ async function main() {
       assert.equal(blockedJobDirs.length, writes);
     });
 
-    await test("generate and ask-words fail closed when the guard is missing", async () => {
+    await test("state-changing gift admin routes fail closed when the guard is missing", async () => {
       chatFeed.length = 0;
       const started = ask();
       const pendingId = started.pendingAsk && started.pendingAsk.id;
       assert.ok(pendingId);
       const writes = blockedJobDirs.length;
       const jobs = jobNames();
+      const configBefore = JSON.parse(JSON.stringify(giftAnim.getConfig()));
+      const diskBefore = fs.existsSync(GIFT_ANIM_CONFIG_PATH)
+        ? fs.readFileSync(GIFT_ANIM_CONFIG_PATH)
+        : null;
       const closedApps = [];
       try {
         for (const ctx of [{}, { localAdminGuard: null }, { localAdminGuard: "nope" }]) {
@@ -471,6 +476,12 @@ async function main() {
         }
         for (const closed of closedApps) {
           for (const remoteAddress of [REMOTE, "127.0.0.1"]) {
+            const config = await closed.request({
+              method: "POST",
+              path: "/api/gift-animation/config",
+              remoteAddress,
+              body: { autoEnabled: !configBefore.autoEnabled, provider: "audit_must_not_write" }
+            });
             const generate = await closed.request({
               method: "POST",
               path: "/api/gift-animation/generate",
@@ -483,16 +494,19 @@ async function main() {
               remoteAddress,
               body: { giftKey: "ROSE", username: USER, wordsTimeoutMs: 5000 }
             });
-            assert.equal(generate.status, 503);
-            assert.deepEqual(generate.body, {
-              ok: false,
-              error: "LOCAL_ADMIN_GUARD_UNAVAILABLE"
+            const words = await closed.request({
+              method: "POST",
+              path: "/api/gift-animation/words",
+              remoteAddress,
+              body: { words: "audit-should-not-finalize" }
             });
-            assert.equal(askWords.status, 503);
-            assert.deepEqual(askWords.body, {
-              ok: false,
-              error: "LOCAL_ADMIN_GUARD_UNAVAILABLE"
-            });
+            for (const response of [config, generate, askWords, words]) {
+              assert.equal(response.status, 503);
+              assert.deepEqual(response.body, {
+                ok: false,
+                error: "LOCAL_ADMIN_GUARD_UNAVAILABLE"
+              });
+            }
           }
         }
       } finally {
@@ -502,6 +516,11 @@ async function main() {
           )
         );
       }
+      assert.deepEqual(giftAnim.getConfig(), configBefore);
+      const diskAfter = fs.existsSync(GIFT_ANIM_CONFIG_PATH)
+        ? fs.readFileSync(GIFT_ANIM_CONFIG_PATH)
+        : null;
+      assert.deepEqual(diskAfter, diskBefore);
       assert.equal(giftAnim.getStatus().pendingAsk.id, pendingId);
       assert.equal(blockedJobDirs.length, writes);
       assert.deepEqual(jobNames(), jobs);
