@@ -6,6 +6,16 @@ const { validateApp, safeString, mergeRoutes } = require("./_helpers");
  * Gift animation API — generate / ask-words / status for stream OBS use.
  */
 
+function closedLocalAdminGuard(guard) {
+  if (typeof guard === "function") return guard;
+  return function localAdminGuardUnavailable(_req, res) {
+    res.status(503).json({
+      ok: false,
+      error: "LOCAL_ADMIN_GUARD_UNAVAILABLE"
+    });
+  };
+}
+
 function registerGiftAnimationRoutes(app, ctx = {}) {
   const check = validateApp(app);
   if (!check.ok) return check;
@@ -79,8 +89,7 @@ function registerGiftAnimationRoutes(app, ctx = {}) {
         : null)
   });
 
-  app.get("/api/gift-animation/status", (_req, res) => {
-    giftAnim.pollChatFeedForWords();
+  app.get("/api/gift-animation/status", localAdminGuard, (_req, res) => {
     res.json(giftAnim.getStatus());
   });
 
@@ -88,7 +97,9 @@ function registerGiftAnimationRoutes(app, ctx = {}) {
     res.json({ ok: true, config: giftAnim.getConfig() });
   });
 
-  app.post("/api/gift-animation/config", localAdminGuard, (req, res) => {
+  const adminWriteGuard = closedLocalAdminGuard(ctx.localAdminGuard);
+
+  app.post("/api/gift-animation/config", adminWriteGuard, (req, res) => {
     const body = req.body && typeof req.body === "object" ? req.body : {};
     const next = giftAnim.saveDiskConfig(body);
     res.json({ ok: true, config: next });
@@ -99,7 +110,7 @@ function registerGiftAnimationRoutes(app, ctx = {}) {
     res.json(giftAnim.previewBrief(body));
   });
 
-  app.post("/api/gift-animation/generate", localAdminGuard, async (req, res) => {
+  app.post("/api/gift-animation/generate", adminWriteGuard, async (req, res) => {
     try {
       const body = req.body && typeof req.body === "object" ? req.body : {};
       const mode = safeString(body.mode || body.flow, "generate");
@@ -113,12 +124,12 @@ function registerGiftAnimationRoutes(app, ctx = {}) {
     }
   });
 
-  app.post("/api/gift-animation/ask-words", localAdminGuard, (req, res) => {
+  app.post("/api/gift-animation/ask-words", adminWriteGuard, (req, res) => {
     const body = req.body && typeof req.body === "object" ? req.body : {};
     res.json(giftAnim.startAskWords(body));
   });
 
-  app.post("/api/gift-animation/words", localAdminGuard, async (req, res) => {
+  app.post("/api/gift-animation/words", adminWriteGuard, async (req, res) => {
     try {
       const body = req.body && typeof req.body === "object" ? req.body : {};
       const words = safeString(body.words || body.extraWords || body.text);
@@ -136,8 +147,7 @@ function registerGiftAnimationRoutes(app, ctx = {}) {
     }
   });
 
-  app.get("/api/gift-animation/active", (_req, res) => {
-    giftAnim.pollChatFeedForWords();
+  app.get("/api/gift-animation/active", localAdminGuard, (_req, res) => {
     const status = giftAnim.getStatus();
     res.json({
       ok: true,
