@@ -17,6 +17,7 @@ mia-output-overlay/audio-cache/
 .tmp-audit-inner.json
 .tmp-git-status-*.txt
 .tmp-preflight-out.txt
+.tmp-preflight-full-out.txt
 .git-c2-status.txt
 test-write-tmp.txt
 tmp_canon_*.txt
@@ -34,6 +35,7 @@ data/avatar-cache/
 
 # Live community / user runtime stores. Local copies stay on disk.
 # Sanitized stand-ins: data/*.example.json and tests/fixtures/session-memory.example.json
+# REPO_RECOVERY_SECURITY_PASS — see content-pass/REPO_RECOVERY_SECURITY_PASS.md
 data/mia-session-memory.json
 data/viewer-memory.json
 data/viewer-inventory.json
@@ -49,10 +51,17 @@ data/kojnozout-state.json
 data/kojnozout-state.json.bak
 data/mia-action-queue.json
 data/mia-theme.json
+data/mia-paint/autosave/
 # Generated visual-review stills. Local copies stay on disk.
 data/media-review-frames/
 data/video-review-frames/
 tests/.tmp-session-memory-*.json
+
+# Live stream evidence (may contain viewer handles / ingest payloads)
+docs/FIRST_LIVE_OBSERVATION_EVIDENCE.jsonl
+docs/STREAM_VALIDATION_02_EVIDENCE.jsonl
+docs/STREAM_VALIDATION_02_FINAL_GATE.jsonl
+docs/STREAM_VALIDATION_02_INGEST_GATE.jsonl
 *.log
 .DS_Store
 Thumbs.db
