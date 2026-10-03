@@ -2,6 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const vm = require("vm");
 
 const ASSETS_ROOT = path.resolve(
   __dirname,
@@ -37,6 +38,8 @@ const EXTENDED_MOODS = DERIVED_MOOD_KEYS.filter(
 const EATING_VARIANT_KEYS = listEatingVariantKeys(EATING_VARIANT_COUNT);
 
 const REQUIRED_MOODS = [...new Set([...MASTER_MOODS, ...DERIVED_MOOD_KEYS])];
+
+const LIVE_PROP_NAMES = ["bowl.png", "ball.png", "mic.png", "hand.png"];
 
 const MOOD_FALLBACKS = {
   sleepy: "idle",
@@ -214,6 +217,97 @@ function inspectKojnozoutAssets(rootDir = ASSETS_ROOT) {
   };
 }
 
+function repoRelative(filePath) {
+  return path.relative(path.resolve(__dirname, ".."), filePath).replace(/\\/g, "/");
+}
+
+function readEmittedPoseCatalog(catalogPath) {
+  const source = fs.readFileSync(catalogPath, "utf8");
+  const sandbox = {};
+  vm.runInNewContext(source, sandbox, { filename: catalogPath });
+  const pose = sandbox.KOJ_POSE;
+  if (!pose || !Array.isArray(pose.POSE_CYCLES)) {
+    return { ok: false, reason: "malformed pose catalog" };
+  }
+  return { ok: true, pose };
+}
+
+/**
+ * Live OBS art is the moods/ + pose-catalog.js + props/ bank.
+ * Procedural and CSS fallbacks stay available, but they are not production art.
+ */
+function inspectLiveKojVisuals(rootDir = ASSETS_ROOT) {
+  const body = inspectKojnozoutAssets(rootDir);
+  const moodsDir = path.join(rootDir, "moods");
+  const catalogPath = path.join(rootDir, "pose-catalog.js");
+  const propPaths = LIVE_PROP_NAMES.map((name) => path.join(rootDir, "props", name));
+  const missingGroups = [];
+  const missingPaths = [];
+
+  if (body.ok !== true) missingGroups.push("moods");
+  if (!fs.existsSync(moodsDir)) missingPaths.push(repoRelative(moodsDir));
+
+  let dangling = [];
+  if (!fileExists(catalogPath)) {
+    missingGroups.push("pose catalog");
+    missingPaths.push(repoRelative(catalogPath));
+  } else {
+    const catalog = readEmittedPoseCatalog(catalogPath);
+    if (!catalog.ok) {
+      return {
+        ok: false,
+        liveProductionArtReady: false,
+        fallbackAvailable: true,
+        detail: "malformed pose catalog",
+        body,
+        missingGroups,
+        missingPaths,
+        dangling: [],
+        defect: "malformed"
+      };
+    }
+    for (const cycle of catalog.pose.POSE_CYCLES) {
+      for (const frame of cycle.frames || []) {
+        const png = path.join(moodsDir, `kojnozout-${frame}.png`);
+        if (!fileExists(png)) dangling.push(frame);
+      }
+    }
+    if (dangling.length > 0) {
+      return {
+        ok: false,
+        liveProductionArtReady: false,
+        fallbackAvailable: true,
+        detail: `dangling catalog reference: ${dangling.join(", ")}`,
+        body,
+        missingGroups,
+        missingPaths,
+        dangling,
+        catalogCycles: catalog.pose.POSE_CYCLES,
+        defect: "dangling"
+      };
+    }
+  }
+
+  const missingProps = propPaths.filter((filePath) => !fileExists(filePath));
+  if (missingProps.length > 0) {
+    missingGroups.push("props");
+    for (const filePath of missingProps) missingPaths.push(repoRelative(filePath));
+  }
+
+  const ok = body.ok === true && missingGroups.length === 0;
+  return {
+    ok,
+    liveProductionArtReady: ok,
+    fallbackAvailable: true,
+    detail: ok ? "live production art ready" : `Koj visuals missing: ${missingGroups.join(", ")}`,
+    body,
+    missingGroups,
+    missingPaths,
+    dangling,
+    defect: ok ? null : "missing"
+  };
+}
+
 function resolveMoodSpritePath(mood = "idle", rootDir = ASSETS_ROOT) {
   const key = String(mood || "idle").toLowerCase();
   const moodsDir = path.join(rootDir, "moods");
@@ -324,7 +418,10 @@ module.exports = {
   EATING_VARIANT_KEYS,
   EXTENDED_MOODS,
   MOOD_FALLBACKS,
+  LIVE_PROP_NAMES,
   inspectKojnozoutAssets,
+  inspectLiveKojVisuals,
+  readEmittedPoseCatalog,
   resolveMoodSpritePath,
   resolveEvolutionTierSpriteUrl,
   resolveStageMoodSpritePath,

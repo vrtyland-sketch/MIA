@@ -69,13 +69,25 @@ test("strict profile ignores a cloud env switch", () => {
 
 test("documented cloud prerequisites are only the known local files", () => {
   const suites = [...new Set(CLOUD_ENV_PREREQUISITES.map((row) => row.suite))].sort();
-  assert.deepEqual(suites, ["graphics_body", "master_canon_0001", "media_catalog", "story_animation"]);
+  assert.deepEqual(suites, [
+    "graphics_body",
+    "koj_live_assets",
+    "master_canon_0001",
+    "media_catalog",
+    "story_animation"
+  ]);
   const paths = CLOUD_ENV_PREREQUISITES.map((row) => row.path).sort();
   assert.deepEqual(paths, [
     ".cursor/rules/mia-canon.mdc",
     "incoming-images/videos",
     "incoming-images/videos_2",
     "mia-output-overlay/assets/animation-bank/gift/rose",
+    "mia-output-overlay/assets/kojnozrout/moods",
+    "mia-output-overlay/assets/kojnozrout/pose-catalog.js",
+    "mia-output-overlay/assets/kojnozrout/props/ball.png",
+    "mia-output-overlay/assets/kojnozrout/props/bowl.png",
+    "mia-output-overlay/assets/kojnozrout/props/hand.png",
+    "mia-output-overlay/assets/kojnozrout/props/mic.png",
     "mia-output-overlay/assets/kojnozrout/story-bank-manifest.json"
   ]);
 });
@@ -103,6 +115,18 @@ test("missing prerequisite plus its own assertion is ENV_BLOCKED", () => {
           stderr: ROSE_STDERR
         }
       ])
+    },
+    {
+      name: "koj_live_assets",
+      output: [
+        "KOJ_LIVE_ASSET_MISSING:",
+        "mia-output-overlay/assets/kojnozrout/moods",
+        "mia-output-overlay/assets/kojnozrout/pose-catalog.js",
+        "mia-output-overlay/assets/kojnozrout/props/bowl.png",
+        "mia-output-overlay/assets/kojnozrout/props/ball.png",
+        "mia-output-overlay/assets/kojnozrout/props/mic.png",
+        "mia-output-overlay/assets/kojnozrout/props/hand.png"
+      ].join(" ")
     }
   ];
 
@@ -156,6 +180,14 @@ test("a different assertion stays FAIL while the prerequisite is missing", () =>
           stderr: "The expression evaluated to a falsy value:\n\n  assert.ok(result.bodyMood)\n"
         }
       ])
+    },
+    {
+      name: "koj_live_assets",
+      output: "dangling catalog reference: walk-a"
+    },
+    {
+      name: "koj_live_assets",
+      output: "malformed pose catalog"
     }
   ];
 
